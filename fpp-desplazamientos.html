@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><script>/* Descarga directa fuera de Claude (GitHub Pages) */
+(function(){if(window.claude&&typeof window.claude.use==='function')return;
+function save(o){o=o||{};var n=o.filename||'archivo.pdf',d=o.data,t=/\.pdf$/i.test(n)?'application/pdf':(/\.txt$/i.test(n)?'text/plain':'application/octet-stream');
+var b=(d instanceof Blob)?d:new Blob([d],{type:t});var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;a.rel='noopener';
+document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},60000);return Promise.resolve({status:'delivered'})}
+window.claude={use:function(x){return Promise.resolve(x==='downloads'?{save:save}:null)}};})();
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Applet 1 · Desplazamientos de la FPP</title>
+<style>
+:root{--bg:#FFFFFF;--ink:#1B1B1B;--navy:#1F3A8A;--bar:#1F3A8A;--onbar:#FFFFFF;--navybg:#EEF2FB;--amber:#B45309;--green:#009E73;--verm:#D55E00;--purp:#8E2F6B;--gtxt:#007a5a;--vtxt:#B34700;--gray:#595959;--grid:#d5d9e6;--rule:#c9cfe0;--hl:#fff3e0;--actfg:#FFFFFF;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1A33;--ink:#F2F5FF;--navy:#9DB7FF;--bar:#13315C;--onbar:#FFFFFF;--navybg:#16294D;--amber:#FFB766;--green:#5FD3A8;--verm:#FF9F6B;--purp:#E6A8D1;--gtxt:#5FD3A8;--vtxt:#FF9F6B;--gray:#B8C2DB;--grid:#2B3F66;--rule:#2B3F66;--hl:#2A3B63;--actfg:#0B1A33;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1A33;--ink:#F2F5FF;--navy:#9DB7FF;--bar:#13315C;--onbar:#FFFFFF;--navybg:#16294D;--amber:#FFB766;--green:#5FD3A8;--verm:#FF9F6B;--purp:#E6A8D1;--gtxt:#5FD3A8;--vtxt:#FF9F6B;--gray:#B8C2DB;--grid:#2B3F66;--rule:#2B3F66;--hl:#2A3B63;--actfg:#0B1A33;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg);font-size:18px;line-height:1.4}
+header{background:var(--bar);color:var(--onbar);padding:12px 22px}
+header h1{margin:0;font-size:26px}
+header p{margin:3px 0 0;font-size:15px}
+main{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px;padding:14px 20px 30px;align-items:start}
+@media (max-width:900px){main{grid-template-columns:minmax(0,1fr)}}
+#plotwrap{position:sticky;top:8px}
+@media (max-width:900px){#plotwrap{position:static}}
+#plot{width:100%;height:auto;display:block}
+.sec{border-left:6px solid var(--navy);background:var(--navybg);padding:10px 14px;margin:0 0 14px;border-radius:0 6px 6px 0}
+.sec h2{margin:0 0 6px;font-size:20px;color:var(--navy)}
+.sec p{margin:6px 0}
+.sec.off{opacity:.55}
+label{display:block;margin:8px 0 3px;font-weight:700}
+input[type=text],textarea{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--bg);border:2px solid var(--navy);border-radius:6px;padding:7px 10px}
+textarea{min-height:84px;resize:vertical}
+.opt{display:block;font-weight:400;margin:5px 0;cursor:pointer}
+input[type=radio]{width:20px;height:20px;accent-color:var(--navy);vertical-align:middle;margin-right:6px}
+button{font:inherit;font-size:17px;color:var(--navy);background:var(--bg);border:2px solid var(--navy);border-radius:6px;padding:8px 14px;cursor:pointer;margin:6px 8px 0 0}
+button:hover:not(:disabled){background:var(--navy);color:var(--actfg)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.pri{background:var(--navy);color:var(--actfg)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:16px}
+th,td{padding:5px 8px;text-align:center;border-bottom:1px solid var(--rule)}
+th{color:var(--navy);border-bottom:2px solid var(--navy)}
+td:first-child,th:first-child{text-align:left}
+.hint{font-size:15px;color:var(--gray)}
+.ok{color:var(--gtxt);font-weight:700}.no{color:var(--vtxt);font-weight:700}
+.msg{min-height:22px;font-size:15px;margin:6px 0 0}
+.hidden{display:none}
+.chip{display:inline-block;background:var(--navy);color:var(--actfg);border-radius:14px;padding:2px 12px;font-weight:700;font-size:16px}
+#informe{border:2px solid var(--navy);border-radius:6px;padding:10px 14px;background:var(--bg);font-size:15px}
+#informe h3{margin:0 0 6px;color:var(--navy);font-size:17px}
+#informe p{margin:4px 0}
+@media print{
+ body>*:not(#printarea){display:none !important}
+ #printarea{display:block !important}
+ #printarea{font-size:12pt;color:#000}
+}
+#printarea{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>Applet 1 · Desplazamientos de la frontera de posibilidades de producción</h1>
+  <p>Predice, observa y explica · Datos: Samuelson y Nordhaus (2010), Tabla 1-1, p. 10 · Mantequilla en millones de libras; pistolas en miles</p>
+</header>
+<main>
+  <div id="plotwrap">
+    <svg id="plot" viewBox="0 0 760 560" role="img" aria-label="Gráfico de la frontera de posibilidades de producción de pistolas y mantequilla"></svg>
+    <p class="hint" id="plotnote">La frontera original une los puntos A a F de la tabla.</p>
+  </div>
+  <div id="panel">
+    <div class="sec" id="s1">
+      <h2>1 · Tus datos</h2>
+      <label for="nombre">Nombre y apellido</label>
+      <input type="text" id="nombre" autocomplete="name" maxlength="80">
+      <label for="curso">Curso</label>
+      <input type="text" id="curso" maxlength="120">
+      <label for="codigo">Código de tu ejercicio (E01 a E15)</label>
+      <input type="text" id="codigo" maxlength="4" placeholder="Por ejemplo, E07" style="max-width:160px">
+      <p class="msg" id="msg1" aria-live="polite"></p>
+      <p class="hint">Tu nombre y tu código se bloquean al guardar la predicción. Para cambiarlos, usa «Borrar mi progreso».</p>
+    </div>
+
+    <div class="sec off" id="s2">
+      <h2>2 · Tu supuesto de desplazamiento</h2>
+      <p id="supuesto">Escribe tu código para ver tu supuesto.</p>
+    </div>
+
+    <div class="sec off" id="s3">
+      <h2>3 · Predice (antes de mover nada)</h2>
+      <p><b>a)</b> ¿Cómo se desplazará la frontera?</p>
+      <label class="opt"><input type="radio" name="eje" value="mant"> Solo en el eje de la mantequilla (horizontal)</label>
+      <label class="opt"><input type="radio" name="eje" value="pist"> Solo en el eje de las pistolas (vertical)</label>
+      <label class="opt"><input type="radio" name="eje" value="ambos"> En ambos ejes</label>
+      <label class="opt"><input type="radio" name="eje" value="nada"> No se desplaza</label>
+      <p><b>b)</b> El costo de oportunidad de 1 millón de libras de mantequilla entre C y D (hoy, 3 mil pistolas)…</p>
+      <label class="opt"><input type="radio" name="costo" value="aum"> Aumenta</label>
+      <label class="opt"><input type="radio" name="costo" value="dis"> Disminuye</label>
+      <label class="opt"><input type="radio" name="costo" value="igual"> No cambia</label>
+      <p><b>c)</b> El punto T, que hoy es inalcanzable, ¿pasará a ser alcanzable?</p>
+      <label class="opt"><input type="radio" name="alc" value="si"> Sí</label>
+      <label class="opt"><input type="radio" name="alc" value="no"> No</label>
+      <label for="ptexto">Tu predicción con tus palabras (mínimo 20 caracteres)</label>
+      <textarea id="ptexto" maxlength="500"></textarea>
+      <button id="bpred" class="pri" type="button">Guardar predicción</button>
+      <p class="msg" id="msg3" aria-live="polite"></p>
+    </div>
+
+    <div class="sec off" id="s4">
+      <h2>4 · Observa</h2>
+      <button id="baplicar" class="pri" type="button" disabled>Aplicar la mejora</button>
+      <div id="resultado" class="hidden"></div>
+    </div>
+
+    <div class="sec off" id="s5">
+      <h2>5 · Explica</h2>
+      <p>¿Coincidió lo que viste con tu predicción?</p>
+      <label class="opt"><input type="radio" name="coin" value="si"> Sí, coincidió</label>
+      <label class="opt"><input type="radio" name="coin" value="parcial"> Coincidió en parte</label>
+      <label class="opt"><input type="radio" name="coin" value="no"> No coincidió</label>
+      <label for="etexto">Explica qué pasó con la frontera, la capacidad de producción y el costo de oportunidad, y por qué (mínimo 40 caracteres)</label>
+      <textarea id="etexto" maxlength="900"></textarea>
+      <p class="msg" id="msg5" aria-live="polite"></p>
+    </div>
+
+    <div class="sec off" id="s6">
+      <h2>6 · Tu informe</h2>
+      <p>Descarga el PDF y súbelo a la plataforma. Tu avance se guarda solo en este navegador.</p>
+      <button id="bpdf" class="pri" type="button" disabled>Descargar informe en PDF</button>
+      <button id="bcopy" type="button" disabled>Copiar resumen</button>
+      <button id="bprint" type="button" disabled>Imprimir o guardar como PDF</button>
+      <p class="msg" id="msg6" aria-live="polite"></p>
+      <button id="bborrar" type="button">Borrar mi progreso</button>
+    </div>
+  </div>
+</main>
+<div id="printarea"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+'use strict';
+var KEY='fpp_applet1_v1';
+var $=function(id){return document.getElementById(id)};
+var LABEL={mant:'Solo en el eje de la mantequilla',pist:'Solo en el eje de las pistolas',ambos:'En ambos ejes',nada:'No se desplaza',aum:'Aumenta',dis:'Disminuye',igual:'No cambia',si:'Sí',no:'No',parcial:'En parte'};
+var CURSO0='Principios de Economía · Inteligencia de Negocios, 3.er nivel';
+var S={nombre:'',curso:CURSO0,codigo:'',eje:'',costo:'',alc:'',ptexto:'',predOk:false,aplicado:false,coin:'',etexto:''};
+
+/* ---------- Modelo ---------- */
+function f(x){return 15-x*(x+1)/2}                 // frontera original, 0<=x<=5
+function tipoDe(cod){
+  var m=/^E?(\d{1,2})$/i.exec((cod||'').trim());
+  if(!m) return null; var n=parseInt(m[1],10); if(n<1||n>15) return null;
+  var t=['X','Y','XY'][(n-1)%3];
+  return {n:n,cod:'E'+(n<10?'0':'')+n,t:t,fx:(t==='X'||t==='XY')?1.5:1,fy:(t==='Y'||t==='XY')?1.5:1,
+          T:t==='X'?[3,12]:t==='Y'?[2,18]:[3,18],
+          eje:t==='X'?'mant':t==='Y'?'pist':'ambos',
+          costoV:t==='X'?'dis':t==='Y'?'aum':'igual'};
+}
+function nuevaF(x,k){return k.fy*f(x/k.fx)}
+function clasif(x,y,fr){var v=fr(x);if(Math.abs(y-v)<1e-9)return 'Eficiente (sobre la frontera)';return y<v?'Ineficiente (dentro)':'Inalcanzable (fuera)'}
+function fmt(v){var r=Math.round(v*100)/100;return String(r).replace('.',',')}
+function datos(k){
+  var T=k.T;
+  return {
+    maxM0:5,maxM1:5*k.fx,maxP0:15,maxP1:15*k.fy,
+    c0:3,c1:3*k.fy/k.fx,
+    T:T,Tantes:clasif(T[0],T[1],f),Tdespues:clasif(T[0],T[1],function(x){return nuevaF(x,k)})
+  };
+}
+function supuestoTxt(k){
+  var b={X:'la producción de mantequilla (eje horizontal)',Y:'la producción de pistolas (eje vertical)',XY:'la producción de ambos bienes'}[k.t];
+  var d={X:'Los puntos se mueven horizontalmente: la cantidad de mantequilla de cada punto se multiplica por 1,5 y la de pistolas se mantiene.',
+         Y:'Los puntos se mueven verticalmente: la cantidad de pistolas de cada punto se multiplica por 1,5 y la de mantequilla se mantiene.',
+         XY:'Los puntos se mueven en ambos ejes: la cantidad de cada bien en cada punto se multiplica por 1,5.'}[k.t];
+  return '<span class="chip">'+k.cod+'</span> Una mejora tecnológica aumenta 50 % <b>'+b+'</b> con los mismos recursos. '+d+
+         '<br>El punto <b>T ('+k.T[0]+'; '+k.T[1]+')</b> está hoy fuera de la frontera: es inalcanzable.';
+}
+
+/* ---------- Gráfico ---------- */
+var W=760,H=560,ML=70,MR=24,MT=24,MB=62;
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function dibujar(){
+  var k=tipoDe(S.codigo), sh=S.aplicado&&k;
+  var fxm=k?k.fx:1, fym=k?k.fy:1;
+  var xmax=k?(fxm>1?8:6):6, ymax=k?(fym>1?24:18):18;
+  var X=function(x){return ML+x/xmax*(W-ML-MR)}, Y=function(y){return H-MB-y/ymax*(H-MT-MB)};
+  var s='';
+  for(var i=0;i<=xmax;i++){s+='<line x1="'+X(i)+'" y1="'+Y(0)+'" x2="'+X(i)+'" y2="'+Y(ymax)+'" stroke="var(--grid)" stroke-width="1"/><text x="'+X(i)+'" y="'+(H-MB+22)+'" text-anchor="middle" font-size="15" fill="var(--ink)">'+i+'</text>'}
+  for(var j=0;j<=ymax;j+=3){s+='<line x1="'+X(0)+'" y1="'+Y(j)+'" x2="'+X(xmax)+'" y2="'+Y(j)+'" stroke="var(--grid)" stroke-width="1"/><text x="'+(ML-8)+'" y="'+(Y(j)+5)+'" text-anchor="end" font-size="15" fill="var(--ink)">'+j+'</text>'}
+  s+='<line x1="'+X(0)+'" y1="'+Y(0)+'" x2="'+X(xmax)+'" y2="'+Y(0)+'" stroke="var(--ink)" stroke-width="2"/><line x1="'+X(0)+'" y1="'+Y(0)+'" x2="'+X(0)+'" y2="'+Y(ymax)+'" stroke="var(--ink)" stroke-width="2"/>';
+  s+='<text x="'+((ML+W-MR)/2)+'" y="'+(H-14)+'" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">Mantequilla (millones de lb)</text>';
+  s+='<text transform="translate(20,'+((MT+H-MB)/2)+') rotate(-90)" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">Pistolas (miles)</text>';
+  var d0='',d1='',x;
+  for(x=0;x<=5.0001;x+=0.05){d0+=(d0?'L':'M')+X(x).toFixed(1)+' '+Y(f(x)).toFixed(1)}
+  if(sh){for(x=0;x<=5.0001;x+=0.05){d1+=(d1?'L':'M')+X(x*k.fx).toFixed(1)+' '+Y(k.fy*f(x)).toFixed(1)}
+    s+='<path d="'+d1+' L'+X(0)+' '+Y(0)+' Z" fill="var(--green)" fill-opacity=".10" stroke="none"/>'}
+  s+='<path d="'+d0+' L'+X(5)+' '+Y(0)+' L'+X(0)+' '+Y(0)+' Z" fill="var(--navy)" fill-opacity=".10" stroke="none"/>';
+  s+='<path d="'+d0+'" fill="none" stroke="var(--navy)" stroke-width="3.5"'+(sh?' stroke-dasharray="8 6"':'')+'/>';
+  if(sh)s+='<path d="'+d1+'" fill="none" stroke="var(--green)" stroke-width="3.5"/>';
+  var L='ABCDEF';
+  for(var p=0;p<=5;p++){var px=p,py=f(p);
+    s+='<circle cx="'+X(px)+'" cy="'+Y(py)+'" r="5" fill="var(--navy)"/><text x="'+(X(px)+8)+'" y="'+(Y(py)-8)+'" font-size="16" font-weight="700" fill="var(--navy)">'+L[p]+'</text>';
+    if(sh)s+='<circle cx="'+X(px*k.fx)+'" cy="'+Y(py*k.fy)+'" r="5" fill="var(--green)"/><text x="'+(X(px*k.fx)+8)+'" y="'+(Y(py*k.fy)-8)+'" font-size="16" font-weight="700" fill="var(--gtxt)">'+L[p]+'′</text>';
+  }
+  if(k){s+='<circle cx="'+X(k.T[0])+'" cy="'+Y(k.T[1])+'" r="8" fill="var(--purp)"/><text x="'+(X(k.T[0])+12)+'" y="'+(Y(k.T[1])+5)+'" font-size="17" font-weight="700" fill="var(--purp)">T ('+k.T[0]+'; '+k.T[1]+')</text>'}
+  $('plot').innerHTML=s;
+  $('plotnote').textContent=sh?'Línea discontinua: frontera original. Línea verde: nueva frontera tras la mejora.':'La frontera original une los puntos A a F de la tabla.';
+}
+
+/* ---------- Estado e interfaz ---------- */
+function guardar(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function cargar(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);for(var k in S)if(o&&typeof o[k]!=='undefined')S[k]=o[k]}}catch(e){}}
+function marcar(name,val){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)r[i].checked=(r[i].value===val)}
+function leer(name){var r=document.getElementsByName(name);for(var i=0;i<r.length;i++)if(r[i].checked)return r[i].value;return ''}
+function on(id,flag){$(id).classList.toggle('off',!flag)}
+function resultadoHTML(k){
+  var d=datos(k);
+  var h='<table><thead><tr><th></th><th>Antes</th><th>Después</th></tr></thead><tbody>';
+  h+='<tr><td>Máximo de mantequilla (millones de lb)</td><td>'+fmt(d.maxM0)+'</td><td>'+fmt(d.maxM1)+'</td></tr>';
+  h+='<tr><td>Máximo de pistolas (miles)</td><td>'+fmt(d.maxP0)+'</td><td>'+fmt(d.maxP1)+'</td></tr>';
+  h+='<tr><td>Costo de 1 millón de lb, entre C y D (miles de pistolas)</td><td>'+fmt(d.c0)+'</td><td>'+fmt(d.c1)+'</td></tr>';
+  h+='<tr><td>Punto T ('+d.T[0]+'; '+d.T[1]+')</td><td>'+d.Tantes+'</td><td>'+d.Tdespues+'</td></tr></tbody></table>';
+  var chk=function(txt,ok,res){return '<p>'+(ok?'<span class="ok">✓</span>':'<span class="no">✗</span>')+' '+txt+' Tu respuesta: <b>'+esc(res)+'</b>.</p>'};
+  h+='<p><b>Autocomprobación de tu predicción</b></p>';
+  h+=chk('Desplazamiento: era «'+LABEL[k.eje].toLowerCase()+'».',S.eje===k.eje,LABEL[S.eje]||'sin respuesta');
+  h+=chk('Costo de oportunidad: «'+LABEL[k.costoV].toLowerCase()+'» (de '+fmt(d.c0)+' a '+fmt(d.c1)+').',S.costo===k.costoV,LABEL[S.costo]||'sin respuesta');
+  h+=chk('El punto T pasa a ser alcanzable: «sí», queda sobre la nueva frontera.',S.alc==='si',LABEL[S.alc]||'sin respuesta');
+  return h;
+}
+function refrescar(){
+  var k=tipoDe(S.codigo), nombreOk=S.nombre.trim().length>=5;
+  $('nombre').value=S.nombre;$('curso').value=S.curso;$('codigo').value=S.codigo;$('codigo').disabled=S.predOk;$('nombre').disabled=S.predOk;
+  $('msg1').textContent=(S.codigo&&!k)?'El código debe ser E01 a E15.':(k&&!nombreOk?'Escribe tu nombre y apellido para continuar.':'');
+  var listo1=!!k&&nombreOk;
+  on('s2',listo1);$('supuesto').innerHTML=k?supuestoTxt(k):'Escribe tu código para ver tu supuesto.';
+  on('s3',listo1);
+  marcar('eje',S.eje);marcar('costo',S.costo);marcar('alc',S.alc);$('ptexto').value=S.ptexto;
+  var inputsDis=S.predOk; ['eje','costo','alc'].forEach(function(n){var r=document.getElementsByName(n);for(var i=0;i<r.length;i++)r[i].disabled=inputsDis||!listo1}); $('ptexto').disabled=inputsDis||!listo1;
+  $('bpred').disabled=inputsDis||!listo1; $('bpred').textContent=S.predOk?'Predicción guardada ✓':'Guardar predicción';
+  on('s4',listo1&&S.predOk);$('baplicar').disabled=!(listo1&&S.predOk)||S.aplicado;
+  if(S.aplicado&&k){$('resultado').classList.remove('hidden');$('resultado').innerHTML=resultadoHTML(k)}else{$('resultado').classList.add('hidden');$('resultado').innerHTML=''}
+  on('s5',S.aplicado&&listo1);marcar('coin',S.coin);$('etexto').value=S.etexto;
+  var listo5=S.aplicado&&S.coin&&S.etexto.trim().length>=40;
+  $('msg5').textContent=S.aplicado&&!listo5?'Marca si coincidió y escribe al menos 40 caracteres en tu explicación.':'';
+  on('s6',!!listo5);['bpdf','bcopy','bprint'].forEach(function(b){$(b).disabled=!listo5});
+  dibujar();
+}
+function resumenTexto(){
+  var k=tipoDe(S.codigo),d=datos(k);
+  var L=['UNIVERSIDAD INDOAMÉRICA · PRINCIPIOS DE ECONOMÍA','Applet 1 · Desplazamientos de la frontera de posibilidades de producción','',
+   'Estudiante: '+S.nombre.trim(),'Curso: '+S.curso.trim(),'Código del ejercicio: '+k.cod,'Fecha: '+new Date().toLocaleDateString('es-EC'),'',
+   'SUPUESTO ASIGNADO','Mejora tecnológica del 50 % en: '+({X:'la producción de mantequilla',Y:'la producción de pistolas',XY:'ambos bienes'}[k.t]),'Punto T: ('+k.T[0]+'; '+k.T[1]+')','',
+   'PREDICCIÓN','Desplazamiento: '+(LABEL[S.eje]||'sin respuesta'),'Costo de oportunidad C-D: '+(LABEL[S.costo]||'sin respuesta'),'T pasa a ser alcanzable: '+(LABEL[S.alc]||'sin respuesta'),'Con mis palabras: '+S.ptexto.trim(),'',
+   'OBSERVACIÓN','Máximo de mantequilla: '+fmt(d.maxM0)+' -> '+fmt(d.maxM1),'Máximo de pistolas: '+fmt(d.maxP0)+' -> '+fmt(d.maxP1),'Costo de 1 millón de lb entre C y D (miles de pistolas): '+fmt(d.c0)+' -> '+fmt(d.c1),
+   'Punto T: '+d.Tantes+' -> '+d.Tdespues,'¿Coincidió con mi predicción?: '+(LABEL[S.coin]||''),'','EXPLICACIÓN',S.etexto.trim()];
+  return L;
+}
+function pdfBytes(){
+  var J=window.jspdf&&window.jspdf.jsPDF; if(!J)return null;
+  var doc=new J({unit:'mm',format:'a4'}),L=resumenTexto(),y=18,x=18,w=174;
+  doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(31,58,138);
+  doc.text(L[0],x,y);y+=6;doc.setFontSize(11);doc.text(L[1],x,y);y+=3;doc.setDrawColor(31,58,138);doc.line(x,y,x+w,y);y+=7;
+  doc.setTextColor(27,27,27);
+  for(var i=2;i<L.length;i++){
+    var t=L[i];
+    if(t===''){y+=2;continue}
+    var head=/^[A-ZÁÉÍÓÚÑ ]+$/.test(t);
+    doc.setFont('helvetica',head?'bold':'normal');doc.setFontSize(head?11:10.5);if(head)doc.setTextColor(31,58,138);else doc.setTextColor(27,27,27);
+    var lines=doc.splitTextToSize(t,w);
+    if(y+lines.length*5.2>285){doc.addPage();y=18}
+    doc.text(lines,x,y);y+=lines.length*5.2+(head?1:0.6);
+  }
+  doc.setFont('helvetica','italic');doc.setFontSize(8.5);doc.setTextColor(89,89,89);
+  doc.text('Generado con el Applet 1 de Principios de Economía. Datos: Samuelson y Nordhaus (2010), Tabla 1-1, p. 10.',x,290);
+  return doc.output('arraybuffer');
+}
+function nombreArchivo(){
+  var k=tipoDe(S.codigo);var n=S.nombre.trim().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,40);
+  return 'Applet1_FPP_'+k.cod+'_'+(n||'estudiante')+'.pdf';
+}
+async function descargar(){
+  var m=$('msg6');m.textContent='';
+  var bytes=pdfBytes();
+  if(!bytes){m.textContent='No se pudo generar el PDF aquí. Usa «Imprimir o guardar como PDF» o «Copiar resumen».';return}
+  var dl=null;try{dl=await window.claude.use('downloads')}catch(e){dl=null}
+  if(!dl){m.textContent='La descarga directa no está disponible en esta vista. Usa «Imprimir o guardar como PDF» o «Copiar resumen».';return}
+  try{await dl.save({filename:nombreArchivo(),data:bytes});m.textContent='Informe listo. Súbelo a la plataforma.'}
+  catch(e){m.textContent=(e&&e.code==='declined')?'Cancelaste la descarga. Puedes intentarlo de nuevo.':'No se pudo guardar el archivo. Usa «Imprimir o guardar como PDF» o «Copiar resumen».'}
+}
+function copiar(){
+  var t=resumenTexto().join('\n'),m=$('msg6');
+  try{navigator.clipboard.writeText(t).then(function(){m.textContent='Resumen copiado. Pégalo en un documento.'},function(){m.textContent='No se pudo copiar. Selecciona el texto del informe e imprímelo.'})}
+  catch(e){m.textContent='No se pudo copiar. Usa «Imprimir o guardar como PDF».'}
+}
+function imprimir(){
+  var L=resumenTexto(),h='';
+  for(var i=0;i<L.length;i++){var t=L[i];if(t==='')continue;h+=(i<2||/^[A-ZÁÉÍÓÚÑ ]+$/.test(t))?'<h3>'+esc(t)+'</h3>':'<p>'+esc(t)+'</p>'}
+  $('printarea').innerHTML=h;
+  try{window.print()}catch(e){$('msg6').textContent='La impresión no está disponible aquí. Usa «Copiar resumen».'}
+}
+function borrar(){
+  if(!window.confirm('¿Borrar todo tu avance en este navegador?'))return;
+  try{localStorage.removeItem(KEY)}catch(e){}
+  S={nombre:'',curso:CURSO0,codigo:'',eje:'',costo:'',alc:'',ptexto:'',predOk:false,aplicado:false,coin:'',etexto:''};
+  refrescar();
+}
+/* ---------- Eventos ---------- */
+$('nombre').addEventListener('input',function(){S.nombre=this.value;guardar();refrescar()});
+$('curso').addEventListener('input',function(){S.curso=this.value;guardar()});
+$('codigo').addEventListener('input',function(){S.codigo=this.value.toUpperCase();guardar();refrescar()});
+['eje','costo','alc'].forEach(function(n){var r=document.getElementsByName(n);for(var i=0;i<r.length;i++)r[i].addEventListener('change',function(){S[n]=leer(n);guardar()})});
+$('ptexto').addEventListener('input',function(){S.ptexto=this.value;guardar()});
+$('bpred').addEventListener('click',function(){
+  if(!S.eje||!S.costo||!S.alc||S.ptexto.trim().length<20){$('msg3').textContent='Responde a), b) y c) y escribe al menos 20 caracteres.';return}
+  $('msg3').textContent='';S.predOk=true;guardar();refrescar()});
+$('baplicar').addEventListener('click',function(){S.aplicado=true;guardar();refrescar();$('s5').scrollIntoView({behavior:'smooth',block:'nearest'})});
+var rc=document.getElementsByName('coin');for(var q=0;q<rc.length;q++)rc[q].addEventListener('change',function(){S.coin=leer('coin');guardar();refrescar()});
+$('etexto').addEventListener('input',function(){S.etexto=this.value;guardar();var ok=S.aplicado&&S.coin&&S.etexto.trim().length>=40;['bpdf','bcopy','bprint'].forEach(function(b){$(b).disabled=!ok});on('s6',!!ok);$('msg5').textContent=ok?'':'Marca si coincidió y escribe al menos 40 caracteres en tu explicación.'});
+$('bpdf').addEventListener('click',descargar);$('bcopy').addEventListener('click',copiar);$('bprint').addEventListener('click',imprimir);$('bborrar').addEventListener('click',borrar);
+cargar();refrescar();
+})();
+</script>
+</body>
+</html>

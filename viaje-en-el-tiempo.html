@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><script>/* Descarga directa fuera de Claude (GitHub Pages) */
+(function(){if(window.claude&&typeof window.claude.use==='function')return;
+function save(o){o=o||{};var n=o.filename||'archivo.pdf',d=o.data,t=/\.pdf$/i.test(n)?'application/pdf':(/\.txt$/i.test(n)?'text/plain':'application/octet-stream');
+var b=(d instanceof Blob)?d:new Blob([d],{type:t});var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;a.rel='noopener';
+document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},60000);return Promise.resolve({status:'delivered'})}
+window.claude={use:function(x){return Promise.resolve(x==='downloads'?{save:save}:null)}};})();
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Applet de tarea · Viaje en el tiempo</title>
+<style>
+:root{--bg:#FFFFFF;--ink:#1B1B1B;--navy:#1F3A8A;--bar:#1F3A8A;--onbar:#FFFFFF;--navybg:#EEF2FB;--amber:#B45309;--green:#009E73;--verm:#D55E00;--purp:#8E2F6B;--gtxt:#007a5a;--vtxt:#B34700;--gray:#595959;--grid:#d5d9e6;--rule:#c9cfe0;--hl:#fff3e0;--actfg:#FFFFFF;--gold:#C98A00;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1A33;--ink:#F2F5FF;--navy:#9DB7FF;--bar:#13315C;--onbar:#FFFFFF;--navybg:#16294D;--amber:#FFB766;--green:#5FD3A8;--verm:#FF9F6B;--purp:#E6A8D1;--gtxt:#5FD3A8;--vtxt:#FF9F6B;--gray:#B8C2DB;--grid:#2B3F66;--rule:#2B3F66;--hl:#2A3B63;--actfg:#0B1A33;--gold:#FFD166;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1A33;--ink:#F2F5FF;--navy:#9DB7FF;--bar:#13315C;--onbar:#FFFFFF;--navybg:#16294D;--amber:#FFB766;--green:#5FD3A8;--verm:#FF9F6B;--purp:#E6A8D1;--gtxt:#5FD3A8;--vtxt:#FF9F6B;--gray:#B8C2DB;--grid:#2B3F66;--rule:#2B3F66;--hl:#2A3B63;--actfg:#0B1A33;--gold:#FFD166;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);font-size:19px;background:var(--bg);display:flex;flex-direction:column}
+header{background:var(--bar);color:var(--onbar);padding:10px 24px;flex:none}
+header h1{margin:0;font-size:27px}
+header p{margin:2px 0 0;font-size:16px}
+main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr);gap:16px;padding:10px 20px}
+#plotwrap{min-height:0;display:flex;flex-direction:column}
+#plot{flex:1;min-height:0;width:100%}
+#panel{overflow:auto;padding:0 6px 8px 0;min-height:0}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+button,select,input[type=text]{font:inherit;font-size:19px;color:var(--navy);background:var(--bg);border:2px solid var(--navy);border-radius:6px;padding:6px 14px;cursor:pointer}
+input[type=text]{cursor:text;color:var(--ink);width:min(420px,100%)}
+button:hover{background:var(--navybg)}
+button.act{background:var(--navy);color:var(--actfg)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.sec{border-left:6px solid var(--navy);background:var(--navybg);padding:8px 14px;margin:0 0 12px}
+.sec h2{margin:0 0 6px;font-size:22px;color:var(--navy)}
+.sec h3{margin:10px 0 2px;font-size:18px;color:var(--navy)}
+.sec p{margin:6px 0}
+.res{margin:8px 0 0;padding:8px 12px;background:var(--bg);border:2px solid var(--navy);border-radius:6px;min-height:44px}
+.ok{color:var(--gtxt)}.no{color:var(--vtxt)}.ina{color:var(--purp)}
+.sym{font-weight:700;font-size:21px;margin-right:4px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.fact{background:var(--bg);border:2px solid var(--rule);border-radius:8px;padding:6px 12px;margin:6px 0}
+.fact b{color:var(--navy)}
+.pred{border:2px dashed var(--amber);border-radius:8px;padding:6px 12px;margin:8px 0;background:var(--bg)}
+.pred legend{color:var(--amber);font-weight:700;padding:0 6px}
+.pred label{display:block;margin:5px 0;cursor:pointer}
+input[type=radio],input[type=checkbox]{width:20px;height:20px;accent-color:var(--navy);vertical-align:middle}
+textarea{width:100%;min-height:200px;font:inherit;font-size:19px;color:var(--ink);background:var(--bg);border:2px solid var(--navy);border-radius:6px;padding:8px;resize:vertical}
+.chips label{display:block;margin:4px 0;background:var(--bg);border:2px solid var(--rule);border-radius:6px;padding:3px 10px;cursor:pointer}
+.chips label.sel{border-color:var(--navy);background:var(--hl)}
+.checks li{list-style:none;margin:3px 0}
+.checks{padding-left:4px}
+.hint{font-size:16px;color:var(--gray)}
+.src{font-size:15px;color:var(--gray);margin:4px 0 0}
+.hidden{display:none}
+.pt{cursor:pointer}
+.nosel{-webkit-user-select:none;user-select:none}
+ol,ul{margin:6px 0;padding-left:26px}li{margin:4px 0}
+@media (max-width:900px){main{grid-template-columns:1fr;overflow:auto}#plotwrap{min-height:420px}}
+@media print{header,nav,#plotwrap{display:none}main{display:block}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Viaje en el tiempo: la historia de la economía</h1>
+  <p>Tarea del Foro 1 · De la prehistoria a la actualidad · Individual · Funciona sin conexión</p>
+</header>
+<main>
+  <div id="plotwrap"><svg id="plot" viewBox="0 0 420 700" role="img" aria-label="Línea del tiempo con once paradas"></svg></div>
+  <div id="panel">
+    <nav aria-label="Secciones">
+      <button data-t="inicio" id="b-inicio">Inicio</button>
+      <button data-t="viaje" id="b-viaje">Viaje</button>
+      <button data-t="linea" id="b-linea">Mi línea</button>
+      <button data-t="reflexion" id="b-reflexion">Reflexión</button>
+      <button data-t="pdf" id="b-pdf">Descargar PDF</button>
+      <button data-t="instrucciones" id="b-instrucciones">Instrucciones</button>
+    </nav>
+
+    <section class="sec" id="s-inicio">
+      <h2>Bienvenida al viaje</h2>
+      <p>Vas a recorrer <strong>11 paradas</strong> de la historia de la economía. En cada una verás qué era escaso, qué había que elegir y a qué se renunciaba, y responderás una pregunta.</p>
+      <p>Al final armas tu línea del tiempo con 5 hitos, escribes una reflexión con tus palabras y descargas un <strong>PDF</strong> para subirlo al aula virtual.</p>
+      <div class="row"><label for="nombre">Tu nombre completo</label><input type="text" id="nombre" autocomplete="off" maxlength="80"></div>
+      <div class="row"><button id="empezar">Empezar el viaje →</button></div>
+      <p class="hint">Todo se hace aquí, sin conexión. No cierres la página antes de descargar el PDF: lo que escribes no se guarda.</p>
+    </section>
+
+    <section class="sec hidden nosel" id="s-viaje"></section>
+
+    <section class="sec hidden" id="s-linea">
+      <h2>Mi línea del tiempo</h2>
+      <p>Elige <strong>exactamente 5 hitos</strong> que, para ti, cambiaron más la forma de enfrentar la escasez.</p>
+      <div class="chips" id="chips"></div>
+      <div class="res" id="res-linea" aria-live="polite"></div>
+    </section>
+
+    <section class="sec hidden" id="s-reflexion">
+      <h2>Reflexión</h2>
+      <p class="nosel"><strong>Con tus propias palabras (mínimo 80 palabras):</strong> ¿qué cambió y qué se mantuvo, a lo largo de la historia, en la forma de enfrentar la escasez? Apóyate en al menos dos paradas del viaje.</p>
+      <textarea id="ref" spellcheck="false" placeholder="Escribe aquí. En este espacio no se puede pegar texto." aria-label="Reflexión"></textarea>
+      <div class="res" id="res-ref" aria-live="polite"></div>
+    </section>
+
+    <section class="sec hidden" id="s-pdf">
+      <h2>Descargar PDF</h2>
+      <p>El PDF incluye tu nombre, tus respuestas, tu línea del tiempo, los patrones que se detectaron, tu reflexión y los indicadores de redacción. Estas son las condiciones:</p>
+      <ul class="checks" id="reqs"></ul>
+      <div class="row"><button id="dl">Descargar PDF</button></div>
+      <div class="res" id="res-pdf" aria-live="polite">Cumple las condiciones para descargar.</div>
+    </section>
+
+    <section class="sec hidden" id="s-instrucciones">
+      <h2>Instrucciones</h2>
+      <p><strong>Para qué sirve.</strong> Es el Foro 1 del primer parcial: la historia de la economía desde la prehistoria hasta la actualidad. Aplica lo de la clase: la escasez obliga a elegir y elegir tiene un costo de oportunidad.</p>
+      <ol>
+        <li><strong>Inicio:</strong> escribe tu nombre y empieza.</li>
+        <li><strong>Viaje:</strong> en cada parada lee las tres tarjetas y responde la pregunta.</li>
+        <li><strong>Mi línea:</strong> elige 5 hitos. El applet te muestra qué patrones aparecen en lo que elegiste.</li>
+        <li><strong>Reflexión:</strong> escribe al menos 80 palabras con tus propias palabras.</li>
+        <li><strong>Descargar PDF:</strong> cuando se cumplan las condiciones, descárgalo y súbelo al aula virtual.</li>
+      </ol>
+      <p><strong>Qué detecta el applet.</strong> Qué temas aparecen en tus hitos y en tu reflexión (escasez, elección, costo de oportunidad, recursos, mercado, Estado y tecnología) y a cuántas paradas del viaje te refieres. No evalúa si el texto es bueno: lo evalúa tu docente.</p>
+      <p><strong>Pegado bloqueado.</strong> El espacio de reflexión no acepta pegar ni arrastrar texto y no permite copiar el enunciado. El PDF registra los intentos de pegado, el tiempo de escritura, la velocidad y las veces que saliste de la página. Son indicadores de apoyo para la docente, no una prueba: ningún programa en el navegador puede impedir del todo que alguien copie por otros medios.</p>
+      <p><strong>Límites del contenido.</strong> Las épocas y las fechas son un resumen aproximado de historia económica y no salen todas del libro base; del Mankiw (2012) solo se usa la mano invisible de Adam Smith (p. 12). Conviene contrastarlas con las lecturas del curso.</p>
+      <p><strong>Atajos.</strong> Las flechas ← y → cambian de parada en la pestaña Viaje.</p>
+    </section>
+    <p class="src">Tarea individual. Valores y fechas aproximados. Sin conexión: abre el archivo .html guardado.</p>
+  </div>
+</main>
+<script>
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+var ST=[
+{id:"pre",n:"Prehistoria",s:"Prehistoria",y:"hasta ~10 000 a. C.",e:"🦴",tag:"producción",
+ sc:"El alimento y el tiempo para conseguirlo.",el:"Dónde cazar y recolectar, y cuándo moverse con el alimento.",re:"Quedarse en un lugar fijo: cada traslado era la mejor alternativa a quedarse.",
+ q:"¿Qué recurso limitaba más a un grupo de cazadores y recolectores?",o:["El dinero que podían ahorrar","El alimento disponible y el tiempo para conseguirlo","Las máquinas que poseían"],c:1,
+ ex:"No había dinero ni máquinas: el alimento y el tiempo eran lo escaso."},
+{id:"agr",n:"Agricultura",s:"Agricultura",y:"desde ~10 000 a. C.",e:"🌾",tag:"producción",
+ sc:"La tierra fértil y el trabajo de la temporada.",el:"Sembrar y criar animales en vez de seguir el alimento.",re:"La vida nómada: asentarse a cambio de depender de la cosecha.",
+ q:"Cultivar la tierra permitió, sobre todo…",o:["Eliminar la escasez","Producir más de lo que cada familia consumía","No tener que elegir qué producir"],c:1,
+ ex:"Aparecieron los excedentes; la escasez no desapareció, cambió de forma."},
+{id:"mon",n:"Moneda y comercio antiguo",s:"Moneda",y:"hace ~2 600 años",e:"🪙",tag:"comercio",
+ sc:"Un modo común de valorar y de intercambiar bienes.",el:"Cambiar bienes por monedas en vez de por trueque.",re:"La seguridad de quedarse con el bien, a cambio de un pago aceptado por todos.",
+ q:"¿Qué problema del trueque ayudó a resolver la moneda?",o:["Que los bienes fueran gratis","Que cada uno tuviera que encontrar a alguien que quisiera justo lo suyo","Que no hubiera comercio entre ciudades"],c:1,
+ ex:"En el trueque hace falta una coincidencia de deseos; la moneda la evita."},
+{id:"feu",n:"Feudalismo",s:"Feudalismo",y:"siglos V–XV",e:"🏰",tag:"producción",
+ sc:"La tierra, controlada por los señores.",el:"Cuánto producir para el señor y cuánto para la propia familia.",re:"El tiempo propio: parte del trabajo se entregaba al señor.",
+ q:"En el feudalismo, ¿cuál era el recurso clave?",o:["La tierra","El capital financiero","Las fábricas"],c:0,
+ ex:"La riqueza dependía de la tierra y de quién la controlaba."},
+{id:"mer",n:"Mercantilismo y comercio mundial",s:"Mercantilismo",y:"siglos XVI–XVIII",e:"🚢",tag:"Estado",
+ sc:"Metales preciosos y rutas comerciales.",el:"Cómo conseguir riqueza para el reino: exportar más y comprar menos.",re:"Libertad de comerciar: el Estado limitaba importaciones y protegía a algunos.",
+ q:"El mercantilismo defendía que el Estado…",o:["Dejara todo al mercado","Interviniera para acumular riqueza con el comercio exterior","Prohibiera el comercio"],c:1,
+ ex:"El Estado dirigía el comercio exterior para acumular riqueza."},
+{id:"smi",n:"Adam Smith y los clásicos",s:"Smith",y:"1776",e:"💡",tag:"mercado",
+ sc:"El trabajo y la capacidad de producir más con la misma gente.",el:"Dejar que compradores y vendedores decidan a través de los precios.",re:"El control directo del Estado sobre lo que se produce.",
+ q:"¿Qué idea se asocia con Adam Smith?",o:["El Estado planifica toda la producción","La mano invisible del mercado","La demanda total mueve la economía"],c:1,
+ ex:"Los mercados, guiados por la «mano invisible», asignan recursos escasos (Mankiw, 2012, p. 12)."},
+{id:"ind",n:"Revolución industrial",s:"Industrial",y:"desde fines del siglo XVIII",e:"🏭",tag:"tecnología",
+ sc:"El capital: máquinas y fábricas.",el:"Invertir en máquinas y concentrar el trabajo en fábricas.",re:"El trabajo artesanal y la vida rural de muchas familias.",
+ q:"¿Qué factor de producción ganó importancia con la industrialización?",o:["El capital: máquinas y fábricas","Solo la tierra","Ninguno cambió"],c:0,
+ ex:"Las máquinas y las fábricas multiplicaron lo que podía producirse."},
+{id:"mar",n:"Marx y el capital",s:"Marx",y:"1867",e:"⚒️",tag:"producción",
+ sc:"El capital, en manos de pocos, frente al trabajo de muchos.",el:"Cómo se reparte lo producido entre dueños del capital y trabajadores.",re:"La igualdad en el reparto, según su crítica.",
+ q:"Marx puso el foco en…",o:["La política monetaria","La relación entre los dueños del capital y los trabajadores","La mano invisible"],c:1,
+ ex:"Analizó los modos de producción y el conflicto entre capital y trabajo."},
+{id:"neo",n:"Neoclásicos",s:"Neoclásicos",y:"hacia 1870",e:"📐",tag:"mercado",
+ sc:"Los recursos, vistos con el análisis del margen.",el:"Cuánto más producir o consumir según el beneficio de una unidad adicional.",re:"El análisis solo en totales: se pasó a pensar en lo adicional.",
+ q:"Los neoclásicos explicaron el valor con…",o:["El análisis marginal: el beneficio de una unidad adicional","El tiempo de trabajo únicamente","La decisión del rey"],c:0,
+ ex:"La «revolución marginalista» llevó el análisis al margen."},
+{id:"key",n:"Keynes y las crisis",s:"Keynes",y:"1936",e:"📉",tag:"Estado",
+ sc:"La demanda: el gasto total de la economía.",el:"Si el gobierno debe gastar más en una crisis para sostener la demanda.",re:"El equilibrio del presupuesto público a corto plazo.",
+ q:"Ante una crisis profunda, Keynes recomendaba…",o:["Esperar a que el mercado se ajuste solo","Que el Estado estimulara la economía con gasto público","Eliminar toda intervención"],c:1,
+ ex:"Propuso intervención del Estado y estímulo económico."},
+{id:"act",n:"Actualidad",s:"Actualidad",y:"siglos XX–XXI",e:"🌐",tag:"tecnología",
+ sc:"Tiempo, atención, energía y datos, además de los recursos de siempre.",el:"Cómo producir y comerciar en un mundo conectado y digital.",re:"Lo local y lo tradicional, a veces, frente a lo global y lo digital.",
+ q:"¿Qué sigue vigente desde la prehistoria?",o:["Ya no hay que elegir","La escasez: los recursos siguen siendo limitados","El comercio desapareció"],c:1,
+ ex:"La escasez cambia de forma, pero obliga a elegir hoy igual que antes."}
+];
+var TAGS=["producción","comercio","Estado","mercado","tecnología"];
+var THEMES=[
+ {k:"escasez",l:"escasez",re:/escas|limitad|no alcanz|faltab|falta de/},
+ {k:"elección",l:"elección",re:/elig|elecci|decid|decisi/},
+ {k:"costo",l:"costo de oportunidad",re:/renunci|sacrific|costo de oportunidad|alternativa|dejar de/},
+ {k:"recursos",l:"recursos",re:/recurs|tierra|trabajo|capital|alimento/},
+ {k:"mercado",l:"mercado y comercio",re:/mercad|comerci|moneda|trueque|precio/},
+ {k:"estado",l:"Estado",re:/estado|gobierno|interven|rey|senor/},
+ {k:"tecnología",l:"tecnología",re:/tecnolog|maquin|industri|digital|fabric/}
+];
+var STOPRE=[/prehistor|cazador|recolect/,/agricul|cultiv|cosecha|siembr/,/moneda|trueque/,/feudal|siervo|senor/,/mercantil/,/smith|mano invisible/,/industrial|fabrica/,/marx/,/neocl|marginal/,/keynes|depresi/,/actualidad|globaliz|digital/];
+var S={tab:"inicio",i:0,ans:{},sel:[],name:"",
+  m:{paste:0,drop:0,typed:0,burst:0,act:0,last:0,away:0,awayMs:0,hid:0,t0:0,keys:0}};
+function $(i){return document.getElementById(i);}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");}
+function words(s){var m=s.trim().match(/\S+/g);return m?m.length:0;}
+
+/* ---------- línea de tiempo (SVG) ---------- */
+var svg=$("plot");
+function el(n,a,t){var e=document.createElementNS(NS,n),k;for(k in a){if(k==="fill"||k==="stroke")e.style[k]=a[k];else e.setAttribute(k,a[k]);}if(t!==undefined)e.textContent=t;return e;}
+function renderLine(){
+  while(svg.firstChild)svg.removeChild(svg.firstChild);
+  var g=el("g",{}),y0=40,dy=58;svg.appendChild(g);
+  var x=60;
+  g.appendChild(el("line",{x1:x,y1:y0,x2:x,y2:y0+dy*(ST.length-1),stroke:"var(--navy)","stroke-width":4}));
+  ST.forEach(function(s,k){
+    var y=y0+k*dy,a=S.ans[s.id],cur=(S.tab==="viaje"&&S.i===k),chosen=S.sel.indexOf(k)>=0;
+    var fill=a===undefined?"var(--bg)":(a===s.c?"var(--green)":"var(--verm)");
+    g.appendChild(el("circle",{cx:x,cy:y,r:cur?19:15,fill:fill,stroke:cur?"var(--amber)":"var(--navy)","stroke-width":cur?5:3,"data-i":k,class:"pt"}));
+    g.appendChild(el("text",{x:x,y:y+7,"text-anchor":"middle","font-size":a===undefined?15:18,"font-weight":700,fill:a===undefined?"var(--navy)":"#fff","pointer-events":"none"},a===undefined?String(k+1):(a===s.c?"✓":"✕")));
+    g.appendChild(el("text",{x:x+34,y:y-2,"font-size":18,"font-weight":cur?700:400,fill:"var(--ink)","data-i":k,class:"pt"},s.e+" "+s.s));
+    g.appendChild(el("text",{x:x+34,y:y+17,"font-size":14,fill:"var(--gray)","pointer-events":"none"},s.y));
+    if(chosen)g.appendChild(el("text",{x:392,y:y+6,"text-anchor":"end","font-size":22,fill:"var(--amber)"},"★"));
+  });
+}
+svg.addEventListener("click",function(e){var i=e.target.getAttribute&&e.target.getAttribute("data-i");if(i===null||i===undefined)return;S.i=parseInt(i,10);tab("viaje");});
+
+/* ---------- viaje ---------- */
+function renderStop(){
+  var s=ST[S.i],a=S.ans[s.id],h="";
+  h+="<h2>"+s.e+" "+(S.i+1)+". "+esc(s.n)+" <span class=\"hint\">("+esc(s.y)+")</span></h2>";
+  h+='<div class="fact"><b>Lo escaso:</b> '+esc(s.sc)+'</div>';
+  h+='<div class="fact"><b>La elección:</b> '+esc(s.el)+'</div>';
+  h+='<div class="fact"><b>A qué se renunciaba:</b> '+esc(s.re)+'</div>';
+  h+='<fieldset class="pred"><legend>'+esc(s.q)+'</legend>';
+  s.o.forEach(function(o,k){h+='<label><input type="radio" name="q" value="'+k+'"'+(a===k?" checked":"")+(a!==undefined?" disabled":"")+'> '+String.fromCharCode(97+k)+") "+esc(o)+"</label>";});
+  h+="</fieldset>";
+  h+='<div class="row"><button id="resp"'+(a!==undefined?" disabled":"")+'>Responder</button><button id="prev"'+(S.i===0?" disabled":"")+'>← Anterior</button><button id="next"'+(S.i===ST.length-1?" disabled":"")+'>Siguiente →</button></div>';
+  var done=Object.keys(S.ans).length;
+  h+='<div class="res" id="res-q" aria-live="polite">';
+  if(a===undefined)h+="Elige una respuesta y pulsa «Responder». Paradas respondidas: <strong>"+done+" de "+ST.length+"</strong>.";
+  else h+=(a===s.c?'<span class="ok"><span class="sym">✓</span><strong>Correcto.</strong></span> ':'<span class="no"><span class="sym">✕</span><strong>No era esa.</strong></span> ')+esc(s.ex)+" Respondidas: <strong>"+done+" de "+ST.length+"</strong>.";
+  h+="</div>";
+  $("s-viaje").innerHTML=h;
+}
+$("s-viaje").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  if(b.id==="prev"&&S.i>0){S.i--;renderStop();renderLine();}
+  else if(b.id==="next"&&S.i<ST.length-1){S.i++;renderStop();renderLine();}
+  else if(b.id==="resp"){
+    var c=document.querySelector("input[name=q]:checked");
+    if(!c){$("res-q").innerHTML='<span class="no"><strong>Primero elige una respuesta.</strong></span>';return;}
+    S.ans[ST[S.i].id]=parseInt(c.value,10);renderStop();renderLine();
+  }
+});
+
+/* ---------- mi línea ---------- */
+function tagCounts(){var c={};TAGS.forEach(function(t){c[t]=0;});S.sel.forEach(function(k){c[ST[k].tag]++;});return c;}
+function missTags(){var c={};Object.keys(S.ans).forEach(function(id){ST.forEach(function(s){if(s.id===id&&S.ans[id]!==s.c)c[s.tag]=(c[s.tag]||0)+1;});});return c;}
+function patterns(){
+  var out=[],c=tagCounts(),best=null,mx=0;
+  TAGS.forEach(function(t){if(c[t]>mx){mx=c[t];best=t;}});
+  if(S.sel.length!==5)return ["Elige 5 hitos para ver tus patrones."];
+  var tops=TAGS.filter(function(t){return c[t]===mx;});
+  out.push("Tus hitos se concentran en: "+tops.join(" y ")+" ("+mx+" de 5).");
+  var ks=S.sel.slice().sort(function(a,b){return a-b;}),ant=ks.filter(function(k){return k<=4;}).length,mod=5-ant;
+  out.push(ant+" hito(s) son anteriores a 1776 y "+mod+" de 1776 en adelante.");
+  var miss=missTags(),mm=null,mn=0;Object.keys(miss).forEach(function(t){if(miss[t]>mn){mn=miss[t];mm=t;}});
+  out.push(mm?"Donde más fallaste en el viaje: "+mm+" ("+mn+" parada(s)). Repásalo.":"No tuviste fallas en las preguntas respondidas.");
+  var absent=TAGS.filter(function(t){return c[t]===0;});
+  if(absent.length)out.push("No elegiste ningún hito de: "+absent.join(", ")+".");
+  return out;
+}
+function renderLinea(){
+  var h="";
+  ST.forEach(function(s,k){var on=S.sel.indexOf(k)>=0;h+='<label class="'+(on?"sel":"")+'"><input type="checkbox" data-k="'+k+'"'+(on?" checked":"")+'> '+s.e+" "+esc(s.s)+' <span class="hint">('+esc(s.y)+")</span></label>";});
+  $("chips").innerHTML=h;updLinea();
+}
+function updLinea(){
+  var p=patterns();
+  $("res-linea").innerHTML="<strong>Elegidos: "+S.sel.length+" de 5.</strong><ul>"+p.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul>";
+}
+$("chips").addEventListener("change",function(e){
+  var k=parseInt(e.target.getAttribute("data-k"),10),i=S.sel.indexOf(k);
+  if(e.target.checked){if(S.sel.length>=5){e.target.checked=false;$("res-linea").innerHTML='<span class="no"><strong>Ya elegiste 5.</strong></span> Quita uno para cambiar.';return;}S.sel.push(k);}
+  else if(i>=0)S.sel.splice(i,1);
+  renderLinea();renderLine();
+});
+
+/* ---------- reflexión ---------- */
+var ta=$("ref");
+function analyze(txt){
+  var n=norm(txt),th=[],i;
+  THEMES.forEach(function(t){if(t.re.test(n))th.push(t);});
+  var stops=[];STOPRE.forEach(function(r,k){if(r.test(n))stops.push(k);});
+  var mine=stops.filter(function(k){return S.sel.indexOf(k)>=0;});
+  return {w:words(txt),th:th,stops:stops,mine:mine};
+}
+function metrics(){
+  var m=S.m,sec=m.act/1000,cps=sec>0?m.typed/sec:0;
+  return {paste:m.paste+m.drop,typed:m.typed,burst:m.burst,sec:Math.round(sec),cps:cps,away:m.away,awaySec:Math.round(m.awayMs/1000)};
+}
+function flags(){
+  var q=metrics(),f=[];
+  if(q.paste>0)f.push("hubo "+q.paste+" intento(s) de pegar o arrastrar texto");
+  if(q.burst>20)f.push("se insertaron "+q.burst+" caracteres de golpe");
+  if(q.cps>12)f.push("la velocidad promedio fue muy alta ("+q.cps.toFixed(1)+" caracteres por segundo)");
+  return f;
+}
+function updRef(){
+  var a=analyze(ta.value),q=metrics(),h="";
+  h+="Palabras: <strong>"+a.w+"</strong> de 80. ";
+  h+="Temas detectados: <strong>"+(a.th.length?a.th.map(function(t){return t.l;}).join(", "):"ninguno")+"</strong> ("+a.th.length+" de 7, necesitas 4). ";
+  h+="Paradas del viaje que mencionas: <strong>"+a.stops.length+"</strong> (necesitas 2)";
+  if(S.sel.length===5)h+=", de las cuales <strong>"+a.mine.length+"</strong> están en tu línea";
+  h+=".";
+  var miss=THEMES.filter(function(t){return a.th.indexOf(t)<0;}).map(function(t){return t.l;});
+  if(miss.length&&a.w>20)h+=' <span class="hint">Aún no aparece: '+miss.join(", ")+".</span>";
+  if(q.paste>0)h+='<br><span class="ina"><span class="sym">▲</span>Se bloqueó un intento de pegar. Quedó registrado.</span>';
+  $("res-ref").innerHTML=h;
+}
+ta.addEventListener("paste",function(e){e.preventDefault();S.m.paste++;updRef();});
+ta.addEventListener("drop",function(e){e.preventDefault();S.m.drop++;updRef();});
+ta.addEventListener("dragover",function(e){e.preventDefault();});
+ta.addEventListener("copy",function(e){e.preventDefault();});
+ta.addEventListener("cut",function(e){e.preventDefault();});
+ta.addEventListener("contextmenu",function(e){e.preventDefault();});
+ta.addEventListener("keydown",function(e){
+  var k=e.key.toLowerCase();
+  if((e.ctrlKey||e.metaKey)&&(k==="v"||k==="c"||k==="x")){e.preventDefault();if(k==="v"){S.m.paste++;updRef();}}
+  if(e.shiftKey&&e.key==="Insert"){e.preventDefault();S.m.paste++;updRef();}
+  S.m.keys++;
+});
+ta.addEventListener("beforeinput",function(e){
+  if(e.inputType==="insertFromPaste"||e.inputType==="insertFromDrop"||e.inputType==="insertFromPasteAsQuotation"){e.preventDefault();S.m.paste++;updRef();}
+});
+ta.addEventListener("input",function(e){
+  var now=Date.now(),m=S.m,d=(e.data||"").length;
+  if(!m.t0)m.t0=now;
+  if(m.last){var gap=now-m.last;if(gap<=3000)m.act+=gap;else m.act+=300;}
+  m.last=now;
+  if(e.inputType&&e.inputType.indexOf("insert")===0){m.typed+=d||1;if(d>m.burst)m.burst=d;}
+  updRef();
+});
+document.addEventListener("visibilitychange",function(){
+  if(document.hidden){S.m.hid=Date.now();S.m.away++;}
+  else if(S.m.hid){S.m.awayMs+=Date.now()-S.m.hid;S.m.hid=0;}
+});
+
+/* ---------- PDF ---------- */
+function reqs(){
+  var a=analyze(ta.value),r=[];
+  r.push([S.name.trim().length>=5,"Tu nombre completo está escrito"]);
+  r.push([Object.keys(S.ans).length===ST.length,"Respondiste las 11 paradas ("+Object.keys(S.ans).length+" de 11)"]);
+  r.push([S.sel.length===5,"Elegiste 5 hitos ("+S.sel.length+" de 5)"]);
+  r.push([a.w>=80,"La reflexión tiene al menos 80 palabras ("+a.w+")"]);
+  r.push([a.th.length>=4,"La reflexión toca al menos 4 de los 7 temas ("+a.th.length+")"]);
+  r.push([a.stops.length>=2,"La reflexión menciona al menos 2 paradas ("+a.stops.length+")"]);
+  return r;
+}
+function updPdf(){
+  var r=reqs(),ok=r.every(function(x){return x[0];});
+  $("reqs").innerHTML=r.map(function(x){return '<li><span class="sym '+(x[0]?"ok":"no")+'">'+(x[0]?"✓":"○")+"</span>"+esc(x[1])+"</li>";}).join("");
+  $("dl").disabled=!ok;
+  $("res-pdf").innerHTML=ok?"Todo listo. Descarga el PDF y súbelo al aula virtual.":"Faltan condiciones. Completa las que tienen ○.";
+}
+var MAP={"“":'"',"”":'"',"‘":"'","’":"'","–":"-","—":"-","…":"...","★":"*","✓":"v","✕":"x","→":"->","←":"<-","•":"-","○":"o","●":"*"};
+function lat(s){
+  var o="",i,ch,c;
+  s=s.normalize("NFC");
+  for(i=0;i<s.length;i++){ch=s.charAt(i);c=ch.charCodeAt(0);
+    if(MAP[ch]!==undefined)o+=MAP[ch];
+    else if(c<=255&&c>=32||c===10)o+=ch;
+    else if(c>=0xD800&&c<=0xDFFF){continue;}
+    else o+="";}
+  return o;
+}
+function pdfEsc(s){return s.replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)");}
+var cv=document.createElement("canvas").getContext("2d");
+function wrap(text,font,size,maxw){
+  cv.font=size+"px "+font;
+  var out=[],paras=text.split("\n");
+  paras.forEach(function(p){
+    var ws=p.split(/\s+/).filter(Boolean),ln="";
+    if(!ws.length){out.push("");return;}
+    ws.forEach(function(w){var t=ln?ln+" "+w:w;if(cv.measureText(t).width>maxw&&ln){out.push(ln);ln=w;}else ln=t;});
+    if(ln)out.push(ln);
+  });
+  return out;
+}
+function buildPdf(){
+  var pages=[],cur=[],y=800,PW=595,M=56,W=PW-2*M;
+  function newPage(){pages.push(cur);cur=[];y=800;}
+  function add(text,size,bold,gap,color){
+    var ls=wrap(lat(text),bold?"Helvetica, Arial, bold":"Helvetica, Arial",size,W);
+    ls.forEach(function(l){if(y<60)newPage();cur.push({t:l,x:M,y:y,s:size,b:bold,c:color});y-=size*1.35;});
+    y-=gap||0;
+  }
+  var q=metrics(),fl=flags(),a=analyze(ta.value),ks=S.sel.slice().sort(function(x,y2){return x-y2;});
+  add("Viaje en el tiempo: la historia de la economía",17,true,4);
+  add("Principios de economía · Foro 1 · Universidad Indoamérica",10,false,6,"0.35 0.35 0.35");
+  add("Nombre: "+S.name.trim(),12,true,0);
+  add("Fecha de descarga: "+new Date().toLocaleString("es-EC"),10,false,10);
+  add("1. Mis respuestas del viaje",13,true,2);
+  var ok=0;ST.forEach(function(s){if(S.ans[s.id]===s.c)ok++;});
+  add("Respuestas correctas: "+ok+" de "+ST.length+".",11,false,2);
+  ST.forEach(function(s,k){var a2=S.ans[s.id];add((k+1)+". "+s.s+" ("+s.y+"): "+(a2===s.c?"correcta":"incorrecta ("+String.fromCharCode(97+a2)+")")+".",10,false,0);});
+  y-=8;
+  add("2. Mi línea del tiempo (5 hitos)",13,true,2);
+  var lineY=y-14;
+  ks.forEach(function(k,i){add((i+1)+". "+ST[k].s+" ("+ST[k].y+")",11,false,0);});
+  y-=6;
+  // dibujo de la línea
+  var ly=y-20;if(ly<90){newPage();ly=770;}
+  cur.push({line:[M+10,ly,PW-M-10,ly]});
+  ks.forEach(function(k,i){var x=M+10+i*((W-20)/4);cur.push({sq:[x-4,ly-4,8,8]});cur.push({t:ST[k].s.substring(0,14),x:Math.max(M,x-28),y:ly-18,s:8,b:false});});
+  y=ly-40;
+  add("3. Patrones detectados en mis hitos",13,true,2);
+  patterns().forEach(function(p){add("- "+p,10.5,false,0);});
+  y-=8;
+  add("4. Mi reflexión",13,true,2);
+  add(ta.value,11,false,8);
+  add("5. Lo que detectó el applet en la reflexión",13,true,2);
+  add("Palabras: "+a.w+". Temas: "+(a.th.length?a.th.map(function(t){return t.l;}).join(", "):"ninguno")+". Paradas mencionadas: "+a.stops.length+" ("+a.mine.length+" de mi línea).",10.5,false,8);
+  add("6. Indicadores de redacción (apoyo para la docente, no son una prueba)",13,true,2);
+  add("Intentos de pegar o arrastrar texto: "+q.paste+". Caracteres escritos: "+q.typed+". Mayor inserción de una vez: "+q.burst+" caracteres. Tiempo activo de escritura: "+q.sec+" s. Velocidad media: "+q.cps.toFixed(1)+" caracteres por segundo. Veces que salió de la página: "+q.away+" ("+q.awaySec+" s).",10.5,false,2);
+  add(fl.length?"Observaciones: "+fl.join("; ")+".":"Sin observaciones atípicas.",10.5,false,0);
+  pages.push(cur);
+  // objetos PDF
+  var objs=[],n=pages.length;
+  objs[1]="<< /Type /Catalog /Pages 2 0 R >>";
+  var kids=[],i;
+  for(i=0;i<n;i++)kids.push((5+i*2)+" 0 R");
+  objs[2]="<< /Type /Pages /Kids ["+kids.join(" ")+"] /Count "+n+" >>";
+  objs[3]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+  objs[4]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
+  pages.forEach(function(items,pi){
+    var c="";
+    items.forEach(function(it){
+      if(it.t!==undefined){c+="BT /"+(it.b?"F2":"F1")+" "+it.s+" Tf "+(it.c||"0 0 0")+" rg "+it.x.toFixed(1)+" "+it.y.toFixed(1)+" Td ("+pdfEsc(it.t)+") Tj ET\n";}
+      else if(it.line){c+="0.12 0.23 0.54 RG 2 w "+it.line[0]+" "+it.line[1]+" m "+it.line[2]+" "+it.line[3]+" l S\n";}
+      else if(it.sq){c+="0.12 0.23 0.54 rg "+it.sq[0].toFixed(1)+" "+it.sq[1].toFixed(1)+" "+it.sq[2]+" "+it.sq[3]+" re f\n";}
+    });
+    c+="BT /F1 8 Tf 0.4 0.4 0.4 rg 56 30 Td (Pagina "+(pi+1)+" de "+n+") Tj ET\n";
+    objs[5+pi*2]="<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents "+(6+pi*2)+" 0 R >>";
+    objs[6+pi*2]="<< /Length "+c.length+" >>\nstream\n"+c+"endstream";
+  });
+  var out="%PDF-1.4\n",off=[0],k;
+  for(k=1;k<objs.length;k++){off[k]=out.length;out+=k+" 0 obj\n"+objs[k]+"\nendobj\n";}
+  var xr=out.length;
+  out+="xref\n0 "+objs.length+"\n0000000000 65535 f \n";
+  for(k=1;k<objs.length;k++)out+=("0000000000"+off[k]).slice(-10)+" 00000 n \n";
+  out+="trailer\n<< /Size "+objs.length+" /Root 1 0 R >>\nstartxref\n"+xr+"\n%%EOF";
+  var u=new Uint8Array(out.length);for(k=0;k<out.length;k++)u[k]=out.charCodeAt(k)&255;
+  return u;
+}
+var DL=null,PUB=!!(window.claude&&window.claude.use);
+if(PUB){window.claude.use("downloads").then(function(d){DL=d;if(!d){$("dl").style.display="none";$("res-pdf").innerHTML="La descarga de archivos no está disponible en esta vista.";}}).catch(function(){DL=null;});}
+$("dl").addEventListener("click",function(){
+  if($("dl").disabled)return;
+  var u=buildPdf();
+  var nm=lat(S.name.trim()).normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"");
+  var fn="Viaje_en_el_tiempo_"+(nm||"estudiante")+".pdf";
+  function okMsg(){$("res-pdf").innerHTML='<span class="ok"><span class="sym">✓</span><strong>PDF generado.</strong></span> Revisa en tus descargas el archivo «'+esc(fn)+'» y súbelo al aula virtual.';}
+  if(PUB){
+    if(!DL){$("res-pdf").innerHTML='<span class="no"><strong>La descarga no está disponible en esta vista.</strong></span>';return;}
+    DL.save({filename:fn,data:u}).then(okMsg).catch(function(e){
+      $("res-pdf").innerHTML='<span class="no"><strong>'+(e&&e.code==="declined"?"No se guardó el archivo.":"No se pudo guardar el archivo.")+'</strong></span> Pulsa «Descargar PDF» para intentarlo de nuevo.';
+    });
+    return;
+  }
+  var b=new Blob([u],{type:"application/pdf"}),a=document.createElement("a");
+  a.href=URL.createObjectURL(b);a.download=fn;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href);},2000);
+  okMsg();
+});
+
+/* ---------- navegación ---------- */
+function tab(t){
+  S.tab=t;
+  ["inicio","viaje","linea","reflexion","pdf","instrucciones"].forEach(function(s){$("s-"+s).classList.toggle("hidden",s!==t);$("b-"+s).classList.toggle("act",s===t);});
+  if(t==="viaje")renderStop();
+  if(t==="linea")renderLinea();
+  if(t==="reflexion")updRef();
+  if(t==="pdf"){S.name=$("nombre").value;updPdf();}
+  renderLine();
+  if(history.replaceState){try{history.replaceState(null,"","#"+t);}catch(e){}}
+}
+document.querySelectorAll("nav button[data-t]").forEach(function(b){b.addEventListener("click",function(){tab(b.getAttribute("data-t"));});});
+$("nombre").addEventListener("input",function(){S.name=this.value;});
+$("empezar").addEventListener("click",function(){S.name=$("nombre").value;tab("viaje");});
+document.addEventListener("keydown",function(e){
+  if(S.tab!=="viaje"||/INPUT|TEXTAREA/.test(e.target.tagName)&&e.target.type!=="radio")return;
+  if(e.key==="ArrowRight"&&S.i<ST.length-1){S.i++;renderStop();renderLine();}
+  if(e.key==="ArrowLeft"&&S.i>0){S.i--;renderStop();renderLine();}
+});
+document.addEventListener("copy",function(e){if(S.tab==="viaje"||S.tab==="reflexion"){var t=window.getSelection().toString();if(t&&e.target.id!=="nombre")e.preventDefault();}});
+function fromHash(){var h=(location.hash||"").replace("#","");return ["inicio","viaje","linea","reflexion","pdf","instrucciones"].indexOf(h)>=0?h:"inicio";}
+window.addEventListener("hashchange",function(){tab(fromHash());});
+tab(fromHash());
+})();
+</script>
+</body>
+</html>
