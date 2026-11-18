@@ -1,0 +1,357 @@
+<!doctype html><html><head><script>/* Descarga directa fuera de Claude (GitHub Pages) */
+(function(){if(window.claude&&typeof window.claude.use==='function')return;
+function save(o){o=o||{};var n=o.filename||'archivo.pdf',d=o.data,t=/\.pdf$/i.test(n)?'application/pdf':(/\.txt$/i.test(n)?'text/plain':'application/octet-stream');
+var b=(d instanceof Blob)?d:new Blob([d],{type:t});var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;a.rel='noopener';
+document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},60000);return Promise.resolve({status:'delivered'})}
+window.claude={use:function(x){return Promise.resolve(x==='downloads'?{save:save}:null)}};})();
+</script>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Applet de utilidad</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Concepto: hoja de trabajo universitaria en 5 pasos (Datos, Predecir, Observar, Explicar, Mi empresa, Entregar), morado institucional con acento naranja */
+:root{--bg:#FBFAFD;--card:#FFFFFF;--ink:#2B2B33;--mut:#5C5870;--pur:#3B2461;--pur2:#6B4FA0;--or:#EE7623;--ortx:#B8520F;--line:#CFC6DD;--lav:#EFEAF6;--ok:#2E7D32;--bad:#B3261E;--btn:#3B2461;--onbtn:#FFFFFF;--okbg:#E7F3E8;--badbg:#FBE9E7;
+--fd:'Space Grotesk','Segoe UI',Arial,sans-serif;--fb:'Inter','Segoe UI',Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17121F;--card:#211A2E;--ink:#F1EEF7;--mut:#B9B2CA;--pur:#CBB8F0;--pur2:#A68BE0;--or:#FF9A55;--ortx:#FF9A55;--line:#3C3150;--lav:#2B2240;--ok:#6FD08C;--bad:#FF8A80;--btn:#7B5CC4;--okbg:#1F3326;--badbg:#3A2323;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17121F;--card:#211A2E;--ink:#F1EEF7;--mut:#B9B2CA;--pur:#CBB8F0;--pur2:#A68BE0;--or:#FF9A55;--ortx:#FF9A55;--line:#3C3150;--lav:#2B2240;--ok:#6FD08C;--bad:#FF8A80;--btn:#7B5CC4;--okbg:#1F3326;--badbg:#3A2323;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:15px;line-height:1.5;padding-block:0 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:860px;margin:0 auto}
+header{padding:22px 0 10px}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--ortx);font-weight:600}
+h1{font-family:var(--fd);font-size:30px;line-height:1.15;margin:4px 0 6px;color:var(--pur);text-wrap:balance}
+h2{font-family:var(--fd);font-size:21px;margin:0 0 4px;color:var(--pur);text-wrap:balance}
+h3{font-size:14px;margin:18px 0 6px;color:var(--pur);font-weight:600}
+p{margin:6px 0}
+.sub{color:var(--mut);max-width:65ch}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 18px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:5;border-bottom:1px solid var(--line)}
+nav button{font:inherit;font-size:13px;padding:7px 12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;cursor:pointer}
+nav button[aria-current="true"]{background:var(--btn);color:var(--onbtn);border-color:var(--btn)}
+nav button .d{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--line);margin-right:6px}
+nav button .d.on{background:var(--ok)}
+section{display:none}section.act{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin:12px 0}
+.tip{background:var(--lav);border-radius:8px;padding:12px 14px;margin:12px 0;color:var(--ink)}
+.tip b{color:var(--pur)}
+label{display:block;font-weight:600;font-size:13px;margin:12px 0 4px;color:var(--ink)}
+input[type=text],input[type=number],textarea,select{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);min-width:0}
+textarea{min-height:84px;resize:vertical}
+input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--or);outline-offset:1px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:640px){.g2,.g3{grid-template-columns:1fr}}
+.opt{display:flex;gap:8px;align-items:flex-start;padding:7px 10px;border:1px solid var(--line);border-radius:6px;margin:6px 0;cursor:pointer;background:var(--bg)}
+.opt input{margin-top:4px;accent-color:var(--btn)}
+.opt.dis{opacity:.75;cursor:default}
+.btn{font:inherit;font-weight:600;padding:9px 16px;border:0;border-radius:6px;background:var(--btn);color:var(--onbtn);cursor:pointer}
+.btn.sec{background:transparent;color:var(--pur);border:1px solid var(--line)}
+.btn[disabled]{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.msg{font-size:13px;color:var(--mut);min-height:18px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:center;font-size:14px}
+th{color:var(--pur);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+td input{width:76px;text-align:center;padding:5px 6px}
+.pos{color:var(--ok);font-weight:600}.neg{color:var(--bad);font-weight:600}.zer{color:var(--ortx);font-weight:600}
+.ok{background:var(--okbg);color:var(--ink);border-radius:6px;padding:8px 12px;margin:8px 0}
+.no{background:var(--badbg);color:var(--ink);border-radius:6px;padding:8px 12px;margin:8px 0}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.charts{grid-template-columns:1fr}}
+svg text{fill:var(--mut);font-family:var(--fb);font-size:11px}
+.chk{list-style:none;padding:0;margin:8px 0}
+.chk li{padding:6px 0 6px 26px;position:relative;border-bottom:1px solid var(--line)}
+.chk li::before{content:"○";position:absolute;left:2px;color:var(--mut)}
+.chk li.y::before{content:"✓";color:var(--ok);font-weight:700}
+.stat{color:var(--mut);font-size:12px}
+.fix{font-size:12px;color:var(--ortx);font-weight:600}
+.nx{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Principios de Economía · Universidad Indoamérica</div>
+  <h1>Applet de utilidad: predecir, observar, explicar</h1>
+  <p class="sub">Trabajas en equipo con datos de ejemplo y luego con los de tu empresa. Tu avance se guarda solo en este dispositivo. Al final descargas un PDF con tus datos y los del curso.</p>
+</header>
+<nav id="nav" aria-label="Pasos"></nav>
+
+<!-- 0 DATOS -->
+<section id="s0">
+  <h2>Datos del equipo</h2>
+  <p class="sub">Aparecerán en el encabezado del PDF.</p>
+  <div class="card">
+    <label for="nombre">Integrantes (uno por línea)</label>
+    <textarea id="nombre" placeholder="Nombre Apellido&#10;Nombre Apellido"></textarea>
+    <div class="g2">
+      <div><label for="curso">Curso</label>
+        <select id="curso"><option>Principios de Economía · Ingeniería, 3.er nivel</option><option>Principios de Economía · Inteligencia de Negocios, 3.er nivel</option><option>Principios de Economía · Negocios Internacionales, 2.º nivel</option><option>Microeconomía · Negocios Internacionales, 3.er nivel</option></select></div>
+      <div><label for="paralelo">Paralelo o equipo</label><input type="text" id="paralelo" placeholder="Ej.: P1 · Equipo 3"></div>
+    </div>
+  </div>
+  <div class="tip"><b>Cómo funciona.</b> 1) Predices antes de ver los datos. 2) Compruebas la predicción con el ejemplo de Ana. 3) Explicas lo que viste con números. 4) Aplicas lo mismo a tu empresa. El orden importa: la predicción se fija y ya no se cambia.</div>
+  <div class="nx"><span></span><button class="btn" data-go="1">Ir a predecir</button></div>
+</section>
+
+<!-- 1 PREDECIR -->
+<section id="s1">
+  <h2>1. Predecir</h2>
+  <p class="sub">Ana come barras de chocolate una tras otra en una misma tarde. Todavía no veas los datos: responde con lo que crees que pasará.</p>
+  <div class="card" id="predcard">
+    <h3 style="margin-top:0">a) La utilidad marginal de la 5.ª barra, comparada con la de la 1.ª, será:</h3>
+    <div id="pa"></div>
+    <h3>b) La utilidad total de Ana, a medida que come más barras:</h3>
+    <div id="pb"></div>
+    <label for="pc">c) ¿En qué barra crees que la utilidad total deja de subir? (número)</label>
+    <input type="number" id="pc" min="1" max="30" step="1" style="max-width:140px">
+    <label for="pt">d) Escribe por qué (mínimo 2 frases)</label>
+    <textarea id="pt" placeholder="Pienso que… porque…"></textarea>
+    <div class="row"><button class="btn" id="fijar">Fijar mi predicción</button><span class="msg" id="pmsg"></span></div>
+  </div>
+  <div class="nx"><button class="btn sec" data-go="0">Atrás</button><button class="btn" data-go="2" id="to2">Ir a observar</button></div>
+</section>
+
+<!-- 2 OBSERVAR -->
+<section id="s2">
+  <h2>2. Observar con los datos de Ana</h2>
+  <p class="sub">La tabla trae el ejemplo de clase. Puedes cambiar la utilidad marginal (UM) de cada barra y mirar qué pasa con la utilidad total (UT). Unidad: «útiles», una escala ilustrativa.</p>
+  <div class="card">
+    <div class="tw"><table id="tana"></table></div>
+    <div class="row"><button class="btn sec" id="rest">Restaurar ejemplo de clase</button><span class="stat">UT(Q) = UT(Q−1) + UM(Q)</span></div>
+  </div>
+  <div class="charts">
+    <div class="card"><b style="color:var(--pur)">Utilidad total</b><div id="cut"></div></div>
+    <div class="card"><b style="color:var(--pur)">Utilidad marginal</b><div id="cum"></div></div>
+  </div>
+  <div id="lect" class="tip"></div>
+  <div class="nx"><button class="btn sec" data-go="1">Atrás</button><button class="btn" data-go="3">Ir a explicar</button></div>
+</section>
+
+<!-- 3 EXPLICAR -->
+<section id="s3">
+  <h2>3. Explicar</h2>
+  <div id="cmp" class="tip"></div>
+  <div class="card">
+    <label for="e1">a) Compara tu predicción con lo observado. Usa números de la tabla (UM de la 1.ª barra, UM de la última, UT máxima).</label>
+    <textarea id="e1"></textarea>
+    <label for="e2">b) La UM baja con cada barra, pero la UT sigue subiendo al principio. ¿Cómo es posible?</label>
+    <textarea id="e2"></textarea>
+    <label for="e3">c) La ley de la utilidad marginal decreciente supone «todo lo demás constante». Da un ejemplo de algo que debe quedar constante en el caso de Ana.</label>
+    <textarea id="e3"></textarea>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Práctica rápida: Luis y el café</h3>
+    <p>La UT de Luis con 1 a 6 tazas es 9, 16, 21, 24, 25 y 24 útiles. Calcula la UM de cada taza.</p>
+    <div class="tw"><table id="tluis"></table></div>
+    <div id="lmsg"></div>
+  </div>
+  <div class="nx"><button class="btn sec" data-go="2">Atrás</button><button class="btn" data-go="4">Ir a mi empresa</button></div>
+</section>
+
+<!-- 4 EMPRESA -->
+<section id="s4">
+  <h2>4. Utilidad del cliente de mi empresa</h2>
+  <p class="sub">Elige el producto de tu empresa y a su cliente típico. Califica cuánto aporta cada unidad adicional (UM). Escala: 10 = muy satisfecho, 0 = no aporta nada, negativo = incomodidad. Son tus supuestos, no datos medidos.</p>
+  <div class="card">
+    <div class="g2">
+      <div><label for="emp">Empresa o negocio</label><input type="text" id="emp"></div>
+      <div><label for="prod">Producto o servicio</label><input type="text" id="prod"></div>
+      <div><label for="cli">Cliente típico (quién es)</label><input type="text" id="cli"></div>
+      <div><label for="uni">Unidad y período (ej.: porciones en un almuerzo)</label><input type="text" id="uni"></div>
+    </div>
+    <h3>Calificaciones por unidad</h3>
+    <div class="tw"><table id="temp"></table></div>
+    <div class="row"><button class="btn sec" id="vacemp">Cargar ejemplo de la docente</button><span class="stat">Ejemplo ilustrativo: un café de oficina.</span></div>
+  </div>
+  <div class="charts">
+    <div class="card"><b style="color:var(--pur)">UT del cliente</b><div id="eut"></div></div>
+    <div class="card"><b style="color:var(--pur)">UM del cliente</b><div id="eum"></div></div>
+  </div>
+  <div class="card">
+    <label for="el">Lectura: ¿en qué unidad la UM llega a 0 o se vuelve negativa y qué significa para el negocio?</label><textarea id="el"></textarea>
+    <label for="es">Supuestos: ¿en qué te basaste para calificar? (observación, encuesta, experiencia)</label><textarea id="es"></textarea>
+    <label for="ef">Fuente o limitación</label><textarea id="ef" style="min-height:60px"></textarea>
+  </div>
+  <div class="nx"><button class="btn sec" data-go="3">Atrás</button><button class="btn" data-go="5">Ir a entregar</button></div>
+</section>
+
+<!-- 5 ENTREGAR -->
+<section id="s5">
+  <h2>5. Revisar y descargar</h2>
+  <div class="card"><ul class="chk" id="chk"></ul></div>
+  <div class="row"><button class="btn" id="pdf">Descargar PDF</button><button class="btn sec" id="cop">Copiar resumen</button><button class="btn sec" id="clr">Borrar todo</button></div>
+  <p class="msg" id="m5"></p>
+  <p class="stat" id="saved"></p>
+  <div class="nx"><button class="btn sec" data-go="4">Atrás</button><span></span></div>
+</section>
+</div>
+
+<script>
+(function(){
+'use strict';
+var KEY='utilidad_applet_v1',$=function(i){return document.getElementById(i)};
+var ANA=[10,8,6,4,2,0,-2],LUIS_UT=[9,16,21,24,25,24],LUIS_UM=[9,7,5,3,1,-1];
+var EJEMP=['10','8','5','3','1','-1'];
+function vacio(){return {nombre:'',curso:'Principios de Economía · Ingeniería, 3.er nivel',paralelo:'',
+ pa:'',pb:'',pc:'',pt:'',fijada:false,ts:'',ana:ANA.map(String),e1:'',e2:'',e3:'',luis:['','','','','',''],
+ emp:'',prod:'',cli:'',uni:'',um:['','','','','',''],el:'',es:'',ef:'',ej:false,vis:{}}}
+var S=vacio(),paso=0;
+function guardar(){try{S.vis=S.vis||{};localStorage.setItem(KEY,JSON.stringify(S));var d=new Date();$('saved').textContent='Avance guardado en este dispositivo a las '+d.toLocaleTimeString('es-EC',{hour:'2-digit',minute:'2-digit'})+'.'}catch(e){$('saved').textContent='Este navegador no permite guardar el avance. Descarga el PDF antes de cerrar.'}}
+function cargar(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&o.ana)S=Object.assign(vacio(),o)}}catch(e){}}
+var tm=null;function dif(){clearTimeout(tm);tm=setTimeout(guardar,400)}
+function num(v){var t=String(v==null?'':v).trim().replace(',','.');if(t==='')return NaN;var n=Number(t);return isFinite(n)?n:NaN}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function cum(um){var u=[0];um.forEach(function(v,i){var n=num(v);u.push(isNaN(n)||isNaN(u[i])?NaN:u[i]+n)});return u}
+function cls(n){return n>0?'pos':(n<0?'neg':'zer')}
+function ff(n){return String(Math.round(n*100)/100).replace('.',',')}
+
+/* nav */
+var NOM=['Datos','1 Predecir','2 Observar','3 Explicar','4 Mi empresa','5 Entregar'];
+function hecho(i){var t=function(s){return String(s||'').trim().length};
+ if(i===0)return t(S.nombre)>2&&t(S.paralelo)>0;if(i===1)return S.fijada;if(i===2)return anaDatos().length>=3;
+ if(i===3)return t(S.e1)>=30&&t(S.e2)>=30&&t(S.e3)>=15;if(i===4)return empDatos().length>=4&&t(S.el)>=30&&t(S.es)>=15;return false}
+function navPintar(){var h='';NOM.forEach(function(n,i){h+='<button data-go="'+i+'" aria-current="'+(i===paso)+'"><span class="d'+(i<5&&hecho(i)?' on':'')+'"></span>'+n+'</button>'});$('nav').innerHTML=h}
+function ir(i){paso=i;for(var k=0;k<6;k++)$('s'+k).className=(k===i?'act':'');navPintar();if(i===3)cmp();if(i===5)chk();window.scrollTo(0,0)}
+
+/* predicción */
+var PA=[['mayor','Mayor que la de la 1.ª'],['igual','Igual a la de la 1.ª'],['menor','Menor que la de la 1.ª']];
+var PB=[['sube','Siempre sube'],['sube-baja','Sube cada vez menos y, si sigue comiendo, puede bajar'],['igual','Se queda igual']];
+function radios(id,list,key){var h='';list.forEach(function(o){h+='<label class="opt'+(S.fijada?' dis':'')+'"><input type="radio" name="'+id+'" value="'+o[0]+'"'+(S[key]===o[0]?' checked':'')+(S.fijada?' disabled':'')+'><span style="font-weight:400">'+o[1]+'</span></label>'});$(id).innerHTML=h;
+ $(id).onchange=function(e){if(S.fijada)return;S[key]=e.target.value;dif();navPintar()}}
+function predPintar(){radios('pa',PA,'pa');radios('pb',PB,'pb');
+ $('pc').value=S.pc;$('pt').value=S.pt;$('pc').disabled=$('pt').disabled=S.fijada;
+ $('fijar').disabled=S.fijada;$('fijar').textContent=S.fijada?'Predicción fijada':'Fijar mi predicción';
+ $('pmsg').textContent=S.fijada?'Fijada el '+S.ts+'. Ya no se puede cambiar.':'';
+ $('to2').disabled=!S.fijada}
+function fijar(){var fr=String(S.pt).trim().split(/[.!?]+/).filter(function(x){return x.trim().length>5});
+ if(!S.pa||!S.pb||isNaN(num(S.pc))||fr.length<2){$('pmsg').textContent='Responde a), b), c) y escribe al menos 2 frases en d).';return}
+ S.fijada=true;S.ts=new Date().toLocaleString('es-EC');guardar();predPintar();navPintar()}
+
+/* gráficos SVG */
+function chart(vals,kind,color){
+ var n=vals.length,W=360,H=222,L=34,R=10,T=12,B=40,pw=W-L-R,ph=H-T-B,ok=vals.filter(function(v){return !isNaN(v)});
+ if(!ok.length)return '<p class="stat">Escribe valores para ver el gráfico.</p>';
+ var mx=Math.max.apply(null,ok.concat([1])),mn=Math.min.apply(null,ok.concat([0]));
+ var span=mx-mn||1,top=mx+span*.08,bot=mn<0?mn-span*.08:0;
+ var X=function(i){return kind==='bar'?L+pw*(i+.5)/n:L+pw*i/Math.max(n-1,1)},Y=function(v){return T+ph*(top-v)/(top-bot)};
+ var s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Gráfico">';
+ var tk=5;for(var k=0;k<=tk;k++){var v=bot+(top-bot)*k/tk;s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="var(--line)" stroke-width="0.6"/><text x="'+(L-4)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+Math.round(v)+'</text>'}
+ s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="var(--ink)" stroke-width="1"/>';
+ if(kind==='bar'){var bw=Math.min(28,pw/n*.6);vals.forEach(function(v,i){if(isNaN(v))return;var y0=Y(0),y1=Y(v);s+='<rect x="'+(X(i)-bw/2)+'" y="'+Math.min(y0,y1)+'" width="'+bw+'" height="'+Math.max(Math.abs(y1-y0),1)+'" fill="'+(v<0?'var(--bad)':color)+'"/>';});
+  vals.forEach(function(v,i){s+='<text x="'+X(i)+'" y="'+(H-22)+'" text-anchor="middle">'+(i+1)+'</text>'})}
+ else{var d='';vals.forEach(function(v,i){if(isNaN(v))return;d+=(d?'L':'M')+X(i)+' '+Y(v)});s+='<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2.4"/>';
+  vals.forEach(function(v,i){if(!isNaN(v))s+='<circle cx="'+X(i)+'" cy="'+Y(v)+'" r="3.5" fill="'+color+'"/>';s+='<text x="'+X(i)+'" y="'+(H-22)+'" text-anchor="middle">'+i+'</text>'})}
+ s+='<text x="'+(W/2)+'" y="'+(H-4)+'" text-anchor="middle" style="font-size:10px">Unidades consumidas (Q)</text></svg>';return s}
+
+/* Ana */
+function anaDatos(){return S.ana.map(num).filter(function(v){return !isNaN(v)})}
+function anaPintar(){var h='<tr><th>Barras (Q)</th><th>UM (editable)</th><th>UT</th><th>Efecto en UT</th></tr>',u=cum(S.ana);
+ S.ana.forEach(function(v,i){var n=num(v),t=u[i+1];h+='<tr><td>'+(i+1)+'</td><td><input type="number" data-a="'+i+'" value="'+esc(v)+'" aria-label="UM de la barra '+(i+1)+'"></td><td>'+(isNaN(t)?'':ff(t))+'</td><td>'+(isNaN(n)?'':'<span class="'+cls(n)+'">'+(n>0?'sube':(n<0?'baja':'no cambia'))+'</span>')+'</td></tr>'});
+ $('tana').innerHTML=h;
+ $('tana').oninput=function(e){var a=e.target.getAttribute('data-a');if(a===null)return;S.ana[+a]=e.target.value;dif();anaCalc()};anaCalc(true)}
+function anaCalc(skipTable){var u=cum(S.ana),um=S.ana.map(num);
+ if(!skipTable){var tr=$('tana').rows;for(var i=0;i<S.ana.length;i++){var t=u[i+1],n=um[i];tr[i+1].cells[2].textContent=isNaN(t)?'':ff(t);tr[i+1].cells[3].innerHTML=isNaN(n)?'':'<span class="'+cls(n)+'">'+(n>0?'sube':(n<0?'baja':'no cambia'))+'</span>'}}
+ $('cut').innerHTML=chart(u,'line','var(--pur2)');$('cum').innerHTML=chart(um,'bar','var(--or)');
+ var L=lectura();$('lect').innerHTML=L.html;navPintar()}
+function lectura(){var um=S.ana.map(num),u=cum(S.ana),ok=um.filter(function(v){return !isNaN(v)});
+ if(ok.length<3)return {html:'Completa al menos 3 valores de UM.',dec:false,max:NaN,q:NaN,q0:NaN};
+ var dec=true;for(var i=1;i<um.length;i++){if(!isNaN(um[i])&&!isNaN(um[i-1])&&!(um[i]<um[i-1]))dec=false}
+ var mx=-1e9,q=NaN;u.forEach(function(v,i){if(i>0&&!isNaN(v)&&v>mx+1e-9){mx=v;q=i}});
+ var q0=NaN;for(var j=0;j<um.length;j++){if(!isNaN(um[j])&&um[j]<=0){q0=j+1;break}}
+ var h='<b>Qué muestran estos datos.</b> '+(dec?'La UM baja en cada barra: se cumple la ley de la utilidad marginal decreciente. ':'La UM no baja en todas las barras: con estos datos no se cumple la ley. ')+'La UT máxima es '+ff(mx)+' y se alcanza con '+q+' barras.'+(isNaN(q0)?'':' Desde la barra '+q0+' la UM ya no es positiva, así que comer más no suma.');
+ return {html:h,dec:dec,max:mx,q:q,q0:q0}}
+
+/* Explicar */
+function cmp(){var L=lectura(),pa={mayor:'mayor',igual:'igual',menor:'menor'}[S.pa]||'—',okA=S.pa==='menor',okB=S.pb==='sube-baja',pc=num(S.pc),okC=!isNaN(pc)&&!isNaN(L.q0)&&pc===L.q0;
+ $('cmp').innerHTML='<b>Tu predicción frente a los datos</b><br>a) UM de la 5.ª barra: dijiste «'+pa+'» que la 1.ª. '+(okA?'<span class="pos">Coincide</span> (2 frente a 10).':'<span class="neg">No coincide</span> (la 5.ª aporta 2 y la 1.ª aporta 10).')+'<br>b) Comportamiento de la UT: '+(okB?'<span class="pos">coincide</span>':'<span class="neg">no coincide</span>')+' con lo observado (sube cada vez menos y baja si se pasa de la barra 6).<br>c) Dijiste barra '+(isNaN(pc)?'—':pc)+'; con los datos de la tabla la UM deja de ser positiva en la barra '+(isNaN(L.q0)?'—':L.q0)+'.'}
+function luisPintar(){var h='<tr><th>Tazas</th><th>UT</th><th>Tu UM</th><th>Revisión</th></tr>';
+ LUIS_UT.forEach(function(u,i){h+='<tr><td>'+(i+1)+'</td><td>'+u+'</td><td><input type="number" data-l="'+i+'" value="'+esc(S.luis[i])+'" aria-label="UM de la taza '+(i+1)+'"></td><td id="lr'+i+'"></td></tr>'});
+ $('tluis').innerHTML=h;$('tluis').oninput=function(e){var a=e.target.getAttribute('data-l');if(a===null)return;S.luis[+a]=e.target.value;dif();luisChk()};luisChk()}
+function luisChk(){var c=0,l=0;LUIS_UM.forEach(function(v,i){var n=num(S.luis[i]),r=$('lr'+i);if(isNaN(n)){r.textContent='';return}l++;if(n===v){c++;r.innerHTML='<span class="pos">✓</span>'}else r.innerHTML='<span class="neg">Revisa: UM = UT actual − UT anterior</span>'});
+ $('lmsg').innerHTML=l===6?(c===6?'<div class="ok">Correcto. Además la UM baja en cada taza (9 &gt; 7 &gt; 5 &gt; 3 &gt; 1 &gt; −1): se cumple la ley y la 6.ª taza reduce la UT.</div>':'<div class="no">Llevas '+c+' de 6 correctas. Corrige las marcadas.</div>'):''}
+
+/* Empresa */
+function empDatos(){var o=[];S.um.forEach(function(v,i){var n=num(v);if(!isNaN(n))o.push(n)});return o}
+function empPintar(){var h='<tr><th>Unidad</th><th>UM (−10 a 10)</th><th>UT</th></tr>',u=cum(S.um);
+ S.um.forEach(function(v,i){var t=u[i+1];h+='<tr><td>'+(i+1)+'</td><td><input type="number" min="-10" max="10" step="1" data-m="'+i+'" value="'+esc(v)+'" aria-label="UM de la unidad '+(i+1)+'"></td><td>'+(isNaN(t)?'':ff(t))+'</td></tr>'});
+ $('temp').innerHTML=h;$('temp').oninput=function(e){var a=e.target.getAttribute('data-m');if(a===null)return;S.um[+a]=e.target.value;S.ej=false;dif();empCalc()};empCalc()}
+function empCalc(){var u=cum(S.um),tr=$('temp').rows;S.um.forEach(function(v,i){var t=u[i+1];tr[i+1].cells[2].textContent=isNaN(t)?'':ff(t)});
+ $('eut').innerHTML=chart(u,'line','var(--pur2)');$('eum').innerHTML=chart(S.um.map(num),'bar','var(--or)');navPintar()}
+
+/* Entrega */
+function items(){var t=function(s){return String(s||'').trim().length};
+ return [['Datos del equipo y curso',t(S.nombre)>2&&t(S.paralelo)>0],['Predicción fijada (a, b, c y justificación)',S.fijada],['Tabla de Ana con al menos 3 valores de UM',anaDatos().length>=3],
+ ['Explicación a), b) y c) escritas',t(S.e1)>=30&&t(S.e2)>=30&&t(S.e3)>=15],['Práctica de Luis resuelta y correcta',LUIS_UM.every(function(v,i){return num(S.luis[i])===v})],
+ ['Empresa, producto y cliente típico definidos',t(S.emp)>0&&t(S.prod)>0&&t(S.cli)>0&&t(S.uni)>0],['Al menos 4 calificaciones de UM de tu cliente',empDatos().length>=4],['Lectura y supuestos de la empresa escritos',t(S.el)>=30&&t(S.es)>=15]]}
+function chk(){var h='';items().forEach(function(i){h+='<li class="'+(i[1]?'y':'')+'">'+i[0]+'</li>'});$('chk').innerHTML=h}
+function falt(){return items().filter(function(i){return !i[1]}).map(function(i){return i[0]})}
+
+/* PDF */
+function pdfBytes(){var J=window.jspdf&&window.jspdf.jsPDF;if(!J)return null;
+ var d=new J({unit:'mm',format:'a4'}),x0=16,w=178,y=16,P=[59,36,97];
+ function np(){d.addPage();y=16}
+ function H(t){if(y>262)np();y+=2;d.setFont('helvetica','bold');d.setFontSize(11.5);d.setTextColor(P[0],P[1],P[2]);d.text(t,x0,y);y+=5.5}
+ function T(t,b,sz){d.setFont('helvetica',b?'bold':'normal');d.setFontSize(sz||10);d.setTextColor(30,30,36);d.splitTextToSize(String(t||'—'),w).forEach(function(l){if(y>282)np();d.text(l,x0,y);y+=4.8});y+=.8}
+ function plot(x,yy,cw,ch,vals,kind,rgb,ttl){var ok=vals.filter(function(v){return !isNaN(v)});d.setFont('helvetica','bold');d.setFontSize(9);d.setTextColor(P[0],P[1],P[2]);d.text(ttl,x,yy-2);
+  if(!ok.length){return}var mx=Math.max.apply(null,ok.concat([1])),mn=Math.min.apply(null,ok.concat([0])),sp=mx-mn||1,top=mx+sp*.08,bot=mn<0?mn-sp*.08:0,n=vals.length;
+  var X=function(i){return kind==='b'?x+cw*(i+.5)/n:x+cw*i/Math.max(n-1,1)},Y=function(v){return yy+ch*(top-v)/(top-bot)};
+  d.setDrawColor(200,194,215);d.setLineWidth(.15);d.setFont('helvetica','normal');d.setFontSize(7);d.setTextColor(90,88,112);
+  for(var k=0;k<=4;k++){var v=bot+(top-bot)*k/4;d.line(x,Y(v),x+cw,Y(v));d.text(String(Math.round(v)),x-1.5,Y(v)+1,{align:'right'})}
+  d.setDrawColor(30,30,36);d.setLineWidth(.35);d.line(x,Y(0),x+cw,Y(0));
+  if(kind==='b'){var bw=Math.min(8,cw/n*.6);vals.forEach(function(v,i){if(isNaN(v))return;if(v<0)d.setFillColor(179,38,30);else d.setFillColor(rgb[0],rgb[1],rgb[2]);var a=Y(0),b=Y(v);d.rect(X(i)-bw/2,Math.min(a,b),bw,Math.max(Math.abs(b-a),.3),'F');d.text(String(i+1),X(i),yy+ch+4,{align:'center'})})}
+  else{d.setDrawColor(rgb[0],rgb[1],rgb[2]);d.setLineWidth(.7);for(var i=1;i<n;i++){if(!isNaN(vals[i])&&!isNaN(vals[i-1]))d.line(X(i-1),Y(vals[i-1]),X(i),Y(vals[i]))}
+   d.setFillColor(rgb[0],rgb[1],rgb[2]);vals.forEach(function(v,i){if(!isNaN(v))d.circle(X(i),Y(v),.8,'F');d.text(String(i),X(i),yy+ch+4,{align:'center'})})}}
+ var F=falt(),L=lectura();
+ d.setFont('helvetica','bold');d.setFontSize(13);d.setTextColor(P[0],P[1],P[2]);d.text('UNIVERSIDAD INDOAMÉRICA · PRINCIPIOS DE ECONOMÍA',x0,y);y+=6.5;d.setFontSize(11);d.text('Applet de utilidad: predecir, observar y explicar'+(S.ej?' (con ejemplo)':''),x0,y);y+=2.5;d.setDrawColor(P[0],P[1],P[2]);d.setLineWidth(.4);d.line(x0,y,x0+w,y);y+=6;
+ T('Curso: '+S.curso);T('Paralelo o equipo: '+S.paralelo);T('Integrantes: '+String(S.nombre).trim().replace(/\n+/g,'; '));T('Fecha de descarga: '+new Date().toLocaleDateString('es-EC'));
+ d.setTextColor(F.length?179:46,F.length?38:125,F.length?30:50);T('Estado: '+(F.length?'INCOMPLETO. Falta: '+F.join('; ')+'.':'COMPLETO'),true);
+ H('1. Predicción (fijada el '+(S.ts||'—')+')');
+ var pa={mayor:'mayor que',igual:'igual a',menor:'menor que'}[S.pa]||'—',pb={'sube':'siempre sube','sube-baja':'sube cada vez menos y puede bajar','igual':'se queda igual'}[S.pb]||'—';
+ T('UM de la 5.ª barra: '+pa+' la de la 1.ª. UT: '+pb+'. Barra donde la UT deja de subir: '+(S.pc||'—')+'.');T('Justificación: '+S.pt);
+ H('2. Observación con los datos de Ana');
+ var u=cum(S.ana),um=S.ana.map(num),cx=[x0,x0+30,x0+60,x0+90];d.setFont('helvetica','bold');d.setFontSize(9);d.setTextColor(P[0],P[1],P[2]);['Barras (Q)','UM','UT','Efecto en UT'].forEach(function(t,k){d.text(t,cx[k],y)});y+=1.5;d.setDrawColor(200,194,215);d.line(x0,y,x0+w,y);y+=4.5;
+ d.setFont('helvetica','normal');d.setTextColor(30,30,36);um.forEach(function(n,i){if(isNaN(n))return;d.text(String(i+1),cx[0],y);d.text(ff(n),cx[1],y);d.text(ff(u[i+1]),cx[2],y);d.text(n>0?'sube':(n<0?'baja':'no cambia'),cx[3],y);y+=4.8});y+=2;
+ T('Lectura: '+L.html.replace(/<[^>]+>/g,'').replace('Qué muestran estos datos. ',''));
+ if(y>200)np();plot(x0+8,y+6,76,45,u,'l',[107,79,160],'Utilidad total (UT)');plot(x0+102,y+6,76,45,um,'b',[238,118,35],'Utilidad marginal (UM)');y+=62;
+ H('3. Explicación');T('a) Predicción frente a lo observado: '+S.e1);T('b) UM baja pero la UT sube: '+S.e2);T('c) «Todo lo demás constante»: '+S.e3);
+ T('Práctica de Luis (UM de cada taza): '+S.luis.map(function(v,i){return (i+1)+'='+(String(v).trim()||'—')}).join(' · ')+'. '+(LUIS_UM.every(function(v,i){return num(S.luis[i])===v})?'Todas correctas.':'Con errores o incompleta.'),true,9.5);
+ np();H('4. Utilidad del cliente de la empresa'+(S.ej?' (EJEMPLO ilustrativo)':''));
+ T('Empresa: '+S.emp);T('Producto o servicio: '+S.prod);T('Cliente típico: '+S.cli);T('Unidad y período: '+S.uni);
+ var ue=cum(S.um),me=S.um.map(num);T('Calificaciones de UM por unidad: '+S.um.map(function(v,i){return (i+1)+'='+(String(v).trim()||'—')}).join(' · '));
+ plot(x0+8,y+6,76,45,ue,'l',[107,79,160],'UT del cliente');plot(x0+102,y+6,76,45,me,'b',[238,118,35],'UM del cliente');y+=62;
+ H('Lectura');T(S.el);H('Supuestos');T(S.es);H('Fuente o limitación');T(S.ef);
+ d.setFont('helvetica','italic');d.setFontSize(8.5);d.setTextColor(90,88,112);d.text('Generado con el applet de utilidad de Principios de Economía. Las calificaciones son supuestos del equipo, no mediciones.',x0,290);
+ return d.output('arraybuffer')}
+function nombreArch(){var n=String(S.paralelo||'equipo').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,30);return 'Applet_utilidad_'+(n||'equipo')+'.pdf'}
+async function descargar(){var m=$('m5');m.textContent='';var b=pdfBytes();if(!b){m.textContent='No se pudo generar el PDF. Usa «Copiar resumen».';return}
+ var dl=null;try{dl=await window.claude.use('downloads')}catch(e){dl=null}
+ if(!dl){m.textContent='La descarga directa no está disponible en esta vista. Abre el enlace en un navegador o usa «Copiar resumen».';return}
+ try{await dl.save({filename:nombreArch(),data:b});m.textContent='PDF guardado. Revisa que el estado diga COMPLETO antes de subirlo.'}catch(e){m.textContent=(e&&e.code==='declined')?'Cancelaste la descarga. Puedes intentarlo otra vez.':'No se pudo guardar. Usa «Copiar resumen».'}}
+function resumen(){var o=['APPLET DE UTILIDAD · PRINCIPIOS DE ECONOMÍA','Curso: '+S.curso,'Paralelo o equipo: '+S.paralelo,'Integrantes: '+String(S.nombre).trim().replace(/\n+/g,'; '),'',
+ 'PREDICCIÓN: UM 5.ª vs 1.ª: '+S.pa+'; UT: '+S.pb+'; la UT deja de subir en la barra '+S.pc+'. '+S.pt,'','EXPLICACIÓN','a) '+S.e1,'b) '+S.e2,'c) '+S.e3,'',
+ 'EMPRESA: '+S.emp+' · '+S.prod+' · cliente: '+S.cli+' · unidad: '+S.uni,'UM por unidad: '+S.um.join(', '),'Lectura: '+S.el,'Supuestos: '+S.es,'Fuente o limitación: '+S.ef];return o.join('\n')}
+function copiar(){var m=$('m5');try{navigator.clipboard.writeText(resumen()).then(function(){m.textContent='Resumen copiado.'},function(){m.textContent='No se pudo copiar.'})}catch(e){m.textContent='No se pudo copiar.'}}
+var confirmBorrar=false;
+function borrar(){var b=$('clr');if(!confirmBorrar){confirmBorrar=true;b.textContent='Confirmar: borrar todo';setTimeout(function(){confirmBorrar=false;b.textContent='Borrar todo'},4000);return}
+ confirmBorrar=false;b.textContent='Borrar todo';S=vacio();guardar();todo();ir(0)}
+function ejemploEmp(){S.emp='Ejemplo (docente)';S.prod='Café de máquina';S.cli='Oficinista de la mañana';S.uni='tazas en la jornada de oficina';S.um=EJEMP.slice();S.ej=true;
+ S.el='La UM cae de 10 a 1 y se vuelve negativa en la 6.ª taza (−1). Para el local conviene vender una a tres tazas por cliente: después aporta poco.';S.es='Supuesto ilustrativo de la docente: calificaciones inventadas para mostrar el método, no medidas.';S.ef='Sin fuente: datos inventados. Un cliente típico no es todos los clientes.';guardar();todo()}
+
+function enlazar(id,key){var e=$(id);e.value=S[key];e.addEventListener('input',function(){S[key]=e.value;dif();navPintar()})}
+function todo(){['nombre','curso','paralelo','pt','pc','e1','e2','e3','emp','prod','cli','uni','el','es','ef'].forEach(function(k){$(k).value=S[k]});predPintar();anaPintar();luisPintar();empPintar();navPintar()}
+function init(){cargar();
+ ['nombre','curso','paralelo','pt','pc','e1','e2','e3','emp','prod','cli','uni','el','es','ef'].forEach(function(k){enlazar(k,k)});
+ $('curso').addEventListener('change',function(){S.curso=$('curso').value;dif()});
+ if(!Array.prototype.some.call($('curso').options,function(o){return o.value===S.curso})){var o=document.createElement('option');o.textContent=S.curso;$('curso').appendChild(o)}
+ $('curso').value=S.curso;
+ $('fijar').onclick=fijar;$('rest').onclick=function(){S.ana=ANA.map(String);guardar();anaPintar()};$('vacemp').onclick=ejemploEmp;
+ $('pdf').onclick=descargar;$('cop').onclick=copiar;$('clr').onclick=borrar;
+ document.addEventListener('click',function(e){var g=e.target.closest&&e.target.closest('[data-go]');if(g&&!g.disabled)ir(+g.getAttribute('data-go'))});
+ todo();ir(0)}
+init();
+})();
+</script>
+
+</body></html>
