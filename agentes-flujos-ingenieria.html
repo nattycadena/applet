@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><script>/* Descarga directa fuera de Claude (GitHub Pages) */
+(function(){if(window.claude&&typeof window.claude.use==='function')return;
+function save(o){o=o||{};var n=o.filename||'archivo.pdf',d=o.data,t=/\.pdf$/i.test(n)?'application/pdf':(/\.txt$/i.test(n)?'text/plain':'application/octet-stream');
+var b=(d instanceof Blob)?d:new Blob([d],{type:t});var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;a.rel='noopener';
+document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},60000);return Promise.resolve({status:'delivered'})}
+window.claude={use:function(x){return Promise.resolve(x==='downloads'?{save:save}:null)}};})();
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agentes y flujos · Ingeniería</title>
+<style>
+:root{--bg:#FFFFFF;--ink:#1B1B1B;--navy:#1F3A8A;--bar:#1F3A8A;--onbar:#FFFFFF;--navybg:#EEF2FB;--amber:#B45309;--gtxt:#007a5a;--vtxt:#B34700;--gray:#595959;--grid:#d5d9e6;--rule:#c9cfe0;--hl:#fff3e0;--actfg:#FFFFFF;--real:#8E2F6B;--din:#007a5a;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1A33;--ink:#F2F5FF;--navy:#9DB7FF;--bar:#13315C;--onbar:#FFFFFF;--navybg:#16294D;--amber:#FFB766;--gtxt:#5FD3A8;--vtxt:#FF9F6B;--gray:#B8C2DB;--grid:#2B3F66;--rule:#2B3F66;--hl:#2A3B63;--actfg:#0B1A33;--real:#E6A8D1;--din:#5FD3A8;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1A33;--ink:#F2F5FF;--navy:#9DB7FF;--bar:#13315C;--onbar:#FFFFFF;--navybg:#16294D;--amber:#FFB766;--gtxt:#5FD3A8;--vtxt:#FF9F6B;--gray:#B8C2DB;--grid:#2B3F66;--rule:#2B3F66;--hl:#2A3B63;--actfg:#0B1A33;--real:#E6A8D1;--din:#5FD3A8;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);font-size:19px;background:var(--bg);display:flex;flex-direction:column}
+header{background:var(--bar);color:var(--onbar);padding:10px 24px;flex:none}
+header h1{margin:0;font-size:27px}
+header p{margin:2px 0 0;font-size:16px}
+.modebar{padding:6px 20px;font-size:16px;background:var(--hl);color:var(--ink);border-bottom:2px solid var(--amber);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.modebar.hidden{display:none}
+.modebar button{font-size:16px;padding:3px 12px}
+main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.1fr);gap:16px;padding:10px 20px}
+#plotwrap{min-height:0;display:flex;flex-direction:column}
+#plot{flex:1;min-height:0;width:100%}
+#panel{overflow:auto;padding:0 6px 8px 0;min-height:0}
+.namebar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 8px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.grp{font-size:14px;font-weight:700;color:var(--gray);margin-left:6px}
+button,select,input[type=text]{font:inherit;font-size:19px;color:var(--navy);background:var(--bg);border:2px solid var(--navy);border-radius:6px;padding:6px 14px;cursor:pointer}
+input[type=text]{cursor:text;color:var(--ink);width:min(420px,100%)}
+select{max-width:100%}
+button:hover{background:var(--navybg)}
+button.act{background:var(--navy);color:var(--actfg)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.score{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.card{flex:1;min-width:120px;border:2px solid var(--navy);border-radius:8px;padding:6px 12px;background:var(--bg)}
+.card small{display:block;font-size:15px;color:var(--gray)}
+.card b{font-size:28px;color:var(--navy)}
+.sec{border-left:6px solid var(--navy);background:var(--navybg);padding:8px 14px;margin:0 0 12px}
+.sec h2{margin:0 0 6px;font-size:22px;color:var(--navy)}
+.sec h3{margin:10px 0 2px;font-size:18px;color:var(--navy)}
+.sec p{margin:6px 0}
+.res{margin:8px 0 0;padding:8px 12px;background:var(--bg);border:2px solid var(--navy);border-radius:6px;min-height:44px}
+.ok{color:var(--gtxt)}.no{color:var(--vtxt)}
+.sym{font-weight:700;font-size:21px;margin-right:4px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.hint{font-size:16px;color:var(--gray)}
+.hidden{display:none}
+.pred{border:2px dashed var(--amber);border-radius:8px;padding:6px 12px;margin:8px 0;background:var(--bg)}
+.pred legend{color:var(--amber);font-weight:700;padding:0 6px}
+.pred label{display:block;margin:5px 0;cursor:pointer}
+input[type=radio],input[type=checkbox]{width:20px;height:20px;accent-color:var(--navy);vertical-align:middle}
+textarea{width:100%;min-height:110px;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:2px solid var(--navy);border-radius:6px;padding:8px}
+.ag{display:flex;align-items:center;gap:8px;margin:5px 0;background:var(--bg);border:2px solid var(--rule);border-radius:6px;padding:4px 8px;flex-wrap:wrap}
+.ag .nm{flex:1;min-width:130px}
+.ag .st{font-size:15px;color:var(--gray)}
+.pairbtn{display:block;width:100%;text-align:left;margin:4px 0}
+.fl{background:var(--bg);border:2px solid var(--rule);border-radius:6px;padding:6px 10px;margin:6px 0}
+.fl.real{border-left:8px solid var(--real)}
+.fl.din{border-left:8px solid var(--din)}
+.fl .tag{font-size:15px;color:var(--gray)}
+.fl .rt{font-weight:700}
+.fl.real .rt{color:var(--real)}.fl.din .rt{color:var(--din)}
+.dims{display:flex;gap:4px 14px;flex-wrap:wrap;font-size:16px;margin:4px 0}
+.dims label{cursor:pointer}
+.stm{font-size:21px;font-weight:700;margin:6px 0}
+.checks{padding-left:4px}.checks li{list-style:none;margin:3px 0}
+.mail{font-weight:700;word-break:break-all}
+.pop{animation:pop .5s ease-out}@keyframes pop{0%{opacity:0}100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none}}
+ol,ul{margin:6px 0;padding-left:26px}li{margin:4px 0}
+@media (max-width:900px){
+ html,body{height:auto}
+ body{font-size:17px}
+ header{padding:8px 14px}header h1{font-size:21px}header p{font-size:14px}
+ .modebar{padding:6px 12px;font-size:15px}
+ main{display:block;overflow:visible;padding:8px 12px}
+ #plotwrap{display:block;min-height:0;margin-bottom:8px}
+ #plot{display:block;flex:none;height:auto;max-height:38vh}
+ #panel{overflow:visible;padding:0}
+ nav{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px}
+ nav button,.grp{flex:none;white-space:nowrap}
+ button,select,input[type=text]{font-size:17px;padding:6px 10px}
+ .card b{font-size:24px}
+ .sec h2{font-size:20px}
+ .stm{font-size:19px}
+}
+</style>
+</head>
+<body>
+<header><h1>Agentes y flujos · Ingeniería</h1><p>Parte 1: teoría (micro y macro, agentes y flujos) · Parte 2: los flujos de tu emprendimiento</p></header>
+<div id="modebar" class="modebar hidden" role="status" aria-live="polite"></div>
+<main>
+  <div id="plotwrap"><svg id="plot" viewBox="0 0 760 620" role="img" aria-label="Diagrama de agentes y flujos"></svg></div>
+  <div id="panel">
+    <div class="namebar"><label for="nombre">Tu nombre completo</label><input type="text" id="nombre" maxlength="80" autocomplete="off"></div>
+    <nav aria-label="Pasos">
+      <button data-step="historia" id="b-historia">Historia</button>
+      <span class="grp">Parte 1 · Teoría</span>
+      <button data-step="clasificar" id="b-clasificar">Clasificar</button>
+      <button data-step="agentes" id="b-agentes">Agentes</button>
+      <button data-step="entrega1" id="b-entrega1">Entrega 1</button>
+      <span class="grp">Parte 2 · Emprendimiento</span>
+      <button data-step="emprendimiento" id="b-emprendimiento">Mi emprendimiento</button>
+      <button data-step="entrega2" id="b-entrega2">Entrega 2</button>
+      <button data-step="instrucciones" id="b-instrucciones">Instrucciones</button>
+      <button id="reset">Reiniciar</button>
+    </nav>
+    <div class="score" aria-live="polite">
+      <div class="card"><small>Agentes activos</small><b id="k-ag">2</b></div>
+      <div class="card"><small>Vínculos</small><b id="k-pa">1</b></div>
+      <div class="card"><small>Flujos</small><b id="k-fl">4</b></div>
+    </div>
+    <div id="body"></div>
+  </div>
+</main>
+<script>
+function h32(str){var h=2166136261,i;for(i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(16).toUpperCase();}
+var MAP={"“":'"',"”":'"',"‘":"'","’":"'","–":"-","—":"-","…":"...","★":"*","✓":"v","✕":"x","→":"->","←":"<-","•":"-","○":"o","●":"*","≥":">=","≤":"<=","Δ":"D","×":"x","÷":"/","▲":"^"};
+function lat(s){var o="",i,ch,c;s=String(s).normalize("NFC");
+  for(i=0;i<s.length;i++){ch=s.charAt(i);c=ch.charCodeAt(0);
+    if(MAP[ch]!==undefined)o+=MAP[ch];
+    else if(c===10)o+="\n";
+    else if(c>=32&&c<=255)o+=ch;}
+  return o;}
+function pdfEsc(s){return s.replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)");}
+var CV=document.createElement("canvas").getContext("2d");
+function wrapT(text,bold,size,maxw){
+  CV.font=(bold?"bold ":"")+size+"px Helvetica, Arial";
+  var out=[];text.split("\n").forEach(function(p){
+    var ws=p.split(/\s+/).filter(Boolean),ln="";
+    if(!ws.length){out.push("");return;}
+    ws.forEach(function(w){var t=ln?ln+" "+w:w;if(CV.measureText(t).width>maxw&&ln){out.push(ln);ln=w;}else ln=t;});
+    if(ln)out.push(ln);});
+  return out;}
+function makePdf(blocks,foot){
+  var pages=[],cur=[],y=800,PW=595,M=56,W=PW-2*M;
+  function np(){pages.push(cur);cur=[];y=800;}
+  blocks.forEach(function(b){
+    if(b.k==="gap"){y-=b.s||8;return;}
+    var size={h1:16,h2:12.5,p:10.5,li:10.5,small:9}[b.k]||10.5,bold=(b.k==="h1"||b.k==="h2"),col=b.k==="small"?"0.35 0.35 0.35":(bold?"0.12 0.23 0.54":"0 0 0");
+    var txt=lat((b.k==="li"?"- ":"")+b.s);
+    wrapT(txt,bold,size,W-(b.k==="li"?10:0)).forEach(function(l,i){
+      if(y<70)np();cur.push({t:l,x:M+(b.k==="li"&&i>0?10:0),y:y,s:size,b:bold,c:col});y-=size*1.38;});
+    y-=b.k==="h1"?6:(b.k==="h2"?2:2);
+  });
+  pages.push(cur);
+  var n=pages.length,objs=[],i,kids=[];
+  objs[1]="<< /Type /Catalog /Pages 2 0 R >>";
+  for(i=0;i<n;i++)kids.push((5+i*2)+" 0 R");
+  objs[2]="<< /Type /Pages /Kids ["+kids.join(" ")+"] /Count "+n+" >>";
+  objs[3]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+  objs[4]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
+  pages.forEach(function(items,pi){
+    var c="";items.forEach(function(it){c+="BT /"+(it.b?"F2":"F1")+" "+it.s+" Tf "+it.c+" rg "+it.x.toFixed(1)+" "+it.y.toFixed(1)+" Td ("+pdfEsc(it.t)+") Tj ET\n";});
+    c+="BT /F1 8 Tf 0.4 0.4 0.4 rg 56 30 Td ("+pdfEsc(lat(foot||""))+"  -  Pagina "+(pi+1)+" de "+n+") Tj ET\n";
+    objs[5+pi*2]="<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents "+(6+pi*2)+" 0 R >>";
+    objs[6+pi*2]="<< /Length "+c.length+" >>\nstream\n"+c+"endstream";});
+  var out="%PDF-1.4\n",off=[0],k;
+  for(k=1;k<objs.length;k++){off[k]=out.length;out+=k+" 0 obj\n"+objs[k]+"\nendobj\n";}
+  var xr=out.length;out+="xref\n0 "+objs.length+"\n0000000000 65535 f \n";
+  for(k=1;k<objs.length;k++)out+=("0000000000"+off[k]).slice(-10)+" 00000 n \n";
+  out+="trailer\n<< /Size "+objs.length+" /Root 1 0 R >>\nstartxref\n"+xr+"\n%%EOF";
+  var u=new Uint8Array(out.length);for(k=0;k<out.length;k++)u[k]=out.charCodeAt(k)&255;return u;}
+function fileSafe(s){return lat(s).normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"")||"estudiante";}
+function anchorSave(blob,fn){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(a.href);},2000);}
+function deliver(data,fn,mime,done){
+  done=done||function(){};
+  if(window.claude&&typeof window.claude.use==="function"){
+    window.claude.use("downloads").then(function(d){
+      if(!d){done("unavailable");return;}
+      d.save({filename:fn,data:data}).then(function(){done("saved");}).catch(function(e){var c=e&&e.code;done(c==="declined"?"declined":(c==="rate_limited"?"busy":"unavailable"));});
+    }).catch(function(){done("unavailable");});
+  }else{var ok=false;try{anchorSave(new Blob([data],{type:mime}),fn);ok=true;}catch(e){}done(ok?"anchor":"unavailable");}
+}
+function blocksText(B){return B.map(function(b){return b.k==="gap"?"":(b.k==="h1"||b.k==="h2"?"\n"+b.s.toUpperCase():(b.k==="li"?"- "+b.s:b.s));}).join("\n");}
+function dlStatus(st,fn,mail){
+  if(st==="saved")return '<span class="ok"><span class="sym">✓</span><strong>PDF generado.</strong></span> Revisa tus descargas: «'+fn+'». Ahora envíalo al correo indicado abajo.';
+  if(st==="declined")return '<span class="no"><strong>No se guardó el PDF.</strong></span> Puedes volver a pulsar el botón.';
+  if(st==="busy")return '<span class="no"><strong>Hay una ventana de confirmación abierta.</strong></span> Respóndela y vuelve a pulsar el botón.';
+  if(st==="anchor")return '<span class="no"><strong>Se intentó descargar «'+fn+'».</strong></span> Si no aparece en tus descargas, usa el informe en texto de abajo.';
+  return '<span class="no"><strong>Este navegador o enlace no permite descargar el PDF desde aquí.</strong></span> Abre la página dentro de Claude, en Safari o en Chrome, o usa el informe en texto de abajo: cópialo y pégalo en un correo a '+mail+'.';}
+function fallbackBox(txt){return '<div class="hint">Informe en texto (respaldo):</div><textarea readonly aria-label="Informe en texto" style="min-height:140px">'+String(txt).replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</textarea><div class="row"><button class="cpinf">Copiar informe</button><span class="hint cpok" aria-live="polite"></span></div>';}
+function wireCopy(box){var b=box.querySelector(".cpinf"),t=box.querySelector("textarea");if(!b)return;b.addEventListener("click",function(){var ok=box.querySelector(".cpok"),msg=function(m){ok.textContent=m;};
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t.value).then(function(){msg("Informe copiado.");},function(){t.select();msg("Selecciona el texto y cópialo.");});}else{t.select();msg("Selecciona el texto y cópialo.");}}catch(e){t.select();msg("Selecciona el texto y cópialo.");}});}
+function savePdf(u,fn,done){deliver(u,fn,"application/pdf",done);}
+
+
+(function(){
+"use strict";
+var NS="http://www.w3.org/2000/svg";
+function $(i){return document.getElementById(i);}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function el(n,a,t){var e=document.createElementNS(NS,n),k;for(k in a){if(k==="fill"||k==="stroke"||k==="opacity")e.style[k]=a[k];else e.setAttribute(k,a[k]);}if(t!==undefined)e.textContent=t;return e;}
+function TX(g,x,y,t,o){o=o||{};g.appendChild(el("text",{x:x,y:y,"text-anchor":o.a||"start","font-size":o.s||19,"font-weight":o.b?700:400,fill:o.c||"var(--ink)"},t));}
+var MAIL="ccadena10@indoamerica.edu.ec";
+
+/* ---------------- datos ---------------- */
+var ORD="HEGFX";
+var AG=[
+ {id:"H",n:"Hogares",e:"🏠",c:"#1F3A8A",x:115,y:270},
+ {id:"E",n:"Empresas",e:"🏭",c:"#B34700",x:645,y:270},
+ {id:"G",n:"Estado",e:"🏛️",c:"#2E7D32",x:380,y:80},
+ {id:"F",n:"Sector financiero",e:"🏦",c:"#8E2F6B",x:215,y:540},
+ {id:"X",n:"Resto del mundo",e:"🌎",c:"#0072B2",x:545,y:540}
+];
+function ag(id){for(var i=0;i<AG.length;i++)if(AG[i].id===id)return AG[i];}
+var FL=[
+ ["he1","E","H","r","Bienes y servicios","Mercado de bienes y servicios","El producto del emprendimiento llega al cliente."],
+ ["he2","H","E","d","Gasto de consumo","Mercado de bienes y servicios","Lo que paga el cliente: son las ventas del emprendimiento."],
+ ["he3","H","E","r","Trabajo y otros factores de producción","Mercado de factores","Las horas de trabajo de quienes laboran en el emprendimiento."],
+ ["he4","E","H","d","Sueldos, arriendos, intereses y utilidades","Mercado de factores","Los sueldos del personal y las utilidades de los dueños."],
+ ["hg1","H","G","d","Impuestos","","El IVA que pagan al comprar y el impuesto a la renta."],
+ ["hg2","G","H","d","Transferencias y sueldos públicos","","Un bono o el sueldo de un docente o de un médico público."],
+ ["hg3","G","H","r","Servicios públicos","","Educación, salud, seguridad y vías."],
+ ["hg4","H","G","r","Trabajo en el sector público","","Las horas de trabajo de los empleados públicos."],
+ ["eg1","E","G","d","Impuestos y contribuciones","","Impuesto a la renta y los aranceles que paga al importar."],
+ ["eg2","G","E","d","Compras públicas y subsidios","","Un contrato con una entidad pública."],
+ ["eg3","E","G","r","Bienes y servicios para el Estado","","Lo que el emprendimiento entrega a una entidad pública."],
+ ["hf1","H","F","d","Ahorro (depósitos)","","El dueño deposita parte de sus utilidades."],
+ ["hf2","F","H","d","Intereses y créditos de consumo","","Un crédito para la familia o los intereses que gana por ahorrar."],
+ ["ef1","F","E","d","Crédito para inversión","","Un préstamo para comprar una máquina."],
+ ["ef2","E","F","d","Pago de cuotas e intereses","","Las cuotas mensuales de ese préstamo."],
+ ["gf1","F","G","d","Financiamiento de la deuda pública","","Instituciones financieras compran bonos del Estado."],
+ ["gf2","G","F","d","Pago de intereses de la deuda","","El Estado paga intereses a quienes le prestaron."],
+ ["hx1","X","H","r","Bienes importados de consumo","","Un celular comprado en el extranjero."],
+ ["hx2","H","X","d","Pago de importaciones de consumo","","Lo que se paga por ese celular importado."],
+ ["hx3","X","H","d","Remesas","","Dinero que envía un familiar que vive afuera."],
+ ["ex1","E","X","r","Exportaciones","","El emprendimiento vende su producto en otro país."],
+ ["ex2","X","E","d","Ingresos por exportaciones","","El pago del cliente extranjero."],
+ ["ex3","X","E","r","Insumos y maquinaria importados","","Materia prima comprada afuera."],
+ ["ex4","E","X","d","Pago de importaciones de insumos","","Lo que paga el emprendimiento por esa materia prima."],
+ ["gx1","X","G","d","Préstamos externos y cooperación","","Un crédito de un organismo internacional al Estado."],
+ ["gx2","G","X","d","Pago de la deuda externa","","El Estado paga capital e intereses al exterior."],
+ ["fx1","X","F","d","Inversión y crédito del exterior","","Dinero del exterior que llega al sistema financiero del país."],
+ ["fx2","F","X","d","Salida de capitales e intereses al exterior","","Dinero del país que sale hacia el exterior."]
+].map(function(a){return{id:a[0],a:a[1],b:a[2],k:a[3],t:a[4],m:a[5],ex:a[6]};});
+function pk(a,b){return[a,b].sort(function(x,y){return ORD.indexOf(x)-ORD.indexOf(y);}).join("");}
+FL.forEach(function(f){f.p=pk(f.a,f.b);});
+function flowsOf(p){return FL.filter(function(f){return f.p===p;});}
+var DIMS=[["t","Tiempo"],["p","Producto o servicio"],["c","Cliente o proveedor"],["l","Lugar"]];
+var MEDS=["","Dólares","Unidades","Horas","Porcentaje","Otra"];
+var CLS=[
+ {t:"El precio del almuerzo sube cuando sube el costo del arroz.",n:"mi",p:"po",why:"Micro: se trata de un mercado y de lo que hacen sus vendedores. Positiva: describe una relación que se puede comprobar con datos."},
+ {t:"La inflación del país fue mayor este año que el año pasado.",n:"ma",p:"po",why:"Macro: mide el nivel general de precios de toda la economía. Positiva: se verifica con datos."},
+ {t:"Los restaurantes deberían bajar sus precios.",n:"mi",p:"no",why:"Micro: es una decisión de empresas en un mercado. Normativa: dice cómo debería ser, es un juicio de valor."},
+ {t:"El desempleo del país es demasiado alto.",n:"ma",p:"no",why:"Macro: es un resultado de toda la economía. Normativa: «demasiado» es un juicio de valor (la cifra del desempleo sí sería positiva)."},
+ {t:"Una panadería produce menos pan cuando sube el precio de la harina.",n:"mi",p:"po",why:"Micro: es la decisión de una empresa. Positiva: describe una relación que se puede comprobar."},
+ {t:"El PIB del país creció en el último trimestre.",n:"ma",p:"po",why:"Macro: mide la producción total del país. Positiva: se verifica con datos."},
+ {t:"Una familia debería gastar menos en ropa.",n:"mi",p:"no",why:"Micro: es una decisión de un hogar. Normativa: dice lo que debería hacer."},
+ {t:"El crecimiento de la economía del país es insuficiente.",n:"ma",p:"no",why:"Macro: se refiere a la economía en conjunto. Normativa: «insuficiente» es un juicio de valor."}
+];
+function lab(n,p){return(n==="mi"?"micro":"macro")+" y "+(p==="po"?"positiva":"normativa");}
+
+/* ---------------- estado ---------------- */
+var LSK="agentes_ING_v2";
+function fresh(){return {step:"historia",act:{H:true,E:true,G:false,F:false,X:false},sel:null,pend:null,added:null,adds:[],cls:{i:0,ans:{}},ver:"",mact:{H:true,E:true,G:false,F:false,X:false},biz:"",tbl:{},ex:false,msg:""};}
+function exState(){var f=fresh(),ans={};f.ex=true;f.act={H:true,E:true,G:true,F:true,X:true};f.mact={H:true,E:true,G:true,F:true,X:true};
+  CLS.forEach(function(c,i){ans[i]={n:c.n,p:c.p,ok:true};});f.cls={i:CLS.length-1,ans:ans};
+  f.adds=[{id:"G",pred:2,n:2,ok:true},{id:"F",pred:3,n:3,ok:true},{id:"X",pred:4,n:4,ok:true}];
+  f.ver="El flujo de dinero va en sentido contrario porque es el pago del flujo real: cuando una empresa entrega bienes y servicios a los hogares, los hogares le entregan dinero a cambio. Lo mismo ocurre con el trabajo, que se paga con sueldos.";
+  f.biz="Pastelería de ejemplo";
+  f.tbl={he1:{v:"Pasteles entregados",m:"Unidades",d:{t:1,p:1,c:1}},he2:{v:"Ventas del mes",m:"Dólares",d:{t:1,p:1}},he3:{v:"Horas de trabajo",m:"Horas",d:{t:1}},he4:{v:"Sueldos pagados",m:"Dólares",d:{t:1}},hg1:{v:"IVA pagado",m:"Dólares",d:{t:1}},ef1:{v:"Crédito para el horno",m:"Dólares",d:{t:1}},ex1:{v:"Pasteles exportados",m:"Unidades",d:{t:1,p:1,l:1}},ex2:{v:"Ingresos por exportación",m:"Dólares",d:{t:1,p:1,l:1}}};
+  return f;}
+var S=fresh();
+function nm(){return S.ex?"Estudiante de ejemplo":$("nombre").value.trim();}
+function load(){var f=fresh(),o=null;try{o=JSON.parse(localStorage.getItem(LSK)||"null");}catch(e){o=null;}
+  if(o&&o.v===2&&o.S){var k;for(k in f)if(o.S[k]!==undefined&&k!=="ex")f[k]=o.S[k];f.pend=null;f.added=null;f.msg="";S=f;$("nombre").value=o.name||"";}else{S=f;$("nombre").value="";}
+  $("nombre").readOnly=false;}
+function save(){if(S.ex)return;try{var o={v:2,name:$("nombre").value,S:{}},k;for(k in S)if(k!=="pend"&&k!=="added"&&k!=="msg")o.S[k]=S[k];localStorage.setItem(LSK,JSON.stringify(o));}catch(e){}}
+function actOf(a){return AG.filter(function(x){return a[x.id];});}
+function pairsOf(a){var l=actOf(a),r=[],i,j;for(i=0;i<l.length;i++)for(j=i+1;j<l.length;j++)r.push(pk(l[i].id,l[j].id));return r;}
+function flowsAct(a){var r=[];pairsOf(a).forEach(function(p){r=r.concat(flowsOf(p));});return r;}
+function pname(p){return ag(p.charAt(0)).n+" ↔ "+ag(p.charAt(1)).n;}
+function pnamePdf(p){return ag(p.charAt(0)).n+" y "+ag(p.charAt(1)).n;}
+function isM(step){return step==="emprendimiento"||step==="entrega2";}
+function curAct(){return isM(S.step)?S.mact:S.act;}
+function done(f){var t=S.tbl[f.id];return !!(t&&t.v&&t.v.trim()&&t.m);}
+function nComp(){return flowsAct(S.mact).filter(done).length;}
+function words(s){var m=String(s).trim().match(/\S+/g);return m?m.length:0;}
+
+/* ---------------- dibujo ---------------- */
+var svg=$("plot");
+function drawNet(g,act,click){
+  var P=pairsOf(act);
+  P.forEach(function(p){
+    var a=ag(p.charAt(0)),b=ag(p.charAt(1)),sel=(click&&S.sel===p),n=flowsOf(p).length,mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    var gg=el("g",{"data-p":p,style:click?"cursor:pointer":""});
+    gg.appendChild(el("line",{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:sel?"var(--amber)":"var(--gray)","stroke-width":sel?7:3}));
+    if(click)gg.appendChild(el("line",{x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:"transparent","stroke-width":26}));
+    gg.appendChild(el("circle",{cx:mx,cy:my,r:17,fill:sel?"var(--amber)":"var(--bg)",stroke:sel?"var(--amber)":"var(--gray)","stroke-width":3}));
+    TX(gg,mx,my+7,String(n),{a:"middle",s:19,b:true,c:sel?"#FFFFFF":"var(--ink)"});
+    if(click)gg.addEventListener("click",function(){choose(p);});
+    g.appendChild(gg);
+  });
+  AG.forEach(function(a){
+    if(!act[a.id])return;
+    var gg=el("g",{});if(click&&S.added===a.id)gg.setAttribute("class","pop");
+    gg.appendChild(el("rect",{x:a.x-98,y:a.y-30,width:196,height:60,rx:14,fill:a.c}));
+    TX(gg,a.x,a.y+7,a.e+" "+a.n,{a:"middle",s:19,b:true,c:"#FFFFFF"});
+    g.appendChild(gg);
+  });
+  if(!P.length)TX(g,380,320,"Activa al menos dos agentes",{a:"middle",s:20,c:"var(--gray)"});
+  TX(g,20,606,click?"El número es la cantidad de flujos entre dos agentes. Toca uno para verlos.":"El número es la cantidad de flujos posibles entre dos agentes de tu negocio.",{s:15,c:"var(--gray)"});
+}
+function drawQuad(g){
+  var X0=70,Y0=70,W=310,H=210,labs=[["Micro","Positiva"],["Macro","Positiva"],["Micro","Normativa"],["Macro","Normativa"]],i;
+  TX(g,40,34,"¿Dónde cae cada afirmación?",{s:20,b:true});
+  for(i=0;i<4;i++){var cx=X0+(i%2)*W,cy=Y0+Math.floor(i/2)*H;
+    g.appendChild(el("rect",{x:cx,y:cy,width:W-8,height:H-8,rx:10,fill:"var(--navybg)",stroke:"var(--navy)","stroke-width":2}));
+    TX(g,cx+12,cy+28,labs[i][0]+" · "+labs[i][1],{s:17,b:true,c:"var(--navy)"});}
+  var cnt=[0,0,0,0];
+  CLS.forEach(function(c,k){var a=S.cls.ans[k];if(!a)return;
+    var q=(c.n==="ma"?1:0)+(c.p==="no"?2:0),cx2=X0+(q%2)*W+40+cnt[q]*62,cy2=Y0+Math.floor(q/2)*H+110;cnt[q]++;
+    g.appendChild(el("circle",{cx:cx2,cy:cy2,r:24,fill:a.ok?"#2E7D32":"#B34700"}));
+    TX(g,cx2,cy2+8,String(k+1),{a:"middle",s:22,b:true,c:"#FFFFFF"});});
+  TX(g,40,520,"Verde: acertaste las dos. Naranja: revisa la explicación.",{s:16,c:"var(--gray)"});
+}
+function render(){while(svg.firstChild)svg.removeChild(svg.firstChild);var g=el("g",{}),a=curAct();svg.appendChild(g);
+  if(S.step==="clasificar")drawQuad(g);else drawNet(g,a,!isM(S.step));
+  $("k-ag").textContent=actOf(a).length;$("k-pa").textContent=pairsOf(a).length;$("k-fl").textContent=flowsAct(a).length;}
+
+/* ---------------- listas de requisitos ---------------- */
+function reqs1(){var k,n=0;for(k in S.cls.ans)n++;
+  return [[S.ex||nm().length>=5,"Tu nombre completo está escrito (arriba)"],[n===CLS.length,"Respondiste las "+CLS.length+" afirmaciones de «Clasificar» ("+n+")"],[actOf(S.act).length>=3,"En «Agentes» activaste al menos 3 agentes ("+actOf(S.act).length+")"],[words(S.ver)>=20,"Tu respuesta de verificación tiene al menos 20 palabras ("+words(S.ver)+")"]];}
+function reqs2(){return [[S.ex||nm().length>=5,"Tu nombre completo está escrito (arriba)"],[S.biz.trim().length>=3,"Escribiste el nombre de tu emprendimiento"],[nComp()>=4,"Completaste al menos 4 flujos con variable y medida ("+nComp()+")"]];}
+function listHtml(r){return r.map(function(x){return '<li><span class="sym '+(x[0]?"ok":"no")+'">'+(x[0]?"✓":"○")+"</span>"+esc(x[1])+"</li>";}).join("");}
+function updReq(w){var r=w===1?reqs1():reqs2(),ok=r.every(function(x){return x[0];}),u=$("reqs"+w),b=$("dl"+w);if(u)u.innerHTML=listHtml(r);if(b)b.disabled=!ok;
+  if(w===2){var c=$("cnt");if(c)c.textContent="Completos: "+nComp()+" de "+flowsAct(S.mact).length+" flujos de tu negocio.";}}
+function deliverBox(w){var sub="Agentes y flujos · Parte "+w+" · Ingeniería";
+  return '<p><strong>Cómo entregar.</strong> Esta página no envía nada. Descarga el PDF y envíalo a <span class="mail">'+MAIL+'</span> con el asunto «<span id="subj'+w+'">'+esc(sub)+'</span> · tu nombre».</p><div class="row"><button data-cpm="'+w+'">Copiar correo</button><button data-cps="'+w+'">Copiar asunto</button></div><div class="hint" id="cpmsg'+w+'" aria-live="polite"></div>';}
+
+/* ---------------- paneles ---------------- */
+function flowCard(f){return '<div class="fl '+(f.k==="r"?"real":"din")+'"><span class="rt">'+(f.k==="r"?"📦 Flujo real":"💵 Flujo de dinero")+'</span> · <strong>'+esc(ag(f.a).n)+" → "+esc(ag(f.b).n)+'</strong><br>'+esc(f.t)+(f.m?' <span class="tag">('+esc(f.m)+')</span>':"")+'<br><span class="hint">Ejemplo: '+esc(f.ex)+'</span></div>';}
+function pHistoria(){return '<section class="sec"><h2>La historia: un negocio entre muchos agentes</h2><p>Piensa en un emprendimiento. Alguien le compra, alguien trabaja en él, alguien le cobra impuestos, alguien le presta dinero y alguien le compra o le vende desde otro país. Cada uno es un <strong>agente</strong>, y entre ellos circulan <strong>flujos reales</strong> (bienes, servicios, trabajo) y <strong>flujos de dinero</strong>.</p><p><strong>Parte 1 · Teoría:</strong> clasificas afirmaciones, añades agentes y exploras los flujos. Al final descargas un PDF (Entrega 1).</p><p><strong>Parte 2 · Emprendimiento:</strong> eliges los agentes de tu negocio y anotas variable, medida y dimensiones de sus flujos. Al final descargas otro PDF (Entrega 2).</p><div class="row"><button data-go="clasificar">Parte 1: empezar →</button><button data-go="emprendimiento">Parte 2: ir a mi emprendimiento →</button></div><p class="hint">Tu avance se guarda solo en este dispositivo. No se envía nada automáticamente.</p><div class="row"><button data-example="1">Cargar ejemplo completo (para probar)</button></div></section>';}
+function pClas(){
+  var i=S.cls.i,c=CLS[i],a=S.cls.ans[i],dn=Object.keys(S.cls.ans).length,ok=0,k;for(k in S.cls.ans)if(S.cls.ans[k].ok)ok++;
+  var h='<section class="sec"><h2>Clasificar: micro o macro, positiva o normativa</h2><p class="hint">Micro estudia las decisiones de hogares, empresas y mercados concretos. Macro estudia la economía en conjunto (inflación, desempleo, PIB). Positiva describe cómo es algo y se puede comprobar con datos. Normativa dice cómo debería ser: es un juicio de valor.</p>';
+  h+='<p><strong>Afirmación '+(i+1)+' de '+CLS.length+'</strong> · aciertos: '+ok+' de '+dn+'</p><p class="stm">«'+esc(c.t)+'»</p>';
+  h+='<fieldset class="pred"><legend>Tu predicción</legend><div class="row"><label><input type="radio" name="cn" value="mi"'+(a&&a.n==="mi"?" checked":"")+'> Micro</label><label><input type="radio" name="cn" value="ma"'+(a&&a.n==="ma"?" checked":"")+'> Macro</label></div><div class="row"><label><input type="radio" name="ct" value="po"'+(a&&a.p==="po"?" checked":"")+'> Positiva</label><label><input type="radio" name="ct" value="no"'+(a&&a.p==="no"?" checked":"")+'> Normativa</label></div></fieldset>';
+  h+='<div class="row"><button data-cchk="1"'+(a?" disabled":"")+'>Comprobar</button>'+(a&&i<CLS.length-1?'<button data-cnext="1">Siguiente →</button>':"")+(i>0?'<button data-cprev="1">← Anterior</button>':"")+'</div>';
+  h+='<div class="res" aria-live="polite">'+(a?(a.ok?'<span class="ok"><span class="sym">★</span><strong>Correcto.</strong></span> ':'<span class="no"><strong>Revisa:</strong></span> Es '+lab(c.n,c.p)+". ")+esc(c.why):"Elige nivel y tipo, y pulsa «Comprobar».")+(dn===CLS.length?'<br><strong>Terminaste: '+ok+' de '+CLS.length+' bien.</strong> Sigue con <button data-go="agentes">Agentes →</button>':"")+'</div></section>';
+  return h;}
+function pAg(){
+  var L=actOf(S.act),n=L.length,h='<section class="sec"><h2>Los agentes y sus vínculos</h2><p class="hint">Añade agentes uno por uno. Antes de añadir, predice cuántos vínculos nuevos aparecerán.</p>';
+  AG.forEach(function(a){var on=S.act[a.id];h+='<div class="ag"><span class="nm">'+a.e+" "+esc(a.n)+'</span><span class="st">'+(on?"activo":"fuera")+'</span>'+(on?'<button data-rm="'+a.id+'"'+(n<=2?" disabled":"")+'>Quitar</button>':'<button data-add="'+a.id+'">Añadir</button>')+'</div>';});
+  if(S.pend){var m=n,o=[m,m+2,m>1?m-1:m+1].sort(function(x,y){return x-y;});
+    h+='<fieldset class="pred"><legend>Antes de añadir '+esc(ag(S.pend).n)+': ¿cuántos vínculos nuevos aparecen?</legend>';
+    o.forEach(function(v){h+='<label><input type="radio" name="pn" value="'+v+'"> '+v+(v===1?" vínculo":" vínculos")+'</label>';});
+    h+='<div class="row"><button data-go-add="1">Añadir y ver</button><button data-cancel="1">Cancelar</button></div></fieldset>';}
+  h+='<div class="res" aria-live="polite" id="agres">'+(S.msg||"Toca un vínculo del diagrama o de la lista para ver sus flujos.")+'</div>';
+  h+='<h3>Vínculos activos</h3>';pairsOf(S.act).forEach(function(p){h+='<button class="pairbtn'+(S.sel===p?" act":"")+'" data-pair="'+p+'">'+esc(pname(p))+" · "+flowsOf(p).length+" flujos</button>";});
+  if(S.sel&&pairsOf(S.act).indexOf(S.sel)>=0){h+='<h3>'+esc(pname(S.sel))+'</h3>';flowsOf(S.sel).forEach(function(f){h+=flowCard(f);});h+='<p class="hint">Fíjate: los flujos de dinero van en sentido contrario a los flujos reales que pagan.</p>';}
+  h+='<div class="row"><button data-go="entrega1">Ir a la Entrega 1 →</button></div></section>';return h;}
+function pEnt1(){
+  var ok=0,k;for(k in S.cls.ans)if(S.cls.ans[k].ok)ok++;
+  var h='<section class="sec"><h2>Entrega 1 · Teoría</h2><p>Tu PDF resume la clasificación ('+ok+' de '+CLS.length+' bien), los agentes que añadiste con tus predicciones y tu respuesta de verificación.</p>';
+  h+='<p><strong>Verificación.</strong> Explica con tus palabras: ¿por qué un flujo de dinero va siempre en sentido contrario a un flujo real? (mínimo 20 palabras)</p><textarea id="ver" spellcheck="false" aria-label="Respuesta de verificación">'+esc(S.ver)+'</textarea>';
+  h+='<ul class="checks" id="reqs1"></ul><div class="row"><button data-dl="1" id="dl1">Descargar PDF de la Entrega 1</button></div><div class="res" id="res-dl1" aria-live="polite"></div>'+deliverBox(1)+'</section>';return h;}
+function pEmp(){
+  var F=flowsAct(S.mact),h='<section class="sec"><h2>Mi emprendimiento</h2><p>Elige los agentes que participan en tu negocio y, para cada flujo que exista, escribe la <strong>variable</strong>, su <strong>medida</strong> (qué se cuenta) y sus <strong>dimensiones</strong> (por qué se puede separar). Si un flujo no existe en tu negocio, déjalo en blanco.</p>';
+  h+='<div class="row"><label for="biz">Mi emprendimiento</label><input type="text" id="biz" maxlength="60" autocomplete="off" value="'+esc(S.biz)+'" placeholder="Ej.: pastelería de mi tía"></div>';
+  h+='<h3>Agentes de mi negocio</h3><div class="dims">';
+  AG.forEach(function(a){h+='<label><input type="checkbox" data-ma="'+a.id+'"'+(S.mact[a.id]?" checked":"")+'> '+a.e+" "+esc(a.n)+'</label>';});
+  h+='</div>';
+  var last="";
+  F.forEach(function(f){var t=S.tbl[f.id]||{v:"",m:"",d:{}};
+    if(f.p!==last){h+='<h3>'+esc(pname(f.p))+'</h3>';last=f.p;}
+    h+='<div class="fl '+(f.k==="r"?"real":"din")+'"><span class="rt">'+(f.k==="r"?"📦":"💵")+'</span> <strong>'+esc(ag(f.a).n)+" → "+esc(ag(f.b).n)+'</strong>: '+esc(f.t)+'<div class="row"><input type="text" data-v="'+f.id+'" maxlength="60" autocomplete="off" placeholder="Variable (ej.: ventas del mes)" value="'+esc(t.v)+'"><select data-m="'+f.id+'" aria-label="Medida">';
+    MEDS.forEach(function(m){h+='<option value="'+m+'"'+(t.m===m?" selected":"")+'>'+(m||"Medida…")+'</option>';});
+    h+='</select></div><div class="dims">';
+    DIMS.forEach(function(d){h+='<label><input type="checkbox" data-d="'+f.id+':'+d[0]+'"'+(t.d&&t.d[d[0]]?" checked":"")+'> '+d[1]+'</label>';});
+    h+='</div></div>';});
+  h+='<p><strong id="cnt">Completos: '+nComp()+' de '+F.length+' flujos de tu negocio.</strong></p><div class="row"><button data-go="entrega2">Ir a la Entrega 2 →</button></div></section>';
+  return h;}
+function pEnt2(){
+  var h='<section class="sec"><h2>Entrega 2 · Mi emprendimiento</h2><p>Tu PDF incluye el nombre de tu emprendimiento, los agentes de tu negocio y los flujos que completaste, con su variable, medida y dimensiones.</p><p><strong>Emprendimiento:</strong> '+esc(S.biz||"(sin nombre)")+'</p><p><strong id="cnt">Completos: '+nComp()+' de '+flowsAct(S.mact).length+' flujos de tu negocio.</strong></p>';
+  h+='<ul class="checks" id="reqs2"></ul><div class="row"><button data-dl="2" id="dl2">Descargar PDF de la Entrega 2</button><button data-copy="1">Mostrar tabla para copiar</button></div><div class="res" id="res-dl2" aria-live="polite"></div><div id="cpbox"></div>'+deliverBox(2)+'</section>';return h;}
+function pInstr(){return '<section class="sec"><h2>Instrucciones</h2><ol><li><strong>Parte 1 · Teoría.</strong> «Clasificar»: elige micro o macro y positiva o normativa. «Agentes»: añade agentes, predice cuántos vínculos nuevos aparecen y mira los flujos de cada vínculo. «Entrega 1»: responde la verificación y descarga el PDF.</li><li><strong>Parte 2 · Emprendimiento.</strong> «Mi emprendimiento»: elige los agentes de tu negocio y anota variable, medida y dimensiones de cada flujo. «Entrega 2»: descarga el PDF.</li><li><strong>Enviar.</strong> Esta página no envía nada: descarga cada PDF y envíalo al correo indicado en la pestaña de entrega.</li></ol><p><strong>Medida y dimensión.</strong> La medida es lo que se cuenta o se suma (dólares, unidades, horas). Las dimensiones son las formas de separar esa medida (por mes, por producto, por cliente, por lugar). Es la forma de ordenar datos que usarás en el proyecto de inteligencia de negocios.</p><p><strong>Ejemplo.</strong> En «Historia» puedes cargar un ejemplo completo para probar las descargas. Los PDF del ejemplo dicen «EJEMPLO» y no sirven para entregar.</p><p><strong>Límites.</strong> Es una versión ampliada: los textos de macroeconomía suelen mostrar menos agentes y menos flechas. Aquí cada par de agentes tiene al menos un flujo para poder explorarlos todos. Los ejemplos son ilustrativos y no son datos reales.</p><p><strong>Privacidad.</strong> Lo que escribes se guarda solo en este dispositivo.</p></section>';}
+function panel(){var b=$("body"),h,s=S.step;
+  if(s==="clasificar")h=pClas();else if(s==="agentes")h=pAg();else if(s==="entrega1")h=pEnt1();else if(s==="emprendimiento")h=pEmp();else if(s==="entrega2")h=pEnt2();else if(s==="instrucciones")h=pInstr();else h=pHistoria();
+  b.innerHTML=h;if(s==="entrega1")updReq(1);if(s==="entrega2")updReq(2);}
+function updMode(){var b=$("modebar");b.innerHTML="";
+  if(S.ex){b.className="modebar";var t=document.createElement("span"),bt=document.createElement("button");t.textContent="Modo ejemplo: todo está completo para probar. Los PDF dicen EJEMPLO.";bt.textContent="Salir del ejemplo";
+    bt.addEventListener("click",function(){load();$("nombre").readOnly=false;show("historia");});b.appendChild(t);b.appendChild(bt);$("nombre").value="Estudiante de ejemplo";$("nombre").readOnly=true;}
+  else b.className="modebar hidden";}
+var STEPS=["historia","clasificar","agentes","entrega1","emprendimiento","entrega2","instrucciones"];
+function show(step){S.step=step;updMode();STEPS.forEach(function(s){$("b-"+s).classList.toggle("act",s===step);});
+  panel();render();if(history.replaceState){try{history.replaceState(null,"","#"+step);}catch(e){}}}
+function again(){panel();render();}
+function choose(p){S.sel=p;show("agentes");}
+
+/* ---------------- PDF ---------------- */
+function pdf1(){
+  var B=[],ok=0,k,code="AGF1-"+h32(JSON.stringify([nm(),S.cls.ans,S.adds,S.act,S.ver])).slice(0,8);
+  for(k in S.cls.ans)if(S.cls.ans[k].ok)ok++;
+  B.push({k:"h1",s:"Agentes y flujos · Parte 1: teoría"+(S.ex?" (EJEMPLO)":"")},{k:"small",s:"Principios de economía · Ingeniería · Universidad Indoamérica"},{k:"p",s:"Nombre: "+nm()},{k:"p",s:"Fecha: "+new Date().toLocaleString("es-EC")+"   Código del informe: "+code});
+  if(S.ex)B.push({k:"p",s:"EJEMPLO: archivo de prueba, no es válido para entregar."});
+  B.push({k:"gap"},{k:"h2",s:"1. Clasificación (micro o macro, positiva o normativa)"});
+  CLS.forEach(function(c,i){var a=S.cls.ans[i];B.push({k:"li",s:(i+1)+". «"+c.t+"» Tu respuesta: "+(a?lab(a.n,a.p):"sin responder")+(a?(a.ok?" (correcta)":" (lo correcto era: "+lab(c.n,c.p)+")"):"")});});
+  B.push({k:"p",s:"Aciertos: "+ok+" de "+CLS.length+"."},{k:"gap"},{k:"h2",s:"2. Agentes y vínculos"},{k:"p",s:"Agentes de partida: Hogares y Empresas."});
+  S.adds.forEach(function(a){B.push({k:"li",s:"Añadiste a "+ag(a.id).n+": predijiste "+a.pred+(a.pred===1?" vínculo nuevo":" vínculos nuevos")+" y aparecieron "+a.n+(a.ok?" (correcto).":" (revisar).")});});
+  var A=actOf(S.act);
+  B.push({k:"p",s:"Agentes activos al final: "+A.map(function(x){return x.n;}).join(", ")+". Vínculos: "+pairsOf(S.act).length+". Flujos: "+flowsAct(S.act).length+"."},{k:"gap"},{k:"h2",s:"3. Verificación"},{k:"p",s:"¿Por qué un flujo de dinero va siempre en sentido contrario a un flujo real?"},{k:"p",s:S.ver},{k:"gap"},
+    {k:"small",s:"Medida: lo que se cuenta o suma. Dimensión: forma de separar esa medida. Ejemplos de flujos ilustrativos, no son datos reales."});
+  return {B:B,foot:"Agentes y flujos - Parte 1 - "+code};}
+function pdf2(){
+  var B=[],code="AGF2-"+h32(JSON.stringify([nm(),S.biz,S.tbl,S.mact])).slice(0,8),F=flowsAct(S.mact),A=actOf(S.mact);
+  B.push({k:"h1",s:"Agentes y flujos · Parte 2: mi emprendimiento"+(S.ex?" (EJEMPLO)":"")},{k:"small",s:"Principios de economía · Ingeniería · Universidad Indoamérica"},{k:"p",s:"Nombre: "+nm()},{k:"p",s:"Emprendimiento: "+S.biz},{k:"p",s:"Fecha: "+new Date().toLocaleString("es-EC")+"   Código del informe: "+code});
+  if(S.ex)B.push({k:"p",s:"EJEMPLO: archivo de prueba, no es válido para entregar."});
+  B.push({k:"gap"},{k:"h2",s:"1. Agentes de mi negocio"},{k:"p",s:A.map(function(x){return x.n;}).join(", ")+"."},{k:"gap"},{k:"h2",s:"2. Flujos de mi negocio: variable, medida y dimensiones"});
+  var last="",c=0;
+  F.forEach(function(f){if(!done(f))return;var t=S.tbl[f.id],ds=DIMS.filter(function(d){return t.d&&t.d[d[0]];}).map(function(d){return d[1];}).join(", ");
+    if(f.p!==last){B.push({k:"p",s:pnamePdf(f.p)+":"});last=f.p;}
+    B.push({k:"li",s:f.t+" ("+ag(f.a).n+" -> "+ag(f.b).n+", "+(f.k==="r"?"flujo real":"flujo de dinero")+"): variable «"+t.v.trim()+"»; medida: "+t.m+"; dimensiones: "+(ds||"sin indicar")+"."});c++;});
+  B.push({k:"p",s:"Flujos completos: "+c+" de "+F.length+"."},{k:"gap"},{k:"small",s:"Medida: lo que se cuenta o suma (dólares, unidades, horas). Dimensión: forma de separar esa medida (tiempo, producto, cliente, lugar)."});
+  return {B:B,foot:"Agentes y flujos - Parte 2 - "+code};}
+function doDl(w){var ok=(w===1?reqs1():reqs2()).every(function(x){return x[0];});if(!ok)return;
+  var r=w===1?pdf1():pdf2(),u=makePdf(r.B,r.foot),fn="Agentes_y_flujos_Parte"+w+"_"+fileSafe(nm())+(S.ex?"_EJEMPLO":"")+".pdf",rs=$("res-dl"+w);
+  rs.innerHTML="Preparando el PDF… Si aparece una ventana de confirmación, acéptala.";
+  savePdf(u,fn,function(st){rs.innerHTML=dlStatus(st,esc(fn),MAIL)+(st==="saved"?"":fallbackBox(blocksText(r.B)));wireCopy(rs);});}
+function copyTxt(t,okmsg,box){var done=function(){box.textContent=okmsg;},fail=function(){box.textContent="No se pudo copiar. Escríbelo a mano: "+t;};
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fail);}else fail();}catch(e){fail();}}
+
+/* ---------------- eventos ---------------- */
+document.querySelectorAll("nav button[data-step]").forEach(function(b){b.addEventListener("click",function(){show(b.getAttribute("data-step"));});});
+$("body").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||b.disabled)return;var v;
+  if((v=b.getAttribute("data-go"))){show(v);return;}
+  if(b.hasAttribute("data-example")){S=exState();$("nombre").value="Estudiante de ejemplo";show("historia");return;}
+  if((v=b.getAttribute("data-add"))){S.pend=v;S.msg="";again();return;}
+  if(b.hasAttribute("data-cancel")){S.pend=null;again();return;}
+  if((v=b.getAttribute("data-rm"))){S.act[v]=false;S.added=null;if(S.sel&&S.sel.indexOf(v)>=0)S.sel=null;S.msg="Quitaste a "+ag(v).n+". Los vínculos con ese agente desaparecen.";again();return;}
+  if(b.hasAttribute("data-go-add")){var c=document.querySelector("input[name=pn]:checked");if(!c){$("agres").innerHTML='<span class="no"><strong>Primero elige tu predicción</strong></span> en el recuadro punteado.';return;}
+    var n=actOf(S.act).length,id=S.pend,pr=parseInt(c.value,10),good=(pr===n);S.act[id]=true;S.added=id;S.pend=null;S.adds.push({id:id,pred:pr,n:n,ok:good});
+    S.msg=(good?'<span class="ok"><span class="sym">★</span><strong>Predijiste bien.</strong></span> ':'<span class="no"><strong>Piénsalo de nuevo:</strong></span> ')+"Cada agente nuevo se conecta con todos los que ya están. Se agregaron "+n+(n===1?" vínculo":" vínculos")+" y ahora hay "+pairsOf(S.act).length+" en total.";again();return;}
+  if((v=b.getAttribute("data-pair"))){S.sel=v;again();return;}
+  if(b.hasAttribute("data-cchk")){var a=document.querySelector("input[name=cn]:checked"),t=document.querySelector("input[name=ct]:checked");
+    if(!a||!t){var rs=document.querySelector("#body .res");if(rs)rs.innerHTML='<span class="no"><strong>Elige nivel y tipo</strong></span> en el recuadro punteado.';return;}var c2=CLS[S.cls.i];S.cls.ans[S.cls.i]={n:a.value,p:t.value,ok:(a.value===c2.n&&t.value===c2.p)};again();return;}
+  if(b.hasAttribute("data-cnext")){S.cls.i=Math.min(CLS.length-1,S.cls.i+1);again();return;}
+  if(b.hasAttribute("data-cprev")){S.cls.i=Math.max(0,S.cls.i-1);again();return;}
+  if((v=b.getAttribute("data-dl"))){doDl(parseInt(v,10));return;}
+  if((v=b.getAttribute("data-cpm"))){copyTxt(MAIL,"Correo copiado.",$("cpmsg"+v));return;}
+  if((v=b.getAttribute("data-cps"))){copyTxt("Agentes y flujos · Parte "+v+" · Ingeniería · "+nm(),"Asunto copiado.",$("cpmsg"+v));return;}
+  if(b.hasAttribute("data-copy")){var F=flowsAct(S.mact),rows=["Emprendimiento\t"+S.biz,"De\tA\tTipo\tFlujo\tVariable\tMedida\tDimensiones"];
+    F.forEach(function(f){if(!done(f))return;var t2=S.tbl[f.id],ds=DIMS.filter(function(d){return t2.d&&t2.d[d[0]];}).map(function(d){return d[1];}).join(", ");
+      rows.push([ag(f.a).n,ag(f.b).n,f.k==="r"?"real":"dinero",f.t,t2.v,t2.m,ds].join("\t"));});
+    var txt=rows.join("\n"),box=$("cpbox");box.innerHTML='<textarea id="cptx" readonly aria-label="Tabla para copiar"></textarea><div class="hint" id="cpmsg0"></div>';$("cptx").value=txt;copyTxt(txt,"Tabla copiada.",$("cpmsg0"));return;}
+});
+$("body").addEventListener("input",function(e){var t=e.target,v;
+  if(t.id==="ver"){S.ver=t.value;updReq(1);return;}
+  if(t.id==="biz"){S.biz=t.value;return;}
+  if((v=t.getAttribute&&t.getAttribute("data-v"))){S.tbl[v]=S.tbl[v]||{v:"",m:"",d:{}};S.tbl[v].v=t.value;var c=$("cnt");if(c)c.textContent="Completos: "+nComp()+" de "+flowsAct(S.mact).length+" flujos de tu negocio.";}});
+$("body").addEventListener("change",function(e){var t=e.target,v;
+  if((v=t.getAttribute&&t.getAttribute("data-m"))){S.tbl[v]=S.tbl[v]||{v:"",m:"",d:{}};S.tbl[v].m=t.value;var c=$("cnt");if(c)c.textContent="Completos: "+nComp()+" de "+flowsAct(S.mact).length+" flujos de tu negocio.";}
+  else if((v=t.getAttribute&&t.getAttribute("data-d"))){var p=v.split(":");S.tbl[p[0]]=S.tbl[p[0]]||{v:"",m:"",d:{}};S.tbl[p[0]].d[p[1]]=t.checked;}
+  else if((v=t.getAttribute&&t.getAttribute("data-ma"))){S.mact[v]=t.checked;if(actOf(S.mact).length<2){S.mact[v]=true;}again();}});
+$("nombre").addEventListener("input",function(){if(S.step==="entrega1")updReq(1);if(S.step==="entrega2")updReq(2);});
+var rt=null;
+$("reset").addEventListener("click",function(){
+  if(!rt){this.textContent="¿Seguro? Borra todo";rt=setTimeout(function(){$("reset").textContent="Reiniciar";rt=null;},4000);return;}
+  clearTimeout(rt);rt=null;this.textContent="Reiniciar";try{localStorage.removeItem(LSK);}catch(e){}S=fresh();$("nombre").value="";$("nombre").readOnly=false;show("historia");});
+["click","input","change"].forEach(function(ev){document.addEventListener(ev,function(){setTimeout(save,0);},true);});
+function fromHash(){var h=(location.hash||"").replace("#","");return STEPS.indexOf(h)>=0?h:"historia";}
+window.addEventListener("hashchange",function(){show(fromHash());});
+load();show(fromHash());
+})();
+</script>
+</body>
+</html>
