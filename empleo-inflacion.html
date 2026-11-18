@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><script>/* Descarga directa fuera de Claude (GitHub Pages) */
+(function(){if(window.claude&&typeof window.claude.use==='function')return;
+function save(o){o=o||{};var n=o.filename||'archivo.pdf',d=o.data,t=/\.pdf$/i.test(n)?'application/pdf':(/\.txt$/i.test(n)?'text/plain':'application/octet-stream');
+var b=(d instanceof Blob)?d:new Blob([d],{type:t});var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;a.rel='noopener';
+document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},60000);return Promise.resolve({status:'delivered'})}
+window.claude={use:function(x){return Promise.resolve(x==='downloads'?{save:save}:null)}};})();
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Applet · Empleo e inflación</title>
+<style>
+:root{--bg:#f6f8fc;--fg:#1b1b1b;--mut:#595959;--card:#fff;--bd:#d5dcec;--ac:#1f3a8a;--acfg:#fff;--soft:#eef2fb;--ok:#2e7d32;--bad:#b3261e;--warn:#c05a00;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141d;--fg:#e8ebf3;--mut:#a7afc2;--card:#181e2b;--bd:#2c3550;--ac:#8fb0ff;--acfg:#10141d;--soft:#1e2640;--ok:#7bd88f;--bad:#ff8a80;--warn:#ffb067}}
+:root[data-theme="dark"]{--bg:#10141d;--fg:#e8ebf3;--mut:#a7afc2;--card:#181e2b;--bd:#2c3550;--ac:#8fb0ff;--acfg:#10141d;--soft:#1e2640;--ok:#7bd88f;--bad:#ff8a80;--warn:#ffb067}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:.2rem 0}h2{font-size:1.15rem;margin:.2rem 0 .6rem}h3{font-size:1rem;margin:.8rem 0 .3rem}
+.sub{color:var(--mut);margin:0 0 .8rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:12px 0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+label{display:block;font-size:.85rem;color:var(--mut);margin-bottom:2px}
+input,select,textarea{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px}
+textarea{min-height:70px;resize:vertical}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--ac);background:var(--ac);color:var(--acfg);padding:8px 14px}
+button.sec{background:transparent;color:var(--ac)}button.sm{padding:4px 10px;font-size:.85rem}
+button:disabled{opacity:.45;cursor:not-allowed}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.tabs button{background:transparent;color:var(--ac)}.tabs button.on{background:var(--ac);color:var(--acfg)}
+.ev{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.ev button{text-align:left;background:var(--soft);color:var(--fg);border:1px solid var(--bd)}.ev button.on{border-color:var(--ac);outline:2px solid var(--ac)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{border:1px solid var(--bd);padding:6px 8px;text-align:right}
+th{background:var(--soft)}td:first-child,th:first-child{text-align:left}
+.tw{overflow-x:auto}.seg{display:flex;gap:4px}.seg button{padding:4px 10px;font-size:.85rem;background:transparent;color:var(--ac)}.seg button.on{background:var(--ac);color:var(--acfg)}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.note{font-size:.85rem;color:var(--mut)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ac);color:var(--acfg);padding:8px 14px;border-radius:8px;display:none;z-index:9}
+.prob{border-left:4px solid var(--ac);padding-left:10px;margin:12px 0}
+.fx{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);border:1px solid var(--bd);padding:2px 8px;border-radius:6px;display:inline-block;margin:2px 0}
+.ex{background:var(--soft);border-left:4px solid var(--warn);padding:8px 12px;border-radius:6px;margin:8px 0}
+.fl td:first-child{width:34%}.fl td,.fl th{text-align:left}
+#printDoc{display:none}
+@media print{body>*:not(#printDoc){display:none!important}#printDoc{display:block;color:#000;background:#fff}#printDoc table{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Empleo e inflación</h1>
+<p class="sub">Macroeconomía · Cuarto nivel · Negocios Internacionales · Universidad Indoamérica. Trabajo en equipo: predigan, muevan, comprueben y expliquen. El progreso se guarda en este navegador.</p>
+
+<div class="card"><h2>Mis datos</h2>
+<div class="grid">
+<div><label for="equipo">Nombre o número del equipo</label><input id="equipo"></div>
+<div><label for="nombre">Tu nombre y apellidos (quien descarga)</label><input id="nombre" autocomplete="name"></div>
+<div><label for="pais">País de la ficha macro del equipo</label><input id="pais"></div>
+</div>
+<div style="margin-top:10px"><label for="integrantes">Integrantes del equipo (un nombre por línea)</label><textarea id="integrantes" placeholder="Ana Pérez&#10;Luis Mora&#10;…"></textarea></div>
+<p class="note">Estos datos aparecen en los PDF que descargues. No se envían a ningún servidor: quedan solo en este navegador.</p></div>
+
+<div class="tabs" id="tabs">
+<button data-t="ins" class="on">0 · Instrucciones</button><button data-t="form">1 · Fórmulas</button><button data-t="emp">2 · Empleo</button><button data-t="inf">3 · Inflación</button><button data-t="hoja">4 · Mi hoja personal</button><button data-t="reg">5 · Mi registro</button>
+</div>
+
+<section id="t-ins">
+<div class="card"><h2>Instrucciones</h2>
+<p>Este applet se trabaja <b>en equipo</b>. Sirve para practicar cómo se miden el empleo, el desempleo y la inflación: primero <b>predicen</b>, luego <b>comprueban</b> y al final <b>explican con sus palabras</b>.</p></div>
+
+<div class="card"><h2>Antes de empezar</h2>
+<ol>
+<li><b>Elijan a una persona</b> que maneje el applet. El avance se guarda en el navegador de ese dispositivo: si otro integrante abre el enlace en su teléfono, no verá el mismo avance.</li>
+<li>Llenen <b>«Mis datos»</b>: nombre o número del equipo, quién descarga, país de su ficha y los nombres de <b>todos</b> los integrantes.</li>
+<li>Tu <b>nombre completo</b> define las cifras de la pestaña «4 · Mi hoja personal»: escríbelo igual que en la lista del curso. No se pide ningún código ni número de identificación.</li>
+</ol></div>
+
+<div class="card"><h2>Qué hacer, paso a paso</h2>
+<ol start="1">
+<li><b>1 · Fórmulas.</b> Repasen las fórmulas y los ejemplos resueltos. Las necesitarán en los pasos siguientes.</li>
+<li><b>2 · Empleo.</b> Elijan un evento. Cada integrante propone una predicción y el equipo se pone de acuerdo en una por indicador. Pulsen «Comprobar», lean el resultado, <b>escriban una explicación del equipo</b> y guarden el ejercicio.</li>
+<li><b>3 · Inflación.</b> Elijan un choque de precios, escriban cuánto creen que sube el IPC, comprueben y expliquen. En la parte B comprueben qué pasa al cambiar el año base. Guarden cada ejercicio.</li>
+<li><b>4 · Mi hoja personal.</b> Es <b>individual</b>, no se hace en equipo. Cada estudiante descarga su hoja con su nombre, la resuelve a mano, con procedimiento, y la entrega en PDF.</li>
+<li><b>5 · Mi registro.</b> Revisen lo guardado y <b>descarguen el PDF del equipo</b>. Se entrega <b>un PDF por equipo</b>.</li>
+</ol></div>
+
+<div class="card"><h2>Qué se entrega y cuándo</h2>
+<div class="tw"><table class="fl">
+<tr><th>Entregable</th><th>Quién</th><th>Cuándo</th></tr>
+<tr><td>Registro del applet (PDF)</td><td>El equipo, un solo archivo</td><td>Cuando lo indique tu docente</td></tr>
+<tr><td>Hoja individual (PDF, resuelta a mano)</td><td>Cada estudiante</td><td><b>Lunes 16 de noviembre de 2026</b></td></tr>
+<tr><td>Ficha macro (hoja de cálculo)</td><td>El equipo</td><td><b>Martes 17 de noviembre de 2026</b></td></tr>
+</table></div></div>
+
+<div class="card"><h2>Reglas para trabajar bien</h2>
+<ul>
+<li><b>Predigan antes de comprobar.</b> Es un ejercicio de razonamiento: cambiar la predicción después de ver el resultado no les enseña nada.</li>
+<li><b>La explicación va con sus propias palabras</b> y es del equipo: todos deben poder explicarla.</li>
+<li>Los datos solo quedan en este navegador. <b>Descarguen el PDF antes de cerrar</b> la página o de cambiar de dispositivo.</li>
+<li>Si el botón de descarga no funciona, se abre el cuadro de impresión: elijan «Guardar como PDF».</li>
+</ul>
+<p class="note">Cuando terminen de leer, pasen a la pestaña «1 · Fórmulas».</p></div>
+</section>
+<section id="t-form" style="display:none">
+<div class="card"><h2>Cómo resolver cada ejercicio</h2>
+<ol>
+<li><b>Identifica los datos</b> y qué te piden.</li>
+<li><b>Escribe la fórmula</b> (abajo).</li>
+<li><b>Sustituye</b> los números y calcula.</li>
+<li><b>Redondea a 2 decimales</b> solo al final.</li>
+<li><b>Interpreta</b> en una frase: ¿qué significa el resultado?</li>
+</ol>
+<p class="note">Estas fórmulas sirven para el applet y para tu hoja personal. Las fórmulas de cada paso están agrupadas por tema.</p></div>
+
+<div class="card"><h2>A · Empleo y desempleo</h2>
+<div class="tw"><table class="fl">
+<tr><th>Qué calculas</th><th>Fórmula</th></tr>
+<tr><td>Población económicamente activa (PEA)</td><td><span class="fx">PEA = ocupados + desocupados</span></td></tr>
+<tr><td>Ocupados</td><td><span class="fx">ocupados = PEA − desocupados</span></td></tr>
+<tr><td>Población económicamente inactiva (PEI)</td><td><span class="fx">PEI = PET − PEA</span></td></tr>
+<tr><td>Tasa de participación global</td><td><span class="fx">TPG = PEA ÷ PET × 100</span></td></tr>
+<tr><td>Tasa de desempleo</td><td><span class="fx">TD = desocupados ÷ PEA × 100</span></td></tr>
+<tr><td>Tasa de empleo bruto</td><td><span class="fx">ocupados ÷ PET × 100</span></td></tr>
+<tr><td>Tasa de empleo adecuado (INEC)</td><td><span class="fx">empleo adecuado ÷ PEA × 100</span></td></tr>
+</table></div>
+<h3>Si k desocupados dejan de buscar trabajo y siguen disponibles</h3>
+<div class="tw"><table class="fl">
+<tr><td><b>OIT</b>: salen de la fuerza de trabajo (pasan a la fuerza de trabajo potencial)</td><td><span class="fx">TD = (desocupados − k) ÷ (PEA − k) × 100</span></td></tr>
+<tr><td><b>INEC</b>: pasan a desempleo oculto y siguen contando</td><td><span class="fx">TD = desocupados ÷ PEA × 100</span> (no cambia)</td></tr>
+<tr><td>Indicador LU3 de la OIT</td><td><span class="fx">LU3 = (desempleados + fuerza de trabajo potencial) ÷ (fuerza de trabajo + fuerza de trabajo potencial) × 100</span></td></tr>
+</table></div>
+<div class="ex"><b>Ejemplo resuelto.</b> PET = 1 000; ocupados = 620; desocupados = 40.<br>PEA = 620 + 40 = 660 · PEI = 1 000 − 660 = 340 · TPG = 660 ÷ 1 000 × 100 = 66,00 % · TD = 40 ÷ 660 × 100 = 6,06 % · empleo bruto = 620 ÷ 1 000 × 100 = 62,00 %.<br>Si 20 desocupados dejan de buscar: OIT → (40 − 20) ÷ (660 − 20) × 100 = 3,13 %; INEC → 40 ÷ 660 × 100 = 6,06 %.</div></div>
+
+<div class="card"><h2>B · Inflación e IPC</h2>
+<div class="tw"><table class="fl">
+<tr><th>Qué calculas</th><th>Fórmula</th></tr>
+<tr><td>Costo de la canasta</td><td><span class="fx">costo = Σ (cantidad × precio)</span>, con los precios del año base o del año actual</td></tr>
+<tr><td>IPC</td><td><span class="fx">IPC = costo actual ÷ costo base × 100</span></td></tr>
+<tr><td>Tasa de inflación</td><td><span class="fx">inflación = (IPC actual − IPC anterior) ÷ IPC anterior × 100</span><br>Con base = 100: <span class="fx">inflación = IPC − 100</span></td></tr>
+<tr><td>Peso de un producto</td><td><span class="fx">peso = cantidad × precio base ÷ costo base × 100</span></td></tr>
+<tr><td>Incidencia de un producto (puntos porcentuales)</td><td><span class="fx">incidencia = cantidad × (precio actual − precio base) ÷ costo base × 100</span><br>La suma de las incidencias es la inflación.</td></tr>
+<tr><td>Cambiar el año base</td><td><span class="fx">IPC nuevo = IPC ÷ IPC del mes elegido × 100</span><br>La tasa de inflación no cambia.</td></tr>
+</table></div>
+<div class="ex"><b>Ejemplo resuelto.</b> Arroz: 10 kg, precio 2,00 → 2,40. Almuerzo: 20, precio 3,00 → 3,15. Pasaje: 40, precio 0,50 → 0,50.<br>Costo base = 20 + 60 + 20 = 100 · costo actual = 24 + 63 + 20 = 107 · IPC = 107 ÷ 100 × 100 = 107 · inflación = 7 %.<br>Incidencias: arroz 4 · almuerzo 3 · pasaje 0 → 4 + 3 + 0 = 7.</div></div>
+
+<div class="card"><h2>C · PIB, deflactor y crecimiento (problemas 1 y 2 de tu hoja)</h2>
+<div class="tw"><table class="fl">
+<tr><th>Qué calculas</th><th>Fórmula</th></tr>
+<tr><td>PIB nominal de un año</td><td><span class="fx">PIB nominal = Σ (cantidad × precio) del mismo año</span></td></tr>
+<tr><td>Crecimiento del PIB real</td><td><span class="fx">crecimiento = (PIB real año 2 − PIB real año 1) ÷ PIB real año 1 × 100</span></td></tr>
+<tr><td>Deflactor del PIB</td><td><span class="fx">deflactor = PIB nominal ÷ PIB real × 100</span></td></tr>
+</table></div>
+<h3>Método encadenado (dos años, dos bienes)</h3>
+<ol>
+<li>Cantidades del año 2 a precios del año 1: <span class="fx">tasa 1 = (Σ q₂·p₁) ÷ (Σ q₁·p₁) − 1</span></li>
+<li>Cantidades del año 1 a precios del año 2: <span class="fx">tasa 2 = (Σ q₂·p₂) ÷ (Σ q₁·p₂) − 1</span> (el numerador es el PIB nominal del año 2)</li>
+<li>Promedio de las dos tasas: <span class="fx">crecimiento = (tasa 1 + tasa 2) ÷ 2</span></li>
+<li>PIB real del año 2: <span class="fx">PIB nominal año 1 × (1 + crecimiento)</span>. Con él calculas el deflactor.</li>
+</ol>
+<div class="ex"><b>Ejemplo resuelto.</b> Cacao: año 1 → 100 sacos a 10; año 2 → 100 sacos a 15. Banano: año 1 → 200 cajas a 5; año 2 → 220 cajas a 5.<br>PIB nominal: año 1 = 1 000 + 1 000 = 2 000; año 2 = 1 500 + 1 100 = 2 600.<br>Tasa 1: (100 × 10 + 220 × 5) ÷ 2 000 − 1 = 2 100 ÷ 2 000 − 1 = 5 %. Tasa 2: 2 600 ÷ (100 × 15 + 200 × 5) − 1 = 2 600 ÷ 2 500 − 1 = 4 %.<br>Crecimiento = (5 % + 4 %) ÷ 2 = 4,5 % · PIB real año 2 = 2 000 × 1,045 = 2 090 · deflactor = 2 600 ÷ 2 090 × 100 = 124,4.</div></div>
+<p class="note">Cuando termines de repasar, pasa a la pestaña «2 · Empleo» y empieza por predecir.</p>
+</section>
+<section id="t-emp" style="display:none">
+<div class="card"><h2>Punto de partida: Ecuador, mayo de 2026</h2>
+<p class="note">Fuente: INEC, ENEMDU, indicadores laborales de mayo de 2026. Para el ejercicio suponemos que todos los desocupados buscan trabajo; después cambiamos la situación con un evento.</p>
+<div class="tw"><table id="baseEmp"></table></div></div>
+<div class="card"><h2>Paso 1 · Elige un evento</h2><div class="ev" id="evs"></div>
+<div id="custom" style="display:none;margin-top:8px" class="grid">
+<div><label>Cambio en ocupados (miles)</label><input id="cO" type="number" value="0"></div>
+<div><label>Cambio en desocupados que buscan (miles)</label><input id="cD" type="number" value="0"></div>
+<div><label>Cambio en disponibles que dejan de buscar (miles)</label><input id="cH" type="number" value="0"></div></div></div>
+<div class="card" id="pasoPred" style="display:none"><h2>Paso 2 · Predigan antes de mover</h2>
+<p id="evTxt"></p>
+<div class="tw"><table><tr><th>Indicador</th><th>Predicción del equipo</th></tr>
+<tr><td>Tasa de desempleo · definición OIT</td><td><div class="seg" data-k="tdO"></div></td></tr>
+<tr><td>Tasa de desempleo · definición INEC</td><td><div class="seg" data-k="tdI"></div></td></tr>
+<tr><td>Tasa de participación · OIT</td><td><div class="seg" data-k="tpgO"></div></td></tr>
+<tr><td>Tasa de participación · INEC</td><td><div class="seg" data-k="tpgI"></div></td></tr></table></div>
+<p><button id="btnComp">Comprobar</button></p></div>
+<div class="card" id="pasoRes" style="display:none"><h2>Paso 3 · Comprueba y explica</h2><div class="tw" id="resTbl"></div>
+<h3>Expliquen con sus palabras por qué ocurrió</h3><textarea id="explE" placeholder="Por ejemplo: la tasa de desempleo baja porque…"></textarea>
+<p><button id="btnGuardE">Guardar en mi registro</button></p></div>
+</section>
+
+<section id="t-inf" style="display:none">
+<div class="card"><h2>A · La canasta y el IPC</h2>
+<p class="note">Canasta ilustrativa (no son datos del INEC). Puedes cambiar cantidades y precios base. El IPC del año base vale 100.</p>
+<div class="tw"><table id="bas"></table></div></div>
+<div class="card"><h2>Paso 1 · Elige un choque de precios</h2><div class="ev" id="chs"></div></div>
+<div class="card" id="pI2" style="display:none"><h2>Paso 2 · Predice</h2><p id="chTxt"></p>
+<label for="predInf">¿Cuánto creen que sube el IPC (inflación, en %)?</label><input id="predInf" type="number" step="0.1" style="max-width:200px">
+<p><button id="btnCompI">Comprobar</button></p></div>
+<div class="card" id="pI3" style="display:none"><h2>Paso 3 · Comprueba y explica</h2><div class="tw" id="resI"></div>
+<h3>Expliquen por qué el resultado depende del peso de cada producto</h3><textarea id="explI"></textarea>
+<p><button id="btnGuardI">Guardar en mi registro</button></p></div>
+
+<div class="card"><h2>B · Cambiar el año base no cambia la inflación</h2>
+<p class="note">Índices reales del IPC del INEC (boletín técnico N° 08-2026): agosto de 2025 a agosto de 2026. Hoy el INEC publica con base julio 2025 – junio 2026 = 100.</p>
+<label for="mesBase">Elige un mes como nueva base (= 100)</label><select id="mesBase" style="max-width:240px"></select>
+<p>Predicción: si cambiamos la base, ¿cambia la inflación anual de agosto de 2026?</p><div class="seg" id="segBase"><button data-v="si">Sí cambia</button><button data-v="no">No cambia</button></div>
+<p><button id="btnBase">Comprobar</button></p><div class="tw" id="resBase"></div>
+<textarea id="explB" placeholder="Explica por qué"></textarea><p><button id="btnGuardB" disabled>Guardar en mi registro</button></p></div>
+</section>
+
+<section id="t-hoja" style="display:none">
+<div class="card"><h2>Mi hoja individual</h2>
+<p>Resuélvela <b>a mano, con procedimiento</b>, y entrégala en PDF hasta el <b>lunes 16 de noviembre de 2026</b>. Las cifras dependen de tu nombre. <b>Esta hoja es individual: no se hace en equipo.</b></p>
+<p><button id="btnHoja">Descargar mi hoja (PDF)</button></p><div id="hojaView"></div></div>
+</section>
+
+<section id="t-reg" style="display:none">
+<div class="card"><h2>Mi registro del applet</h2><div id="regView"></div>
+<p><button id="btnReg">Descargar mi registro (PDF)</button> <button class="sec" id="btnBorrar">Borrar mis datos</button></p></div>
+</section>
+</div>
+<div class="toast" id="toast"></div>
+<div id="printDoc"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* Generador determinista de la hoja personal (Park-Miller, portable a R) */
+function seedOf(n){var s=String(n||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z]+/g," ").trim();var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return (h%900000)+100000;}
+function mkRng(code){
+  var s=(Math.abs(parseInt(code,10))%2147483646)+1;
+  function next(){ s=(s*16807)%2147483647; return s; }
+  for(var i=0;i<8;i++) next();
+  return {
+    r:function(){ return (next()-1)/2147483646; },
+    int:function(a,b){ return a+Math.floor(((next()-1)/2147483646)*(b-a+1)); },
+    shuffle:function(arr){ var a=arr.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(((next()-1)/2147483646)*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  };
+}
+function r1(v){ return Math.round(v*10)/10; }
+function r2(v){ return Math.round(v*100)/100; }
+function genSheet(code){
+  var g=mkRng(code), out={};
+  /* P1: PIB y deflactor */
+  var X=r1(80+g.r()*60), gr=g.int(10,50)/10, pi=g.int(5,60)/10;
+  var Z=r1(X*(1+gr/100)), Y=r1(Z*(1+pi/100));
+  out.p1={X:X,Z:Z,Y:Y, crec:(Z-X)/X*100, defl:Y/Z*100};
+  /* P2: PIB real encadenado, dos bienes */
+  var par=g.shuffle([["Cacao (sacos)","Banano (cajas)"],["Camarón (cajas)","Rosas (ramos)"],["Atún (toneladas)","Café (sacos)"]])[0];
+  var a1=g.int(60,200), a2=a1+g.int(-5,30), b1=g.int(100,300), b2=b1+g.int(-5,30);
+  var pa1=g.int(10,20), pa2=pa1+g.int(0,3), pb1=g.int(5,10), pb2=pb1+g.int(0,2);
+  var N1=a1*pa1+b1*pb1, N2=a2*pa2+b2*pb2;
+  var g1=(a2*pa1+b2*pb1)/N1-1, g2=N2/(a1*pa2+b1*pb2)-1, gc=(g1+g2)/2, R2=N1*(1+gc);
+  out.p2={names:par,a1:a1,a2:a2,b1:b1,b2:b2,pa1:pa1,pa2:pa2,pb1:pb1,pb2:pb2,N1:N1,N2:N2,g1:g1*100,g2:g2*100,gc:gc*100,R2:R2,defl:N2/R2*100};
+  /* P3: empleo y desempleo (miles de personas) */
+  var PET=g.int(9000,15000), tpg=g.int(550,700)/1000, PEA=Math.round(PET*tpg);
+  var td=g.int(30,90)/1000, D=Math.round(PEA*td), O=PEA-D, k=Math.round(D*g.int(20,40)/100);
+  out.p3={PET:PET,O:O,D:D,k:k,PEA:PEA,PEI:PET-PEA,tpg:PEA/PET*100,td:D/PEA*100,teb:O/PET*100,tdOIT:(D-k)/(PEA-k)*100,tdINEC:D/PEA*100};
+  /* P4: IPC de una canasta de tres productos */
+  var cat=[["Arroz (kg)",1.0,2.5],["Almuerzo ejecutivo",2.5,4.5],["Pasaje de bus (viaje)",0.3,0.6],["Leche (litro)",0.9,1.4],["Recarga de celular",2,6],["Huevos (cubeta)",3.5,5.5]];
+  var pick=g.shuffle(cat).slice(0,3), items=[], C0=0, C1=0;
+  for(var i=0;i<3;i++){
+    var q=g.int(5,40), p0=r2(pick[i][1]+g.r()*(pick[i][2]-pick[i][1])), ch=g.int(-5,20)/100, p1=r2(p0*(1+ch));
+    items.push({n:pick[i][0],q:q,p0:p0,p1:p1}); C0+=q*p0; C1+=q*p1;
+  }
+  C0=r2(C0); C1=r2(C1);
+  var inc=items.map(function(it){ return it.q*(it.p1-it.p0)/C0*100; });
+  var imax=0; for(var j=1;j<3;j++) if(inc[j]>inc[imax]) imax=j;
+  out.p4={items:items,C0:C0,C1:C1,ipc:C1/C0*100,inf:(C1/C0-1)*100,inc:inc,mayor:items[imax].n};
+  return out;
+}
+
+</script>
+<script>
+(function(){
+"use strict";
+var CURSO="Macroeconomía · Cuarto nivel · Negocios Internacionales · Universidad Indoamérica";
+var ENTREGA="lunes 16 de noviembre de 2026";
+var LS="empleo_ipc_v1";
+var INEC={pet:13568240,oc:8668377,des:273679,pea:8942055,pei:4626185,ade:3272931,sub:1638276,otro:2867627,nor:867936,ncl:21605};
+var IDX=[["ago-25",99.72],["sep-25",99.80],["oct-25",100.08],["nov-25",99.64],["dic-25",99.50],["ene-26",99.86],["feb-26",100.07],["mar-26",100.19],["abr-26",100.72],["may-26",100.10],["jun-26",100.88],["jul-26",100.79],["ago-26",100.84]];
+var S={datos:{nombre:"",equipo:"",integrantes:"",pais:""},log:[]};
+function load(){try{var v=localStorage.getItem(LS);if(v){var o=JSON.parse(v);if(o&&o.datos&&o.log)S=o;}}catch(e){}}
+function save(){try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function f(x,d){var s=Number(x).toFixed(d),neg=s[0]==="-"?"-":"",p=s.replace("-","").split("."),i=p[0].replace(/\B(?=(\d{3})+(?!\d))/g," ");return neg+i+(p[1]?","+p[1]:"");}
+function pc(x){return f(x,2)+" %";}
+function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";setTimeout(function(){t.style.display="none";},2600);}
+function codeOk(){return (S.datos.nombre||"").trim().length>=5;}
+function today(){var d=new Date();return d.toLocaleDateString("es-EC",{day:"numeric",month:"long",year:"numeric"});}
+
+/* ---- datos ---- */
+["nombre","equipo","integrantes","pais"].forEach(function(k){var el=$(k);el.value=S.datos[k]||"";el.addEventListener("input",function(){S.datos[k]=el.value.trim();save();if(k==="nombre")renderHoja();});});
+
+/* ---- pestañas ---- */
+var tabs=document.querySelectorAll("#tabs button");
+tabs.forEach(function(b){b.addEventListener("click",function(){tabs.forEach(function(x){x.classList.remove("on");});b.classList.add("on");["ins","form","emp","inf","hoja","reg"].forEach(function(t){$("t-"+t).style.display=(t===b.dataset.t)?"block":"none";});if(b.dataset.t==="reg")renderReg();if(b.dataset.t==="hoja")renderHoja();});});
+
+/* ---- EMPLEO ---- */
+var BASE={O:INEC.oc,D:INEC.des,H:0};
+function met(s){var peaI=s.O+s.D+s.H,peaO=s.O+s.D;return {tdO:s.D/peaO*100,tdI:(s.D+s.H)/peaI*100,tpgO:peaO/INEC.pet*100,tpgI:peaI/INEC.pet*100};}
+var NM={tdO:"Tasa de desempleo · OIT",tdI:"Tasa de desempleo · INEC",tpgO:"Tasa de participación · OIT",tpgI:"Tasa de participación · INEC"};
+var EVS=[
+{t:"Se crean 100 000 empleos y los ocupan personas que buscaban trabajo",dO:100000,dD:-100000,dH:0},
+{t:"100 000 personas inactivas empiezan a buscar trabajo",dO:0,dD:100000,dH:0},
+{t:"50 000 desocupados se cansan de buscar, pero siguen disponibles para trabajar",dO:0,dD:-50000,dH:50000},
+{t:"100 000 ocupados pierden su empleo y buscan otro",dO:-100000,dD:100000,dH:0},
+{t:"150 000 personas inactivas consiguen empleo directamente",dO:150000,dD:0,dH:0},
+{t:"Evento personalizado",custom:true}];
+var ev=null,pred={},lastRes=null;
+(function(){var b=met(BASE);var rows=[["Población en edad de trabajar (PET)",f(INEC.pet,0)],["Población económicamente activa (PEA)",f(INEC.pea,0)],["Ocupados",f(INEC.oc,0)],["Desocupados",f(INEC.des,0)],["Inactivos (PEI)",f(INEC.pei,0)],["Tasa de participación global",pc(b.tpgI)],["Tasa de desempleo",pc(b.tdI)]];
+$("baseEmp").innerHTML="<tr><th>Indicador</th><th>Mayo de 2026</th></tr>"+rows.map(function(r){return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td></tr>";}).join("");})();
+EVS.forEach(function(e,i){var b=document.createElement("button");b.textContent=e.t;b.addEventListener("click",function(){document.querySelectorAll("#evs button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");ev=e;pred={};lastRes=null;$("custom").style.display=e.custom?"grid":"none";$("pasoPred").style.display="block";$("pasoRes").style.display="none";$("evTxt").textContent=e.t+".";document.querySelectorAll(".seg[data-k]").forEach(function(sg){sg.querySelectorAll("button").forEach(function(x){x.classList.remove("on");});});});$("evs").appendChild(b);});
+document.querySelectorAll(".seg[data-k]").forEach(function(sg){["sube","baja","igual"].forEach(function(v){var b=document.createElement("button");b.textContent=v==="sube"?"Sube":v==="baja"?"Baja":"Igual";b.addEventListener("click",function(){sg.querySelectorAll("button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");pred[sg.dataset.k]=v;});sg.appendChild(b);});});
+function dir(d){return Math.abs(d)<0.005?"igual":(d>0?"sube":"baja");}
+function nm(v){return v==="sube"?"Sube":v==="baja"?"Baja":"Igual";}
+$("btnComp").addEventListener("click",function(){
+ if(!ev)return;var keys=["tdO","tdI","tpgO","tpgI"];
+ for(var i=0;i<keys.length;i++){if(!pred[keys[i]]){toast("Falta tu predicción de: "+NM[keys[i]]);return;}}
+ var dO=ev.dO,dD=ev.dD,dH=ev.dH;if(ev.custom){dO=1000*(+$("cO").value||0);dD=1000*(+$("cD").value||0);dH=1000*(+$("cH").value||0);}
+ var a={O:BASE.O+dO,D:BASE.D+dD,H:BASE.H+dH};
+ if(a.O<=0||a.D<0||a.H<0||a.O+a.D+a.H>INEC.pet){toast("Esos cambios no son posibles: revisa las cifras.");return;}
+ var b0=met(BASE),b1=met(a),ok=0,rows="";
+ keys.forEach(function(k){var d=b1[k]-b0[k],r=dir(d),good=(r===pred[k]);if(good)ok++;rows+="<tr><td>"+NM[k]+"</td><td>"+pc(b0[k])+"</td><td>"+pc(b1[k])+"</td><td>"+(d>=0?"+":"")+f(d,2)+" p.p.</td><td>"+nm(pred[k])+"</td><td class='"+(good?"ok":"bad")+"'>"+(good?"Acertaste":"Era: "+nm(r))+"</td></tr>";});
+ $("resTbl").innerHTML="<table><tr><th>Indicador</th><th>Antes</th><th>Después</th><th>Cambio</th><th>Predicción del equipo</th><th>Resultado</th></tr>"+rows+"</table><p class='note'>OIT: los disponibles que dejan de buscar salen de la fuerza de trabajo (pasan a la fuerza de trabajo potencial). INEC: siguen contados como desempleo oculto.</p><p><b>Aciertos: "+ok+" de 4.</b></p>";
+ lastRes={evento:ev.custom?("Personalizado: ocupados "+f(dO/1000,0)+" mil, desocupados "+f(dD/1000,0)+" mil, disponibles que dejan de buscar "+f(dH/1000,0)+" mil"):ev.t,pred:JSON.parse(JSON.stringify(pred)),b0:b0,b1:b1,ok:ok};
+ $("pasoRes").style.display="block";$("explE").value="";
+});
+$("btnGuardE").addEventListener("click",function(){if(!lastRes)return;S.log.push({tipo:"empleo",t:new Date().toISOString(),evento:lastRes.evento,pred:lastRes.pred,b0:lastRes.b0,b1:lastRes.b1,ok:lastRes.ok,expl:$("explE").value.trim()});save();toast("Guardado en tu registro");});
+
+/* ---- INFLACIÓN ---- */
+var BAS=[{n:"Arroz (kg)",q:10,p:2.00},{n:"Almuerzo ejecutivo",q:20,p:3.00},{n:"Pasaje de bus (viaje)",q:40,p:0.50}];
+function renderBas(){var C=BAS.reduce(function(s,b){return s+b.q*b.p;},0);
+ $("bas").innerHTML="<tr><th>Producto</th><th>Cantidad</th><th>Precio base (USD)</th><th>Gasto base</th><th>Peso</th></tr>"+BAS.map(function(b,i){return "<tr><td>"+b.n+"</td><td><input type='number' min='1' value='"+b.q+"' data-i='"+i+"' data-f='q' style='max-width:90px'></td><td><input type='number' min='0.01' step='0.01' value='"+b.p+"' data-i='"+i+"' data-f='p' style='max-width:110px'></td><td>"+f(b.q*b.p,2)+"</td><td>"+pc(b.q*b.p/C*100)+"</td></tr>";}).join("")+"<tr><th colspan='3'>Costo de la canasta en el año base</th><th>"+f(C,2)+"</th><th>100 %</th></tr>";
+ $("bas").querySelectorAll("input").forEach(function(inp){inp.addEventListener("change",function(){var v=parseFloat(inp.value);if(!(v>0)){renderBas();return;}BAS[+inp.dataset.i][inp.dataset.f]=v;renderBas();});});}
+renderBas();
+var CHS=[{t:"Sube 10 % el precio del almuerzo ejecutivo",m:[0,10,0]},{t:"Sube 10 % el precio del arroz",m:[10,0,0]},{t:"Sube 10 % el pasaje de bus",m:[0,0,10]},{t:"Sube 20 % el arroz y 5 % el almuerzo; el pasaje no cambia",m:[20,5,0]}];
+var ch=null,lastI=null;
+CHS.forEach(function(c){var b=document.createElement("button");b.textContent=c.t;b.addEventListener("click",function(){document.querySelectorAll("#chs button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");ch=c;lastI=null;$("pI2").style.display="block";$("pI3").style.display="none";$("chTxt").textContent=c.t+".";$("predInf").value="";});$("chs").appendChild(b);});
+$("btnCompI").addEventListener("click",function(){
+ if(!ch)return;var pv=parseFloat($("predInf").value);if(isNaN(pv)){toast("Escribe tu predicción");return;}
+ var C0=0,C1=0,rows="";BAS.forEach(function(b,i){C0+=b.q*b.p;C1+=b.q*b.p*(1+ch.m[i]/100);});
+ BAS.forEach(function(b,i){var inc=b.q*b.p*ch.m[i]/100/C0*100;rows+="<tr><td>"+b.n+"</td><td>"+ch.m[i]+" %</td><td>"+f(b.q*b.p,2)+"</td><td>"+f(b.q*b.p*(1+ch.m[i]/100),2)+"</td><td>"+f(inc,2)+" p.p.</td></tr>";});
+ var ipc=C1/C0*100,inf=ipc-100,err=pv-inf;
+ $("resI").innerHTML="<table><tr><th>Producto</th><th>Cambio de precio</th><th>Gasto base</th><th>Gasto nuevo</th><th>Incidencia</th></tr>"+rows+"<tr><th colspan='2'>Total</th><th>"+f(C0,2)+"</th><th>"+f(C1,2)+"</th><th>"+f(inf,2)+" p.p.</th></tr></table><p>IPC = "+f(C1,2)+" ÷ "+f(C0,2)+" × 100 = <b>"+f(ipc,2)+"</b>. Inflación = <b>"+pc(inf)+"</b>. Predicción del equipo: "+pc(pv)+" ("+(Math.abs(err)<0.05?"<span class='ok'>exacta</span>":"diferencia de "+f(err,2)+" p.p.")+").</p><p class='note'>Incidencia: cuántos puntos porcentuales aporta cada producto a la inflación total; la suma de las incidencias es la inflación.</p>";
+ lastI={choque:ch.t,pred:pv,real:inf,tabla:rows};$("pI3").style.display="block";$("explI").value="";});
+$("btnGuardI").addEventListener("click",function(){if(!lastI)return;S.log.push({tipo:"ipc",t:new Date().toISOString(),choque:lastI.choque,pred:lastI.pred,real:lastI.real,expl:$("explI").value.trim()});save();toast("Guardado en tu registro");});
+/* base */
+IDX.forEach(function(r){var o=document.createElement("option");o.value=r[0];o.textContent=r[0];if(r[0]==="ene-26")o.selected=true;$("mesBase").appendChild(o);});
+var pB=null,lastB=null;
+document.querySelectorAll("#segBase button").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("#segBase button").forEach(function(x){x.classList.remove("on");});b.classList.add("on");pB=b.dataset.v;});});
+$("btnBase").addEventListener("click",function(){
+ if(!pB){toast("Elige tu predicción");return;}var mes=$("mesBase").value,bv=IDX.filter(function(r){return r[0]===mes;})[0][1];
+ var rows=IDX.map(function(r){return "<tr><td>"+r[0]+"</td><td>"+f(r[1],2)+"</td><td>"+f(r[1]/bv*100,2)+"</td></tr>";}).join("");
+ var i0=IDX[0][1],i1=IDX[IDX.length-1][1],inf0=(i1/i0-1)*100,inf1=((i1/bv*100)/(i0/bv*100)-1)*100,igual=Math.abs(inf0-inf1)<1e-9,ok=(pB==="no")===igual;
+ $("resBase").innerHTML="<table><tr><th>Mes</th><th>IPC con base del INEC</th><th>IPC con base "+mes+" = 100</th></tr>"+rows+"</table><p>Inflación anual de agosto de 2026 con la base del INEC: <b>"+pc(inf0)+"</b>. Con la nueva base: <b>"+pc(inf1)+"</b>. <span class='"+(ok?"ok":"bad")+"'>"+(ok?"Acertaste: la tasa no cambia.":"La tasa no cambia: el cociente entre dos índices no depende de la base.")+"</span></p>";
+ lastB={mes:mes,pred:pB,ok:ok,inf:inf0};$("btnGuardB").disabled=false;});
+$("btnGuardB").addEventListener("click",function(){if(!lastB)return;S.log.push({tipo:"base",t:new Date().toISOString(),mes:lastB.mes,pred:lastB.pred,ok:lastB.ok,inf:lastB.inf,expl:$("explB").value.trim()});save();toast("Guardado en tu registro");});
+
+/* ---- DOCUMENTOS ---- */
+function datosBlocksEq(){var d=S.datos,ints=(d.integrantes||"").split(/\r?\n/).map(function(x){return x.trim();}).filter(Boolean);return [{t:"kv",k:"Equipo",v:d.equipo||"(sin nombre)"},{t:"kv",k:"Integrantes",v:ints.length?ints.join("; "):"(sin integrantes)"},{t:"kv",k:"País de la ficha",v:d.pais||"-"},{t:"kv",k:"Descargado por",v:d.nombre||"-"},{t:"kv",k:"Curso",v:CURSO},{t:"kv",k:"Fecha",v:today()}];}
+function datosBlocks(){var d=S.datos;return [{t:"kv",k:"Estudiante",v:d.nombre||"(sin nombre)"},{t:"kv",k:"Equipo",v:d.equipo||"-"},{t:"kv",k:"País de la ficha",v:d.pais||"-"},{t:"kv",k:"Curso",v:CURSO},{t:"kv",k:"Fecha",v:today()}];}
+function hojaBlocks(){var s=genSheet(seedOf(S.datos.nombre)),b=[{t:"title",x:"Hoja individual · Empleo, desempleo e inflación"},{t:"sub",x:"Macroeconomía · Parcial 1 · Resolver a mano, con procedimiento. Entrega en PDF hasta el "+ENTREGA+"."}].concat(datosBlocks());
+ var p1=s.p1,p2=s.p2,p3=s.p3,p4=s.p4;
+ b.push({t:"h",x:"Problema 1 · PIB, crecimiento y deflactor"},{t:"p",x:"Una economía registra un PIB nominal de USD "+f(p1.X,1)+" mil millones en el año 1. En el año 2, su PIB nominal es USD "+f(p1.Y,1)+" mil millones y su PIB real, a precios del año 1, es USD "+f(p1.Z,1)+" mil millones."},{t:"p",x:"a) Calcula la tasa de crecimiento del PIB real.  b) Calcula el deflactor del PIB del año 2 (año 1 = 100).  c) ¿Creció la producción o solo subieron los precios? Explica."},{t:"lines",n:6});
+ b.push({t:"h",x:"Problema 2 · PIB real por el método encadenado"},{t:"table",head:["Bien","Cantidad año 1","Precio año 1","Cantidad año 2","Precio año 2"],rows:[[p2.names[0],p2.a1,p2.pa1,p2.a2,p2.pa2],[p2.names[1],p2.b1,p2.pb1,p2.b2,p2.pb2]]},{t:"p",x:"a) Calcula el PIB nominal de los años 1 y 2.  b) Calcula la tasa de crecimiento del PIB real del año 2 con el método encadenado y el PIB real del año 2.  c) Calcula el deflactor del año 2."},{t:"lines",n:8});
+ b.push({t:"h",x:"Problema 3 · Empleo y desempleo"},{t:"p",x:"En un país hay "+f(p3.PET,0)+" miles de personas en edad de trabajar, de las cuales "+f(p3.O,0)+" miles están ocupadas y "+f(p3.D,0)+" miles están desocupadas y buscan trabajo."},{t:"p",x:"a) Calcula la PEA y la población económicamente inactiva.  b) Calcula la tasa de participación, la tasa de desempleo y la tasa de empleo bruto (ocupados / PET).  c) Después, "+f(p3.k,0)+" miles de desocupados dejan de buscar trabajo, pero siguen disponibles. Calcula la nueva tasa de desempleo con la definición de la OIT y con la del INEC. Explica la diferencia."},{t:"lines",n:8});
+ b.push({t:"h",x:"Problema 4 · IPC e inflación"},{t:"table",head:["Producto","Cantidad","Precio año base (USD)","Precio año actual (USD)"],rows:p4.items.map(function(it){return [it.n,it.q,f(it.p0,2),f(it.p1,2)];})},{t:"p",x:"a) Calcula el costo de la canasta en el año base y en el año actual.  b) Calcula el IPC del año actual (año base = 100).  c) Calcula la tasa de inflación.  d) Calcula la incidencia de cada producto (puntos porcentuales) y di cuál aportó más."},{t:"lines",n:8});
+ return b;}
+function regBlocks(){var b=[{t:"title",x:"Registro del applet · Empleo e inflación"},{t:"sub",x:"Macroeconomía · Trabajo en equipo · Evidencia de proceso"}].concat(datosBlocksEq());
+ if(!S.log.length){b.push({t:"p",x:"Todavía no has guardado ejercicios en tu registro."});return b;}
+ var okT=0,tot=0;S.log.forEach(function(e){if(e.tipo==="empleo"){okT+=e.ok;tot+=4;}else if(e.tipo==="base"){okT+=e.ok?1:0;tot+=1;}});
+ b.push({t:"kv",k:"Ejercicios guardados",v:String(S.log.length)},{t:"kv",k:"Predicciones acertadas",v:okT+" de "+tot+" (empleo y año base)"});
+ S.log.forEach(function(e,i){var hora=new Date(e.t).toLocaleString("es-EC");
+  if(e.tipo==="empleo"){b.push({t:"h",x:(i+1)+". Empleo · "+hora},{t:"p",x:"Evento: "+e.evento},{t:"table",head:["Indicador","Antes","Después","Predicción del equipo","Resultado"],rows:["tdO","tdI","tpgO","tpgI"].map(function(k){var d=e.b1[k]-e.b0[k],r=Math.abs(d)<0.005?"igual":(d>0?"sube":"baja");return [NM[k],pc(e.b0[k]),pc(e.b1[k]),nm(e.pred[k]),e.pred[k]===r?"Acertó":"Era: "+nm(r)];})});}
+  else if(e.tipo==="ipc"){b.push({t:"h",x:(i+1)+". Inflación · "+hora},{t:"p",x:"Choque: "+e.choque},{t:"p",x:"Predicción del equipo: "+pc(e.pred)+". Resultado: "+pc(e.real)+"."});}
+  else{b.push({t:"h",x:(i+1)+". Año base · "+hora},{t:"p",x:"Nueva base: "+e.mes+". Predicción: "+(e.pred==="no"?"la inflación no cambia":"la inflación cambia")+". "+(e.ok?"Acertó.":"No acertó.")+" Inflación anual de agosto de 2026: "+pc(e.inf)+"."});}
+  b.push({t:"p",x:"Explicación del equipo: "+(e.expl||"(sin explicación)")});});
+ return b;}
+
+/* ---- render PDF / impresión ---- */
+function clean(s){return String(s).replace(/−/g,"-").replace(/≈/g,"~").replace(/≥/g,">=").replace(/≤/g,"<=").replace(/→/g,"->").replace(/[  ]/g," ");}
+function buildPdf(blocks){var J=window.jspdf.jsPDF,doc=new J({unit:"mm",format:"a4"}),W=210,H=297,M=18,MW=W-2*M,y=M;
+ function need(h){if(y+h>H-M){doc.addPage();y=M;}}
+ function para(t,size,bold,color){doc.setFont("helvetica",bold?"bold":"normal");doc.setFontSize(size);doc.setTextColor(color[0],color[1],color[2]);var ls=doc.splitTextToSize(clean(t),MW),lh=size*0.43;ls.forEach(function(l){need(lh);doc.text(l,M,y+lh*0.8);y+=lh;});y+=1.5;}
+ blocks.forEach(function(b){
+  if(b.t==="title"){para(b.x,16,true,[31,58,138]);}
+  else if(b.t==="sub"){para(b.x,9.5,false,[90,90,90]);y+=1;}
+  else if(b.t==="h"){need(30);y+=3;para(b.x,12,true,[31,58,138]);}
+  else if(b.t==="p"){para(b.x,10.5,false,[20,20,20]);}
+  else if(b.t==="kv"){doc.setFontSize(10.5);need(5.5);doc.setFont("helvetica","bold");doc.setTextColor(20,20,20);doc.text(clean(b.k)+":",M,y+4);doc.setFont("helvetica","normal");var ls=doc.splitTextToSize(clean(b.v),MW-54);ls.forEach(function(l,i){if(i>0)need(5);doc.text(l,M+54,y+4);y+=(i<ls.length-1?5:0);});y+=5.5;}
+  else if(b.t==="lines"){for(var i=0;i<b.n;i++){need(8);doc.setDrawColor(200,200,200);doc.line(M,y+7,W-M,y+7);y+=8;}y+=2;}
+  else if(b.t==="table"){var n=b.head.length,cw=MW/n;doc.setFontSize(9);function row(cells,head){var ls=cells.map(function(c){return doc.splitTextToSize(clean(c),cw-3);}),mx=Math.max.apply(null,ls.map(function(l){return l.length;})),h=mx*4+3;need(h);cells.forEach(function(c,i){if(head){doc.setFillColor(238,242,251);doc.rect(M+i*cw,y,cw,h,"F");}doc.setDrawColor(150,160,190);doc.rect(M+i*cw,y,cw,h);doc.setFont("helvetica",head?"bold":"normal");doc.setTextColor(20,20,20);ls[i].forEach(function(l,j){doc.text(l,M+i*cw+1.5,y+4+j*4);});});y+=h;}
+   row(b.head,true);b.rows.forEach(function(r){row(r.map(String),false);});y+=3;}});
+ var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);doc.setFontSize(8);doc.setTextColor(110,110,110);doc.setFont("helvetica","normal");doc.text("Universidad Indoamérica · Macroeconomía",M,H-8);doc.text(i+" / "+n,W-M,H-8,{align:"right"});}
+ return doc;}
+function blocksHtml(blocks){return blocks.map(function(b){if(b.t==="title")return "<h1>"+esc(b.x)+"</h1>";if(b.t==="sub")return "<p><i>"+esc(b.x)+"</i></p>";if(b.t==="h")return "<h2>"+esc(b.x)+"</h2>";if(b.t==="p")return "<p>"+esc(b.x)+"</p>";if(b.t==="kv")return "<p><b>"+esc(b.k)+":</b> "+esc(b.v)+"</p>";if(b.t==="lines")return "<div style='height:"+(b.n*28)+"px;border-bottom:1px solid #ccc'></div>";if(b.t==="table")return "<table><tr>"+b.head.map(function(h){return "<th>"+esc(h)+"</th>";}).join("")+"</tr>"+b.rows.map(function(r){return "<tr>"+r.map(function(c){return "<td>"+esc(c)+"</td>";}).join("")+"</tr>";}).join("")+"</table>";return "";}).join("");}
+function printFallback(blocks){$("printDoc").innerHTML=blocksHtml(blocks);toast("Abre el cuadro de impresión y elige «Guardar como PDF»");setTimeout(function(){window.print();},300);}
+async function savePdf(blocks,name){
+ if(!window.jspdf){printFallback(blocks);return;}
+ var dl=null;try{if(typeof claude!=="undefined")dl=await claude.use("downloads");}catch(e){dl=null;}
+ if(!dl){printFallback(blocks);return;}
+ try{var doc=buildPdf(blocks);await dl.save({filename:name,data:doc.output("arraybuffer")});toast("PDF listo");}
+ catch(e){if(e&&e.code==="declined")return;printFallback(blocks);}}
+function fname(pre,key){var n=(S.datos[key||"nombre"]||"estudiante").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"");return pre+"_"+n+".pdf";}
+
+/* ---- hoja y registro ---- */
+function renderHoja(){if(!codeOk()){$("hojaView").innerHTML="<p class='bad'>Escribe tu nombre completo en «Mis datos» para ver tu hoja.</p>";$("btnHoja").disabled=true;return;}$("btnHoja").disabled=false;
+ var s=genSheet(seedOf(S.datos.nombre));$("hojaView").innerHTML="<div class='prob'><b>Problema 1.</b> PIB nominal año 1: USD "+f(s.p1.X,1)+" mil millones; año 2: USD "+f(s.p1.Y,1)+" mil millones; PIB real año 2 (precios del año 1): USD "+f(s.p1.Z,1)+" mil millones. Calcula crecimiento real y deflactor.</div><div class='prob'><b>Problema 2.</b> "+esc(s.p2.names[0])+" y "+esc(s.p2.names[1])+" en dos años: PIB nominal y real encadenado, crecimiento y deflactor.</div><div class='prob'><b>Problema 3.</b> PET "+f(s.p3.PET,0)+" mil; ocupados "+f(s.p3.O,0)+" mil; desocupados "+f(s.p3.D,0)+" mil. PEA, PEI, tasas y el efecto de que "+f(s.p3.k,0)+" mil dejen de buscar.</div><div class='prob'><b>Problema 4.</b> Canasta de tres productos: IPC, inflación e incidencias.</div><p class='note'>El PDF trae los enunciados completos con las cifras y espacio para tu procedimiento.</p>";}
+$("btnHoja").addEventListener("click",function(){if(!codeOk()){toast("Escribe tu nombre en «Mis datos»");return;}if(!S.datos.nombre){toast("Escribe tu nombre en «Mis datos»");return;}savePdf(hojaBlocks(),fname("Hoja_individual"));});
+function renderReg(){if(!S.log.length){$("regView").innerHTML="<p>Todavía no has guardado ejercicios. Resuelve uno en «Empleo» o «Inflación» y pulsa «Guardar en mi registro».</p>";return;}
+ $("regView").innerHTML=S.log.map(function(e,i){var t=e.tipo==="empleo"?"Empleo · "+esc(e.evento)+" · aciertos "+e.ok+" de 4":e.tipo==="ipc"?"Inflación · "+esc(e.choque)+" · predicción "+pc(e.pred)+" · real "+pc(e.real):"Año base · "+esc(e.mes)+" · "+(e.ok?"acertó":"no acertó");return "<div class='prob'><b>"+(i+1)+".</b> "+t+"<br><span class='note'>"+esc(e.expl||"(sin explicación)")+"</span></div>";}).join("");}
+$("btnReg").addEventListener("click",function(){if(!S.datos.equipo||!S.datos.nombre||!(S.datos.integrantes||"").trim()){toast("Completa en «Mis datos»: equipo, tu nombre e integrantes");return;}savePdf(regBlocks(),fname("Registro_equipo","equipo"));});
+$("btnBorrar").addEventListener("click",function(){if(!window._cb){window._cb=1;$("btnBorrar").textContent="Pulsa otra vez para confirmar";setTimeout(function(){window._cb=0;$("btnBorrar").textContent="Borrar mis datos";},4000);return;}window._cb=0;$("btnBorrar").textContent="Borrar mis datos";{S={datos:{nombre:"",equipo:"",integrantes:"",pais:""},log:[]};save();["nombre","equipo","integrantes","pais"].forEach(function(k){$(k).value="";});renderReg();renderHoja();}});
+load();["nombre","equipo","integrantes","pais"].forEach(function(k){$(k).value=S.datos[k]||"";});renderHoja();
+})();
+</script>
+</body>
+</html>

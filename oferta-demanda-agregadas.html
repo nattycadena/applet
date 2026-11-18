@@ -1,0 +1,377 @@
+<!doctype html><html><head><script>/* Descarga directa fuera de Claude (GitHub Pages) */
+(function(){if(window.claude&&typeof window.claude.use==='function')return;
+function save(o){o=o||{};var n=o.filename||'archivo.pdf',d=o.data,t=/\.pdf$/i.test(n)?'application/pdf':(/\.txt$/i.test(n)?'text/plain':'application/octet-stream');
+var b=(d instanceof Blob)?d:new Blob([d],{type:t});var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;a.rel='noopener';
+document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},60000);return Promise.resolve({status:'delivered'})}
+window.claude={use:function(x){return Promise.resolve(x==='downloads'?{save:save}:null)}};})();
+</script>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Oferta y demanda agregadas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root{--bg:#f6f3fa;--fg:#241c33;--mut:#5c5870;--card:#fff;--bd:#d9d0e6;--ac:#3b2461;--acfg:#fff;--or:#c75a0e;--orbg:#fdebdd;--soft:#efe9f7;--ok:#2e7d32;--bad:#b3261e;--c1:#3b2461;--c2:#c75a0e;--grid:#e3ddee}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161221;--fg:#ece8f5;--mut:#aaa3bd;--card:#1f1a2e;--bd:#3a3250;--ac:#b9a2ee;--acfg:#161221;--or:#ff9d5c;--orbg:#3a2a1e;--soft:#2a2340;--ok:#7bd88f;--bad:#ff8a80;--c1:#b9a2ee;--c2:#ff9d5c;--grid:#3a3250;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#161221;--fg:#ece8f5;--mut:#aaa3bd;--card:#1f1a2e;--bd:#3a3250;--ac:#b9a2ee;--acfg:#161221;--or:#ff9d5c;--orbg:#3a2a1e;--soft:#2a2340;--ok:#7bd88f;--bad:#ff8a80;--c1:#b9a2ee;--c2:#ff9d5c;--grid:#3a3250;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:760px;margin:0 auto;padding-block:16px 40px}
+h1{font-size:1.45rem;margin:.1rem 0;color:var(--ac);text-wrap:balance}h2{font-size:1.1rem;margin:.2rem 0 .5rem;color:var(--ac)}h3{font-size:1rem;margin:.9rem 0 .3rem}
+.sub{color:var(--mut);margin:0 0 .6rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:12px 0;min-width:0}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--ac);background:var(--ac);color:var(--acfg);padding:9px 14px;min-height:44px}
+button.sec{background:transparent;color:var(--ac)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+.tabs button{background:transparent;color:var(--ac);padding:6px 10px;min-height:40px;font-size:.92rem}.tabs button.on{background:var(--ac);color:var(--acfg)}
+label{display:block;font-size:.85rem;color:var(--mut);margin-bottom:2px}
+input[type=text],input[type=number],textarea,select{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:9px}
+textarea{min-height:96px;resize:vertical}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--card);color:var(--ac);border:1.5px solid var(--bd);padding:8px 12px;min-height:44px}
+.chip.a{background:var(--c1);color:var(--acfg);border-color:var(--c1)}.chip.b{background:var(--c2);color:#fff;border-color:var(--c2)}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--bd);border-radius:10px;padding:9px 12px;margin:7px 0;cursor:pointer;background:var(--card)}
+.opt input{margin-top:5px;accent-color:var(--ac);width:18px;height:18px;flex:none}
+.opt.on{border-color:var(--or);background:var(--orbg)}
+.opt b{display:block}.opt small{color:var(--mut)}
+.news{border-left:5px solid var(--or);background:var(--orbg);padding:10px 12px;border-radius:6px;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{border:1px solid var(--bd);padding:5px 7px;text-align:right}th{background:var(--soft)}td:first-child,th:first-child{text-align:left}
+.tw{overflow-x:auto}.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.note{font-size:.85rem;color:var(--mut)}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:.88rem;margin:4px 0}.leg b.s1{color:var(--c1)}.leg b.s2{color:var(--c2)}
+svg.ch{width:100%;height:auto;display:block;max-width:100%}
+svg.ch text{fill:var(--mut);font-size:10px;font-family:system-ui,Arial,sans-serif}
+svg.ch .g{stroke:var(--grid);stroke-width:1}
+svg.ch .z{stroke:var(--mut);stroke-width:1}
+svg.ch .l1{stroke:var(--c1);fill:none;stroke-width:2.4}svg.ch .l2{stroke:var(--c2);fill:none;stroke-width:2.4;stroke-dasharray:6 3}
+svg.ch .m1{fill:var(--c1)}svg.ch .m2{fill:var(--c2)}
+svg.ch .bar1{fill:var(--c1)}svg.ch .bar2{fill:var(--c2)}
+.pts{font-size:1.05rem;font-weight:700;color:var(--ac)}
+.fx{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);padding:1px 7px;border-radius:6px}
+.inp{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-top:8px}
+.inp input.good{border-color:var(--ok)}.inp input.err{border-color:var(--bad)}
+.st{font-size:.82rem;min-height:1.2em}
+details{margin:8px 0}summary{cursor:pointer;color:var(--ac);font-weight:600;padding:6px 0}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ac);color:var(--acfg);padding:9px 14px;border-radius:8px;z-index:9;max-width:90vw}
+[hidden]{display:none!important}
+ol,ul{padding-left:22px}
+table.sm{font-size:.8rem}table.sm th,table.sm td{padding:4px 5px}table.sm .note{font-size:.72rem}
+
+.ib{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;min-height:22px;padding:0;margin-left:6px;border-radius:50%;border:1.5px solid var(--ac);background:transparent;color:var(--ac);font:700 .8rem/1 Georgia,serif;font-style:italic;vertical-align:middle;cursor:pointer}.ib[aria-expanded=true]{background:var(--ac);color:var(--acfg)}
+.tip{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--c2);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:.88rem;font-weight:400}
+
+.seg{display:flex;gap:4px;flex-wrap:wrap}.seg button{background:transparent;color:var(--ac);padding:5px 11px;min-height:38px;font-size:.9rem}.seg button.on{background:var(--ac);color:var(--acfg)}
+.pr{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:center;margin:6px 0}.pr b{font-size:.9rem}
+.pr .hd{font-size:.8rem;color:var(--mut)}
+.chip.on{background:var(--ac);color:var(--acfg);border-color:var(--ac)}
+svg.gx text{fill:var(--mut);font-size:10px;font-family:system-ui,Arial,sans-serif}
+svg.gx .gl{stroke:var(--grid);stroke-width:1}svg.gx .ax{stroke:var(--mut);stroke-width:1.2}
+svg.gx .d0{stroke:var(--c1);stroke-width:2.6;fill:none}svg.gx .d1{stroke:var(--c1);stroke-width:2.6;fill:none;stroke-dasharray:6 3}
+svg.gx .o0{stroke:var(--c2);stroke-width:2.6;fill:none}svg.gx .o1{stroke:var(--c2);stroke-width:2.6;fill:none;stroke-dasharray:6 3}
+svg.gx .t1{fill:var(--c1);font-weight:700;font-size:11px}svg.gx .t2{fill:var(--c2);font-weight:700;font-size:11px}
+svg.gx .p0{fill:var(--c1)}svg.gx .p1{fill:var(--c2)}
+.rd{border-left:5px solid var(--or);background:var(--orbg);padding:9px 12px;border-radius:6px;margin:10px 0}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+input[type=range]{padding:0;width:100%;accent-color:var(--ac)}
+</style>
+<div class="wrap">
+<h1>Oferta y demanda agregadas: ¿clásico o keynesiano?</h1>
+<p class="sub">Macroeconomía · Práctico en equipo · Modelo del curso. Tu avance se guarda en este navegador.</p>
+<div class="tabs" id="tabs" role="tablist"></div>
+
+<section class="pg" data-i="0" id="p0">
+<div class="card">
+<h2>Instrucciones</h2>
+<p><b>Tarea del equipo.</b> Con una misma economía y tres supuestos de oferta, descubran qué cambia (producción, precios o ambos) cuando llega un choque. Después diagnostiquen casos con datos.</p>
+<ol>
+<li><b>Explorar:</b> muevan el choque y cambien el supuesto de oferta; observen el gráfico.</li>
+<li><b>Predecir:</b> en cada escenario, predigan si la producción (Y) y el precio (P) suben, bajan o no cambian en los tres supuestos. Comprueben y expliquen.</li>
+<li><b>Diagnosticar:</b> en cuatro casos, decidan si fue un choque de demanda o de oferta y justifiquen con las cifras.</li>
+<li><b>Informe:</b> descarguen el PDF del equipo.</li>
+</ol>
+<p class="note">Un celular por equipo: una sola persona escribe y descarga el PDF. No se piden códigos ni cédulas. Los números son un ejemplo del curso, no datos de una economía real.</p>
+</div>
+<div class="card">
+<h2>Registro del equipo</h2>
+<div class="grid">
+<div><label for="equipo">Nombre del equipo</label><input type="text" id="equipo" autocomplete="off"></div>
+<div><label for="curso">Curso y paralelo</label><input type="text" id="curso" autocomplete="off"></div>
+</div>
+<div style="margin-top:10px"><label for="integrantes">Integrantes (nombres completos, separados por coma)</label><textarea id="integrantes"></textarea></div>
+<p><button id="go1">Siguiente: explorar el modelo</button></p>
+</div>
+<div class="card">
+<h2>La economía de partida</h2>
+<ul>
+<li><b>Demanda agregada (DA):</b> Y = 1 500 − 4P. Un cambio de gasto autónomo (G, X o I) de 1 la mueve 4 (multiplicador k = 4).</li>
+<li><b>Producción natural:</b> Y<sub>N</sub> = 1 100. Equilibrio inicial: Y = 1 100 y P = 100.</li>
+<li><b>Tres supuestos de oferta:</b> clásica (vertical en Y<sub>N</sub>), keynesiana (horizontal: precios rígidos) y de corto plazo (con pendiente).</li>
+</ul>
+</div>
+</section>
+
+<section class="pg" data-i="1" id="p1" hidden>
+<div class="card">
+<h2>Supuesto de oferta<button type="button" class="ib" data-info="oa" aria-expanded="false" aria-label="Ver la fórmula">i</button></h2>
+<div class="seg" id="sgM"></div>
+<h2 style="margin-top:12px">Choque<button type="button" class="ib" data-info="da" aria-expanded="false" aria-label="Ver la fórmula">i</button></h2>
+<div class="seg" id="sgT"></div>
+<label for="mag" style="margin-top:8px">Tamaño del choque: <b id="magv">0</b></label>
+<input type="range" id="mag" min="-14" max="14" step="1" value="0">
+<p class="note" id="magn"></p>
+</div>
+<div class="card">
+<div id="gfx"></div>
+<div class="leg"><span><b class="s1">― DA</b> antes · <b class="s1">- - DA′</b> después</span><span><b class="s2">― OA</b> antes · <b class="s2">- - OA′</b> después</span></div>
+</div>
+<div class="card">
+<h2>Equilibrio<button type="button" class="ib" data-info="eq" aria-expanded="false" aria-label="Ver la fórmula">i</button></h2>
+<div class="tw" id="eqt"></div>
+<div class="rd" id="lect"></div>
+<p><button id="go2">Siguiente: predecir</button></p>
+</div>
+</section>
+
+<section class="pg" data-i="2" id="p2" hidden>
+<div class="card">
+<h2>Elijan un escenario</h2>
+<div class="chips" id="scs"></div>
+<p class="note">Hagan los cuatro: cada uno se guarda aparte.</p>
+</div>
+<div class="card" id="pp" hidden>
+<h2>Predigan antes de comprobar</h2>
+<p id="sct"></p>
+<div class="pr"><span></span><span class="hd">Producción (Y)</span><span class="hd">Precio (P)</span></div>
+<div id="prs"></div>
+<p><button id="btnC">Comprobar</button></p>
+</div>
+<div class="card" id="pr2" hidden>
+<h2>Resultado<button type="button" class="ib" data-info="eq" aria-expanded="false" aria-label="Ver la fórmula">i</button></h2>
+<div class="tw" id="rest"></div>
+<h3>Expliquen con sus palabras por qué los tres supuestos dan resultados distintos</h3>
+<textarea id="expl" placeholder="Por ejemplo: con oferta clásica la producción no cambia porque…"></textarea>
+<div class="st note" id="cnt"></div>
+<p><button id="btnS">Guardar escenario</button></p>
+</div>
+<p><button id="go3">Siguiente: diagnóstico</button></p>
+</section>
+
+<section class="pg" data-i="3" id="p3" hidden>
+<div class="news">Cifras ilustrativas. Para cada caso, miren primero hacia dónde fue el precio: eso separa un choque de demanda de uno de oferta.</div>
+<div id="dxs"></div>
+<p><button id="btnD">Comprobar los cuatro casos</button> <button id="go4">Ir al informe</button></p>
+</section>
+
+<section class="pg" data-i="4" id="p4" hidden>
+<div class="card"><h2>Informe del equipo</h2><div id="sum"></div></div>
+<p><button id="pdf">Descargar el PDF del equipo</button> <button class="sec" id="del">Borrar mis datos</button></p>
+<p class="note" id="delq" hidden>¿Seguro? Se borran todos los datos y respuestas de este navegador. <button id="delok" style="min-height:36px;padding:4px 10px">Sí, borrar</button> <button class="sec" id="delno" style="min-height:36px;padding:4px 10px">Cancelar</button></p>
+</section>
+</div>
+<div class="toast" id="toast" hidden></div>
+<div id="printDoc" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+"use strict";
+var D={"c":[],"src":""};
+var LS="oferta_demanda_agregadas_v1";
+var S={d:{equipo:"",curso:"",integrantes:""},sv:{},dx:{},tab:0};
+D.c.sort(function(a,b){return a.n.localeCompare(b.n,"es");});
+var YRS=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+function $(i){return document.getElementById(i);}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function f(x,d){if(x===null||x===undefined||isNaN(x))return "sin dato";if(d===undefined)d=1;var s=Number(x).toFixed(d),neg=s[0]==="-"?"−":"",p=s.replace("-","").split("."),i=p[0].replace(/\B(?=(\d{3})+(?!\d))/g," ");return neg+i+(p[1]?","+p[1]:"");}
+function parseNum(s){s=String(s).trim().replace(/\s/g,"");if(s==="")return null;if(s.indexOf(",")>=0&&s.indexOf(".")>=0)s=s.replace(/\./g,"").replace(",",".");else s=s.replace(",",".");var n=Number(s);return isNaN(n)?null:n;}
+function toast(m){var t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(function(){t.hidden=true;},3000);}
+function today(){return new Date().toLocaleDateString("es-EC",{day:"numeric",month:"long",year:"numeric"});}
+function C(k){return D.c.filter(function(x){return x.k===k;})[0];}
+function load(){try{var v=localStorage.getItem(LS);if(v){var o=JSON.parse(v);if(o&&o.d){for(var k in o)S[k]=o[k];}}}catch(e){}}
+function save(){try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
+function median(a){a=a.filter(function(x){return x!==null&&x!==undefined;}).sort(function(x,y){return x-y;});if(!a.length)return null;var m=Math.floor(a.length/2);return a.length%2?a[m]:(a[m-1]+a[m])/2;}
+function avg(a){var b=a.filter(function(x){return x!==null&&x!==undefined;});return b.length?b.reduce(function(x,y){return x+y;},0)/b.length:null;}
+function lastIdx(a){for(var i=a.length-1;i>=0;i--)if(a[i]!==null&&a[i]!==undefined)return i;return -1;}
+/* ---- selector de países ---- */
+function renderChips(){var A=S.pa||S.p[0]||"",B=S.pb||S.p[1]||"";S.pa=A;S.pb=B;
+ function opts(sel){return "<option value=''>Elige…</option>"+D.c.map(function(c){return "<option value='"+c.k+"'"+(c.k===sel?" selected":"")+">"+esc(c.n)+"</option>";}).join("");}
+ $("chips").innerHTML="<div class='grid'><div><label for='selA'>País A: destino de su empresa</label><select id='selA'>"+opts(A)+"</select></div><div><label for='selB'>País B: para comparar</label><select id='selB'>"+opts(B)+"</select></div></div>";
+ function upd(){var a=$("selA").value,b=$("selB").value;S.pa=a;S.pb=b;if(a&&b&&a===b){S.pb="";$("selB").value="";toast("Elijan dos países distintos");}S.p=(S.pa&&S.pb)?[S.pa,S.pb]:[];save();msg();onPaises();}
+ function msg(){$("selmsg").textContent=S.p.length<2?"Elijan los dos países.":"Elegiron: "+C(S.p[0]).n+" (A) y "+C(S.p[1]).n+" (B).";}
+ $("selA").addEventListener("change",upd);$("selB").addEventListener("change",upd);msg();}
+/* ---- gráficos SVG de líneas ---- */
+function niceStep(r){var e=Math.pow(10,Math.floor(Math.log(r)/Math.LN10)),m=r/e;return (m<=1?1:m<=2?2:m<=2.5?2.5:m<=5?5:10)*e;}
+function scaleOf(series){var v=[0];series.forEach(function(s){s.v.forEach(function(x){if(x!==null&&x!==undefined)v.push(x);});});var mn=Math.min.apply(null,v),mx=Math.max.apply(null,v);if(mx===mn)mx=mn+1;var st=niceStep((mx-mn)/4);return {lo:Math.floor(mn/st)*st,hi:Math.ceil(mx/st)*st,st:st};}
+function lineSvg(series,unit,title){
+ var W=360,H=205,L=42,R=18,T=14,B=26,sc=scaleOf(series),n=YRS.length;
+ function X(i){return L+i*(W-L-R)/(n-1);}function Y(v){return T+(sc.hi-v)/(sc.hi-sc.lo)*(H-T-B);}
+ var s="<svg class='ch' viewBox='0 0 "+W+" "+H+"' role='img' aria-label='"+esc(title)+"'>";
+ for(var t=sc.lo;t<=sc.hi+1e-9;t+=sc.st){var y=Y(t);s+="<line class='"+(Math.abs(t)<1e-9?"z":"g")+"' x1='"+L+"' x2='"+(W-R)+"' y1='"+y+"' y2='"+y+"'/><text x='"+(L-4)+"' y='"+(y+3)+"' text-anchor='end'>"+f(t,sc.st<1?1:0)+"</text>";}
+ YRS.forEach(function(yr,i){if(i%2===0)s+="<text x='"+X(i)+"' y='"+(H-8)+"' text-anchor='middle'>"+yr+"</text>";});
+ s+="<text x='"+L+"' y='9'>"+esc(unit)+"</text>";
+ series.forEach(function(se){var c=se.c,d="",pen=false;se.v.forEach(function(v,i){if(v===null||v===undefined){pen=false;return;}d+=(pen?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)+" ";pen=true;});
+  s+="<path class='l"+c+"' d='"+d+"'/>";
+  se.v.forEach(function(v,i){if(v===null||v===undefined)return;s+=(c===1?"<circle class='m1' cx='"+X(i).toFixed(1)+"' cy='"+Y(v).toFixed(1)+"' r='2.8'/>":"<rect class='m2' x='"+(X(i)-2.6).toFixed(1)+"' y='"+(Y(v)-2.6).toFixed(1)+"' width='5.2' height='5.2'/>");});});
+ return s+"</svg>";}
+function legend(){return "<div class='leg'><span><b class='s1'>● ―</b> "+esc(C(S.p[0]).n)+" (A)</span><span><b class='s2'>■ - -</b> "+esc(C(S.p[1]).n)+" (B)</span></div>";}
+/* ---- PDF ---- */
+function clean(s){return String(s).replace(/−/g,"-").replace(/≈/g,"~").replace(/→/g,"->").replace(/[  ]/g," ").replace(/Δ/g,"Delta ").replace(/λ/g,"lambda").replace(/[✓✔]/g,"si").replace(/×/g,"x").replace(/÷/g,"/").replace(/[●■]/g,"*").replace(/–/g,"-");}
+var RGB1=[59,36,97],RGB2=[199,90,14];
+function buildPdf(bl,foot){var J=window.jspdf.jsPDF,doc=new J({unit:"mm",format:"a4"}),W=210,H=297,M=18,MW=W-2*M,y=M;
+ function need(h){if(y+h>H-M){doc.addPage();y=M;}}
+ function para(t,size,bold,c){doc.setFont("helvetica",bold?"bold":"normal");doc.setFontSize(size);doc.setTextColor(c[0],c[1],c[2]);var ls=doc.splitTextToSize(clean(t),MW),lh=size*0.43;ls.forEach(function(l){need(lh);doc.text(l,M,y+lh*0.8);y+=lh;});y+=1.5;}
+ function chart(b){var h=52,w=MW;need(h+9);doc.setFont("helvetica","bold");doc.setFontSize(10);doc.setTextColor(20,20,20);doc.text(clean(b.title),M,y+3.5);y+=6;
+  var L=M+11,R=M+w-2,T=y+2,B=y+h-9,vals=[0];b.series.forEach(function(s){s.v.forEach(function(v){if(v!==null&&v!==undefined)vals.push(v);});});
+  var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);if(mx===mn)mx=mn+1;var st=niceStep((mx-mn)/4),lo=Math.floor(mn/st)*st,hi=Math.ceil(mx/st)*st,n=YRS.length;
+  function X(i){return L+i*(R-L)/(n-1);}function Y(v){return T+(hi-v)/(hi-lo)*(B-T);}
+  doc.setFontSize(7);doc.setFont("helvetica","normal");
+  for(var t=lo;t<=hi+1e-9;t+=st){doc.setDrawColor(Math.abs(t)<1e-9?120:220,Math.abs(t)<1e-9?120:215,Math.abs(t)<1e-9?120:232);doc.setLineWidth(Math.abs(t)<1e-9?0.35:0.15);doc.setLineDash([]);doc.line(L,Y(t),R,Y(t));doc.setTextColor(90,90,90);doc.text(clean(f(t,st<1?1:0)),L-1.5,Y(t)+1,{align:"right"});}
+  YRS.forEach(function(yr,i){if(i%2===0){doc.setTextColor(90,90,90);doc.text(String(yr),X(i),B+4,{align:"center"});}});
+  b.series.forEach(function(s,k){var kk=(s.c||k+1)-1,c=kk===0?RGB1:RGB2;doc.setDrawColor(c[0],c[1],c[2]);doc.setFillColor(c[0],c[1],c[2]);doc.setLineWidth(0.6);doc.setLineDash(kk===0?[]:[2,1.2],0);var pv=null;
+   s.v.forEach(function(v,i){if(v===null||v===undefined){pv=null;return;}if(pv!==null)doc.line(X(pv.i),Y(pv.v),X(i),Y(v));pv={i:i,v:v};});doc.setLineDash([]);
+   s.v.forEach(function(v,i){if(v===null||v===undefined)return;if(kk===0)doc.circle(X(i),Y(v),0.8,"F");else doc.rect(X(i)-0.8,Y(v)-0.8,1.6,1.6,"F");});});
+  doc.setFontSize(8);b.series.forEach(function(s,k){var kk=(s.c||k+1)-1,c=kk===0?RGB1:RGB2;doc.setTextColor(c[0],c[1],c[2]);doc.text(clean((b.series.length>1?(kk===0?"A: ":"B: "):"")+s.n),L+k*60,B+8);});
+  y+=h+1;doc.setLineDash([]);}
+ bl.forEach(function(b){
+  if(b.t==="title")para(b.x,16,true,[59,36,97]);
+  else if(b.t==="sub"){para(b.x,9.5,false,[90,90,90]);y+=1;}
+  else if(b.t==="h"){need(30);y+=3;para(b.x,12,true,[59,36,97]);}
+  else if(b.t==="p")para(b.x,10.5,false,[20,20,20]);
+  else if(b.t==="small")para(b.x,8.5,false,[100,100,100]);
+  else if(b.t==="kv"){doc.setFontSize(10.5);doc.setFont("helvetica","bold");var kw=Math.max(46,doc.getTextWidth(clean(b.k)+":")+4);doc.setFont("helvetica","normal");var ls=doc.splitTextToSize(clean(b.v),MW-kw);need(5.5*ls.length);doc.setFont("helvetica","bold");doc.setTextColor(20,20,20);doc.text(clean(b.k)+":",M,y+4);doc.setFont("helvetica","normal");ls.forEach(function(l,i){doc.text(l,M+kw,y+4+i*5);});y+=5.2*ls.length+0.8;}
+  else if(b.t==="chart")chart(b);
+  else if(b.t==="table"){var n=b.head.length,cw=b.cw?b.cw.map(function(x){return x*MW;}):b.head.map(function(){return MW/n;}),xs=[M];cw.forEach(function(w){xs.push(xs[xs.length-1]+w);});doc.setFontSize(8.5);
+   var row=function(cells,head){var ls=cells.map(function(c,i){return doc.splitTextToSize(clean(c),cw[i]-3);}),mx=Math.max.apply(null,ls.map(function(l){return l.length;})),h=mx*3.8+2.6;need(h);cells.forEach(function(c,i){if(head){doc.setFillColor(239,233,247);doc.rect(xs[i],y,cw[i],h,"F");}doc.setDrawColor(150,140,180);doc.setLineWidth(0.2);doc.rect(xs[i],y,cw[i],h);doc.setFont("helvetica",head?"bold":"normal");doc.setTextColor(20,20,20);ls[i].forEach(function(l,j){doc.text(l,xs[i]+1.5,y+3.8+j*3.8);});});y+=h;};
+   row(b.head,true);b.rows.forEach(function(r){row(r.map(String),false);});y+=3;}});
+ var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);doc.setFontSize(8);doc.setTextColor(110,110,110);doc.setFont("helvetica","normal");doc.text(clean(foot),M,H-8);doc.text(i+" / "+n,W-M,H-8,{align:"right"});}
+ return doc;}
+function blocksHtml(bl){return bl.map(function(b){if(b.t==="title")return "<h1>"+esc(b.x)+"</h1>";if(b.t==="h")return "<h2>"+esc(b.x)+"</h2>";if(b.t==="p"||b.t==="small"||b.t==="sub")return "<p>"+esc(b.x)+"</p>";if(b.t==="kv")return "<p><b>"+esc(b.k)+":</b> "+esc(b.v)+"</p>";if(b.t==="table")return "<table><tr>"+b.head.map(function(h){return "<th>"+esc(h)+"</th>";}).join("")+"</tr>"+b.rows.map(function(r){return "<tr>"+r.map(function(c){return "<td>"+esc(c)+"</td>";}).join("")+"</tr>";}).join("")+"</table>";return "";}).join("");}
+function printFallback(bl){$("printDoc").innerHTML=blocksHtml(bl);$("printDoc").hidden=false;toast("La descarga no está disponible en esta vista. Abre el enlace del applet en el navegador.");try{window.print();}catch(e){}}
+async function savePdf(bl,name,foot){
+ if(!window.jspdf){printFallback(bl);return;}
+ var dl=null;try{if(typeof claude!=="undefined")dl=await claude.use("downloads");}catch(e){dl=null;}
+ if(!dl){printFallback(bl);return;}
+ try{var doc=buildPdf(bl,foot);await dl.save({filename:name,data:doc.output("arraybuffer")});toast("PDF listo");}
+ catch(e){if(e&&(e.code==="declined"||e.code==="dismissed"))return;printFallback(bl);}}
+function fname(pre){var n=(S.d.equipo||"equipo").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"");return pre+"_"+n+".pdf";}
+/* ---- pestañas ---- */
+function tabsInit(names,onTab){var h="";names.forEach(function(t,i){h+="<button role='tab' data-t='"+i+"'>"+t+"</button>";});$("tabs").innerHTML=h;
+ [].forEach.call($("tabs").querySelectorAll("button"),function(b){b.addEventListener("click",function(){setTab(parseInt(b.getAttribute("data-t"),10));});});
+ window.setTab=function(n){S.tab=n;save();[].forEach.call(document.querySelectorAll(".pg"),function(p){p.hidden=parseInt(p.getAttribute("data-i"),10)!==n;});[].forEach.call($("tabs").querySelectorAll("button"),function(b,i){b.className=i===n?"on":"";});onTab(n);window.scrollTo(0,0);};}
+function nNombres(){return String(S.d.integrantes||"").split(",").filter(function(x){return x.trim().length>1;}).length;}
+function bindDatos(){["equipo","curso"].forEach(function(k){var e=$(k);if(!e)return;e.value=S.d[k]||"";if(!e.__b){e.__b=1;e.addEventListener("input",function(){S.d[k]=e.value;save();});}});
+ var ta=$("integrantes");if(ta&&!$("nombres")){var host=ta.parentNode;host.innerHTML="<label>Integrantes del equipo (un nombre completo por casilla; mínimo 2)</label><div class='grid' id='nombres'></div>";var h="";for(var i=0;i<5;i++)h+="<input type='text' autocomplete='off' placeholder='Integrante "+(i+1)+(i>=2?" (si aplica)":"")+"' aria-label='Integrante "+(i+1)+"' data-n='"+i+"'>";$("nombres").innerHTML=h;
+  [].forEach.call($("nombres").querySelectorAll("input"),function(e){e.addEventListener("input",function(){var v=[].map.call($("nombres").querySelectorAll("input"),function(x){return x.value.trim();});S.d.nombres=v;S.d.integrantes=v.filter(Boolean).join(", ");save();});});}
+ if($("nombres")){var nm=S.d.nombres||String(S.d.integrantes||"").split(",").map(function(x){return x.trim();});[].forEach.call($("nombres").querySelectorAll("input"),function(e,i){e.value=nm[i]||"";});}}
+
+var INFO={dp:"<b>Deflactor</b> = PIB nominal ÷ PIB real × 100. Úsenlo con los datos del año anterior.",dc:"<b>Deflactor</b> = PIB nominal ÷ PIB real × 100. Úsenlo con los datos del año elegido.",gr:"<b>Crecimiento real (%)</b> = (PIB real del año ÷ PIB real del año anterior − 1) × 100.",dd:"<b>Variación del deflactor (%)</b> = (deflactor del año ÷ deflactor del año anterior − 1) × 100. Mide cuánto subieron los precios de todo lo producido.",g:"<b>Crecimiento del PIB real (%)</b> = (PIB real<sub>t</sub> ÷ PIB real<sub>t−1</sub> − 1) × 100. Mide cuánto cambió la producción sin el efecto de los precios.",u:"<b>Tasa de desempleo (%)</b> = desempleados ÷ fuerza laboral × 100, con fuerza laboral = ocupados + desempleados.",i:"<b>Inflación (%)</b> = (IPC<sub>t</sub> ÷ IPC<sub>t−1</sub> − 1) × 100. Mide cuánto subió el costo de la canasta de consumo."};
+function ib(k){return "<button type='button' class='ib' data-info='"+k+"' aria-expanded='false' aria-label='Ver la fórmula'>i</button>";}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".ib");if(!b)return;var host=b.parentNode,nx=host.nextElementSibling;if(nx&&nx.classList.contains("tip")&&nx.getAttribute("data-for")===b.getAttribute("data-info")){nx.remove();b.setAttribute("aria-expanded","false");return;}if(nx&&nx.classList.contains("tip"))nx.remove();var t=document.createElement("div");t.className="tip";t.setAttribute("data-for",b.getAttribute("data-info"));t.innerHTML=INFO[b.getAttribute("data-info")]||"";host.parentNode.insertBefore(t,host.nextSibling);b.setAttribute("aria-expanded","true");});
+
+INFO.oa="<b>Oferta agregada</b> (supuestos del curso). Clásica: <b>Y = Y<sub>N</sub> = 1 100</b> (vertical). Keynesiana: <b>P = P̄ = 100 + Δcostos</b> (horizontal, precios rígidos). Corto plazo: <b>P = −10 + Δcostos + 0,1·Y</b> (con pendiente).";
+INFO.da="<b>Demanda agregada:</b> Y = A − 4P, con A = 1 500 + 4·Δ, donde Δ es el cambio de G o de X (el multiplicador es k = 1 ÷ (1 − PMC) = 4). Un aumento de costos no mueve la DA: mueve la oferta.";
+INFO.eq="<b>Equilibrio</b> (A = 1 500 + 4Δ; c = Δcostos). Clásico: <b>Y = 1 100</b> y <b>P = (A − 1 100) ÷ 4</b>. Keynesiano: <b>P = 100 + c</b> y <b>Y = A − 4P</b>. Corto plazo: <b>Y = (A + 40 − 4c) ÷ 1,4</b> y <b>P = −10 + c + 0,1·Y</b>.";
+var MODS=[{k:"cl",n:"Clásica"},{k:"ks",n:"Keynesiana"},{k:"sr",n:"Corto plazo"}];
+function mn(k){return MODS.filter(function(m){return m.k===k;})[0].n;}
+function sol(m,dA,cs){var A=1500+dA,Y,P;if(m==="cl"){Y=1100;P=(A-1100)/4;}else if(m==="ks"){P=100+cs;Y=A-4*P;}else{Y=(A+40-4*cs)/1.4;P=-10+cs+0.1*Y;}return {Y:Y,P:P};}
+var EX={m:"sr",t:"g",mag:0};
+var TYP=[{k:"g",n:"Gasto público (ΔG)"},{k:"x",n:"Exportaciones (ΔX)"},{k:"c",n:"Costos de producción"}];
+function shock(){var dA=EX.t==="c"?0:4*EX.mag,cs=EX.t==="c"?EX.mag:0;return {dA:dA,cs:cs};}
+function dirOf(d){return Math.abs(d)<0.05?"igual":(d>0?"sube":"baja");}
+function nm(v){return v==="sube"?"Sube":v==="baja"?"Baja":"Igual";}
+function sg(d){return (d>0?"+":"")+f(d,1);}
+/* ---- gráfico ---- */
+var XL=950,XH=1250,PL=60,PH=140,GL=44,GR=12,GT=12,GB=34,GW=360,GH=280;
+function X(y){return GL+(y-XL)/(XH-XL)*(GW-GL-GR);}function Yp(p){return GT+(PH-p)/(PH-PL)*(GH-GT-GB);}
+function daLine(A){var pa=Math.max(PL,(A-XH)/4),pb=Math.min(PH,(A-XL)/4);return [X(A-4*pa),Yp(pa),X(A-4*pb),Yp(pb)];}
+function oaLine(m,cs){if(m==="cl")return [X(1100),Yp(PL),X(1100),Yp(PH)];if(m==="ks")return [X(XL),Yp(100+cs),X(XH),Yp(100+cs)];return [X(XL),Yp(-10+cs+0.1*XL),X(XH),Yp(-10+cs+0.1*XH)];}
+function L(a,c){return "<line class='"+c+"' x1='"+a[0].toFixed(1)+"' y1='"+a[1].toFixed(1)+"' x2='"+a[2].toFixed(1)+"' y2='"+a[3].toFixed(1)+"'/>";}
+function graph(){var sh=shock(),s0=sol(EX.m,0,0),s1=sol(EX.m,sh.dA,sh.cs),mv=EX.mag!==0,h="<svg class='gx' viewBox='0 0 "+GW+" "+GH+"' role='img' aria-label='Gráfico de oferta y demanda agregadas'>";
+ [1000,1100,1200].forEach(function(y){h+="<line class='gl' x1='"+X(y)+"' y1='"+Yp(PH)+"' x2='"+X(y)+"' y2='"+Yp(PL)+"'/><text x='"+X(y)+"' y='"+(GH-GB+13)+"' text-anchor='middle'>"+f(y,0)+"</text>";});
+ [70,100,130].forEach(function(p){h+="<line class='gl' x1='"+GL+"' y1='"+Yp(p)+"' x2='"+(GW-GR)+"' y2='"+Yp(p)+"'/><text x='"+(GL-5)+"' y='"+(Yp(p)+3)+"' text-anchor='end'>"+p+"</text>";});
+ h+="<line class='ax' x1='"+GL+"' y1='"+Yp(PL)+"' x2='"+(GW-GR)+"' y2='"+Yp(PL)+"'/><line class='ax' x1='"+GL+"' y1='"+Yp(PH)+"' x2='"+GL+"' y2='"+Yp(PL)+"'/>";
+ h+="<text x='"+((GL+GW-GR)/2)+"' y='"+(GH-4)+"' text-anchor='middle'>Producción real (Y)</text><text x='10' y='"+(GT+4)+"'>P</text>";
+ var d0=daLine(1500),o0=oaLine(EX.m,0);h+=L(d0,"d0")+L(o0,"o0");
+ h+="<text class='t1' x='"+(d0[2]+8).toFixed(1)+"' y='"+(d0[3]+16).toFixed(1)+"'>DA</text>";
+ var ol=EX.m==="cl"?[o0[0]+5,o0[3]+10]:EX.m==="ks"?[o0[2]-30,o0[1]-6]:[o0[2]-26,o0[3]-6];h+="<text class='t2' x='"+ol[0].toFixed(1)+"' y='"+ol[1].toFixed(1)+"'>OA</text>";
+ if(mv){var d1=daLine(1500+sh.dA),o1=oaLine(EX.m,sh.cs);if(sh.dA!==0){h+=L(d1,"d1");h+="<text class='t1' x='"+(d1[0]-24).toFixed(1)+"' y='"+(d1[1]-5).toFixed(1)+"'>DA′</text>";}
+  if(sh.cs!==0&&EX.m!=="cl"){h+=L(o1,"o1");h+="<text class='t2' x='"+(o1[0]+5).toFixed(1)+"' y='"+(o1[1]+(sh.cs>0?-6:14)).toFixed(1)+"'>OA′</text>";}}
+ h+="<circle class='p0' cx='"+X(s0.Y)+"' cy='"+Yp(s0.P)+"' r='4.5'/><text class='t1' x='"+(X(s0.Y)+7)+"' y='"+(Yp(s0.P)-7)+"'>E0</text>";
+ if(mv&&(Math.abs(s1.Y-s0.Y)>0.05||Math.abs(s1.P-s0.P)>0.05)){h+="<rect class='p1' x='"+(X(s1.Y)-4.5)+"' y='"+(Yp(s1.P)-4.5)+"' width='9' height='9'/><text class='t2' x='"+(X(s1.Y)-22)+"' y='"+(Yp(s1.P)+17)+"'>E1</text>";}
+ return h+"</svg>";}
+function lectura(s0,s1,sh){var dY=s1.Y-s0.Y,dP=s1.P-s0.P,t;
+ if(EX.mag===0)return "Muevan el choque para ver qué cambia.";
+ if(Math.abs(dY)<0.05&&Math.abs(dP)<0.05)return EX.m==="cl"&&EX.t==="c"?"En el modelo clásico un cambio de costos no mueve la producción natural ni, en este ejemplo, el precio de equilibrio: la oferta de largo plazo depende de los factores reales.":"No cambia nada.";
+ if(Math.abs(dY)<0.05)return "<b>Solo cambia el precio.</b> La producción ya está en su nivel natural: más demanda solo presiona los precios (o menos demanda los baja).";
+ if(Math.abs(dP)<0.05)return "<b>Solo cambia la producción.</b> Con precios rígidos, el gasto ajusta la producción: es el multiplicador (k = 4).";
+ return "<b>Cambian los dos.</b> "+(dY*dP>0?"Producción y precio se mueven en el mismo sentido: señal de un choque de demanda.":"Producción y precio se mueven en sentidos contrarios: señal de un choque de oferta.");}
+function renderEx(){var sh=shock(),s0=sol(EX.m,0,0),s1=sol(EX.m,sh.dA,sh.cs);
+ $("gfx").innerHTML=graph();
+ $("magv").textContent=(EX.mag>0?"+":"")+EX.mag;
+ $("magn").textContent=EX.t==="c"?"Los costos suben o bajan "+Math.abs(EX.mag)+(EX.mag===0?"":" unidades: la OA se corre "+Math.abs(EX.mag)+" en precio.") :"El gasto autónomo cambia "+EX.mag+": la DA se corre 4 × "+EX.mag+" = "+4*EX.mag+" a la "+(EX.mag>=0?"derecha":"izquierda")+".";
+ $("eqt").innerHTML="<table><tr><th>Variable</th><th>Antes</th><th>Después</th><th>Cambio</th></tr><tr><td>Producción (Y)</td><td>"+f(s0.Y,1)+"</td><td>"+f(s1.Y,1)+"</td><td>"+sg(s1.Y-s0.Y)+"</td></tr><tr><td>Precio (P)</td><td>"+f(s0.P,1)+"</td><td>"+f(s1.P,1)+"</td><td>"+sg(s1.P-s0.P)+"</td></tr></table>";
+ $("lect").innerHTML=lectura(s0,s1,sh);}
+function seg(id,items,cur,cb){var h="";items.forEach(function(it){h+="<button type='button' data-v='"+it.k+"' class='"+(it.k===cur?"on":"")+"'>"+it.n+"</button>";});$(id).innerHTML=h;[].forEach.call($(id).querySelectorAll("button"),function(b){b.addEventListener("click",function(){cb(b.getAttribute("data-v"));});});}
+function initEx(){seg("sgM",MODS,EX.m,function(v){EX.m=v;initEx();});seg("sgT",TYP,EX.t,function(v){EX.t=v;initEx();});renderEx();}
+$("mag").addEventListener("input",function(){EX.mag=parseInt(this.value,10);renderEx();});
+/* ---- escenarios ---- */
+var SC=[{t:"Las exportaciones bajan 7",dA:-28,cs:0},{t:"Los costos suben 7",dA:0,cs:7},{t:"El gasto público sube 7",dA:28,cs:0},{t:"Las exportaciones bajan 7 y los costos suben 7",dA:-28,cs:7}];
+var sc=-1,pred={},last=null;
+function nfig(t){return (String(t).match(/\d+([.,]\d+)?/g)||[]).length;}
+function renderSc(){var h="";SC.forEach(function(s,i){h+="<button type='button' class='chip"+(i===sc?" on":"")+"' data-i='"+i+"'>"+(i+1)+". "+s.t+(S.sv[i]?" ✓":"")+"</button>";});$("scs").innerHTML=h;
+ [].forEach.call($("scs").querySelectorAll("button"),function(b){b.addEventListener("click",function(){sc=parseInt(b.getAttribute("data-i"),10);pred={};last=null;$("pp").hidden=false;$("pr2").hidden=true;$("sct").innerHTML="<b>"+SC[sc].t+".</b> Partimos de Y = 1 100 y P = 100. ¿Qué pasa con la producción y con el precio en cada supuesto de oferta?";
+  var r="";MODS.forEach(function(m){r+="<div class='pr'><b>"+m.n+"</b><div class='seg' data-k='"+m.k+"Y'></div><div class='seg' data-k='"+m.k+"P'></div></div>";});$("prs").innerHTML=r;
+  [].forEach.call($("prs").querySelectorAll(".seg"),function(g){["sube","baja","igual"].forEach(function(v){var bb=document.createElement("button");bb.type="button";bb.textContent=nm(v);bb.addEventListener("click",function(){[].forEach.call(g.querySelectorAll("button"),function(x){x.className="";});bb.className="on";pred[g.getAttribute("data-k")]=v;});g.appendChild(bb);});});
+  renderSc();});});}
+$("btnC").addEventListener("click",function(){if(sc<0)return;var rows=[],ok=0,tot=0;
+ for(var i=0;i<MODS.length;i++){var m=MODS[i].k;if(!pred[m+"Y"]||!pred[m+"P"]){toast("Falta la predicción de oferta "+MODS[i].n.toLowerCase());return;}}
+ MODS.forEach(function(M){var s0=sol(M.k,0,0),s1=sol(M.k,SC[sc].dA,SC[sc].cs),dy=dirOf(s1.Y-s0.Y),dp=dirOf(s1.P-s0.P),a=pred[M.k+"Y"]===dy,b=pred[M.k+"P"]===dp;ok+=(a?1:0)+(b?1:0);tot+=2;
+  rows.push({m:M.n,y0:s0.Y,y1:s1.Y,p0:s0.P,p1:s1.P,py:pred[M.k+"Y"],pp:pred[M.k+"P"],ay:dy,ap:dp,oky:a,okp:b});});
+ last={i:sc,rows:rows,ok:ok,tot:tot};
+ var h="<table><tr><th>Oferta</th><th>Y antes → después</th><th>Predicción Y</th><th>P antes → después</th><th>Predicción P</th></tr>";
+ rows.forEach(function(r){h+="<tr><td>"+r.m+"</td><td>"+f(r.y0,1)+" → "+f(r.y1,1)+"</td><td class='"+(r.oky?"ok":"bad")+"'>"+(r.oky?"Acertó":"Era: "+nm(r.ay))+"</td><td>"+f(r.p0,1)+" → "+f(r.p1,1)+"</td><td class='"+(r.okp?"ok":"bad")+"'>"+(r.okp?"Acertó":"Era: "+nm(r.ap))+"</td></tr>";});
+ $("rest").innerHTML=h+"</table><p><b>Aciertos: "+ok+" de "+tot+".</b></p>";
+ $("pr2").hidden=false;var e=S.sv[sc];$("expl").value=e&&e.expl?e.expl:"";cnt();});
+function cnt(){var t=$("expl").value;$("cnt").textContent=t.length+" caracteres · "+nfig(t)+" cifra"+(nfig(t)===1?"":"s")+" (mínimo 100 caracteres y una cifra)";}
+$("expl").addEventListener("input",cnt);
+$("btnS").addEventListener("click",function(){if(!last)return;var t=$("expl").value.trim();if(t.length<100||nfig(t)<1){toast("Escribe al menos 100 caracteres y cita una cifra");return;}S.sv[last.i]={t:SC[last.i].t,rows:last.rows,ok:last.ok,tot:last.tot,expl:t};save();toast("Escenario guardado");renderSc();});
+$("go3").addEventListener("click",function(){setTab(3);});
+/* ---- diagnóstico ---- */
+var DX=[{t:"PIB real −3 % y precios −1,5 %",a:"dn"},{t:"PIB real −2 % y precios +4 %",a:"sn"},{t:"PIB real +4 % y precios +3 %",a:"dp"},{t:"PIB real +3 % y precios −2 %",a:"sp"}];
+var OPT=[{k:"dn",n:"Demanda baja"},{k:"dp",n:"Demanda sube"},{k:"sn",n:"Oferta cae (costos suben)"},{k:"sp",n:"Oferta aumenta (costos bajan)"}];
+function nameOpt(k){return OPT.filter(function(o){return o.k===k;})[0].n;}
+var shown=false;
+function renderDx(){var h="";DX.forEach(function(c,i){var d=S.dx[i]||{r:"",j:""};h+="<div class='card'><h2>Caso "+(i+1)+": "+c.t+"</h2>";
+  OPT.forEach(function(o){h+="<label class='opt"+(d.r===o.k?" on":"")+"'><input type='radio' name='r"+i+"' value='"+o.k+"'"+(d.r===o.k?" checked":"")+"><span><b>"+o.n+"</b></span></label>";});
+  h+="<label for='j"+i+"' style='margin-top:8px'>Justifiquen con las cifras (mínimo 60 caracteres)</label><textarea id='j"+i+"'>"+esc(d.j)+"</textarea><div class='st' id='f"+i+"'></div></div>";});
+ $("dxs").innerHTML=h;
+ DX.forEach(function(c,i){[].forEach.call($("dxs").querySelectorAll("input[name='r"+i+"']"),function(r){r.addEventListener("change",function(){S.dx[i]=S.dx[i]||{r:"",j:""};S.dx[i].r=r.value;save();[].forEach.call($("dxs").querySelectorAll("input[name='r"+i+"']"),function(x){x.parentNode.className="opt"+(x.checked?" on":"");});});});
+  $("j"+i).addEventListener("input",function(){S.dx[i]=S.dx[i]||{r:"",j:""};S.dx[i].j=this.value;save();});});
+ if(shown)showDx();}
+function showDx(){DX.forEach(function(c,i){var d=S.dx[i]||{r:"",j:""},e=$("f"+i);if(!e)return;if(!d.r){e.innerHTML="<span class='bad'>Falta elegir una opción.</span>";return;}e.innerHTML=d.r===c.a?"<span class='ok'>Correcto.</span> Pista usada: "+(c.a==="dn"||c.a==="dp"?"producción y precio se mueven en el mismo sentido.":"producción y precio se mueven en sentidos contrarios."):"<span class='bad'>No coincide.</span> Era: "+nameOpt(c.a)+". "+(c.a==="dn"||c.a==="dp"?"Y y P van en el mismo sentido: es demanda.":"Y y P van en sentidos contrarios: es oferta.");});}
+$("btnD").addEventListener("click",function(){shown=true;showDx();});
+$("go4").addEventListener("click",function(){setTab(4);});
+/* ---- informe ---- */
+function nSv(){return Object.keys(S.sv).length;}
+function nDx(){var n=0;DX.forEach(function(c,i){var d=S.dx[i];if(d&&d.r&&d.j.length>=60)n++;});return n;}
+function renderSum(){var ok=0;DX.forEach(function(c,i){if(S.dx[i]&&S.dx[i].r===c.a)ok++;});
+ $("sum").innerHTML="<p><b>"+esc(S.d.equipo||"(sin nombre)")+"</b> · "+esc(S.d.curso||"-")+"</p><ul><li>Escenarios guardados: "+nSv()+" de 4</li><li>Casos diagnosticados con justificación: "+nDx()+" de 4 (aciertos: "+ok+")</li></ul><p class='note'>Pueden descargar el PDF en cualquier momento.</p>";}
+function blocks(){var b=[{t:"title",x:"Práctico en equipo: oferta y demanda agregadas"},{t:"sub",x:"Macroeconomía · Modelo del curso con cifras de ejemplo"},{t:"kv",k:"Equipo",v:S.d.equipo||"(sin nombre)"},{t:"kv",k:"Curso",v:(S.d.curso||"-")+" · Macroeconomía"},{t:"kv",k:"Integrantes",v:S.d.integrantes||"-"},{t:"kv",k:"Fecha",v:today()}];
+ b.push({t:"h",x:"Modelo"},{t:"p",x:"DA: Y = 1 500 - 4P (un cambio de gasto autonomo de 1 la mueve 4). Y_N = 1 100. Equilibrio inicial: Y = 1 100, P = 100."},{t:"p",x:"Oferta clasica: Y = 1 100. Oferta keynesiana: P = 100 + Delta costos. Oferta de corto plazo: P = -10 + Delta costos + 0,1 Y."});
+ b.push({t:"h",x:"Escenarios"});
+ SC.forEach(function(s,i){var e=S.sv[i];b.push({t:"p",x:(i+1)+". "+s.t+(e?" - aciertos: "+e.ok+" de "+e.tot:" - sin guardar")});
+  if(e){b.push({t:"table",head:["Oferta","Y antes","Y despues","Pred. Y","P antes","P despues","Pred. P"],cw:[0.2,0.12,0.14,0.16,0.12,0.14,0.12],rows:e.rows.map(function(r){return [r.m,f(r.y0,1),f(r.y1,1),r.py+(r.oky?" (ok)":" (era "+r.ay+")"),f(r.p0,1),f(r.p1,1),r.pp+(r.okp?" (ok)":" (era "+r.ap+")")];})});b.push({t:"p",x:"Explicacion del equipo: "+e.expl});}});
+ b.push({t:"h",x:"Diagnostico de casos"});
+ DX.forEach(function(c,i){var d=S.dx[i]||{r:"",j:""};b.push({t:"kv",k:"Caso "+(i+1),v:c.t});b.push({t:"p",x:"Respuesta: "+(d.r?nameOpt(d.r)+(d.r===c.a?" (correcta)":" (clave: "+nameOpt(c.a)+")"):"(sin respuesta)")+". "+(d.j||"(sin justificacion)")});});
+ b.push({t:"small",x:"Los numeros son un ejemplo didactico del curso (pendiente de la oferta de corto plazo = 0,1; multiplicador = 4); no representan una economia real."});return b;}
+function onTab(n){if(n===1)initEx();if(n===2)renderSc();if(n===3)renderDx();if(n===4)renderSum();}
+tabsInit(["Instrucciones","Explorar","Predecir","Diagnosticar","Informe"],onTab);
+$("go1").addEventListener("click",function(){setTab(1);});$("go2").addEventListener("click",function(){setTab(2);});
+$("pdf").addEventListener("click",function(){if(!S.d.equipo.trim()||nNombres()<2){toast("Escriban el nombre del equipo y al menos dos integrantes en Inicio");return;}savePdf(blocks(),fname("Oferta_demanda_agregadas"),"Universidad Indoamérica · Macroeconomía");});
+$("del").addEventListener("click",function(){$("delq").hidden=false;});$("delno").addEventListener("click",function(){$("delq").hidden=true;});
+$("delok").addEventListener("click",function(){S={d:{equipo:"",curso:"",integrantes:""},sv:{},dx:{},tab:0};save();bindDatos();$("delq").hidden=true;setTab(0);toast("Datos borrados");});
+load();bindDatos();setTab(S.tab>=0&&S.tab<=4?S.tab:0);
+})();
+</script>
+
+</body></html>

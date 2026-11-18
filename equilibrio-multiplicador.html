@@ -1,0 +1,391 @@
+<!doctype html><html><head><script>/* Descarga directa fuera de Claude (GitHub Pages) */
+(function(){if(window.claude&&typeof window.claude.use==='function')return;
+function save(o){o=o||{};var n=o.filename||'archivo.pdf',d=o.data,t=/\.pdf$/i.test(n)?'application/pdf':(/\.txt$/i.test(n)?'text/plain':'application/octet-stream');
+var b=(d instanceof Blob)?d:new Blob([d],{type:t});var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=n;a.rel='noopener';
+document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove()},60000);return Promise.resolve({status:'delivered'})}
+window.claude={use:function(x){return Promise.resolve(x==='downloads'?{save:save}:null)}};})();
+</script>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Equilibrio y multiplicador</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Diseño: una columna de trabajo (gráfico + controles) con pestañas por pasos; mismo sistema azul de los demás applets del curso. */
+:root{--bg:#f6f8fc;--fg:#1b1b1b;--mut:#595959;--card:#fff;--bd:#d5dcec;--ac:#1f3a8a;--acfg:#fff;--soft:#eef2fb;--ok:#2e7d32;--bad:#b3261e;--warn:#c05a00;--grid:#dde3f0;--line2:#c05a00}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141d;--fg:#e8ebf3;--mut:#a7afc2;--card:#181e2b;--bd:#2c3550;--ac:#8fb0ff;--acfg:#10141d;--soft:#1e2640;--ok:#7bd88f;--bad:#ff8a80;--warn:#ffb067;--grid:#2c3550;--line2:#ffb067;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10141d;--fg:#e8ebf3;--mut:#a7afc2;--card:#181e2b;--bd:#2c3550;--ac:#8fb0ff;--acfg:#10141d;--soft:#1e2640;--ok:#7bd88f;--bad:#ff8a80;--warn:#ffb067;--grid:#2c3550;--line2:#ffb067;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1000px;margin:0 auto;padding-block:16px}
+h1{font-size:1.5rem;margin:.2rem 0;text-wrap:balance}h2{font-size:1.15rem;margin:.2rem 0 .6rem}h3{font-size:1rem;margin:.8rem 0 .3rem}
+.sub{color:var(--mut);margin:0 0 .8rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:12px 0;min-width:0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.two{display:grid;gap:12px;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start}
+@media (max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
+label{display:block;font-size:.85rem;color:var(--mut);margin-bottom:2px}
+label.in{display:inline-flex;gap:6px;align-items:center;font-size:1rem;color:var(--fg);margin:2px 12px 2px 0}
+input,select,textarea{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px}
+input[type=radio],input[type=checkbox]{width:auto;accent-color:var(--ac)}
+input[type=range]{padding:0;accent-color:var(--ac)}
+textarea{min-height:84px;resize:vertical}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--ac);background:var(--ac);color:var(--acfg);padding:8px 14px}
+button.sec{background:transparent;color:var(--ac)}button.sm{padding:4px 10px;font-size:.85rem}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.tabs button{background:transparent;color:var(--ac)}.tabs button.on{background:var(--ac);color:var(--acfg)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{border:1px solid var(--bd);padding:6px 8px;text-align:right}
+th{background:var(--soft)}td:first-child,th:first-child{text-align:left}
+.tw{overflow-x:auto}
+.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}.note{font-size:.85rem;color:var(--mut)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ac);color:var(--acfg);padding:8px 14px;border-radius:8px;z-index:9}
+.fx{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--soft);border:1px solid var(--bd);padding:2px 8px;border-radius:6px;display:inline-block;margin:2px 0}
+.res{background:var(--soft);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;min-height:48px}
+.q{border-left:4px solid var(--ac);padding-left:10px;margin:10px 0}
+.pr{border:1px solid var(--bd);border-radius:10px;padding:12px;margin:12px 0}
+.pr .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.pr .row input{width:140px}
+.fl td:first-child{width:36%}.fl td,.fl th{text-align:left}
+svg text{fill:var(--fg);font-family:inherit}
+svg .m{fill:var(--mut)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sl{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin:4px 0}
+.sl output{min-width:3.2rem;text-align:right;font-weight:600}
+[hidden]{display:none!important}
+ol,ul{padding-left:22px}
+</style>
+
+<div class="wrap">
+<h1>Equilibrio de gasto y multiplicador</h1>
+<p class="sub">Macroeconomía · Trabajo en equipo: predigan, muevan los controles, comprueben y expliquen. El progreso se guarda en este navegador.</p>
+<div class="tabs" id="tabs" role="tablist"></div>
+
+<!-- 0 INSTRUCCIONES -->
+<section id="t0">
+<div class="card">
+<h2>Instrucciones</h2>
+<p><b>Para qué sirve.</b> Entender cómo se determina la producción de equilibrio cuando los precios no cambian y cuánto se mueve cuando el gobierno cambia su gasto o los impuestos.</p>
+<p><b>Cómo trabajar.</b> Se trabaja en equipo, con un solo registro por equipo. Antes de mover un control, el equipo anota o discute una predicción. Después compara con el resultado.</p>
+<ol>
+<li><b>Fórmulas:</b> lean las fórmulas y el ejemplo resuelto.</li>
+<li><b>Paso 1 · Equilibrio:</b> cambien el consumo, la inversión, el gasto público y los impuestos, y observen dónde se cruza la demanda con la línea de 45°.</li>
+<li><b>Paso 2 · Multiplicador:</b> elijan un choque, escriban su predicción del cambio en la producción y pulsen «Ver resultado». Repitan con varios choques.</li>
+<li><b>Práctica:</b> resuelvan tres ejercicios con papel y calculadora y comprueben sus respuestas.</li>
+<li><b>Mi registro:</b> escriban los datos del equipo y la interpretación, y descarguen el PDF.</li>
+</ol>
+<p><b>Cómo leer el gráfico.</b> El eje horizontal es la producción (Y) y el vertical es el gasto planeado. La línea punteada de 45° marca los puntos donde gasto = producción. La línea azul es el gasto planeado inicial; la naranja, el gasto después del choque. El equilibrio está donde la línea de gasto corta la de 45°.</p>
+<p><b>Guardado.</b> Los datos y las respuestas quedan solo en este navegador. Descarguen el PDF desde «Mi registro» antes de cerrar la página o cambiar de dispositivo. La fecha de entrega la indica su docente.</p>
+<p><b>Límites del modelo.</b> Precios y salarios fijos, recursos sin usar, impuestos de monto fijo, sin política monetaria ni reacción de los mercados financieros. Los valores son ilustrativos y no corresponden a un país.</p>
+</div>
+</section>
+
+<!-- 1 FORMULAS -->
+<section id="t1" hidden>
+<div class="card">
+<h2>Fórmulas que van a usar</h2>
+<div class="tw"><table class="fl">
+<tr><th>Qué calculan</th><th>Fórmula</th><th>Símbolos</th></tr>
+<tr><td>Consumo</td><td><span class="fx">C = a + c(Y − T)</span></td><td>a: consumo autónomo · c: propensión marginal a consumir (PMC) · T: impuestos · Y − T: ingreso disponible</td></tr>
+<tr><td>Importaciones</td><td><span class="fx">M = m·Y</span></td><td>m: propensión marginal a importar (PMI). En economía cerrada m = 0 y X = 0.</td></tr>
+<tr><td>Gasto planeado</td><td><span class="fx">GP = C + I + G + X − M</span></td><td>I: inversión · G: gasto público · X: exportaciones</td></tr>
+<tr><td>Producción de equilibrio</td><td><span class="fx">Y* = (a − c·T + I + G + X) / (1 − c + m)</span></td><td>Es el Y donde GP = Y.</td></tr>
+<tr><td>Multiplicador del gasto</td><td><span class="fx">kG = 1 / (1 − c + m)</span></td><td>ΔY = kG × ΔG</td></tr>
+<tr><td>Multiplicador de los impuestos</td><td><span class="fx">kT = − c / (1 − c + m)</span></td><td>ΔY = kT × ΔT. Es negativo: más impuestos reducen Y.</td></tr>
+<tr><td>Cambio conjunto</td><td><span class="fx">ΔY = (ΔG − c·ΔT) / (1 − c + m)</span></td><td>Con ΔG = ΔT, ΔY = ΔG (1 − c) / (1 − c + m); en economía cerrada, ΔY = ΔG.</td></tr>
+</table></div>
+<h3>Ejemplo resuelto</h3>
+<p>Economía cerrada con a = 100, c = 0,75, I = 100, G = 150, T = 100.</p>
+<p><span class="fx">Y* = (100 − 0,75×100 + 100 + 150) / (1 − 0,75) = 275 / 0,25 = 1 100</span></p>
+<p>Si G sube 50: <span class="fx">ΔY = 50 / 0,25 = 200</span>, es decir, kG = 4. Si T sube 50: <span class="fx">ΔY = −0,75×50 / 0,25 = −150</span>.</p>
+<p class="note">¿Por qué |kT| &lt; kG? Un dólar de gasto público es gasto desde la primera ronda. Un dólar de impuestos primero reduce el ingreso disponible, y solo una fracción c de ese dólar se deja de gastar.</p>
+</div>
+</section>
+
+<!-- Controles compartidos pasos 1 y 2 -->
+<section id="ctl" hidden>
+<div class="card">
+<h2>Economía</h2>
+<div role="radiogroup" aria-label="Propensión marginal a consumir"><b>PMC (c):</b>
+<label class="in"><input type="radio" name="c" value="0.5"> 1/2</label>
+<label class="in"><input type="radio" name="c" value="0.6"> 3/5</label>
+<label class="in"><input type="radio" name="c" value="0.75"> 3/4</label>
+<label class="in"><input type="radio" name="c" value="0.8"> 4/5</label></div>
+<div class="row" style="margin-top:6px"><label class="in"><input type="checkbox" id="open"> Economía abierta (X = 50)</label></div>
+<div class="sl" id="mrow"><label for="m" style="margin:0">PMI (m)</label><input id="m" type="range" min="0.05" max="0.3" step="0.05"><output id="mo"></output></div>
+<div id="isl">
+<div class="sl"><label for="I" style="margin:0">Inversión (I)</label><input id="I" type="range" min="50" max="200" step="10"><output id="Io"></output></div>
+<div class="sl"><label for="G" style="margin:0">Gasto público (G)</label><input id="G" type="range" min="50" max="250" step="10"><output id="Go"></output></div>
+<div class="sl"><label for="T" style="margin:0">Impuestos (T)</label><input id="T" type="range" min="0" max="200" step="10"><output id="To"></output></div>
+</div>
+<div class="row"><button class="sec sm" id="reset">Valores iniciales</button></div>
+</div>
+</section>
+
+<!-- 2 EQUILIBRIO -->
+<section id="t2" hidden>
+<div class="two">
+<div class="card"><svg id="ch2" viewBox="0 0 640 440" role="img" aria-label="Gráfico del equilibrio de gasto" style="width:100%;height:auto"></svg></div>
+<div class="card"><h2>Paso 1 · Equilibrio</h2>
+<p class="note">Antes de mover: si G sube, ¿la producción de equilibrio sube más, igual o menos que G?</p>
+<div class="res" id="res2" aria-live="polite"></div></div>
+</div>
+</section>
+
+<!-- 3 MULTIPLICADOR -->
+<section id="t3" hidden>
+<div class="two">
+<div class="card"><svg id="ch3" viewBox="0 0 640 440" role="img" aria-label="Gráfico del efecto de un choque" style="width:100%;height:auto"></svg></div>
+<div class="card"><h2>Paso 2 · Multiplicador</h2>
+<p><b>1. Elijan un choque</b></p>
+<div role="radiogroup" aria-label="Choque">
+<label class="in"><input type="radio" name="sh" value="0"> G sube 50</label><br>
+<label class="in"><input type="radio" name="sh" value="1"> T baja 50</label><br>
+<label class="in"><input type="radio" name="sh" value="2"> G y T suben 50</label><br>
+<label class="in"><input type="radio" name="sh" value="3"> G baja 50</label></div>
+<p><b>2. Predicción del equipo</b></p>
+<label for="pred">¿Cuánto cambiará la producción de equilibrio (ΔY)?</label>
+<input id="pred" type="number" inputmode="decimal" step="any" placeholder="Ej.: 200">
+<div class="row" style="margin-top:8px"><button id="rev">Ver resultado</button><button class="sec" id="again" hidden>Nueva predicción</button></div>
+<div class="res" id="res3" aria-live="polite" style="margin-top:10px">Escriban su predicción y pulsen «Ver resultado».</div>
+</div></div>
+<div class="card" id="rounds" hidden><h3>Cómo se acumula el efecto, ronda por ronda</h3><div class="tw" id="roundsT"></div><p class="note" id="roundsN"></p></div>
+</section>
+
+<!-- 4 PRACTICA -->
+<section id="t4" hidden>
+<div class="card"><h2>Práctica en equipo</h2>
+<p class="note">Resuelvan con calculadora y procedimiento en el cuaderno. Escriban solo el resultado. Se acepta un margen de ±0,5 %.</p>
+<div id="prac"></div>
+</div>
+</section>
+
+<!-- 5 REGISTRO -->
+<section id="t5" hidden>
+<div class="card"><h2>Datos del equipo</h2>
+<div class="grid">
+<div><label for="equipo">Equipo (nombre o número)</label><input id="equipo" autocomplete="off"></div>
+<div><label for="nombre">Quién descarga (nombre completo)</label><input id="nombre" autocomplete="name"></div>
+<div><label for="pais">País elegido</label><input id="pais" autocomplete="off"></div>
+</div>
+<div style="margin-top:10px"><label for="integrantes">Integrantes (un nombre por línea, todos)</label><textarea id="integrantes"></textarea></div>
+<p class="note">Estos datos aparecen en el PDF. No se envían a ningún servidor.</p></div>
+<div class="card"><h2>Interpretación del equipo</h2>
+<div class="q"><label for="r1">1. Con sus palabras: ¿por qué el multiplicador del gasto es mayor, en valor absoluto, que el de los impuestos?</label><textarea id="r1"></textarea></div>
+<div class="q"><label for="r2">2. Contraste con el modelo clásico: si la economía ya está en pleno empleo con precios flexibles, ¿qué efecto tendría un aumento de G sobre la producción real y sobre los precios? ¿En qué situación describe mejor la realidad el modelo keynesiano?</label><textarea id="r2"></textarea></div>
+</div>
+<div class="card"><h2>Resumen de su trabajo</h2><div id="sum"></div>
+<p><button id="pdf">Descargar registro (PDF)</button> <button class="sec" id="del">Borrar mis datos</button></p>
+<p class="note" id="delq" hidden>¿Seguro? Se borran datos, respuestas y predicciones de este navegador. <button class="sm" id="delok">Sí, borrar</button> <button class="sm sec" id="delno">Cancelar</button></p>
+</div>
+</section>
+</div>
+<div class="toast" id="toast" hidden></div>
+<div id="printDoc" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+"use strict";
+var CURSO="Macroeconomía · Cuarto nivel · Negocios Internacionales · Universidad Indoamérica";
+var LS="equilibrio_mult_v1";
+var NS="http://www.w3.org/2000/svg";
+var DEF=function(){return {c:0.75,open:false,m:0.1,I:100,G:150,T:100,sh:0};};
+var S={datos:{nombre:"",equipo:"",integrantes:"",pais:""},p:DEF(),log:[],prac:{},refl:{r1:"",r2:""},tab:0};
+var REV=null; /* resultado del paso 2 visible */
+function $(i){return document.getElementById(i);}
+function load(){try{var v=localStorage.getItem(LS);if(v){var o=JSON.parse(v);if(o&&o.datos&&o.p){S=o;S.log=S.log||[];S.prac=S.prac||{};S.refl=S.refl||{r1:"",r2:""};}}}catch(e){}}
+function save(){try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function f(x,d){if(d===undefined)d=0;var s=Number(x).toFixed(d),neg=s[0]==="-"?"-":"",p=s.replace("-","").split("."),i=p[0].replace(/\B(?=(\d{3})+(?!\d))/g," ");var r=neg+i+(p[1]?","+p[1]:"");return r.replace(/^-(0(,0+)?)$/,"$1");}
+function fd(x){return f(x,Math.abs(x%1)<1e-9?0:(Math.abs(x*10%1)<1e-9?1:2));}
+function toast(m){var t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(function(){t.hidden=true;},2600);}
+function today(){var d=new Date();return d.toLocaleDateString("es-EC",{day:"numeric",month:"long",year:"numeric"});}
+
+/* ---------- modelo ---------- */
+var A0=100,XOPEN=50;
+function model(p,dG,dT){var X=p.open?XOPEN:0,m=p.open?p.m:0,A=A0-p.c*(p.T+dT)+p.I+p.G+dG+X,b=p.c-m;return {A:A,b:b,m:m,X:X,Y:A/(1-b),den:1-b};}
+function ctxt(c){return {"0.5":"1/2","0.6":"3/5","0.75":"3/4","0.8":"4/5"}[String(c)]||f(c,2);}
+
+/* ---------- gráfico ---------- */
+function el(n,a,t){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(t!==undefined)e.textContent=t;return e;}
+function draw(svg,e0,e1){
+ while(svg.firstChild)svg.removeChild(svg.firstChild);
+ var W=640,H=440,ML=64,MR=16,MT=24,MB=52,PW=W-ML-MR,PH=H-MT-MB;
+ var ymax=Math.max(e0.Y,e1?e1.Y:0)*1.3,st=[100,200,250,500,1000,2000].filter(function(s){return ymax/s<=7;})[0]||2000,M=Math.ceil(ymax/st)*st;
+ function sx(v){return ML+v/M*PW;}function sy(v){return MT+PH-v/M*PH;}
+ var g=el("g",{});svg.appendChild(g);
+ for(var i=0;i<=M;i+=st){g.appendChild(el("line",{x1:sx(0),y1:sy(i),x2:sx(M),y2:sy(i),stroke:"var(--grid)","stroke-width":1}));
+  g.appendChild(el("text",{x:ML-8,y:sy(i)+5,"text-anchor":"end","font-size":14},f(i)));
+  g.appendChild(el("text",{x:sx(i),y:sy(0)+20,"text-anchor":"middle","font-size":14},f(i)));}
+ g.appendChild(el("line",{x1:sx(0),y1:sy(0),x2:sx(M),y2:sy(0),stroke:"var(--fg)","stroke-width":2}));
+ g.appendChild(el("line",{x1:sx(0),y1:sy(0),x2:sx(0),y2:sy(M),stroke:"var(--fg)","stroke-width":2}));
+ g.appendChild(el("text",{x:ML+PW/2,y:H-10,"text-anchor":"middle","font-size":15},"Producción Y (ingreso)"));
+ g.appendChild(el("text",{x:16,y:MT+PH/2,"text-anchor":"middle","font-size":15,transform:"rotate(-90 16 "+(MT+PH/2)+")"},"Gasto planeado"));
+ g.appendChild(el("line",{x1:sx(0),y1:sy(0),x2:sx(M),y2:sy(M),stroke:"var(--mut)","stroke-width":2,"stroke-dasharray":"6 5"}));
+ g.appendChild(el("text",{x:sx(M)-6,y:sy(M)+16,"text-anchor":"end","font-size":14,class:"m"},"Línea de 45°: gasto = producción"));
+ function ae(e,col,lab,dy){
+  g.appendChild(el("line",{x1:sx(0),y1:sy(e.A),x2:sx(M),y2:sy(e.A+e.b*M),stroke:col,"stroke-width":3.5}));
+  g.appendChild(el("line",{x1:sx(e.Y),y1:sy(e.Y),x2:sx(e.Y),y2:sy(0),stroke:col,"stroke-width":1.5,"stroke-dasharray":"4 4"}));
+  g.appendChild(el("circle",{cx:sx(e.Y),cy:sy(e.Y),r:6,fill:col}));
+  g.appendChild(el("text",{x:sx(e.Y),y:sy(0)-8-dy,"text-anchor":"middle","font-size":14,"font-weight":700,fill:col},lab+" "+f(e.Y)));
+  g.appendChild(el("text",{x:sx(M)-6,y:sy(e.A+e.b*M)-8-dy*0,"text-anchor":"end","font-size":14,fill:col},""));}
+ ae(e0,"var(--ac)","Y* inicial =",0);
+ if(e1)ae(e1,"var(--line2)","Y* nuevo =",20);
+ /* leyenda */
+ g.appendChild(el("line",{x1:ML+14,y1:MT+8,x2:ML+44,y2:MT+8,stroke:"var(--ac)","stroke-width":3.5}));
+ g.appendChild(el("text",{x:ML+50,y:MT+13,"font-size":14},"Gasto planeado inicial"));
+ if(e1){g.appendChild(el("line",{x1:ML+14,y1:MT+30,x2:ML+44,y2:MT+30,stroke:"var(--line2)","stroke-width":3.5}));
+  g.appendChild(el("text",{x:ML+50,y:MT+35,"font-size":14},"Gasto planeado tras el choque"));}
+}
+
+/* ---------- paso 1 y 2 ---------- */
+var SHOCKS=[{n:"G sube 50",dG:50,dT:0},{n:"T baja 50",dG:0,dT:-50},{n:"G y T suben 50",dG:50,dT:50},{n:"G baja 50",dG:-50,dT:0}];
+function sync(){
+ var p=S.p;
+ document.querySelectorAll("input[name=c]").forEach(function(r){r.checked=Math.abs(parseFloat(r.value)-p.c)<1e-9;});
+ $("open").checked=p.open;$("m").value=p.m;$("mo").textContent=f(p.m,2);$("mrow").hidden=!p.open;
+ ["I","G","T"].forEach(function(k){$(k).value=p[k];$(k+"o").textContent=f(p[k]);});
+ $("isl").hidden=(S.tab!==2);
+ document.querySelectorAll("input[name=sh]").forEach(function(r){r.checked=parseInt(r.value,10)===p.sh;});
+}
+function render2(){
+ var p=S.p,e=model(p,0,0);
+ var cons=A0+p.c*(e.Y-p.T),imp=e.m*e.Y;
+ var num="a − c·T + I + G"+(p.open?" + X":"");
+ var numv=f(A0)+" − "+fd(p.c)+"×"+f(p.T)+" + "+f(p.I)+" + "+f(p.G)+(p.open?" + "+f(e.X):"");
+ var den=p.open?"1 − "+fd(p.c)+" + "+fd(p.m):"1 − "+fd(p.c);
+ $("res2").innerHTML="<p><b>Y* = ("+num+") / ("+(p.open?"1 − c + m":"1 − c")+")</b><br><span class='fx'>Y* = ("+numv+") / ("+den+") = "+f(e.A)+" / "+fd(e.den)+" = "+f(e.Y)+"</span></p>"
+  +"<p>Comprobación: C = "+f(cons)+" · I = "+f(p.I)+" · G = "+f(p.G)+(p.open?" · X − M = "+f(e.X-imp):"")+"<br>C + I + G"+(p.open?" + X − M":"")+" = <b>"+f(cons+p.I+p.G+e.X-imp)+"</b> = Y*</p>"
+  +"<p>Multiplicador del gasto: kG = 1 / "+fd(e.den)+" = <b>"+fd(1/e.den)+"</b></p>";
+ draw($("ch2"),e,null);
+}
+function render3(){
+ var p=S.p,sh=SHOCKS[p.sh],e0=model(p,0,0);
+ var e1=REV?model(p,sh.dG,sh.dT):null;
+ draw($("ch3"),e0,e1);
+ $("rev").hidden=!!REV;$("again").hidden=!REV;$("pred").disabled=!!REV;
+ document.querySelectorAll("input[name=sh]").forEach(function(r){r.disabled=!!REV;});
+ var R=$("rounds");R.hidden=!REV;
+ if(!REV){$("res3").innerHTML="Escriban su predicción y pulsen «Ver resultado».";return;}
+ var d0=sh.dG-p.c*sh.dT,dY=d0/e0.den,pred=REV.pred,err=pred-dY;
+ var ok=Math.abs(err)<=Math.max(1,Math.abs(dY)*0.05);
+ $("res3").innerHTML="<p><span class='fx'>ΔY = (ΔG − c·ΔT) / "+fd(e0.den)+" = ("+f(sh.dG)+" − "+fd(p.c)+"×"+f(sh.dT)+") / "+fd(e0.den)+" = "+f(dY,1)+"</span></p>"
+  +"<p>Su predicción: <b>"+f(pred,1)+"</b>. Resultado: <b>"+f(dY,1)+"</b>. Diferencia: "+f(err,1)+". "+(ok?"<span class='ok'>Muy cerca.</span>":"<span class='bad'>Revisen el procedimiento.</span>")+"</p>"
+  +"<p>Y* pasa de "+f(e0.Y)+" a "+f(e1.Y)+". "+(p.open?"Economía abierta: el multiplicador es 1/(1 − c + m) = "+fd(1/e0.den)+".":"Economía cerrada: el multiplicador es 1/(1 − c) = "+fd(1/e0.den)+".")+"</p>";
+ var r=e0.b,rows="<table><tr><th>Ronda</th><th>Cambio del gasto</th><th>Efecto acumulado</th></tr>",cum=0;
+ for(var k=0;k<=5;k++){var a=d0*Math.pow(r,k);cum+=a;rows+="<tr><td>"+k+"</td><td>"+f(a,1)+"</td><td>"+f(cum,1)+"</td></tr>";}
+ rows+="<tr><td>Todas las rondas</td><td>…</td><td><b>"+f(dY,1)+"</b></td></tr></table>";
+ $("roundsT").innerHTML=rows;
+ $("roundsN").textContent="Ronda 0: cambio inicial del gasto = ΔG − c·ΔT = "+f(d0,1)+". Cada ronda siguiente es "+fd(r)+" de la anterior (c − m), por eso la suma se acerca a "+f(dY,1)+".";
+}
+function renderAll(){sync();render2();render3();}
+
+/* ---------- práctica ---------- */
+var EX=[
+ {id:"e1",t:"Ejercicio 1 · Equilibrio (economía cerrada)",q:"C = 100 + 0,8(Y − T), con I = 120, G = 180 y T = 150. Calculen:",f:[{k:"y",l:"Producción de equilibrio Y*",a:1400},{k:"c",l:"Consumo C en el equilibrio",a:1100}],
+  s:"Y* = (100 − 0,8×150 + 120 + 180) / (1 − 0,8) = 280 / 0,2 = 1 400. C = 100 + 0,8×(1 400 − 150) = 1 100. Comprobación: 1 100 + 120 + 180 = 1 400."},
+ {id:"e2",t:"Ejercicio 2 · Multiplicadores",q:"Misma economía del ejercicio 1. Calculen el cambio en Y si:",f:[{k:"g",l:"G sube 40 (T sin cambio)",a:200},{k:"t",l:"T sube 40 (G sin cambio)",a:-160},{k:"b",l:"G y T suben 40 a la vez",a:40}],
+  s:"kG = 1/(1 − 0,8) = 5, ΔY = 5×40 = 200. kT = −0,8/0,2 = −4, ΔY = −4×40 = −160. Juntos: 200 − 160 = 40, igual al aumento de G."},
+ {id:"e3",t:"Ejercicio 3 · Economía abierta",q:"a = 100, c = 0,75, I = 100, G = 200, T = 100, X = 100 y m = 0,15. Calculen:",f:[{k:"y",l:"Producción de equilibrio Y*",a:812.5},{k:"k",l:"Multiplicador del gasto",a:2.5},{k:"d",l:"ΔY si G sube 40",a:100}],
+  s:"Y* = (100 − 0,75×100 + 100 + 200 + 100) / (1 − 0,75 + 0,15) = 325 / 0,4 = 812,5. kG = 1/0,4 = 2,5. ΔY = 2,5×40 = 100. Con m = 0 sería 1/0,25 = 4: las importaciones restan efecto."}
+];
+function parseNum(s){s=String(s).trim().replace(/\s/g,"").replace(",",".");if(s===""||isNaN(Number(s)))return null;return Number(s);}
+function okVal(v,a){return v!==null&&Math.abs(v-a)<=Math.max(0.5,Math.abs(a)*0.005);}
+function buildPrac(){
+ var h="";EX.forEach(function(ex){
+  h+="<div class='pr'><h3>"+esc(ex.t)+"</h3><p>"+esc(ex.q)+"</p>";
+  ex.f.forEach(function(fl){h+="<div class='row'><label class='in' for='"+ex.id+"_"+fl.k+"'>"+esc(fl.l)+"</label><input id='"+ex.id+"_"+fl.k+"' inputmode='decimal' autocomplete='off'><span id='"+ex.id+"_"+fl.k+"_m' aria-live='polite'></span></div>";});
+  h+="<div class='row'><button class='sm' data-chk='"+ex.id+"'>Comprobar</button><button class='sm sec' data-sol='"+ex.id+"'>Ver procedimiento</button></div><p class='note' id='"+ex.id+"_s' hidden>"+esc(ex.s)+"</p></div>";});
+ $("prac").innerHTML=h;
+ EX.forEach(function(ex){var pr=S.prac[ex.id]||{};ex.f.forEach(function(fl){var i=$(ex.id+"_"+fl.k);i.value=(pr.v&&pr.v[fl.k])||"";i.addEventListener("input",function(){var q=S.prac[ex.id]=S.prac[ex.id]||{v:{},n:0,ok:false};q.v=q.v||{};q.v[fl.k]=i.value;save();});});
+  markPrac(ex);});
+ document.querySelectorAll("[data-chk]").forEach(function(b){b.addEventListener("click",function(){var ex=EX.filter(function(x){return x.id===b.getAttribute("data-chk");})[0],q=S.prac[ex.id]=S.prac[ex.id]||{v:{},n:0,ok:false};
+  q.n=(q.n||0)+1;var all=true;ex.f.forEach(function(fl){var v=parseNum($(ex.id+"_"+fl.k).value);if(!okVal(v,fl.a))all=false;});q.ok=all;q.chk=true;save();markPrac(ex);if(all)toast("Correcto");else toast("Revisen los cálculos");});});
+ document.querySelectorAll("[data-sol]").forEach(function(b){b.addEventListener("click",function(){var id=b.getAttribute("data-sol"),s=$(id+"_s");s.hidden=!s.hidden;var q=S.prac[id]=S.prac[id]||{v:{},n:0,ok:false};q.sol=true;save();});});
+}
+function markPrac(ex){var q=S.prac[ex.id];if(!q||!q.chk)return;ex.f.forEach(function(fl){var v=parseNum(($(ex.id+"_"+fl.k)||{}).value),m=$(ex.id+"_"+fl.k+"_m");m.innerHTML=okVal(v,fl.a)?"<span class='ok'>✓ correcto</span>":"<span class='bad'>✗ revisar</span>";});}
+
+/* ---------- registro ---------- */
+function ints(){return (S.datos.integrantes||"").split(/\r?\n/).map(function(x){return x.trim();}).filter(Boolean);}
+function renderSum(){
+ var h="<h3>Predicciones del paso 2</h3>";
+ if(!S.log.length)h+="<p class='note'>Aún no hay predicciones. Háganlas en el Paso 2.</p>";
+ else{h+="<div class='tw'><table><tr><th>Choque</th><th>c</th><th>Economía</th><th>Predicción ΔY</th><th>Resultado ΔY</th></tr>";S.log.forEach(function(r){h+="<tr><td>"+esc(r.n)+"</td><td>"+esc(r.c)+"</td><td>"+esc(r.e)+"</td><td>"+f(r.pred,1)+"</td><td>"+f(r.dy,1)+"</td></tr>";});h+="</table></div>";}
+ h+="<h3>Práctica</h3><div class='tw'><table><tr><th>Ejercicio</th><th>Intentos</th><th>Estado</th></tr>";
+ EX.forEach(function(ex){var q=S.prac[ex.id]||{};h+="<tr><td>"+esc(ex.t.split(" · ")[0])+"</td><td>"+(q.n||0)+"</td><td>"+(q.ok?"<span class='ok'>Correcto</span>":(q.n?"<span class='bad'>Por revisar</span>":"Sin comprobar"))+"</td></tr>";});
+ h+="</table></div>";$("sum").innerHTML=h;}
+function blocks(){
+ var d=S.datos,b=[{t:"title",x:"Registro del applet · Equilibrio de gasto y multiplicador"},{t:"sub",x:"Macroeconomía · Trabajo en equipo · Evidencia de proceso"},
+  {t:"kv",k:"Equipo",v:d.equipo||"(sin nombre)"},{t:"kv",k:"Integrantes",v:ints().join("; ")||"(sin integrantes)"},{t:"kv",k:"País elegido",v:d.pais||"-"},{t:"kv",k:"Descargado por",v:d.nombre||"-"},{t:"kv",k:"Curso",v:CURSO},{t:"kv",k:"Fecha",v:today()},
+  {t:"h",x:"1. Predicciones y resultados (Paso 2)"}];
+ if(S.log.length)b.push({t:"table",head:["Choque","c","Economía","Predicción ΔY","Resultado ΔY"],rows:S.log.map(function(r){return [r.n,r.c,r.e,f(r.pred,1),f(r.dy,1)];})});else b.push({t:"p",x:"Sin predicciones registradas."});
+ b.push({t:"h",x:"2. Práctica"});
+ b.push({t:"table",head:["Ejercicio","Respuestas del equipo","Intentos","Estado"],rows:EX.map(function(ex){var q=S.prac[ex.id]||{v:{}};return [ex.t.split(" · ")[0],ex.f.map(function(fl){return fl.l+": "+((q.v&&q.v[fl.k])||"-");}).join(" | "),String(q.n||0),q.ok?"Correcto":(q.n?"Por revisar":"Sin comprobar")];})});
+ b.push({t:"h",x:"3. Interpretación del equipo"});
+ b.push({t:"p",x:"Multiplicador del gasto frente al de los impuestos: "+(S.refl.r1||"(sin respuesta)")});
+ b.push({t:"p",x:"Contraste con el modelo clásico: "+(S.refl.r2||"(sin respuesta)")});
+ return b;}
+
+/* ---------- PDF ---------- */
+function clean(s){return String(s).replace(/−/g,"-").replace(/≈/g,"~").replace(/≥/g,">=").replace(/≤/g,"<=").replace(/→/g,"->").replace(/[  ]/g," ").replace(/✓/g,"si").replace(/✗/g,"no").replace(/Δ/g,"Delta ");}
+function buildPdf(bl){var J=window.jspdf.jsPDF,doc=new J({unit:"mm",format:"a4"}),W=210,H=297,M=18,MW=W-2*M,y=M;
+ function need(h){if(y+h>H-M){doc.addPage();y=M;}}
+ function para(t,size,bold,c){doc.setFont("helvetica",bold?"bold":"normal");doc.setFontSize(size);doc.setTextColor(c[0],c[1],c[2]);var ls=doc.splitTextToSize(clean(t),MW),lh=size*0.43;ls.forEach(function(l){need(lh);doc.text(l,M,y+lh*0.8);y+=lh;});y+=1.5;}
+ bl.forEach(function(b){
+  if(b.t==="title")para(b.x,16,true,[31,58,138]);
+  else if(b.t==="sub"){para(b.x,9.5,false,[90,90,90]);y+=1;}
+  else if(b.t==="h"){need(30);y+=3;para(b.x,12,true,[31,58,138]);}
+  else if(b.t==="p")para(b.x,10.5,false,[20,20,20]);
+  else if(b.t==="kv"){doc.setFontSize(10.5);need(5.5);doc.setFont("helvetica","bold");doc.setTextColor(20,20,20);doc.text(clean(b.k)+":",M,y+4);doc.setFont("helvetica","normal");var ls=doc.splitTextToSize(clean(b.v),MW-40);ls.forEach(function(l,i){if(i>0)need(5);doc.text(l,M+40,y+4);y+=(i<ls.length-1?5:0);});y+=5.5;}
+  else if(b.t==="table"){var n=b.head.length,cw=MW/n;doc.setFontSize(9);
+   var row=function(cells,head){var ls=cells.map(function(c){return doc.splitTextToSize(clean(c),cw-3);}),mx=Math.max.apply(null,ls.map(function(l){return l.length;})),h=mx*4+3;need(h);cells.forEach(function(c,i){if(head){doc.setFillColor(238,242,251);doc.rect(M+i*cw,y,cw,h,"F");}doc.setDrawColor(150,160,190);doc.rect(M+i*cw,y,cw,h);doc.setFont("helvetica",head?"bold":"normal");doc.setTextColor(20,20,20);ls[i].forEach(function(l,j){doc.text(l,M+i*cw+1.5,y+4+j*4);});});y+=h;};
+   row(b.head,true);b.rows.forEach(function(r){row(r.map(String),false);});y+=3;}});
+ var n=doc.getNumberOfPages();for(var i=1;i<=n;i++){doc.setPage(i);doc.setFontSize(8);doc.setTextColor(110,110,110);doc.setFont("helvetica","normal");doc.text("Universidad Indoamérica · Macroeconomía",M,H-8);doc.text(i+" / "+n,W-M,H-8,{align:"right"});}
+ return doc;}
+function blocksHtml(bl){return bl.map(function(b){if(b.t==="title")return "<h1>"+esc(b.x)+"</h1>";if(b.t==="sub")return "<p><i>"+esc(b.x)+"</i></p>";if(b.t==="h")return "<h2>"+esc(b.x)+"</h2>";if(b.t==="p")return "<p>"+esc(b.x)+"</p>";if(b.t==="kv")return "<p><b>"+esc(b.k)+":</b> "+esc(b.v)+"</p>";if(b.t==="table")return "<table><tr>"+b.head.map(function(h){return "<th>"+esc(h)+"</th>";}).join("")+"</tr>"+b.rows.map(function(r){return "<tr>"+r.map(function(c){return "<td>"+esc(c)+"</td>";}).join("")+"</tr>";}).join("")+"</table>";return "";}).join("");}
+function printFallback(bl){$("printDoc").innerHTML=blocksHtml(bl);$("printDoc").hidden=false;toast("La descarga no está disponible en esta vista. Abran el enlace del applet en el navegador.");try{window.print();}catch(e){}}
+async function savePdf(bl,name){
+ if(!window.jspdf){printFallback(bl);return;}
+ var dl=null;try{if(typeof claude!=="undefined")dl=await claude.use("downloads");}catch(e){dl=null;}
+ if(!dl){printFallback(bl);return;}
+ try{var doc=buildPdf(bl);await dl.save({filename:name,data:doc.output("arraybuffer")});toast("PDF listo");}
+ catch(e){if(e&&(e.code==="declined"||e.code==="dismissed"))return;printFallback(bl);}}
+function fname(){var n=(S.datos.equipo||"equipo").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"");return "Registro_equilibrio_multiplicador_"+n+".pdf";}
+
+/* ---------- pestañas y eventos ---------- */
+var TABS=["Instrucciones","Fórmulas","Paso 1 · Equilibrio","Paso 2 · Multiplicador","Práctica","Mi registro"];
+function setTab(n){S.tab=n;save();
+ TABS.forEach(function(_,i){$("t"+i).hidden=(i!==n);});
+ $("ctl").hidden=!(n===2||n===3);
+ [].forEach.call($("tabs").children,function(b,i){b.className=i===n?"on":"";b.setAttribute("aria-selected",i===n);});
+ if(n===5)renderSum();
+ renderAll();}
+TABS.forEach(function(t,i){var b=document.createElement("button");b.textContent=t;b.setAttribute("role","tab");b.addEventListener("click",function(){setTab(i);});$("tabs").appendChild(b);});
+
+document.querySelectorAll("input[name=c]").forEach(function(r){r.addEventListener("change",function(){S.p.c=parseFloat(r.value);REV=null;save();renderAll();});});
+$("open").addEventListener("change",function(e){S.p.open=e.target.checked;REV=null;save();renderAll();});
+$("m").addEventListener("input",function(e){S.p.m=Math.round(parseFloat(e.target.value)*100)/100;REV=null;save();renderAll();});
+["I","G","T"].forEach(function(k){$(k).addEventListener("input",function(e){S.p[k]=parseInt(e.target.value,10);REV=null;save();renderAll();});});
+$("reset").addEventListener("click",function(){var sh=S.p.sh;S.p=DEF();S.p.sh=sh;REV=null;save();renderAll();});
+document.querySelectorAll("input[name=sh]").forEach(function(r){r.addEventListener("change",function(){S.p.sh=parseInt(r.value,10);REV=null;save();renderAll();});});
+$("rev").addEventListener("click",function(){var v=parseNum($("pred").value);if(v===null){toast("Escriban primero su predicción");return;}
+ REV={pred:v};var p=S.p,sh=SHOCKS[p.sh],e0=model(p,0,0),dy=(sh.dG-p.c*sh.dT)/e0.den;
+ S.log.push({n:sh.n,c:ctxt(p.c),e:p.open?"abierta (m = "+f(p.m,2)+")":"cerrada",pred:v,dy:Math.round(dy*10)/10});if(S.log.length>40)S.log.shift();save();renderAll();});
+$("again").addEventListener("click",function(){REV=null;$("pred").value="";renderAll();$("pred").focus();});
+["nombre","equipo","integrantes","pais"].forEach(function(k){var e=$(k);e.addEventListener("input",function(){S.datos[k]=e.value;save();});});
+["r1","r2"].forEach(function(k){var e=$(k);e.addEventListener("input",function(){S.refl[k]=e.value;save();});});
+$("pdf").addEventListener("click",function(){if(!S.datos.equipo.trim()||!S.datos.nombre.trim()||!ints().length){toast("Completen equipo, quién descarga e integrantes");return;}savePdf(blocks(),fname());});
+$("del").addEventListener("click",function(){$("delq").hidden=false;});
+$("delno").addEventListener("click",function(){$("delq").hidden=true;});
+$("delok").addEventListener("click",function(){S={datos:{nombre:"",equipo:"",integrantes:"",pais:""},p:DEF(),log:[],prac:{},refl:{r1:"",r2:""},tab:5};save();REV=null;["nombre","equipo","integrantes","pais","r1","r2"].forEach(function(k){$(k).value="";});buildPrac();$("delq").hidden=true;renderSum();renderAll();toast("Datos borrados");});
+
+load();
+["nombre","equipo","integrantes","pais"].forEach(function(k){$(k).value=S.datos[k]||"";});
+$("r1").value=S.refl.r1||"";$("r2").value=S.refl.r2||"";
+buildPrac();
+var h=(location.hash||"").replace("#","");var tn={instrucciones:0,formulas:1,paso1:2,paso2:3,practica:4,registro:5};
+setTab(h in tn?tn[h]:(S.tab>=0&&S.tab<=5?S.tab:0));
+})();
+</script>
+
+</body></html>
