@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mis 24 horas · Ingeniería</title>
+<style>
+:root{--bg:#FFFFFF;--ink:#1B1B1B;--navy:#1F3A8A;--bar:#1F3A8A;--onbar:#FFFFFF;--navybg:#EEF2FB;--amber:#B45309;--green:#009E73;--verm:#D55E00;--purp:#8E2F6B;--gtxt:#007a5a;--vtxt:#B34700;--gray:#595959;--grid:#d5d9e6;--rule:#c9cfe0;--hl:#fff3e0;--actfg:#FFFFFF;--gold:#C98A00;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1A33;--ink:#F2F5FF;--navy:#9DB7FF;--bar:#13315C;--onbar:#FFFFFF;--navybg:#16294D;--amber:#FFB766;--green:#5FD3A8;--verm:#FF9F6B;--purp:#E6A8D1;--gtxt:#5FD3A8;--vtxt:#FF9F6B;--gray:#B8C2DB;--grid:#2B3F66;--rule:#2B3F66;--hl:#2A3B63;--actfg:#0B1A33;--gold:#FFD166;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1A33;--ink:#F2F5FF;--navy:#9DB7FF;--bar:#13315C;--onbar:#FFFFFF;--navybg:#16294D;--amber:#FFB766;--green:#5FD3A8;--verm:#FF9F6B;--purp:#E6A8D1;--gtxt:#5FD3A8;--vtxt:#FF9F6B;--gray:#B8C2DB;--grid:#2B3F66;--rule:#2B3F66;--hl:#2A3B63;--actfg:#0B1A33;--gold:#FFD166;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);font-size:19px;background:var(--bg);display:flex;flex-direction:column}
+header{background:var(--bar);color:var(--onbar);padding:10px 24px;flex:none}
+header h1{margin:0;font-size:27px}
+header p{margin:2px 0 0;font-size:16px}
+main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1.1fr);gap:16px;padding:10px 20px}
+#plotwrap{min-height:0;display:flex;flex-direction:column}
+#plot{flex:1;min-height:0;width:100%}
+#panel{overflow:auto;padding:0 6px 8px 0;min-height:0}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+button,select,input[type=text],input[type=number]{font:inherit;font-size:19px;color:var(--navy);background:var(--bg);border:2px solid var(--navy);border-radius:6px;padding:6px 14px;cursor:pointer}
+input[type=text],input[type=number]{cursor:text;color:var(--ink);width:min(420px,100%)}
+input[type=number]{width:120px}
+button:hover{background:var(--navybg)}
+button.act{background:var(--navy);color:var(--actfg)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.score{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.card{flex:1;min-width:150px;border:2px solid var(--navy);border-radius:8px;padding:6px 12px;background:var(--bg)}
+.card small{display:block;font-size:15px;color:var(--gray)}
+.card b{font-size:28px;color:var(--navy)}
+.badges{font-size:26px;letter-spacing:6px}
+.badge-off{opacity:.25;filter:grayscale(1)}
+.sec{border-left:6px solid var(--navy);background:var(--navybg);padding:8px 14px;margin:0 0 12px}
+.sec h2{margin:0 0 6px;font-size:22px;color:var(--navy)}
+.sec h3{margin:10px 0 2px;font-size:18px;color:var(--navy)}
+.sec p{margin:6px 0}
+.res{margin:8px 0 0;padding:8px 12px;background:var(--bg);border:2px solid var(--navy);border-radius:6px;min-height:44px}
+.ok{color:var(--gtxt)}.no{color:var(--vtxt)}.ina{color:var(--purp)}
+.sym{font-weight:700;font-size:21px;margin-right:4px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.arow{display:flex;align-items:center;gap:8px;margin:4px 0;flex-wrap:wrap}
+.arow .nm{flex:1;min-width:150px}
+.arow small{color:var(--gray);font-size:15px}
+.arow .hh{min-width:30px;text-align:center;font-weight:700}
+.arow button{padding:0 11px;font-size:21px}
+.rk{display:flex;align-items:center;gap:8px;margin:4px 0;background:var(--bg);border:2px solid var(--rule);border-radius:6px;padding:4px 8px}
+.rk .n{font-weight:700;color:var(--navy);min-width:30px}.rk .nm{flex:1}.rk button{padding:0 10px}
+.pred{border:2px dashed var(--amber);border-radius:8px;padding:6px 12px;margin:8px 0;background:var(--bg)}
+.pred legend{color:var(--amber);font-weight:700;padding:0 6px}
+.pred label{display:block;margin:5px 0;cursor:pointer}
+input[type=range]{width:min(300px,100%);height:28px;accent-color:var(--navy)}
+input[type=radio],input[type=checkbox]{width:20px;height:20px;accent-color:var(--navy);vertical-align:middle}
+textarea{width:100%;min-height:120px;font:inherit;font-size:18px;color:var(--ink);background:var(--bg);border:2px solid var(--navy);border-radius:6px;padding:8px;resize:vertical}
+table{border-collapse:collapse;margin:6px 0}
+th,td{padding:3px 12px;text-align:center;border-bottom:1px solid var(--rule);font-size:18px}
+th{color:var(--navy);border-bottom:2px solid var(--navy)}
+.checks{padding-left:4px}.checks li{list-style:none;margin:3px 0}
+.hint{font-size:16px;color:var(--gray)}
+.src{font-size:15px;color:var(--gray);margin:4px 0 0}
+.hidden{display:none}
+.nosel{-webkit-user-select:none;user-select:none}
+ol,ul{margin:6px 0;padding-left:26px}li{margin:4px 0}
+.shake{animation:shake .35s}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.pop{animation:pop .4s ease-out}@keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.shake,.pop{animation:none}}
+.modebar{padding:6px 20px;font-size:16px;background:var(--hl);color:var(--ink);border-bottom:2px solid var(--amber);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.modebar.own{background:var(--navybg);border-bottom-color:var(--navy)}
+.modebar button{font-size:16px;padding:3px 12px}
+.mail{font-weight:700;word-break:break-all}
+@media (max-width:900px){
+ html,body{height:auto}
+ body{font-size:17px}
+ header{padding:8px 14px}header h1{font-size:21px}header p{font-size:14px}
+ .modebar{padding:6px 12px;font-size:15px}
+ main{display:block;overflow:visible;padding:8px 12px}
+ #plotwrap{display:block;min-height:0;margin-bottom:8px}
+ #plot{display:block;flex:none;height:auto;max-height:38vh}
+ #panel{overflow:visible;padding:0}
+ nav{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px}
+ nav button{flex:none;white-space:nowrap}
+ button,select,input[type=text],input[type=number]{font-size:17px;padding:6px 10px}
+ .arow .nm{min-width:110px}
+ .card b{font-size:24px}
+ .sec h2{font-size:20px}
+}
+
+</style>
+</head>
+<body>
+<header><h1>Mis 24 horas · Ingeniería</h1><p>Escasez, elección, costo de oportunidad con fórmulas y «si todo lo demás permanece constante» · Con tus propios datos · Informe en PDF</p></header>
+<div id="modebar" role="status" aria-live="polite"></div>
+<main>
+  <div id="plotwrap"><svg id="plot" viewBox="0 0 760 620" role="img" aria-label="Gráfico de la actividad actual"></svg></div>
+  <div id="panel">
+    <nav aria-label="Pasos">
+      <button data-step="historia" id="b-historia">Historia</button>
+      <button data-step="paso0" id="b-paso0">Paso 0</button>
+      <button data-step="paso1" id="b-paso1">Paso 1</button>
+      <button data-step="paso2" id="b-paso2">Paso 2</button>
+      <button data-step="paso3" id="b-paso3">Paso 3</button>
+      <button data-step="informe" id="b-informe">Informe</button>
+      <button data-step="instrucciones" id="b-instrucciones">Instrucciones</button>
+      <button id="reset" title="Atajo: R">Reiniciar</button>
+    </nav>
+    <div class="score" aria-live="polite">
+      <div class="card"><small id="k-lab">Horas libres</small><b id="k-val">8</b></div>
+      <div class="card"><small>Insignias</small><span class="badges">
+        <span id="bd1" class="badge-off" title="Escasez (Paso 1)">🧭</span>
+        <span id="bd2" class="badge-off" title="Costo de oportunidad (Paso 2)">🎯</span>
+        <span id="bd3" class="badge-off" title="Todo lo demás constante (Paso 3)">🧊</span></span></div>
+    </div>
+
+    <section class="sec" id="s-historia">
+      <h2>La historia: un día, 24 horas</h2>
+      <p>Todos tenemos las mismas <strong>24 horas</strong>. Pero no todas son libres: dormir, comer, trasladarte y cumplir con tus clases u obligaciones ya ocupan una parte.</p>
+      <p>Con las horas que quedan quisieras hacer mucho más de lo que cabe. En este applet usas <strong>tus propios datos</strong>: así tu informe final es solo tuyo.</p>
+      <p id="exnote">Ahora ves un <strong>ejemplo ya resuelto</strong> en cada paso, para repasar juntos en clase. Puedes descargar un PDF de prueba, pero solo vale para entregar el que hagas con tus datos.</p>
+      <div class="row"><button id="go0">Ver el ejemplo →</button></div>
+      <div class="row"><label for="nombre">Tu nombre completo</label><input type="text" id="nombre" autocomplete="off" maxlength="80"></div>
+      <div class="row"><button id="gop" disabled>Empezar con mis datos →</button></div>
+      <p class="hint">Tu avance se guarda solo en este dispositivo (no se envía a ningún servidor). Al terminar descargas un informe en PDF. En iPhone o iPad abre esta página en Safari.</p>
+    </section>
+
+    <section class="sec hidden" id="s-paso0">
+      <h2>Paso 0 · Tu día normal</h2>
+      <p>Escribe cuántas horas de un día normal de tu semana ocupan estas actividades fijas.</p>
+      <div id="fix"></div>
+      <div class="res" id="res0" aria-live="polite"></div>
+    </section>
+
+    <section class="sec hidden" id="s-paso1">
+      <h2>Paso 1 · Lo que quieres frente a lo que cabe</h2>
+      <p>Para cada actividad pon las horas que <strong>quisieras</strong> dedicarle, y luego asigna las horas libres que tienes.</p>
+      <fieldset class="pred" id="pred1"><legend>Antes de asignar: ¿alcanzan tus horas libres para todo lo que quieres?</legend>
+        <label><input type="radio" name="p1" value="si"> a) Sí, alcanzan</label>
+        <label><input type="radio" name="p1" value="no"> b) No, no alcanzan</label>
+      </fieldset>
+      <div id="acts"></div>
+      <div class="row"><button id="p1chk">Comprobar</button><button id="p1clr">Limpiar asignación</button></div>
+      <div class="res" id="res1" aria-live="polite"></div>
+    </section>
+
+    <section class="sec hidden" id="s-paso2">
+      <h2>Paso 2 · ¿A qué renuncias?</h2>
+      <p>Un amigo te invita a salir <strong id="h2t">3</strong> horas. Estas horas las sacas de tu tiempo libre.</p>
+      <div class="row"><span>Horas de la salida</span><button data-h2="-1">−</button><strong id="h2o">3</strong><button data-h2="1">+</button></div>
+      <div id="p2body"></div>
+      <fieldset class="pred" id="pred2"><legend>Antes de ver el resultado: si sales, ¿cuál es tu costo de oportunidad?</legend><div id="p2opts"></div></fieldset>
+      <div class="row"><button id="p2rev">Ver resultado</button></div>
+      <div class="res" id="res2" aria-live="polite"></div>
+      <div id="tbbox" class="hidden">
+        <h3>Ejercicio con tabla de producción (tus datos son distintos a los de otro compañero)</h3>
+        <div id="tbl"></div>
+        <div class="row"><label for="tbans">Costo de oportunidad de cada pieza adicional de Y al pasar de B a C (piezas de X por pieza de Y):</label><input type="number" id="tbans" step="0.01" min="0"></div>
+        <div class="row"><label><input type="radio" name="tt" value="con"> constante</label><label><input type="radio" name="tt" value="cre"> creciente</label><label><input type="radio" name="tt" value="dec"> decreciente</label></div>
+        <div class="row"><button id="tbchk">Verificar</button></div>
+        <div class="res" id="restb" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="sec hidden" id="s-paso3">
+      <h2>Paso 3 · Cambia una sola cosa</h2>
+      <p>Si eliges trabajar, ganas un pago por hora. Salir cuesta lo que dejas de ganar. Ahora cambia el pago y nada más.</p>
+      <fieldset class="pred" id="pred3"><legend id="pl3"></legend><div id="p3opts"></div></fieldset>
+      <div class="row"><label for="w">Pago por hora</label><input id="w" type="range" min="0" max="20" step="1" value="6"><strong id="wo">$6</strong></div>
+      <div class="row"><label><input type="checkbox" id="chgh"> Cambiar también las horas de la salida</label></div>
+      <div class="row"><label for="hh">Horas de la salida</label><input id="hh" type="range" min="1" max="8" step="1" value="3" disabled><strong id="hho">3</strong></div>
+      <div class="row"><button id="p3rev">Ver resultado</button></div>
+      <div class="res" id="res3" aria-live="polite"></div>
+    </section>
+
+    <section class="sec hidden" id="s-informe">
+      <h2>Informe para enviar</h2>
+      <p class="nosel"><strong>Reflexión (mínimo 60 palabras, con tus propias palabras):</strong> mirando tus datos de hoy, ¿qué decisión de tu día cambiarías y por qué? Usa las ideas de escasez, elección y costo de oportunidad.</p>
+      <textarea id="ref" spellcheck="false" placeholder="Escribe aquí. En este espacio no se puede pegar texto." aria-label="Reflexión"></textarea>
+      <div class="res" id="res-ref" aria-live="polite"></div>
+      <ul class="checks" id="reqs"></ul>
+      <div class="row"><button id="dl">Descargar informe en PDF</button></div>
+      <div class="res" id="res-pdf" aria-live="polite"></div>
+      <p><strong>Cómo entregar.</strong> Esta página no envía nada. Primero descarga el PDF; luego envíalo a <span class="mail" id="mailaddr">ccadena10@indoamerica.edu.ec</span> con el asunto «<span id="subj">Mis 24 horas · Ingeniería</span>». Plazo: el que indique tu docente.</p>
+      <div class="row"><button id="cpm">Copiar correo</button><button id="cps">Copiar asunto</button></div>
+      <div class="hint" id="cpmsg" aria-live="polite"></div>
+    </section>
+
+    <section class="sec hidden" id="s-instrucciones">
+      <h2>Instrucciones</h2>
+      <p><strong>Para qué sirve.</strong> Practicar tres ideas del sílabo: la escasez obliga a elegir, el costo de oportunidad es lo que dejas al elegir, y para ver el efecto de un cambio se mantiene constante todo lo demás.</p>
+      <ol>
+        <li><strong>Paso 0:</strong> escribe tus horas fijas de un día normal. El applet calcula tus horas libres.</li>
+        <li><strong>Paso 1:</strong> predice, pon lo que quisieras hacer, asigna las horas libres y comprueba la brecha.</li>
+        <li><strong>Paso 2:</strong> predice y calcula el costo de oportunidad de salir con amigos.</li>
+        <li><strong>Paso 3:</strong> predice, cambia el pago por hora y mira qué cambia; luego cambia dos cosas a la vez.</li>
+        <li><strong>Informe:</strong> escribe tu reflexión y descarga el PDF para enviarlo.</li>
+      </ol>
+      <p><strong>Pegado bloqueado.</strong> La reflexión no admite pegar ni arrastrar texto. El PDF registra los intentos de pegado, el tiempo de escritura y las veces que saliste de la página. Son indicadores de apoyo para tu docente, no una prueba.</p>
+      <p><strong>Límites.</strong> Las horas fijas y los valores iniciales son supuestos que tú cambias. El pago de $6 por hora es un ejemplo. Los ejemplos siguen a Mankiw (2012, cap. 1). El libro no usa la frase «ceteris paribus»: dice «si todo lo demás permanece constante».</p>
+      <p><strong>Ejemplo y mis datos.</strong> La página abre con un ejemplo de muestra para practicar en clase. Cuando escribas tu nombre y pulses «Empezar con mis datos», todo parte de cero con tus propios datos. El PDF del ejemplo es de prueba y dice «EJEMPLO»: solo se entrega el PDF hecho con tus datos.</p>
+      <p><strong>Autoguardado y entrega.</strong> Tus pasos 0 a 3 se guardan solos en este dispositivo; la reflexión no. Al terminar, descarga el PDF y envíalo al correo indicado en la pestaña Informe.</p>
+      <p><strong>Atajos.</strong> Teclas 0 a 3 abren los pasos, 4 el informe, 5 las instrucciones, H la historia y R reinicia.</p>
+    </section>
+  </div>
+</main>
+<script>
+var NS="http://www.w3.org/2000/svg";
+function $(i){return document.getElementById(i);}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function norm(s){return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+function words(s){var m=String(s).trim().match(/\S+/g);return m?m.length:0;}
+function h32(str){var h=2166136261,i;for(i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(16).toUpperCase();}
+function rng(seed){var a=parseInt(seed,16)||123456789;return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function fmt(n,d){d=d===undefined?2:d;return Number(n).toFixed(d).replace(".",",");}
+function el(n,a,t){var e=document.createElementNS(NS,n),k;for(k in a){if(k==="fill"||k==="stroke")e.style[k]=a[k];else e.setAttribute(k,a[k]);}if(t!==undefined)e.textContent=t;return e;}
+function TX(g,x,y,t,o){o=o||{};g.appendChild(el("text",{x:x,y:y,"text-anchor":o.a||"start","font-size":o.s||19,"font-weight":o.b?700:400,fill:o.c||"var(--ink)"},t));}
+
+/* ---- monitor de redacción: bloquea pegar/arrastrar/copiar y registra indicadores ---- */
+function Monitor(){
+  var me=this;this.m={paste:0,typed:0,burst:0,act:0,last:0,away:0,awayMs:0,hid:0};
+  document.addEventListener("visibilitychange",function(){
+    if(document.hidden){me.m.hid=Date.now();me.m.away++;}
+    else if(me.m.hid){me.m.awayMs+=Date.now()-me.m.hid;me.m.hid=0;}
+  });
+}
+Monitor.prototype.attach=function(t,cb){
+  var m=this.m;cb=cb||function(){};
+  t.addEventListener("paste",function(e){e.preventDefault();m.paste++;cb();});
+  t.addEventListener("drop",function(e){e.preventDefault();m.paste++;cb();});
+  t.addEventListener("dragover",function(e){e.preventDefault();});
+  t.addEventListener("copy",function(e){e.preventDefault();});
+  t.addEventListener("cut",function(e){e.preventDefault();});
+  t.addEventListener("contextmenu",function(e){e.preventDefault();});
+  t.addEventListener("keydown",function(e){
+    var k=e.key.toLowerCase();
+    if((e.ctrlKey||e.metaKey)&&(k==="v"||k==="c"||k==="x")){e.preventDefault();if(k==="v"){m.paste++;cb();}}
+    if(e.shiftKey&&e.key==="Insert"){e.preventDefault();m.paste++;cb();}
+  });
+  t.addEventListener("beforeinput",function(e){
+    if(/^insertFrom(Paste|Drop|PasteAsQuotation)$/.test(e.inputType||"")){e.preventDefault();m.paste++;cb();}
+  });
+  t.addEventListener("input",function(e){
+    var now=Date.now(),d=(e.data||"").length;
+    if(m.last){var gap=now-m.last;m.act+=gap<=3000?gap:300;}
+    m.last=now;
+    if(e.inputType&&e.inputType.indexOf("insert")===0){m.typed+=d||1;if(d>m.burst)m.burst=d;}
+    cb();
+  });
+};
+Monitor.prototype.metrics=function(){var m=this.m,s=m.act/1000;return{paste:m.paste,typed:m.typed,burst:m.burst,sec:Math.round(s),cps:s>0?m.typed/s:0,away:m.away,awaySec:Math.round(m.awayMs/1000)};};
+Monitor.prototype.flags=function(){var q=this.metrics(),f=[];
+  if(q.paste>0)f.push("hubo "+q.paste+" intento(s) de pegar o arrastrar texto");
+  if(q.burst>20)f.push("se insertaron "+q.burst+" caracteres de golpe");
+  if(q.cps>12)f.push("velocidad media muy alta ("+fmt(q.cps,1)+" caracteres por segundo)");
+  return f;};
+
+/* ---- PDF sin librerías ---- */
+var MAP={"“":'"',"”":'"',"‘":"'","’":"'","–":"-","—":"-","…":"...","★":"*","✓":"v","✕":"x","→":"->","←":"<-","•":"-","○":"o","●":"*","≥":">=","≤":"<=","Δ":"D","×":"x","÷":"/","▲":"^"};
+function lat(s){var o="",i,ch,c;s=String(s).normalize("NFC");
+  for(i=0;i<s.length;i++){ch=s.charAt(i);c=ch.charCodeAt(0);
+    if(MAP[ch]!==undefined)o+=MAP[ch];
+    else if(c===10)o+="\n";
+    else if(c>=32&&c<=255)o+=ch;}
+  return o;}
+function pdfEsc(s){return s.replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)");}
+var CV=document.createElement("canvas").getContext("2d");
+function wrapT(text,bold,size,maxw){
+  CV.font=(bold?"bold ":"")+size+"px Helvetica, Arial";
+  var out=[];text.split("\n").forEach(function(p){
+    var ws=p.split(/\s+/).filter(Boolean),ln="";
+    if(!ws.length){out.push("");return;}
+    ws.forEach(function(w){var t=ln?ln+" "+w:w;if(CV.measureText(t).width>maxw&&ln){out.push(ln);ln=w;}else ln=t;});
+    if(ln)out.push(ln);});
+  return out;}
+function makePdf(blocks,foot){
+  var pages=[],cur=[],y=800,PW=595,M=56,W=PW-2*M;
+  function np(){pages.push(cur);cur=[];y=800;}
+  blocks.forEach(function(b){
+    if(b.k==="gap"){y-=b.s||8;return;}
+    var size={h1:16,h2:12.5,p:10.5,li:10.5,small:9}[b.k]||10.5,bold=(b.k==="h1"||b.k==="h2"),col=b.k==="small"?"0.35 0.35 0.35":(bold?"0.12 0.23 0.54":"0 0 0");
+    var txt=lat((b.k==="li"?"- ":"")+b.s);
+    wrapT(txt,bold,size,W-(b.k==="li"?10:0)).forEach(function(l,i){
+      if(y<70)np();cur.push({t:l,x:M+(b.k==="li"&&i>0?10:0),y:y,s:size,b:bold,c:col});y-=size*1.38;});
+    y-=b.k==="h1"?6:(b.k==="h2"?2:2);
+  });
+  pages.push(cur);
+  var n=pages.length,objs=[],i,kids=[];
+  objs[1]="<< /Type /Catalog /Pages 2 0 R >>";
+  for(i=0;i<n;i++)kids.push((5+i*2)+" 0 R");
+  objs[2]="<< /Type /Pages /Kids ["+kids.join(" ")+"] /Count "+n+" >>";
+  objs[3]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+  objs[4]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
+  pages.forEach(function(items,pi){
+    var c="";items.forEach(function(it){c+="BT /"+(it.b?"F2":"F1")+" "+it.s+" Tf "+it.c+" rg "+it.x.toFixed(1)+" "+it.y.toFixed(1)+" Td ("+pdfEsc(it.t)+") Tj ET\n";});
+    c+="BT /F1 8 Tf 0.4 0.4 0.4 rg 56 30 Td ("+pdfEsc(lat(foot||""))+"  -  Pagina "+(pi+1)+" de "+n+") Tj ET\n";
+    objs[5+pi*2]="<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents "+(6+pi*2)+" 0 R >>";
+    objs[6+pi*2]="<< /Length "+c.length+" >>\nstream\n"+c+"endstream";});
+  var out="%PDF-1.4\n",off=[0],k;
+  for(k=1;k<objs.length;k++){off[k]=out.length;out+=k+" 0 obj\n"+objs[k]+"\nendobj\n";}
+  var xr=out.length;out+="xref\n0 "+objs.length+"\n0000000000 65535 f \n";
+  for(k=1;k<objs.length;k++)out+=("0000000000"+off[k]).slice(-10)+" 00000 n \n";
+  out+="trailer\n<< /Size "+objs.length+" /Root 1 0 R >>\nstartxref\n"+xr+"\n%%EOF";
+  var u=new Uint8Array(out.length);for(k=0;k<out.length;k++)u[k]=out.charCodeAt(k)&255;return u;}
+function fileSafe(s){return lat(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"")||"estudiante";}
+function anchorSave(blob,fn){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(a.href);},2000);}
+function deliver(data,fn,mime,done){
+  done=done||function(){};
+  if(window.claude&&typeof window.claude.use==="function"){
+    window.claude.use("downloads").then(function(d){
+      if(!d){done("unavailable");return;}
+      d.save({filename:fn,data:data}).then(function(){done("saved");}).catch(function(e){var c=e&&e.code;done(c==="declined"?"declined":(c==="rate_limited"?"busy":"unavailable"));});
+    }).catch(function(){done("unavailable");});
+  }else{var ok=false;try{anchorSave(new Blob([data],{type:mime}),fn);ok=true;}catch(e){}done(ok?"anchor":"unavailable");}
+}
+function blocksText(B){return B.map(function(b){return b.k==="gap"?"":(b.k==="h1"||b.k==="h2"?"\n"+b.s.toUpperCase():(b.k==="li"?"- "+b.s:b.s));}).join("\n");}
+function dlStatus(st,fn,mail){
+  if(st==="saved")return '<span class="ok"><span class="sym">✓</span><strong>PDF generado.</strong></span> Revisa tus descargas: «'+fn+'». Ahora envíalo al correo indicado abajo.';
+  if(st==="declined")return '<span class="no"><strong>No se guardó el PDF.</strong></span> Puedes volver a pulsar el botón.';
+  if(st==="busy")return '<span class="no"><strong>Hay una ventana de confirmación abierta.</strong></span> Respóndela y vuelve a pulsar el botón.';
+  if(st==="anchor")return '<span class="no"><strong>Se intentó descargar «'+fn+'».</strong></span> Si no aparece en tus descargas, usa el informe en texto de abajo.';
+  return '<span class="no"><strong>Este navegador o enlace no permite descargar el PDF desde aquí.</strong></span> Abre la página dentro de Claude, en Safari o en Chrome, o usa el informe en texto de abajo: cópialo y pégalo en un correo a '+mail+'.';}
+function fallbackBox(txt){return '<div class="hint">Informe en texto (respaldo):</div><textarea readonly aria-label="Informe en texto" style="min-height:140px">'+String(txt).replace(/&/g,"&amp;").replace(/</g,"&lt;")+'</textarea><div class="row"><button class="cpinf">Copiar informe</button><span class="hint cpok" aria-live="polite"></span></div>';}
+function wireCopy(box){var b=box.querySelector(".cpinf"),t=box.querySelector("textarea");if(!b)return;b.addEventListener("click",function(){var ok=box.querySelector(".cpok"),msg=function(m){ok.textContent=m;};
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t.value).then(function(){msg("Informe copiado.");},function(){t.select();msg("Selecciona el texto y cópialo.");});}else{t.select();msg("Selecciona el texto y cópialo.");}}catch(e){t.select();msg("Selecciona el texto y cópialo.");}});}
+function savePdf(u,fn,done){deliver(u,fn,"application/pdf",done);}
+
+(function(){
+"use strict";
+var MODE="ING",ING=(MODE==="ING");
+var ACT=[{id:"est",n:"Estudiar",e:"📚",c:"#1F3A8A"},{id:"trab",n:"Trabajar",e:"💼",c:"#C05A00"},{id:"desc",n:"Descansar y ocio",e:"🛋️",c:"#2E7D32"},{id:"amig",n:"Amigos y familia",e:"👪",c:"#8E2F6B"},{id:"hob",n:"Ejercicio o hobby",e:"🎸",c:"#0072B2"}];
+var FIX=[{id:"dor",n:"Dormir",e:"😴",c:"#13315C"},{id:"com",n:"Comidas y aseo",e:"🍽️",c:"#2E7D32"},{id:"tra",n:"Traslados",e:"🚌",c:"#8E2F6B"},{id:"cla",n:"Clases y obligaciones",e:"🎓",c:"#595959"}];
+var S={step:"historia",fx:{dor:8,com:2,tra:1,cla:5},want:{est:5,trab:4,desc:4,amig:4,hob:3},h:{est:0,trab:0,desc:0,amig:0,hob:0},tried:false,rev1:false,
+ order:["trab","est","desc"],h2:3,val:{est:8,trab:6,desc:5,hob:6},w:6,w0:6,rev2:false,tb:{ok:false,done:false,a:"",t:""},chg:false,hh:3,rev3:false,d3:4,bd:{1:false,2:false,3:false},pr:{}};
+var MON=new Monitor();
+function name(){return $("nombre").value.trim();}
+function pn(){return S.own?name():"Estudiante de ejemplo";}
+function seed(salt){return h32(norm(S.own?(name()||"anon"):"ejemplo")+"|"+salt);}
+function freeH(){var t=0;FIX.forEach(function(f){t+=S.fx[f.id];});return 24-t;}
+function sum(o){var t=0,k;for(k in o)t+=o[k];return t;}
+function usd(n){return "$"+(Math.round(n*100)/100).toString().replace(".",",");}
+function actN(id){for(var i=0;i<ACT.length;i++)if(ACT[i].id===id)return ACT[i];}
+var svg=$("plot");
+
+/* ---------------- tabla de producción personalizada ---------------- */
+function tabla(){var r=rng(seed("tabla")),a=10+5*Math.floor(r()*5),b=20+10*Math.floor(r()*4),c=a+5*(1+Math.floor(r()*4)),X0=100+10*Math.floor(r()*5);
+  return {X0:X0,a:a,b:b,c:c,rows:[["A",X0,0],["B",X0-a,b],["C",X0-a-c,2*b]],co1:a/b,co2:c/b};}
+
+/* ---------------- dibujos ---------------- */
+function draw0(g){
+  TX(g,40,40,"Tus 24 horas",{s:21,b:true});
+  var i=0,k,x,y;
+  function sq(col,fill){x=40+(i%12)*57;y=70+Math.floor(i/12)*62;
+    g.appendChild(el("rect",{x:x,y:y,width:48,height:48,rx:6,fill:fill?col:"none",stroke:col,"stroke-width":fill?0:3,"stroke-dasharray":fill?"":"5 4"}));i++;}
+  FIX.forEach(function(f){for(k=0;k<S.fx[f.id];k++)sq(f.c,true);});
+  var fr=Math.max(0,freeH());for(k=0;k<fr&&i<24;k++)sq("#C05A00",false);
+  var ly=230;
+  FIX.forEach(function(f,j){g.appendChild(el("rect",{x:40,y:ly+j*38-16,width:22,height:22,rx:4,fill:f.c}));TX(g,72,ly+j*38,f.e+" "+f.n+": "+S.fx[f.id]+" h",{s:20});});
+  g.appendChild(el("rect",{x:40,y:ly+4*38-16,width:22,height:22,rx:4,fill:"none",stroke:"#C05A00","stroke-width":3,"stroke-dasharray":"4 3"}));
+  TX(g,72,ly+4*38,"Horas libres: "+freeH()+" h",{s:21,b:true,c:"var(--amber)"});
+  TX(g,40,ly+6*38,"24 − "+(24-freeH())+" = "+freeH()+" horas libres",{s:22,b:true});
+}
+function draw1(g){
+  var F=Math.max(0,freeH()),W=sum(S.want),A=sum(S.h),i=0;
+  TX(g,40,36,"Horas libres: "+F+" · Lo que quieres: "+W+" · Asignadas: "+A,{s:20,b:true});
+  ACT.forEach(function(a){for(var k=0;k<S.h[a.id];k++){var x=40+(i%16)*42,y=56+Math.floor(i/16)*46;g.appendChild(el("rect",{x:x,y:y,width:36,height:36,rx:5,fill:a.c}));i++;}});
+  for(;i<F;i++){var x2=40+(i%16)*42,y2=56+Math.floor(i/16)*46;g.appendChild(el("rect",{x:x2,y:y2,width:36,height:36,rx:5,fill:"none",stroke:"var(--navy)","stroke-width":2,"stroke-dasharray":"4 3"}));}
+  var mx=Math.max(8,Math.max.apply(null,ACT.map(function(a){return S.want[a.id];}))),sc=420/mx,y0=170;
+  TX(g,40,y0-12,"Lo que quieres (borde) y lo que asignas (relleno)",{s:16,c:"var(--gray)"});
+  ACT.forEach(function(a,k){var y=y0+k*76,h=S.h[a.id],w=S.want[a.id];
+    TX(g,40,y+30,a.e+" "+a.n,{s:19});
+    g.appendChild(el("rect",{x:240,y:y+6,width:Math.max(2,w*sc),height:38,fill:"none",stroke:a.c,"stroke-width":3,"stroke-dasharray":"6 4",rx:4}));
+    if(h>0)g.appendChild(el("rect",{x:240,y:y+6,width:h*sc,height:38,fill:a.c,rx:4}));
+    TX(g,240+w*sc+8,y+32,h+" de "+w,{s:17,b:true});
+    if(S.rev1&&h<w)TX(g,240+w*sc+8,y+54,"✕ faltan "+(w-h)+" h",{s:15,b:true,c:"var(--vtxt)"});});
+}
+function draw2(g){
+  TX(g,40,36,"Si sales "+S.h2+" horas, renuncias a…",{s:20,b:true});
+  if(!ING){
+    var o=S.order,by=250;
+    g.appendChild(el("rect",{x:40,y:by,width:190,height:130,rx:10,fill:"var(--navy)"}));
+    TX(g,135,by+52,"🎉 Salir",{a:"middle",s:24,b:true,c:"var(--onbar)"});TX(g,135,by+84,"con amigos",{a:"middle",s:21,c:"var(--onbar)"});TX(g,135,by+112,S.h2+" horas",{a:"middle",s:19,c:"var(--onbar)"});
+    o.forEach(function(id,k){var a=actN(id),y=70+k*170,top=(k===0);
+      g.appendChild(el("line",{x1:230,y1:by+65,x2:420,y2:y+50,stroke:top?"var(--amber)":"var(--gray)","stroke-width":top?5:2}));
+      g.appendChild(el("rect",{x:420,y:y,width:310,height:100,rx:10,fill:top?"var(--hl)":"none",stroke:top?"var(--amber)":"var(--gray)","stroke-width":top?5:2}));
+      TX(g,435,y+40,(k+1)+".ª "+a.e+" "+a.n,{s:21,b:top});
+      TX(g,435,y+72,id==="trab"?S.h2+" h × "+usd(S.w)+" = "+usd(S.h2*S.w):"valor que tú le das",{s:17,c:"var(--gray)"});
+      if(top)TX(g,718,y+30,"★",{a:"end",s:30,c:"var(--amber)"});});
+    TX(g,40,600,S.rev2?"★ La mejor alternativa es el costo de oportunidad. Las demás no se suman.":"Ordena la lista para cambiar el diagrama.",{s:16,c:"var(--gray)"});
+  }else{
+    var alts=["est","trab","desc","hob"],vals=alts.map(function(id){return S.val[id]*S.h2;}),mx=Math.max.apply(null,vals),sc=380/Math.max(10,mx),bi=vals.indexOf(mx);
+    alts.forEach(function(id,k){var a=actN(id),y=70+k*100,w=vals[k]*sc,top=(k===bi);
+      TX(g,40,y+34,a.e+" "+a.n,{s:20});TX(g,40,y+58,S.val[id]+" $/h × "+S.h2+" h",{s:16,c:"var(--gray)"});
+      g.appendChild(el("rect",{x:260,y:y+8,width:Math.max(3,w),height:48,rx:5,fill:top?"var(--amber)":"none",stroke:top?"var(--amber)":"var(--gray)","stroke-width":3}));
+      TX(g,260+w+10,y+40,usd(vals[k]),{s:20,b:true,c:top?"var(--amber)":"var(--ink)"});if(top)TX(g,745,y+40,"★",{a:"end",s:28,c:"var(--amber)"});});
+    TX(g,40,520,"Costo de oportunidad = h × max(valor por hora) = "+S.h2+" × "+Math.max.apply(null,alts.map(function(id){return S.val[id];}))+" = "+usd(mx),{s:19,b:true});
+    TX(g,40,552,S.rev2?"No se suman las alternativas: la suma sería "+usd(vals.reduce(function(a,b){return a+b;},0))+".":"Sube o baja los valores por hora y mira qué cambia.",{s:16,c:"var(--gray)"});
+  }
+}
+function draw3(g){
+  var ML=90,MT=50,PW=620,PH=440,XM=20,hmax=Math.max(S.h2,S.hh,3),YM=Math.max(60,Math.ceil(20*hmax/20)*20);
+  function sx(v){return ML+v/XM*PW;}function sy(v){return MT+PH-v/YM*PH;}
+  TX(g,40,32,"Costo de oportunidad de salir según el pago por hora",{s:19,b:true});
+  var i;for(i=0;i<=YM;i+=YM/5){g.appendChild(el("line",{x1:ML,y1:sy(i),x2:ML+PW,y2:sy(i),stroke:"var(--grid)","stroke-width":1}));TX(g,ML-10,sy(i)+6,"$"+Math.round(i),{a:"end",s:16});}
+  for(i=0;i<=XM;i+=5)TX(g,sx(i),MT+PH+26,"$"+i,{a:"middle",s:16});
+  g.appendChild(el("line",{x1:ML,y1:sy(0),x2:ML+PW,y2:sy(0),stroke:"var(--ink)","stroke-width":2.5}));g.appendChild(el("line",{x1:ML,y1:sy(0),x2:ML,y2:MT-8,stroke:"var(--ink)","stroke-width":2.5}));
+  TX(g,ML+PW/2,MT+PH+56,"Pago por hora de trabajar",{a:"middle",s:18});
+  g.appendChild(el("line",{x1:sx(0),y1:sy(0),x2:sx(XM),y2:sy(S.h2*XM),stroke:"var(--navy)","stroke-width":4}));
+  TX(g,sx(XM)-6,sy(S.h2*XM)-10,S.h2+" horas"+(ING?" (pendiente "+S.h2+")":""),{a:"end",s:16,c:"var(--navy)",b:true});
+  if(S.hh!==S.h2){g.appendChild(el("line",{x1:sx(0),y1:sy(0),x2:sx(XM),y2:sy(S.hh*XM),stroke:"var(--purp)","stroke-width":4,"stroke-dasharray":"8 5"}));TX(g,sx(XM)-6,sy(S.hh*XM)-10,S.hh+" horas",{a:"end",s:16,c:"var(--purp)",b:true});}
+  var c0=S.h2*S.w0,c1=S.hh*S.w;
+  g.appendChild(el("circle",{cx:sx(S.w0),cy:sy(c0),r:8,fill:"none",stroke:"var(--navy)","stroke-width":3}));TX(g,sx(S.w0)+12,sy(c0)+22,"antes: "+usd(c0),{s:16,c:"var(--navy)"});
+  g.appendChild(el("circle",{cx:sx(S.w),cy:sy(c1),r:10,fill:"var(--amber)"}));TX(g,sx(S.w)+(S.w>14?-14:14),sy(c1)-14,"ahora: "+usd(c1),{a:S.w>14?"end":"start",s:18,b:true,c:"var(--amber)"});
+}
+function render(){while(svg.firstChild)svg.removeChild(svg.firstChild);var g=el("g",{});svg.appendChild(g);
+  if(S.step==="paso1")draw1(g);else if(S.step==="paso2")draw2(g);else if(S.step==="paso3")draw3(g);else draw0(g);}
+
+/* ---------------- paneles ---------------- */
+function badge(k){S.bd[k]=true;$("bd"+k).className="pop";}
+function stepRow(label,id,val,attr,extra){return '<div class="arow"><span class="nm">'+label+'</span>'+(extra||"")+'<button data-'+attr+'="'+id+':-1" aria-label="Quitar">\u2212</button><span class="hh">'+val+'</span><button data-'+attr+'="'+id+':1" aria-label="Sumar">+</button></div>';}
+function upd0(){
+  var h="";FIX.forEach(function(f){h+=stepRow(f.e+" "+f.n,f.id,S.fx[f.id],"fx");});$("fix").innerHTML=h;
+  var F=freeH();$("k-lab").textContent="Horas libres";$("k-val").textContent=F;
+  $("res0").innerHTML=(F<1||F>18)?'<span class="no"><strong>Revisa tus horas:</strong></span> te quedan '+F+' horas libres. Debe haber entre 1 y 18.':'Horas fijas: <strong>'+(24-F)+'</strong>. Horas libres: <strong>'+F+'</strong>. Estas son las horas escasas que vas a repartir.';
+}
+function upd1(){
+  var h="";ACT.forEach(function(a){h+='<div class="arow"><span class="nm">'+a.e+" "+a.n+'</span><small>quiero</small><button data-wt="'+a.id+':-1">\u2212</button><span class="hh">'+S.want[a.id]+'</span><button data-wt="'+a.id+':1">+</button><small>asigno</small><button data-as="'+a.id+':-1">\u2212</button><span class="hh">'+S.h[a.id]+'</span><button data-as="'+a.id+':1">+</button></div>';});
+  $("acts").innerHTML=h;
+  var F=Math.max(0,freeH()),W=sum(S.want),A=sum(S.h);
+  $("k-lab").textContent="Asignadas / libres";$("k-val").textContent=A+" de "+F;
+  var m;
+  if(S.tried)m='<span class="ina"><span class="sym">\u25CF</span><strong>No hay más horas libres.</strong></span> Para darle una hora más a una actividad tienes que quitársela a otra. Eso es una <strong>elección</strong>.';
+  else m="Quieres <strong>"+W+" h</strong>, tienes <strong>"+F+" h</strong> libres y has asignado <strong>"+A+"</strong>.";
+  if(S.rev1){var gap=Math.max(0,W-F);m=(gap>0?'<span class="ok"><span class="sym">\u2605</span><strong>Escasez.</strong></span> Querías <strong>'+W+' h</strong> y tienes <strong>'+F+' h</strong>: quedaron <strong>'+gap+' h sin hacer</strong>. Los recursos no alcanzan para todo lo que deseas, así que hay que elegir.':'Con tus deseos actuales <strong>sí caben</strong> ('+W+' h ≤ '+F+' h). Prueba agregar horas a lo que quisieras: lo normal es que la lista crezca más rápido que el día.');}
+  $("res1").innerHTML=m;
+}
+function shuf(arr,salt){var r=rng(seed(salt)),a=arr.slice(),i,j,t;for(i=a.length-1;i>0;i--){j=Math.floor(r()*(i+1));t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function opts(id,arr,salt,chosen){var a=shuf(arr,salt),h="";a.forEach(function(o,k){h+='<label><input type="radio" name="'+id+'" value="'+(o.ok?"ok":"x"+k)+'"'+(chosen===(o.ok?"ok":"x"+k)?" checked":"")+'> '+String.fromCharCode(97+k)+") "+esc(o.t)+"</label>";});return h;}
+function upd2(){
+  $("h2o").textContent=S.h2;$("h2t").textContent=S.h2;
+  var body="";
+  if(!ING){
+    body+='<p class="hint">Ordena de mejor a peor lo que harías con esas horas si no salieras.</p>';
+    S.order.forEach(function(id,k){var a=actN(id);body+='<div class="rk"><span class="n">'+(k+1)+'.ª</span><span class="nm">'+a.e+" "+a.n+'</span><button data-u="'+k+'"'+(k===0?" disabled":"")+'>\u2191</button><button data-d="'+k+'"'+(k===2?" disabled":"")+'>\u2193</button></div>';});
+    body+='<div class="arow"><span class="nm">Pago por hora si trabajas</span>'+'<button data-w="-1">\u2212</button><span class="hh">'+usd(S.w)+'</span><button data-w="1">+</button></div>';
+  }else{
+    body+='<p class="hint">Escribe cuánto vale para ti una hora de cada alternativa, en dólares.</p>';
+    ["est","trab","desc","hob"].forEach(function(id){var a=actN(id);body+=stepRow(a.e+" "+a.n+" ($ por hora)",id,id==="trab"?usd(S.w):S.val[id],"vl");});
+  }
+  $("p2body").innerHTML=body;
+  var o=ING?[{t:"La mejor alternativa a la que renuncio (h × el mayor valor por hora)",ok:true},{t:"La suma de las alternativas a las que renuncio (h × la suma de los valores)"},{t:"El promedio de las alternativas (h × el promedio de los valores)"},{t:"Cero, si la actividad no cuesta dinero (h × 0)"}]:[{t:"La mejor de las alternativas a las que renuncio",ok:true},{t:"La suma del valor de todas las alternativas a las que renuncio"},{t:"Cualquiera de ellas, porque todas valen lo mismo para mí"},{t:"Cero: si salir no cuesta dinero, no tiene costo de oportunidad"}];
+  var chk=document.querySelector("input[name=p2]:checked");$("p2opts").innerHTML=opts("p2",o,"p2",chk?chk.value:null);
+  $("k-lab").textContent="Costo de oportunidad";
+  var top=ING?null:actN(S.order[0]),co=ING?S.h2*Math.max(S.val.est,S.w,S.val.desc,S.val.hob):(S.order[0]==="trab"?S.h2*S.w:null);
+  $("k-val").textContent=S.rev2?(co!==null?usd(co):top.n):"?";
+  if(!S.rev2){$("res2").innerHTML="Ordena o valora las alternativas y elige una respuesta.";}
+  else if(ING){var vs=[S.val.est,S.w,S.val.desc,S.val.hob],mx=Math.max.apply(null,vs),nm=["Estudiar","Trabajar","Descansar y ocio","Ejercicio o hobby"][vs.indexOf(mx)];
+    $("res2").innerHTML='<span class="ok"><span class="sym">\u2605</span><strong>CO = h × máx(valor por hora) = '+S.h2+' × '+mx+' = '+usd(S.h2*mx)+'.</strong></span> La mejor alternativa es '+nm+'. Las otras no se suman: la suma sería '+usd(S.h2*vs.reduce(function(a,b){return a+b;},0))+'.';}
+  else{$("res2").innerHTML='<span class="ok"><span class="sym">\u2605</span><strong>Tu costo de oportunidad de salir es '+top.e+" "+top.n+".</strong></span> "+(co!==null?"Son "+S.h2+" h × "+usd(S.w)+" = <strong>"+usd(co)+"</strong>. ":"Su valor no se mide en dinero. ")+"Las otras dos también las dejas, pero no se suman.";}
+  $("tbbox").classList.toggle("hidden",!ING);
+  if(ING){var T=tabla(),h='<table><thead><tr><th>Combinación</th><th>Piezas de X</th><th>Piezas de Y</th></tr></thead><tbody>';T.rows.forEach(function(r){h+="<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td>"+r[2]+"</td></tr>";});h+="</tbody></table>";$("tbl").innerHTML=h;}
+}
+function upd3(){
+  var w0=S.w0,d=S.d3;$("wo").textContent=usd(S.w);$("hho").textContent=S.hh;
+  $("pl3").textContent="Antes de mover: el pago sube de "+usd(w0)+" a "+usd(w0+d)+" por hora y nada más cambia. El costo de oportunidad de salir "+S.h2+" horas sube en…";
+  var o=[{t:usd(S.h2*d)+(ING?" (h × Δpago)":""),ok:true},{t:usd(d)+(ING?" (solo el cambio del pago)":""),},{t:usd(w0+d)+(ING?" (el nuevo pago)":"")}];
+  var chk=document.querySelector("input[name=p3]:checked");$("p3opts").innerHTML=opts("p3",o,"p3",chk?chk.value:null);
+  var c=S.hh*S.w;$("k-lab").textContent="Costo de salir";$("k-val").textContent=usd(c);
+  var r=$("res3");
+  if(!S.rev3&&!S.chg&&S.w===w0){r.innerHTML="Costo de salir "+S.h2+" horas con pago de "+usd(w0)+": <strong>"+usd(S.h2*w0)+"</strong>. Mueve el pago.";return;}
+  var t="Con pago de <strong>"+usd(S.w)+"</strong> y <strong>"+S.hh+" horas</strong>, salir cuesta <strong>"+usd(c)+"</strong>"+(ING?" (CO = h × w)":"")+".";
+  if(S.chg&&S.hh!==S.h2&&S.w!==w0)t+=' <span class="ina"><span class="sym">\u25B2</span><strong>Cambiaste dos cosas a la vez.</strong></span> Ya no sabes cuánto del cambio viene del pago y cuánto de las horas. Para ver el efecto de una sola variable, lo demás debe permanecer constante.';
+  else if(S.w!==w0&&S.hh===S.h2)t+=" Cambió <strong>solo</strong> el pago: todo lo demás permanece constante, así que todo el cambio se debe al pago"+(ING?": ΔCO = h × Δw = "+S.h2+" × "+(S.w-w0)+" = "+usd(S.h2*(S.w-w0))+".":".");
+  r.innerHTML=t;
+}
+/* ---------------- informe ---------------- */
+var ta=$("ref");
+var TH=[{l:"escasez",re:/escas|limitad|no alcanz|libres/},{l:"elección",re:/elig|elecci|decid|decisi/},{l:"costo de oportunidad",re:/renunci|sacrific|costo de oportunidad|alternativa|dejar de/},{l:"todo lo demás constante",re:/constante|lo demas|una sola|solo el|ceteris/}];
+function analyze(){var n=norm(ta.value),th=TH.filter(function(t){return t.re.test(n);});return{w:words(ta.value),th:th};}
+function updRef(){var a=analyze(),q=MON.metrics();
+  $("res-ref").innerHTML="Palabras: <strong>"+a.w+"</strong> de 60. Ideas detectadas: <strong>"+(a.th.length?a.th.map(function(t){return t.l;}).join(", "):"ninguna")+"</strong> ("+a.th.length+" de 4, necesitas 3)."+(q.paste>0?'<br><span class="ina"><span class="sym">\u25B2</span>Se bloqueó un intento de pegar. Quedó registrado.</span>':"");
+  updReqs();}
+function reqs(){var a=analyze(),r=[[S.own?name().length>=5:true,"Tu nombre completo está escrito (en la Historia)"],[freeH()>=1&&freeH()<=18,"Completaste el Paso 0 (tus horas fijas)"],[S.rev1&&sum(S.want)>0,"Completaste el Paso 1 (comprobar)"],[S.rev2,"Completaste el Paso 2 (ver resultado)"]];
+  if(ING)r.push([S.tb.done,"Verificaste el ejercicio de la tabla de producción"]);
+  r.push([S.rev3,"Completaste el Paso 3 (ver resultado)"],[a.w>=60,"La reflexión tiene al menos 60 palabras ("+a.w+")"],[a.th.length>=3,"La reflexión toca al menos 3 de las 4 ideas ("+a.th.length+")"]);return r;}
+function updReqs(){var r=reqs(),ok=r.every(function(x){return x[0];});
+  $("reqs").innerHTML=r.map(function(x){return '<li><span class="sym '+(x[0]?"ok":"no")+'">'+(x[0]?"✓":"○")+"</span>"+esc(x[1])+"</li>";}).join("");$("dl").disabled=!ok;
+  if(!ok)$("res-pdf").innerHTML="Faltan condiciones. Completa las que tienen ○.";}
+function reportBlocks(){
+  var q=MON.metrics(),fl=MON.flags(),a=analyze(),T=ING?tabla():null,F=freeH(),W=sum(S.want),A=sum(S.h),B=[];
+  var code="INF-"+h32([name(),JSON.stringify(S.fx),JSON.stringify(S.want),JSON.stringify(S.h),S.h2,S.w,S.w0,JSON.stringify(S.val),S.order.join(",")].join("|")).slice(0,8);
+  B.push({k:"h1",s:"Mis 24 horas · informe ("+(ING?"Ingeniería":"2.º Negocios Internacionales")+")"+(S.own?"":" - EJEMPLO")},{k:"small",s:"Principios de economía · Universidad Indoamérica"},{k:"p",s:"Nombre: "+pn()},{k:"p",s:S.own?"Datos: propios.":"EJEMPLO: archivo de prueba, no es válido para entregar."},{k:"p",s:"Fecha: "+new Date().toLocaleString("es-EC")+"   Código del informe: "+code},{k:"gap"});
+  B.push({k:"h2",s:"1. Mi día (horas fijas y libres)"});FIX.forEach(function(f){B.push({k:"li",s:f.n+": "+S.fx[f.id]+" h"});});B.push({k:"p",s:"Horas libres: 24 - "+(24-F)+" = "+F+" h."},{k:"gap"});
+  B.push({k:"h2",s:"2. Escasez: lo que quiero frente a lo que cabe"});ACT.forEach(function(x){B.push({k:"li",s:x.n+": quiero "+S.want[x.id]+" h, asigné "+S.h[x.id]+" h"+(S.want[x.id]>S.h[x.id]?" (quedaron "+(S.want[x.id]-S.h[x.id])+" h sin hacer)":"")});});
+  B.push({k:"p",s:"Quiero "+W+" h y tengo "+F+" h libres: "+(W>F?"faltan "+(W-F)+" h.":"mis deseos caben.")},{k:"gap"});
+  var s2=S.s2||{w:S.w,val:S.val,h2:S.h2,order:S.order};
+  B.push({k:"h2",s:"3. Costo de oportunidad de salir "+s2.h2+" horas"});
+  if(ING){var vs=[["Estudiar",s2.val.est],["Trabajar",s2.w],["Descansar y ocio",s2.val.desc],["Ejercicio o hobby",s2.val.hob]],mx=Math.max.apply(null,vs.map(function(v){return v[1];}));
+    vs.forEach(function(v){B.push({k:"li",s:v[0]+": "+usd(v[1])+" por hora"});});B.push({k:"p",s:"CO = h x max(valor por hora) = "+s2.h2+" x "+mx+" = "+usd(s2.h2*mx)+"."});
+    B.push({k:"p",s:"Tabla de producción personal: A ("+T.rows[0][1]+", 0), B ("+T.rows[1][1]+", "+T.rows[1][2]+"), C ("+T.rows[2][1]+", "+T.rows[2][2]+"). CO de A a B = "+fmt(T.co1)+"; de B a C = "+fmt(T.co2)+" piezas de X por pieza de Y (creciente). Mi respuesta: "+(S.tb.a||"-")+" ("+(S.tb.ok?"correcta":"revisar")+")."});}
+  else{var top=actN(s2.order[0]);B.push({k:"p",s:"Orden de mis alternativas: "+s2.order.map(function(id,k){return (k+1)+". "+actN(id).n;}).join("; ")+"."});B.push({k:"p",s:"Mi costo de oportunidad es "+top.n+(s2.order[0]==="trab"?": "+s2.h2+" h x "+usd(s2.w)+" = "+usd(s2.h2*s2.w):" (no se mide en dinero)")+". Las otras alternativas no se suman."});}
+  B.push({k:"gap"},{k:"h2",s:"4. Si todo lo demás permanece constante"},{k:"p",s:"Pago por hora: de "+usd(S.w0)+" a "+usd(S.w)+" con "+S.hh+" horas: costo de salir "+usd(S.hh*S.w)+". "+(S.chg&&S.hh!==S.h2?"Cambié también las horas: ya no se aisla el efecto del pago.":"Cambió solo el pago"+(ING?": delta CO = h x delta w = "+S.h2+" x "+(S.w-S.w0)+" = "+usd(S.h2*(S.w-S.w0))+".":"."))},{k:"gap"});
+  B.push({k:"h2",s:"5. Mi reflexión"},{k:"p",s:ta.value},{k:"gap"},{k:"h2",s:"6. Lo que detectó el applet"},{k:"p",s:"Palabras: "+a.w+". Ideas: "+(a.th.length?a.th.map(function(t){return t.l;}).join(", "):"ninguna")+"."},{k:"gap"});
+  B.push({k:"h2",s:"7. Indicadores de redacción (apoyo para la docente, no son una prueba)"},{k:"p",s:"Intentos de pegar o arrastrar: "+q.paste+". Caracteres escritos: "+q.typed+". Mayor inserción de una vez: "+q.burst+" caracteres. Tiempo activo: "+q.sec+" s. Velocidad media: "+fmt(q.cps,1)+" caracteres por segundo. Salidas de la página: "+q.away+" ("+q.awaySec+" s)."},{k:"p",s:fl.length?"Observaciones: "+fl.join("; ")+".":"Sin observaciones atípicas."});
+  return {B:B,code:code};
+}
+function pdf(){var r=reportBlocks();return makePdf(r.B,"Mis 24 horas - "+r.code);}
+$("dl").addEventListener("click",function(){if($("dl").disabled)return;var r=reportBlocks(),u=makePdf(r.B,"Mis 24 horas - "+r.code),fn="Mis_24_horas_"+MODE+"_"+fileSafe(pn())+(S.own?"":"_EJEMPLO")+".pdf",rs=$("res-pdf");
+  rs.innerHTML="Preparando el PDF… Si aparece una ventana de confirmación, acéptala.";
+  savePdf(u,fn,function(st){rs.innerHTML=dlStatus(st,esc(fn),$("mailaddr").textContent)+(st==="saved"?"":fallbackBox(blocksText(r.B)));wireCopy(rs);});});
+MON.attach(ta,updRef);
+
+/* ---------------- eventos ---------------- */
+function show(step){S.step=step;updMode();
+  ["historia","paso0","paso1","paso2","paso3","informe","instrucciones"].forEach(function(s){$("s-"+s).classList.toggle("hidden",s!==step);$("b-"+s).classList.toggle("act",s===step);});
+  if(step==="paso0")upd0();else if(step==="paso1")upd1();else if(step==="paso2")upd2();else if(step==="paso3"){S.w0=S.w0;upd3();}else if(step==="informe")updRef();
+  else{$("k-lab").textContent="Horas libres";$("k-val").textContent=freeH();}
+  render();exInputs();if(history.replaceState){try{history.replaceState(null,"","#"+step);}catch(e){}}}
+function again(){if(S.step==="paso0")upd0();else if(S.step==="paso1")upd1();else if(S.step==="paso2")upd2();else if(S.step==="paso3")upd3();render();exInputs();}
+document.querySelectorAll("nav button[data-step]").forEach(function(b){b.addEventListener("click",function(){show(b.getAttribute("data-step"));});});
+$("go0").addEventListener("click",function(){show("paso0");});
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+$("fix").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var p=b.getAttribute("data-fx").split(":");S.fx[p[0]]=clamp(S.fx[p[0]]+parseInt(p[1],10),0,12);again();});
+$("acts").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var p,F=Math.max(0,freeH());S.rev1=false;
+  if(b.hasAttribute("data-wt")){p=b.getAttribute("data-wt").split(":");S.want[p[0]]=clamp(S.want[p[0]]+parseInt(p[1],10),0,10);if(S.h[p[0]]>S.want[p[0]])S.h[p[0]]=S.want[p[0]];S.tried=false;}
+  else if(b.hasAttribute("data-as")){p=b.getAttribute("data-as").split(":");var d=parseInt(p[1],10);
+    if(d>0){if(sum(S.h)>=F){S.tried=true;svg.classList.remove("shake");void svg.offsetWidth;svg.classList.add("shake");}else if(S.h[p[0]]<S.want[p[0]]){S.h[p[0]]++;S.tried=false;}}
+    else if(S.h[p[0]]>0){S.h[p[0]]--;S.tried=false;}}
+  again();});
+$("p1clr").addEventListener("click",function(){for(var k in S.h)S.h[k]=0;S.tried=false;S.rev1=false;again();});
+$("p1chk").addEventListener("click",function(){var c=document.querySelector("input[name=p1]:checked"),F=Math.max(0,freeH()),W=sum(S.want),A=sum(S.h);
+  if(!c){$("res1").innerHTML='<span class="no"><strong>Primero elige tu predicción</strong></span> en el recuadro punteado.';return;}
+  if(A<Math.min(F,W)){$("res1").innerHTML='<span class="no"><strong>Asigna tus horas libres</strong></span> ('+A+" de "+Math.min(F,W)+") antes de comprobar.";return;}
+  var fits=(W<=F),good=(c.value==="si")===fits;S.rev1=true;if(good)badge(1);upd1();render();
+  $("res1").innerHTML=(good?'<span class="ok"><span class="sym">\u2605</span><strong>Predijiste bien.</strong></span> ':'<span class="no"><strong>Piénsalo de nuevo:</strong></span> compara lo que quieres con las horas libres. ')+$("res1").innerHTML;});
+$("s-paso2").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||b.disabled)return;var o=S.order,k,t,p;
+  if(b.hasAttribute("data-h2")){S.h2=clamp(S.h2+parseInt(b.getAttribute("data-h2"),10),1,6);S.hh=S.h2;S.rev2=false;}
+  else if(b.hasAttribute("data-u")){k=parseInt(b.getAttribute("data-u"),10);t=o[k-1];o[k-1]=o[k];o[k]=t;S.rev2=false;}
+  else if(b.hasAttribute("data-d")){k=parseInt(b.getAttribute("data-d"),10);t=o[k+1];o[k+1]=o[k];o[k]=t;S.rev2=false;}
+  else if(b.hasAttribute("data-w")){S.w=clamp(S.w+parseInt(b.getAttribute("data-w"),10),0,20);S.w0=S.w;S.val.trab=S.w;S.rev2=false;}
+  else if(b.hasAttribute("data-vl")){p=b.getAttribute("data-vl").split(":");if(p[0]==="trab"){S.w=clamp(S.w+parseInt(p[1],10),0,30);S.w0=S.w;S.val.trab=S.w;}else S.val[p[0]]=clamp(S.val[p[0]]+parseInt(p[1],10),0,30);S.rev2=false;}
+  else return;again();});
+$("p2rev").addEventListener("click",function(){var c=document.querySelector("input[name=p2]:checked");
+  if(!c){$("res2").innerHTML='<span class="no"><strong>Primero elige tu respuesta</strong></span> en el recuadro punteado.';return;}
+  S.rev2=true;S.s2={w:S.w,val:Object.assign({},S.val),h2:S.h2,order:S.order.slice()};var good=c.value==="ok";if(good)badge(2);upd2();render();
+  $("res2").innerHTML=(good?'<span class="ok"><span class="sym">\u2605</span><strong>Predijiste bien.</strong></span> ':'<span class="no"><strong>Piénsalo de nuevo:</strong></span> el costo no es la suma de lo que dejas, ni cero. ')+$("res2").innerHTML;});
+$("tbchk").addEventListener("click",function(){var T=tabla(),a=parseFloat($("tbans").value),t=document.querySelector("input[name=tt]:checked"),r=$("restb");
+  if(isNaN(a)||!t){r.innerHTML='<span class="no"><strong>Escribe tu cálculo y elige el tipo de costo.</strong></span>';return;}
+  S.tb.a=fmt(a);S.tb.t=t.value;var okn=Math.abs(a-T.co2)<0.015,okt=t.value==="cre";S.tb.ok=okn&&okt;S.tb.done=true;
+  r.innerHTML=(okn?'<span class="ok"><span class="sym">✓</span>Cálculo correcto.</span> ':'<span class="no"><span class="sym">✕</span>Revisa el cálculo.</span> ')+"De B a C: ΔX = "+(T.rows[1][1]-T.rows[2][1])+" y ΔY = "+(T.rows[2][2]-T.rows[1][2])+", así que CO = ΔX ÷ ΔY = "+fmt(T.co2)+". De A a B fue "+fmt(T.co1)+". "+(okt?'<span class="ok">Es creciente: cada pieza de Y cuesta más piezas de X.</span>':'<span class="no">Compara los dos tramos: el costo cambia.</span>');updReqs();});
+$("w").addEventListener("input",function(){S.w=parseInt(this.value,10);S.val.trab=S.w;again();});
+$("hh").addEventListener("input",function(){S.hh=parseInt(this.value,10);again();});
+$("chgh").addEventListener("change",function(){S.chg=this.checked;$("hh").disabled=!this.checked;if(!this.checked){S.hh=S.h2;$("hh").value=S.h2;}again();});
+$("p3rev").addEventListener("click",function(){var c=document.querySelector("input[name=p3]:checked");
+  if(!c){$("res3").innerHTML='<span class="no"><strong>Primero elige tu predicción</strong></span> en el recuadro punteado.';return;}
+  S.rev3=true;S.chg=false;$("chgh").checked=false;$("hh").disabled=true;S.hh=S.h2;$("hh").value=S.h2;S.w=S.w0+S.d3;$("w").value=S.w;S.val.trab=S.w;var good=c.value==="ok";if(good)badge(3);upd3();render();
+  $("res3").innerHTML=(good?'<span class="ok"><span class="sym">\u2605</span><strong>Predijiste bien.</strong></span> ':'<span class="no"><strong>Piénsalo de nuevo:</strong></span> el costo es horas × pago. ')+$("res3").innerHTML;});
+var rtimer=null;
+$("reset").addEventListener("click",function(){
+  if(S.own){
+    if(!rtimer){this.textContent="¿Seguro? Borra todo";rtimer=setTimeout(function(){$("reset").textContent="Reiniciar";rtimer=null;},4000);return;}
+    clearTimeout(rtimer);rtimer=null;this.textContent="Reiniciar";
+    try{localStorage.removeItem(LSK);}catch(e){}
+    $("nombre").value="";setState(exState(),false);show("historia");
+  }else{setState(exState(),false);show(S.step);}
+});
+document.addEventListener("keydown",function(e){if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)&&e.target.type!=="radio"&&e.target.type!=="checkbox")return;if(e.ctrlKey||e.metaKey||e.altKey)return;
+  var k=e.key.toLowerCase(),m={"0":"paso0","1":"paso1","2":"paso2","3":"paso3","4":"informe","5":"instrucciones","h":"historia"};if(m[k])show(m[k]);else if(k==="r")$("reset").click();});
+function fromHash(){var h=(location.hash||"").replace("#","");return["historia","paso0","paso1","paso2","paso3","informe","instrucciones"].indexOf(h)>=0?h:"historia";}
+window.addEventListener("hashchange",function(){show(fromHash());});
+function exState(){var o=S.own;S.own=false;var T=tabla();S.own=o;
+  return {fx:{dor:8,com:2,tra:1,cla:5},want:{est:5,trab:4,desc:4,amig:4,hob:3},h:{est:3,trab:2,desc:1,amig:1,hob:1},tried:false,rev1:true,order:["trab","est","desc"],h2:3,val:{est:8,trab:6,desc:5,hob:6},w:6,w0:2,rev2:true,
+    s2:{w:2,val:{est:8,trab:2,desc:5,hob:6},h2:3,order:["trab","est","desc"]},tb:{ok:true,done:true,a:fmt(T.co2),t:"cre"},chg:false,hh:3,rev3:true,d3:4,bd:{1:true,2:true,3:true}};}
+var EXREF="Con mis datos veo que las horas libres no alcanzan para todo lo que quiero hacer, así que tengo que elegir. Si salgo con mis amigos tres horas, renuncio a la mejor alternativa, que en este ejemplo es estudiar, y ese es mi costo de oportunidad. Cuando cambio solo el pago por hora y todo lo demás permanece constante, puedo ver el efecto de una sola variable. Cambiaría dormir menos por estudiar mejor y trabajar menos el fin de semana para descansar más.";
+function exInputs(){if(S.own)return;var set=function(n,v){var r=document.querySelector('input[name="'+n+'"][value="'+v+'"]');if(r)r.checked=true;};
+  set("p1","no");set("p2","ok");set("p3","ok");set("tt","cre");$("tbans").value=String(tabla().co2);if(!$("restb").innerHTML)$("tbchk").click();}
+function blankState(){var t=exState();t.fx={dor:0,com:0,tra:0,cla:0};t.want={est:0,trab:0,desc:0,amig:0,hob:0};return t;}
+var KEYS=["fx","want","h","rev1","order","h2","val","w","w0","rev2","s2","tb","chg","hh","rev3","d3","bd"];
+var LSK="mis24_"+MODE+"_v2";
+function readSaved(){try{var o=JSON.parse(localStorage.getItem(LSK)||"null");return(o&&o.v===2&&o.mode===MODE&&o.S&&o.name)?o:null;}catch(e){return null;}}
+function setState(st,own){var k;for(k in st)S[k]=st[k];S.own=!!own;S.tried=false;
+  [1,2,3].forEach(function(i){$("bd"+i).className=S.bd[i]?"":"badge-off";});
+  document.querySelectorAll("input[type=radio]").forEach(function(x){x.checked=false;});
+  $("w").value=S.w;$("hh").value=S.hh;$("hh").disabled=!S.chg;$("chgh").checked=!!S.chg;$("tbans").value="";$("ref").value=own?"":EXREF;$("nombre").readOnly=!!own;updMode();}
+function autosave(){if(!S.own)return;try{var o={v:2,mode:MODE,name:$("nombre").value,step:S.step,S:{}};KEYS.forEach(function(k){o.S[k]=S[k];});localStorage.setItem(LSK,JSON.stringify(o));}catch(e){}}
+function updMode(){var b=$("modebar"),sv=readSaved(),t,bt;b.innerHTML="";
+  if(S.own){b.className="modebar own";b.textContent="Trabajas con tus datos"+(name()?" · "+name():"")+". Tu avance se guarda solo en este dispositivo.";}
+  else{b.className="modebar ex";t=document.createElement("span");t.textContent="Modo ejemplo: cada paso ya está resuelto. Puedes descargar un PDF de prueba.";b.appendChild(t);
+    bt=document.createElement("button");bt.textContent="Empezar con mis datos";bt.addEventListener("click",function(){show("historia");$("nombre").focus();});b.appendChild(bt);
+    if(sv){var b2=document.createElement("button"),b3=document.createElement("button");b2.textContent="Continuar mi avance ("+sv.name+")";b3.textContent="Borrar avance";
+      b2.addEventListener("click",function(){var st=exState(),k;KEYS.forEach(function(q){if(sv.S[q]!==undefined)st[q]=sv.S[q];});$("nombre").value=sv.name;setState(st,true);show(sv.step&&sv.step!=="historia"?sv.step:"paso0");});
+      b3.addEventListener("click",function(){try{localStorage.removeItem(LSK);}catch(e){}updMode();});b.appendChild(b2);b.appendChild(b3);}}
+  $("gop").classList.toggle("hidden",S.own);$("exnote").classList.toggle("hidden",S.own);$("go0").textContent=S.own?"Seguir con el Paso 0 →":"Ver el ejemplo →";$("gop").disabled=name().length<5;}
+$("nombre").addEventListener("input",function(){$("gop").disabled=name().length<5;});
+$("gop").addEventListener("click",function(){if(name().length<5)return;setState(blankState(),true);show("paso0");});
+function copyTxt(t,ok){var done=function(){$("cpmsg").textContent=ok;},fail=function(){$("cpmsg").textContent="No se pudo copiar. Escríbelo a mano: "+t;};
+  try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fail);}else fail();}catch(e){fail();}}
+$("cpm").addEventListener("click",function(){copyTxt($("mailaddr").textContent,"Correo copiado.");});
+$("cps").addEventListener("click",function(){copyTxt("Mis 24 horas · Ingeniería · "+name(),"Asunto copiado.");});
+["click","input","change"].forEach(function(ev){document.addEventListener(ev,function(){setTimeout(autosave,0);},true);});
+setState(exState(),false);updRef();
+show(fromHash());
+})();
+</script>
+</body>
+</html>
