@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrenamiento Parcial 1 · Macroeconomía</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: un cuaderno de práctica tranquilo, claro y alentador.
+   IDEA: la hoja de ejercicios con su solución al reverso.
+   PICTURE: la propia pregunta, grande, con su gráfico.
+   COLOUR and TYPE: morado institucional, acento naranja; Source Sans 3.
+   LAYOUT: una columna de lectura, controles grandes para el celular. */
+:root{color-scheme:light dark;--bg:light-dark(#f6f4f9,#17131d);--card:light-dark(#fff,#221c2b);--ink:light-dark(#1f1a26,#eee9f4);--mut:light-dark(#655d70,#b3aabf);--pur:light-dark(#5B2A86,#c9a6ee);--pur2:light-dark(#efe7f7,#2e2340);--ora:#E87722;--ok:light-dark(#1d7a46,#6fd49b);--okb:light-dark(#e6f4ec,#173527);--bad:light-dark(#b3261e,#ff8a80);--badb:light-dark(#fbe9e7,#3a1d1b);--line:light-dark(#e2dcea,#3a3146)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,sans-serif;overflow-x:clip}
+header{background:#5B2A86;color:#fff;padding:18px max(5vw,16px) 22px}
+header h1{margin:0;font-size:clamp(24px,5vw,34px);line-height:1.1}
+header p{margin:6px 0 0;opacity:.9;font-size:15px}
+main{max-width:760px;margin:0 auto;padding:18px max(4vw,14px) 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:0 0 16px}
+h2{font-size:22px;margin:0 0 10px;line-height:1.2}
+h3{font-size:17px;margin:14px 0 6px}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input,select{width:100%;font:inherit;font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--ora);outline-offset:2px}
+button{font:inherit;font-weight:600;min-height:46px;padding:10px 16px;border-radius:10px;border:0;cursor:pointer}
+.b1{background:#5B2A86;color:#fff}.b2{background:var(--ora);color:#fff}.b3{background:var(--pur2);color:var(--pur)}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.row>button{flex:1 1 200px}
+.mut{color:var(--mut);font-size:15px}
+.chip{display:inline-block;background:var(--pur2);color:var(--pur);border-radius:99px;padding:2px 10px;font-size:13px;font-weight:600}
+.prog{height:8px;background:var(--pur2);border-radius:99px;margin:8px 0 14px;overflow:hidden}.prog i{display:block;height:100%;background:var(--ora)}
+.q{white-space:pre-line;font-size:17px}
+.fig{margin:12px 0;max-width:420px}.fig svg{width:100%;height:auto;color:var(--ink)}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);color:var(--ink);border:2px solid var(--line);margin:8px 0;font-weight:400;padding:12px 14px}
+.opt b{color:var(--pur);margin-right:6px}
+.opt.sel{border-color:#5B2A86;background:var(--pur2)}
+.opt.good{border-color:var(--ok);background:var(--okb)}.opt.wrong{border-color:var(--bad);background:var(--badb)}
+.opt:disabled{cursor:default}
+button:disabled:not(.opt){opacity:.45;cursor:default}
+.numbox{background:var(--pur2);border-radius:12px;padding:12px;margin:12px 0}
+.numbox .row{margin-top:8px}.numbox input{flex:1 1 160px}
+.fb{border-left:5px solid var(--ok);background:var(--okb);padding:12px 14px;border-radius:8px;margin-top:12px}
+.fb.no{border-color:var(--bad);background:var(--badb)}
+.fb p{margin:4px 0}
+.info{background:none;color:var(--pur);border:1.5px solid var(--pur);min-height:34px;padding:4px 12px;font-size:14px;margin-top:6px}
+.formula{font-family:"Source Sans 3";background:var(--pur2);padding:8px 12px;border-radius:8px;margin-top:6px}
+.big{font-size:clamp(48px,12vw,72px);font-weight:700;color:var(--pur);line-height:1}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 70px;gap:8px;align-items:center;margin:6px 0;font-size:15px}
+.bar .t{position:relative;height:10px;background:var(--pur2);border-radius:99px;grid-column:1/-1}.bar .t i{position:absolute;inset:0 auto 0 0;background:#5B2A86;border-radius:99px}
+.bar span:last-of-type{text-align:right;white-space:nowrap}
+details{border-top:1px solid var(--line);padding:8px 0}summary{cursor:pointer;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:15px}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}td.n{text-align:right;white-space:nowrap}
+.hide{display:none}
+@media(prefers-reduced-motion:no-preference){.prog i{transition:width .3s}}
+</style>
+</head>
+<body>
+<header><h1>Entrenamiento para el Parcial 1</h1><p>Macroeconomía · Practica, revisa tus errores y mira cuánto vas mejorando. Nota de práctica: no cuenta para la calificación.</p></header>
+<main id="app"></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ===== Banco de casos: Entrenamiento Parcial 1, Macroeconomía ===== */
+const TEMAS={1:"Medición del producto",2:"PIB real y crecimiento",3:"Empleo y desempleo",4:"Precios e inflación",5:"Modelos clásico y keynesiano",6:"Multiplicador y política fiscal",7:"Oferta y demanda agregadas"};
+const REPASO={1:"Presentación B (PIB y crecimiento) y applet de medición del PIB",2:"Presentación B (PIB y crecimiento) y applet de crecimiento y deflactor",3:"Presentación C (empleo, desempleo e IPC) y applet de empleo e inflación",4:"Presentación C (empleo, desempleo e IPC) y applet de empleo e inflación",5:"Presentación D (modelos clásico y keynesiano) y applet de equilibrio y multiplicador",6:"Presentación E (multiplicador y política fiscal) y applet de equilibrio y multiplicador",7:"Presentación F (oferta y demanda agregadas) y applet de oferta y demanda agregadas"};
+const SLOTS=[
+ {n:1,lab:"Medición, empleo y precios (conceptual)"},
+ {n:2,lab:"Ejercicio de PIB y deflactor"},
+ {n:3,lab:"Ejercicio de desempleo"},
+ {n:4,lab:"Ejercicio de IPC e inflación"},
+ {n:5,lab:"Modelos (conceptual)"},
+ {n:6,lab:"Modelos (cálculo)"},
+ {n:7,lab:"Multiplicador (cálculo)"},
+ {n:8,lab:"Política fiscal (conceptual)"},
+ {n:9,lab:"Choques de oferta y demanda"},
+ {n:10,lab:"Oferta agregada e inflación-desempleo"}];
+
+const rnd=Math.random;
+const R=(a,b,s=1)=>{const k=Math.round((b-a)/s);return +(a+s*Math.floor(rnd()*(k+1))).toFixed(6)};
+const pick=a=>a[Math.floor(rnd()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function fmt(x,d=0){if(!isFinite(x))return "—";const neg=x<0;x=Math.abs(x);let s=x.toFixed(d);let [i,f]=s.split(".");i=i.replace(/\B(?=(\d{3})+(?!\d))/g," ");return (neg?"−":"")+i+(f?","+f:"")}
+const p=(x,d=2)=>fmt(x,d)+" %";
+const $=(x,d=0)=>(x<0?"−$":"$")+fmt(Math.abs(x),d);
+const near=(a,b,d)=>Math.abs(a-b)<=Math.max(Math.pow(10,-d)*1.01,Math.abs(b)*0.01);
+
+/* Caso numérico: opciones = clave + 3 distractores con su error; ordenadas de menor a mayor */
+function NUM(o){
+ const d=o.dec??0, show=o.show||(v=>fmt(v,d));
+ const ok=+o.ans.toFixed(d);
+ const ds=[];
+ for(const e of o.errs){const v=+e.v.toFixed(d); if(!isFinite(v))continue; if(near(v,ok,d))continue; if(ds.some(x=>near(x.v,v,d)))continue; ds.push({v,msg:e.msg}); if(ds.length===3)break;}
+ if(ds.length<3) return null;
+ const opts=[{v:ok,ok:true,msg:""},...ds].sort((a,b)=>a.v-b.v).map(x=>({t:show(x.v),ok:x.ok||false,msg:x.msg}));
+ return {tipo:"calc",q:o.q,opts,num:{ans:ok,dec:d,unit:o.unit||""},exp:o.exp,f:o.f};
+}
+/* Caso conceptual: primera opción correcta, el resto distractores [texto, mensaje]; se barajan */
+function CON(q,ok,ds,exp,f,svg){
+ return {tipo:"con",q,opts:shuffle([{t:ok,ok:true,msg:""},...ds.map(x=>({t:x[0],ok:false,msg:x[1]}))]),exp,f,svg};
+}
+const C=[]; // {slot,tema,sub,gen}
+const add=(slot,tema,sub,gen)=>C.push({slot,tema,sub,gen});
+
+/* ---------- POSICIÓN 1: conceptual medición, empleo y precios (14) ---------- */
+add(1,1,"Objeto de la macroeconomía",()=>{
+ const prod=pick(["cacao fino","camarón","rosas","banano orgánico"]);
+ return CON(`Una exportadora ecuatoriana de ${prod} prepara el informe del entorno económico de su país de destino. La gerente anota varias preguntas.\n¿Cuáles corresponden al análisis macroeconómico?\n1. ¿Cuánto creció la producción total del país de destino el último año?\n2. ¿Qué precio cobra el principal importador por cada caja?\n3. ¿Qué porcentaje de la fuerza laboral del país está desocupada?\n4. ¿Cuántas toneladas compra la cadena de supermercados más grande?\n5. ¿A qué ritmo sube el nivel general de precios del país?`,
+ "1, 3 y 5",[["1, 2 y 4","Las preguntas 2 y 4 tratan de una empresa o de un mercado: eso es microeconomía."],["2, 3 y 5","El precio de un producto (2) es microeconomía; la macro mira el nivel general de precios."],["1, 4 y 5","Lo que compra una cadena de supermercados (4) es una decisión de una empresa: microeconomía."]],
+ "La macroeconomía estudia la economía en su conjunto: producción total (1), desempleo (3) y nivel general de precios (5).","Macro: PIB, desempleo, inflación, política fiscal y monetaria. Micro: decisiones de hogares, empresas y mercados particulares.")});
+add(1,1,"Objeto de la macroeconomía",()=>CON(`Un estudiante debe elegir un tema para un trabajo de Macroeconomía.\n¿Cuál de estos temas es macroeconómico?`,
+ "El efecto de un aumento del gasto público sobre la producción total del país.",[["El precio que fija una florícola para sus rosas de exportación.","Es la decisión de una empresa: microeconomía."],["La cantidad de camarón que compra un importador chino.","Es la demanda de un comprador en un mercado: microeconomía."],["El salario que paga una camaronera a sus trabajadores.","Es un precio de un mercado de trabajo particular: microeconomía."]],
+ "El gasto público y la producción total son agregados de toda la economía: es un tema macroeconómico.","Macro = agregados (PIB, empleo total, nivel de precios, políticas del Estado)."));
+add(1,1,"Bienes finales e intermedios",()=>{
+ const pan=R(40,90,5),har=R(15,35,5);
+ return CON(`En un mes, un molino vende harina por $${har} 000 a una panadería, que la usa toda para elaborar pan y lo vende a los hogares por $${pan} 000.\n¿Qué valor se suma al PIB?`,
+ `$${pan} 000, el valor del pan, que es el bien final.`,[[`$${pan+har} 000, la suma de la harina y el pan.`,"Sumar la harina y el pan cuenta dos veces la harina, que ya está dentro del precio del pan (doble conteo)."],[`$${har} 000, el valor de la harina.`,"La harina es un bien intermedio: se usa para producir el pan."],[`$${pan-har} 000, la diferencia entre el pan y la harina.`,"Ese es solo el valor agregado de la panadería; falta el valor agregado del molino."]],
+ `El PIB cuenta solo bienes finales: $${pan} 000. Es lo mismo que sumar el valor agregado de cada etapa: ${har} 000 + (${pan} 000 − ${har} 000).`,"PIB = valor de mercado de los bienes y servicios finales = suma del valor agregado de cada etapa.")});
+add(1,1,"Valor agregado",()=>{
+ const a=R(20,50,5),b=a+R(20,40,5),c=b+R(25,60,5);
+ return NUM({q:`Un productor vende cacao en grano por $${fmt(a)} 000 a una procesadora; esta vende la pasta de cacao por $${fmt(b)} 000 a una chocolatera, que exporta tabletas por $${fmt(c)} 000. No hay otros insumos (datos hipotéticos).\n¿Cuánto aporta la cadena al PIB del Ecuador, en miles de dólares?`,
+ ans:c,errs:[{v:a+b+c,msg:"Sumaste las tres ventas: cuentas dos veces el cacao y la pasta (doble conteo)."},{v:b+c,msg:"Sumaste la pasta y las tabletas: la pasta ya está dentro del precio de las tabletas."},{v:a,msg:"Contaste solo la primera etapa."},{v:c-b,msg:"Ese es solo el valor agregado de la chocolatera."}],
+ show:v=>$(v)+" mil",exp:`Valor agregado: ${a} + (${b} − ${a}) + (${c} − ${b}) = ${c} mil dólares, igual al valor del bien final.`,f:"PIB = Σ valor agregado = valor de los bienes finales"})});
+add(1,1,"Enfoque del gasto: C + I + G + XN",()=>CON(`Relacione cada transacción con el componente del PIB, por el enfoque del gasto, en el que se registra.\nTRANSACCIONES\n1. Una camaronera de El Oro compra aireadores nuevos para sus piscinas.\n2. Un hogar de Machala paga la matrícula de un curso de inglés.\n3. Un importador de China compra camarón ecuatoriano.\n4. Un municipio contrata la construcción de un puente.\nCOMPONENTES\na) Consumo (C)\nb) Inversión (I)\nc) Gasto público (G)\nd) Exportaciones netas (XN)`,
+ "1b, 2a, 3d, 4c",[["1a, 2b, 3d, 4c","Inviertes consumo e inversión: los aireadores son bienes de capital de una empresa; el curso es consumo de un hogar."],["1b, 2a, 3c, 4d","Intercambias exportaciones y gasto público: lo que compra un extranjero es exportación."],["1c, 2a, 3d, 4b","Confundes la inversión de una empresa privada con el gasto del gobierno."]],
+ "Bienes de capital de empresas: I. Bienes y servicios de hogares: C. Compras del gobierno: G. Ventas al exterior: XN.","PIB = C + I + G + (X − M)"));
+add(1,1,"Qué se registra en el PIB",()=>CON(`¿Cuál de estas transacciones se suma al PIB del Ecuador de este año?`,
+ "Una empresa de Cuenca construye este año una bodega nueva.",[["Una familia vende a otra el auto que compró hace cinco años.","Un bien usado ya se contó en el PIB del año en que se produjo."],["El gobierno paga un bono a hogares de bajos ingresos.","Es una transferencia: no paga por un bien o servicio producido."],["Una persona compra acciones de una empresa en la bolsa.","Es una transacción financiera, no producción de bienes o servicios."]],
+ "El PIB mide la producción del periodo. La bodega nueva es inversión de este año; los bienes usados, las transferencias y las compras de activos financieros no son producción nueva.","PIB = valor de mercado de los bienes y servicios finales producidos en el país en un periodo"));
+add(1,1,"Importaciones en el enfoque del gasto",()=>CON(`Un hogar de Quito compra un televisor fabricado en Corea por $600. Esa compra entra en el consumo (C).\n¿Por qué se restan las importaciones (M) al calcular el PIB por el gasto?`,
+ "Porque el televisor no se produjo en el Ecuador y ya fue contado dentro de C.",[["Porque las importaciones reducen siempre la producción nacional.","El ajuste es contable: se resta lo producido afuera que ya entró en C, I o G."],["Porque los bienes importados se pagan en otra moneda.","La moneda no importa; importa dónde se produjo el bien."],["Porque las importaciones se cuentan en el PIB del año siguiente.","Las importaciones no entran en el PIB de ningún año del Ecuador."]],
+ "C, I y G incluyen bienes producidos afuera. Para quedarse solo con la producción interna se resta M.","PIB = C + I + G + X − M"));
+add(1,1,"Límites del PIB como medida de bienestar",()=>CON(`¿Cuáles de estos aspectos del bienestar quedan fuera de la medición del PIB?\n1. El trabajo de cuidado no remunerado dentro de los hogares.\n2. Los servicios de salud que venden las clínicas privadas.\n3. La forma en que el ingreso se reparte entre la población.\n4. Los daños ambientales que causa la producción.\n5. Las exportaciones de turismo receptivo.`,
+ "1, 3 y 4",[["1, 2 y 3","Los servicios de salud vendidos en el mercado (2) sí se registran en el PIB."],["2, 4 y 5","Los servicios privados (2) y las exportaciones de servicios (5) sí entran en el PIB."],["1, 4 y 5","El turismo receptivo (5) es una exportación de servicios y sí entra en el PIB."]],
+ "El PIB mide producción de mercado: deja fuera el trabajo no remunerado, la distribución del ingreso y los daños ambientales.","Límites del PIB: no mide distribución, trabajo no remunerado, ocio, medio ambiente."));
+add(1,3,"Clasificación de la población (OIT)",()=>CON(`Marta, de 30 años, perdió su empleo hace un año. Dejó de buscar trabajo porque cree que no lo va a encontrar, aunque aceptaría uno si se lo ofrecieran.\nCon la definición de la OIT, ¿cómo se clasifica a Marta?`,
+ "En la población económicamente inactiva (PEI).",[["Ocupada, porque tuvo un empleo en el último año.","Ocupado es quien trabajó en la semana de referencia."],["Desocupada, porque no tiene trabajo.","Para la OIT, desocupado es quien no trabaja y busca activamente trabajo."],["Fuera de la población en edad de trabajar.","Tiene 30 años: está en la PET."]],
+ "Para la OIT, quien no trabaja y no busca trabajo está en la PEI. En el Ecuador, el INEC la contaría como desempleo oculto, dentro de los desocupados: por eso hay que mirar qué definición usa cada fuente.","PEA = ocupados + desocupados · PEI = PET − PEA"));
+add(1,3,"Clasificación de la población",()=>CON(`Relacione cada persona en edad de trabajar con su clasificación en la semana de referencia.\nPERSONAS\n1. Pedro trabajó 6 horas en una feria y quiere trabajar más.\n2. Lucía terminó la universidad y envía hojas de vida cada semana.\n3. Carmen se dedica al cuidado de su hogar y no busca trabajo.\n4. Diego está jubilado y no busca trabajo.\nCLASIFICACIÓN\na) Ocupado\nb) Desocupado\nc) Población económicamente inactiva (PEI)`,
+ "1a, 2b, 3c, 4c",[["1b, 2b, 3c, 4c","Pedro trabajó al menos una hora: está ocupado (en subempleo), aunque quiera más horas."],["1a, 2c, 3b, 4c","Lucía busca trabajo: es desocupada. Carmen no busca: está en la PEI."],["1a, 2b, 3b, 4c","Quien no busca trabajo está en la PEI, no entre los desocupados."]],
+ "Ocupado: trabajó al menos una hora. Desocupado: no trabaja y busca. PEI: no trabaja ni busca.","PEA = ocupados + desocupados"));
+add(1,3,"Tipos de desempleo",()=>CON(`Relacione cada caso con el tipo de desempleo.\nCASOS\n1. Una ingeniera renunció para buscar un trabajo mejor en otra ciudad.\n2. Un operario de una fábrica perdió su puesto porque una máquina hace ahora su tarea.\n3. Varios vendedores son despedidos porque cae la demanda durante una recesión.\nTIPOS\na) Friccional\nb) Estructural\nc) Cíclico`,
+ "1a, 2b, 3c",[["1b, 2a, 3c","El cambio de habilidades que piden las empresas (automatización) es estructural; la búsqueda de un mejor empleo es friccional."],["1a, 2c, 3b","Los despidos por recesión son cíclicos; la automatización es estructural."],["1c, 2b, 3a","La recesión causa desempleo cíclico; buscar un mejor empleo es friccional."]],
+ "Friccional: tiempo de búsqueda. Estructural: desajuste entre habilidades y puestos. Cíclico: caída de la demanda en una recesión.","Tasa natural = friccional + estructural"));
+add(1,3,"Pleno empleo y tasa natural",()=>{const u=R(3,6,0.5);return CON(`Un informe dice que el país de destino está en pleno empleo, aunque su tasa de desempleo es ${p(u,1)}.\nComplete: «Hay pleno empleo cuando el desempleo ______ es cero; el desempleo que queda, friccional y estructural, es la tasa ______ de desempleo».`,
+ "cíclico – natural",[["friccional – natural","El friccional siempre existe: la gente tarda en encontrar empleo."],["total – natural","Pleno empleo no significa desempleo cero."],["estructural – cíclica","El que desaparece en pleno empleo es el cíclico; el que queda forma la tasa natural."]],
+ `Pleno empleo = sin desempleo cíclico. Un ${p(u,1)} puede ser compatible con pleno empleo si todo es friccional y estructural.`,"Tasa natural de desempleo = friccional + estructural")});
+add(1,4,"Desinflación y deflación",()=>{const a=R(3,6,0.1),b=R(0.5,2.5,0.1);return CON(`La inflación anual del país de destino bajó de ${p(a,1)} en enero a ${p(b,1)} en agosto (datos hipotéticos). Un socio dice: «los precios están bajando».\n¿Qué interpretación es correcta?`,
+ "Los precios siguen subiendo, pero más despacio (desinflación).",[["Los precios bajan, porque la inflación cayó.","Una inflación menor significa que los precios suben más despacio, no que bajen."],["Hay deflación, porque la tasa disminuye.","Deflación es una tasa negativa; aquí sigue siendo positiva."],["Los precios no cambian, porque la inflación es baja.","Con inflación positiva, aunque baja, los precios suben."]],
+ `En agosto los precios eran ${p(b,1)} más altos que un año antes. Bajar la tasa es desinflación; deflación sería una tasa negativa.`,"Inflación = (IPC₂ − IPC₁) ÷ IPC₁ × 100")});
+add(1,4,"Deflación",()=>{const a=R(102,108,0.1),b=+(a-R(0.5,1.5,0.1)).toFixed(1);return CON(`El IPC del país de destino pasó de ${fmt(a,1)} a ${fmt(b,1)} en un año (datos hipotéticos).\n¿Qué describe mejor esta situación?`,
+ "Deflación: el nivel general de precios bajó.",[["Desinflación: los precios suben más despacio.","Los precios no subieron: el IPC bajó."],["Inflación baja, porque el IPC sigue sobre 100.","Que el IPC esté sobre 100 compara con el año base; la inflación se mide entre los dos años."],["Estabilidad de precios, porque el IPC casi no cambió.","El IPC cayó: la inflación es negativa."]],
+ `Inflación = (${fmt(b,1)} − ${fmt(a,1)}) ÷ ${fmt(a,1)} × 100 = ${p((b/a-1)*100)}: es negativa, hay deflación.`,"Inflación = (IPC₂ − IPC₁) ÷ IPC₁ × 100")});
+
+/* ---------- POSICIÓN 2: ejercicio PIB y deflactor (12) ---------- */
+function eco(){const g=pick([["cacao","t"],["camarón","t"]]),h=pick([["banano","t"],["flores","miles de tallos"]]);
+ const qa1=R(80,150,10),pa1=R(2000,3500,100),qb1=R(300,600,20),pb1=R(200,500,10);
+ const qa2=Math.round(qa1*(1+R(0.03,0.15,0.01))),qb2=Math.round(qb1*(1+R(0.02,0.12,0.01)));
+ const pa2=Math.round(pa1*(1+R(0.04,0.2,0.01))/10)*10,pb2=Math.round(pb1*(1+R(0.03,0.18,0.01)));
+ return {g,h,qa1,pa1,qb1,pb1,qa2,pa2,qb2,pb2,N1:qa1*pa1+qb1*pb1,N2:qa2*pa2+qb2*pb2,R2:qa2*pa1+qb2*pb1,X:qa1*pa2+qb1*pb2,
+  txt(){return `Una economía hipotética solo produce ${g[0]} y ${h[0]}. El año 1 es el año base.\n${g[0][0].toUpperCase()+g[0].slice(1)}: año 1, ${qa1} unidades a $${fmt(pa1)}; año 2, ${qa2} unidades a $${fmt(pa2)}.\n${h[0][0].toUpperCase()+h[0].slice(1)}: año 1, ${qb1} unidades a $${fmt(pb1)}; año 2, ${qb2} unidades a $${fmt(pb2)}.`}}}
+add(2,2,"PIB nominal",()=>{const e=eco();return NUM({q:e.txt()+"\n¿Cuál es el PIB nominal del año 2, en dólares?",ans:e.N2,
+ errs:[{v:e.R2,msg:"Usaste los precios del año base: eso es el PIB real."},{v:e.X,msg:"Usaste las cantidades del año 1 con los precios del año 2."},{v:e.N1,msg:"Ese es el PIB del año 1."}],show:v=>$(v),
+ exp:`PIB nominal año 2 = ${e.qa2} × ${fmt(e.pa2)} + ${e.qb2} × ${fmt(e.pb2)} = $${fmt(e.N2)} (cantidades y precios del año 2).`,f:"PIB nominal = Σ Pₜ × Qₜ"})});
+add(2,2,"PIB real",()=>{const e=eco();return NUM({q:e.txt()+"\n¿Cuál es el PIB real del año 2, a precios del año 1, en dólares?",ans:e.R2,
+ errs:[{v:e.N2,msg:"Usaste los precios del año 2: eso es el PIB nominal."},{v:e.X,msg:"Usaste las cantidades del año 1 y los precios del año 2: está al revés."},{v:e.N1,msg:"Ese es el PIB del año base."}],show:v=>$(v),
+ exp:`PIB real año 2 = ${e.qa2} × ${fmt(e.pa1)} + ${e.qb2} × ${fmt(e.pb1)} = $${fmt(e.R2)} (cantidades del año 2 a precios del año base).`,f:"PIB real = Σ P_base × Qₜ"})});
+add(2,2,"Deflactor del PIB",()=>{const N=R(500,900,10)*1000,D=R(104,125,0.5),Rr=Math.round(N/D*100);
+ return NUM({q:`El PIB nominal del país de destino es $${fmt(N)} millones y su PIB real, a precios del año base, es $${fmt(Rr)} millones (datos hipotéticos).\n¿Cuál es el deflactor del PIB?`,ans:N/Rr*100,dec:2,
+ errs:[{v:Rr/N*100,msg:"Invertiste la fórmula: es nominal ÷ real."},{v:N/Rr,msg:"Olvidaste multiplicar por 100."},{v:(N-Rr)/Rr*100,msg:"Esa es la variación porcentual de precios desde el año base, no el índice."}],
+ exp:`Deflactor = ${fmt(N)} ÷ ${fmt(Rr)} × 100 = ${fmt(N/Rr*100,2)}. Los precios de lo producido están ${fmt(N/Rr*100-100,2)} % sobre el año base.`,f:"Deflactor = PIB nominal ÷ PIB real × 100"})});
+add(2,2,"Tasa de crecimiento del PIB real",()=>{const R1=R(40,90,1)*1000,R2=Math.round(R1*(1+R(0.01,0.07,0.001))),N2=Math.round(R2*(1+R(0.04,0.12,0.01)));
+ return NUM({q:`PIB real del país de destino (millones de dólares, base año 1): año 1, ${fmt(R1)}; año 2, ${fmt(R2)}. El PIB nominal del año 2 fue ${fmt(N2)} (datos hipotéticos).\n¿Cuánto creció la economía, en porcentaje?`,ans:(R2-R1)/R1*100,dec:2,unit:"%",
+ errs:[{v:(N2-R1)/R1*100,msg:"Usaste el PIB nominal: mezcla el aumento de precios con el de producción."},{v:(R2-R1)/R2*100,msg:"Dividiste para el año 2; la base es el año inicial."},{v:R2/R1*100,msg:"Te faltó restar 100: eso es un índice."}],show:v=>p(v),
+ exp:`Crecimiento real = (${fmt(R2)} − ${fmt(R1)}) ÷ ${fmt(R1)} × 100 = ${p((R2-R1)/R1*100)}.`,f:"Crecimiento = (PIB real₂ − PIB real₁) ÷ PIB real₁ × 100"})});
+add(2,2,"Crecimiento real con PIB nominal y deflactor",()=>{const gN=R(5,12,0.5),gD=R(1,7,0.5);if(gD>=gN-0.5)return null;
+ return NUM({q:`En un año, el PIB nominal del país de destino creció ${p(gN,1)} y el deflactor del PIB subió ${p(gD,1)} (datos hipotéticos).\n¿Cuánto creció el PIB real?`,ans:((1+gN/100)/(1+gD/100)-1)*100,dec:2,unit:"%",
+ errs:[{v:gN+gD,msg:"Sumaste la inflación: hay que descontarla."},{v:gN,msg:"Ese es el crecimiento nominal: incluye el alza de precios."},{v:((1+gD/100)/(1+gN/100)-1)*100,msg:"Invertiste la división."}],show:v=>p(v),
+ exp:`(1 + ${fmt(gN/100,3)}) ÷ (1 + ${fmt(gD/100,3)}) − 1 = ${p(((1+gN/100)/(1+gD/100)-1)*100)}. Aproximación: ${fmt(gN,1)} − ${fmt(gD,1)} ≈ ${fmt(gN-gD,1)} %.`,f:"1 + g_real = (1 + g_nominal) ÷ (1 + g_deflactor)"})});
+add(2,2,"PIB real a partir del deflactor",()=>{const N=R(300,900,10)*100,D=R(105,130,1);
+ return NUM({q:`El PIB nominal del país de destino es $${fmt(N)} millones y su deflactor es ${D} (año base = 100; datos hipotéticos).\n¿Cuál es el PIB real, en millones de dólares?`,ans:N/D*100,dec:0,
+ errs:[{v:N*D/100,msg:"Multiplicaste por el deflactor: para quitar los precios hay que dividir."},{v:N*(1-(D-100)/100),msg:"Restaste el porcentaje: hay que dividir para el índice."},{v:N,msg:"Ese es el PIB nominal."}],show:v=>$(v),
+ exp:`PIB real = ${fmt(N)} ÷ ${D} × 100 = ${fmt(N/D*100)} millones.`,f:"PIB real = PIB nominal ÷ deflactor × 100"})});
+add(2,2,"Variación del deflactor",()=>{const D1=R(104,115,0.5),D2=+(D1*(1+R(0.02,0.08,0.005))).toFixed(1);
+ return NUM({q:`El deflactor del PIB del país de destino fue ${fmt(D1,1)} en el año 1 y ${fmt(D2,1)} en el año 2 (datos hipotéticos).\n¿Cuánto subieron los precios de lo producido entre los dos años?`,ans:(D2/D1-1)*100,dec:2,unit:"%",
+ errs:[{v:D2-D1,msg:"Esa es la diferencia en puntos del índice, no en porcentaje."},{v:D2-100,msg:"Esa es la subida desde el año base, no entre los dos años."},{v:(D2-D1)/D2*100,msg:"Dividiste para el año 2; la base es el año 1."}],show:v=>p(v),
+ exp:`(${fmt(D2,1)} ÷ ${fmt(D1,1)} − 1) × 100 = ${p((D2/D1-1)*100)}.`,f:"Variación = (D₂ ÷ D₁ − 1) × 100"})});
+add(2,2,"Comparar el crecimiento real de dos países",()=>{const a=R(8,12,0.5),da=R(6,9,0.5),b=R(4,7,0.5),db=R(0.5,2,0.5);
+ const ga=((1+a/100)/(1+da/100)-1)*100,gb=((1+b/100)/(1+db/100)-1)*100;if(gb<=ga+0.5)return null;
+ return CON(`La exportadora compara dos mercados (datos hipotéticos) y prefiere el que más aumenta su producción.\nPaís A: PIB nominal +${p(a,1)}; deflactor +${p(da,1)}.\nPaís B: PIB nominal +${p(b,1)}; deflactor +${p(db,1)}.\n¿Qué conclusión es correcta?`,
+ `El país B: su PIB real creció cerca de ${p(gb,1)} y el de A, cerca de ${p(ga,1)}.`,[[`El país A: su PIB nominal creció más (${p(a,1)}).`,"El PIB nominal incluye el alza de precios."],[`El país A: su deflactor subió más, señal de que produce más.`,"El deflactor mide precios, no producción."],[`El país A: su crecimiento real es ${p(a+da,1)}.`,"Sumaste la inflación: hay que descontarla."]],
+ `A: ${fmt(1+a/100,3)} ÷ ${fmt(1+da/100,3)} − 1 = ${p(ga)}. B: ${fmt(1+b/100,3)} ÷ ${fmt(1+db/100,3)} − 1 = ${p(gb)}.`,"1 + g_real = (1 + g_nominal) ÷ (1 + g_deflactor)")});
+add(2,2,"Variación del deflactor a partir del crecimiento",()=>{const gN=R(6,14,0.5),gR=R(1,5,0.5);
+ return NUM({q:`En un año, el PIB nominal del país de destino creció ${p(gN,1)} y el PIB real, ${p(gR,1)} (datos hipotéticos).\n¿Cuánto subió el deflactor del PIB?`,ans:((1+gN/100)/(1+gR/100)-1)*100,dec:2,unit:"%",
+ errs:[{v:gN+gR,msg:"Sumaste las tasas: hay que dividir los factores."},{v:gN,msg:"Ese es el crecimiento nominal."},{v:((1+gR/100)/(1+gN/100)-1)*100,msg:"Invertiste la división."}],show:v=>p(v),
+ exp:`(1 + ${fmt(gN/100,3)}) ÷ (1 + ${fmt(gR/100,3)}) − 1 = ${p(((1+gN/100)/(1+gR/100)-1)*100)}.`,f:"1 + g_deflactor = (1 + g_nominal) ÷ (1 + g_real)"})});
+add(2,2,"Crecimiento del PIB real por habitante",()=>{const gR=R(2,6,0.5),gP=R(0.8,2,0.1);
+ return NUM({q:`El PIB real del país de destino creció ${p(gR,1)} y su población, ${p(gP,1)} (datos hipotéticos).\n¿Cuánto creció el PIB real por habitante?`,ans:((1+gR/100)/(1+gP/100)-1)*100,dec:2,unit:"%",
+ errs:[{v:gR+gP,msg:"Sumaste el crecimiento de la población: hay que descontarlo."},{v:gR,msg:"Ese es el crecimiento total; falta repartirlo entre más habitantes."},{v:gP-gR,msg:"Restaste en el orden equivocado."}],show:v=>p(v),
+ exp:`(1 + ${fmt(gR/100,3)}) ÷ (1 + ${fmt(gP/100,3)}) − 1 = ${p(((1+gR/100)/(1+gP/100)-1)*100)}.`,f:"1 + g_per cápita = (1 + g_PIB real) ÷ (1 + g_población)"})});
+add(2,2,"Interpretar el deflactor",()=>{const D=R(88,96,1);return CON(`En el año 5, el deflactor del PIB de un país es ${D} (año base = 100; datos hipotéticos).\n¿Qué indica ese valor?`,
+ "Que los precios de lo producido son, en promedio, más bajos que en el año base.",[["Que el PIB real cayó desde el año base.","El deflactor mide precios, no cantidades."],["Que este año hubo deflación respecto al año anterior.","El índice compara con el año base, no con el año anterior."],["Que el PIB nominal es mayor que el PIB real.","Con deflactor menor que 100, el PIB nominal es menor que el real."]],
+ `Deflactor = nominal ÷ real × 100 = ${D}: los precios están ${100-D} % por debajo del año base.`,"Deflactor = PIB nominal ÷ PIB real × 100")});
+add(2,2,"El año base",()=>{const N=R(200,600,10);return CON(`En el año base, el PIB nominal de un país es $${N} millones (datos hipotéticos).\n¿Cuánto valen el PIB real y el deflactor en ese año?`,
+ `PIB real = $${N} millones; deflactor = 100.`,[[`PIB real = $${N} millones; deflactor = 0.`,"El deflactor del año base es 100, no 0."],[`PIB real = $${Math.round(N*0.9)} millones; deflactor = 110.`,"En el año base los precios son los mismos: real y nominal coinciden."],[`No se puede saber sin las cantidades.`,"En el año base, real = nominal por definición."]],
+ "En el año base se usan los mismos precios: el PIB real es igual al nominal y el deflactor vale 100.","Deflactor = PIB nominal ÷ PIB real × 100")});
+
+/* ---------- POSICIÓN 3: ejercicio de desempleo (10) ---------- */
+function lab_(){const PET=R(700,1500,10),PEA=Math.round(PET*R(0.55,0.7,0.01)/5)*5,D=Math.round(PEA*R(0.03,0.09,0.002));return {PET,PEA,D,O:PEA-D,PEI:PET-PEA}}
+const LT="(miles de personas; datos hipotéticos)";
+add(3,3,"Tasa de desempleo",()=>{const L=lab_();return NUM({q:`En el país de destino hay ${fmt(L.O)} ocupados y ${fmt(L.D)} desocupados ${LT}.\n¿Cuál es la tasa de desempleo?`,ans:L.D/L.PEA*100,dec:2,unit:"%",
+ errs:[{v:L.D/L.O*100,msg:"Dividiste para los ocupados; la base es la PEA (ocupados + desocupados)."},{v:L.O/L.PEA*100,msg:"Esa es la tasa de ocupación."},{v:L.D/L.PET*100,msg:"Usaste la PET; la base es la PEA."}],show:v=>p(v),
+ exp:`PEA = ${fmt(L.O)} + ${fmt(L.D)} = ${fmt(L.PEA)}. TD = ${fmt(L.D)} ÷ ${fmt(L.PEA)} × 100 = ${p(L.D/L.PEA*100)}.`,f:"TD = desocupados ÷ PEA × 100"})});
+add(3,3,"Tasa de participación global",()=>{const L=lab_();return NUM({q:`Población en edad de trabajar: ${fmt(L.PET)}; ocupados: ${fmt(L.O)}; desocupados: ${fmt(L.D)} ${LT}.\n¿Cuál es la tasa de participación global (TPG)?`,ans:L.PEA/L.PET*100,dec:2,unit:"%",
+ errs:[{v:L.O/L.PET*100,msg:"Usaste solo los ocupados; la PEA incluye a los desocupados."},{v:L.PEI/L.PET*100,msg:"Esa es la proporción de la PEI."},{v:L.PEA/L.PEI*100,msg:"La base es la PET, no la PEI."}],show:v=>p(v),
+ exp:`PEA = ${fmt(L.O)} + ${fmt(L.D)} = ${fmt(L.PEA)}. TPG = ${fmt(L.PEA)} ÷ ${fmt(L.PET)} × 100 = ${p(L.PEA/L.PET*100)}.`,f:"TPG = PEA ÷ PET × 100"})});
+add(3,3,"Desempleo a partir de la PET y la PEI",()=>{const L=lab_();return NUM({q:`PET: ${fmt(L.PET)}; población económicamente inactiva: ${fmt(L.PEI)}; desocupados: ${fmt(L.D)} ${LT}.\n¿Cuál es la tasa de desempleo?`,ans:L.D/L.PEA*100,dec:2,unit:"%",
+ errs:[{v:L.D/L.PET*100,msg:"Usaste la PET; primero calcula la PEA = PET − PEI."},{v:L.D/L.PEI*100,msg:"Dividiste para la PEI; la base es la PEA."},{v:L.D/L.O*100,msg:"Dividiste para los ocupados; la base es la PEA."}],show:v=>p(v),
+ exp:`PEA = ${fmt(L.PET)} − ${fmt(L.PEI)} = ${fmt(L.PEA)}. TD = ${fmt(L.D)} ÷ ${fmt(L.PEA)} × 100 = ${p(L.D/L.PEA*100)}.`,f:"PEA = PET − PEI · TD = desocupados ÷ PEA × 100"})});
+add(3,3,"Ocupados a partir de la tasa de desempleo",()=>{const PEA=R(400,900,10),PET=Math.round(PEA/R(0.58,0.68,0.01)),u=R(3,9,0.5);
+ return NUM({q:`El país de destino tiene una PET de ${fmt(PET)}, una PEA de ${fmt(PEA)} y una tasa de desempleo de ${p(u,1)} ${LT}.\n¿Cuántos ocupados hay, en miles?`,ans:PEA*(1-u/100),dec:1,
+ errs:[{v:PEA*u/100,msg:"Esos son los desocupados."},{v:PET*(1-u/100),msg:"Aplicaste la tasa a la PET; se aplica a la PEA."},{v:PEA,msg:"Esa es la PEA completa: falta restar a los desocupados."}],show:v=>fmt(v,1)+" mil",
+ exp:`Desocupados = ${fmt(PEA)} × ${fmt(u/100,3)} = ${fmt(PEA*u/100,1)}. Ocupados = ${fmt(PEA)} − ${fmt(PEA*u/100,1)} = ${fmt(PEA*(1-u/100),1)} mil.`,f:"Ocupados = PEA × (1 − TD)"})});
+add(3,3,"Desocupados que dejan de buscar (OIT)",()=>{const L=lab_(),k=Math.round(L.D*R(0.15,0.35,0.05));
+ return NUM({q:`El país de destino tiene ${fmt(L.PEA)} personas en la PEA y ${fmt(L.D)} desocupados ${LT}. ${fmt(k)} desocupados se desaniman y dejan de buscar trabajo.\nCon la definición de la OIT, ¿cuál es la nueva tasa de desempleo?`,ans:(L.D-k)/(L.PEA-k)*100,dec:2,unit:"%",
+ errs:[{v:(L.D-k)/L.PEA*100,msg:"Restaste a los desanimados de los desocupados, pero no de la PEA: con la OIT pasan a la PEI."},{v:L.D/L.PEA*100,msg:"Esa es la tasa inicial: con la OIT, quien deja de buscar sale de la PEA."},{v:L.D/(L.PEA-k)*100,msg:"Los sacaste de la PEA, pero siguen contados como desocupados."}],show:v=>p(v),
+ exp:`Con la OIT pasan a la PEI: (${fmt(L.D)} − ${fmt(k)}) ÷ (${fmt(L.PEA)} − ${fmt(k)}) × 100 = ${p((L.D-k)/(L.PEA-k)*100)}. La tasa baja aunque nadie encontró empleo. Con la definición del INEC, serían desempleo oculto y la tasa no cambiaría.`,f:"TD = (D − k) ÷ (PEA − k) × 100"})});
+add(3,3,"Tasa de empleo bruto",()=>{const L=lab_();return NUM({q:`PET: ${fmt(L.PET)}; ocupados: ${fmt(L.O)}; desocupados: ${fmt(L.D)} ${LT}.\n¿Cuál es la tasa de empleo bruto (ocupados respecto a la PET)?`,ans:L.O/L.PET*100,dec:2,unit:"%",
+ errs:[{v:L.O/L.PEA*100,msg:"Dividiste para la PEA; la tasa de empleo bruto usa la PET."},{v:L.PEA/L.PET*100,msg:"Esa es la tasa de participación global."},{v:L.D/L.PET*100,msg:"Usaste los desocupados."}],show:v=>p(v),
+ exp:`Tasa de empleo bruto = ${fmt(L.O)} ÷ ${fmt(L.PET)} × 100 = ${p(L.O/L.PET*100)}.`,f:"Tasa de empleo bruto = ocupados ÷ PET × 100"})});
+add(3,3,"Más ocupados y más desempleo",()=>{const O1=R(400,600,10),D1=R(20,30,1),O2=O1+R(10,20,1),D2=D1+R(6,12,1);
+ const t1=D1/(O1+D1)*100,t2=D2/(O2+D2)*100;
+ return CON(`Año 1: ${O1} mil ocupados y ${D1} mil desocupados. Año 2: ${O2} mil ocupados y ${D2} mil desocupados (datos hipotéticos). La tasa de desempleo pasa de ${p(t1)} a ${p(t2)}.\n¿Cómo puede subir el desempleo si también hay más ocupados?`,
+ "Más personas entraron a la PEA a buscar trabajo de las que encontraron empleo.",[["Porque se destruyeron empleos durante el año.","Los ocupados aumentaron: no hubo pérdida neta de empleos."],["Porque la tasa de desempleo se calcula sobre la PET.","Se calcula sobre la PEA."],["Porque los nuevos ocupados trabajan menos horas.","Las horas no cambian la clasificación entre ocupado y desocupado."]],
+ `La PEA creció de ${O1+D1} a ${O2+D2} mil; los desocupados crecieron más rápido que la PEA.`,"TD = desocupados ÷ (ocupados + desocupados) × 100")});
+add(3,3,"Población económicamente inactiva",()=>{const L=lab_();return NUM({q:`PET: ${fmt(L.PET)}; ocupados: ${fmt(L.O)}; desocupados: ${fmt(L.D)} ${LT}.\n¿Cuántas personas forman la población económicamente inactiva (PEI), en miles?`,ans:L.PEI,
+ errs:[{v:L.PET-L.O,msg:"Restaste solo los ocupados: los desocupados también son PEA."},{v:L.PET-L.D,msg:"Restaste solo los desocupados."},{v:L.PEA,msg:"Esa es la PEA."}],show:v=>fmt(v)+" mil",
+ exp:`PEI = ${fmt(L.PET)} − (${fmt(L.O)} + ${fmt(L.D)}) = ${fmt(L.PEI)} mil.`,f:"PEI = PET − PEA = PET − (ocupados + desocupados)"})});
+add(3,3,"Desocupados a partir de la tasa",()=>{const PEA=R(300,900,10),PET=Math.round(PEA/0.63),u=R(3,9,0.5);
+ return NUM({q:`El país de destino tiene una PET de ${fmt(PET)}, una PEA de ${fmt(PEA)} y una tasa de desempleo de ${p(u,1)} ${LT}.\n¿Cuántos desocupados hay, en miles?`,ans:PEA*u/100,dec:1,
+ errs:[{v:PET*u/100,msg:"Aplicaste la tasa a la PET; se aplica a la PEA."},{v:PEA*(1-u/100),msg:"Esos son los ocupados."},{v:PEA*u/100*(1-u/100),msg:"Aplicaste la tasa a los ocupados; se aplica a la PEA."}],show:v=>fmt(v,1)+" mil",
+ exp:`Desocupados = ${fmt(PEA)} × ${fmt(u/100,3)} = ${fmt(PEA*u/100,1)} mil.`,f:"Desocupados = TD × PEA"})});
+add(3,3,"Comparar tasas de desempleo",()=>{const DA=R(80,120,5),PA=R(2500,3500,100),DB=R(20,40,5),PB=R(300,500,10);
+ const tA=DA/PA*100,tB=DB/PB*100;if(tB<tA+0.5)return null;
+ return CON(`País A: ${DA} mil desocupados y una PEA de ${fmt(PA)} mil. País B: ${DB} mil desocupados y una PEA de ${PB} mil (datos hipotéticos).\n¿Qué país tiene un problema de desempleo más grave en términos relativos?`,
+ `El B, con una tasa de ${p(tB)} frente a ${p(tA)} de A.`,[[`El A, porque tiene más desocupados.`,"El número absoluto depende del tamaño del país: hay que comparar tasas."],[`Ninguno: los dos tienen menos de 10 % de desempleo.`,"La pregunta es cuál es más grave, no si superan un umbral."],[`No se puede comparar porque las PEA son distintas.`,"Para eso se usa la tasa: corrige las diferencias de tamaño."]],
+ `TD A = ${DA} ÷ ${fmt(PA)} × 100 = ${p(tA)}. TD B = ${DB} ÷ ${PB} × 100 = ${p(tB)}.`,"TD = desocupados ÷ PEA × 100")});
+
+/* ---------- POSICIÓN 4: ejercicio de IPC e inflación (10) ---------- */
+const BIENES=[["arroz","kg",10,1.1,1.4],["pasaje de bus","viajes",40,0.3,0.45],["leche","litros",20,0.9,1.2],["pan","unidades",60,0.12,0.2],["huevos","unidades",30,0.14,0.22],["aceite","litros",4,2.5,3.5]];
+function canasta(){const b=shuffle(BIENES).slice(0,3).map(([n,u,q,lo,hi])=>{const p0=R(lo,hi,0.05),p1=+(p0*(1+R(0.03,0.3,0.01))).toFixed(2);return {n,u,q,p0,p1}});
+ const C0=b.reduce((s,x)=>s+x.q*x.p0,0),C1=b.reduce((s,x)=>s+x.q*x.p1,0);return {b,C0,C1}}
+add(4,4,"IPC con una canasta",()=>{const k=canasta();const s0=k.b.reduce((s,x)=>s+x.p0,0),s1=k.b.reduce((s,x)=>s+x.p1,0),avg=k.b.reduce((s,x)=>s+x.p1/x.p0,0)/3*100;
+ return NUM({q:`Canasta mensual fija de un hogar de Quevedo (datos hipotéticos):\n${k.b.map(x=>`${x.n}: ${x.q} ${x.u}; precio base $${fmt(x.p0,2)}; precio actual $${fmt(x.p1,2)}`).join("\n")}\n¿Cuál es el IPC actual (año base = 100)?`,ans:k.C1/k.C0*100,dec:2,
+ errs:[{v:k.C0/k.C1*100,msg:"Invertiste la fórmula: es costo actual ÷ costo base."},{v:s1/s0*100,msg:"Sumaste precios sin multiplicarlos por las cantidades de la canasta."},{v:avg,msg:"Promediaste las variaciones sin el peso de cada bien en el gasto."}],
+ exp:`Costo base = $${fmt(k.C0,2)}; costo actual = $${fmt(k.C1,2)}. IPC = ${fmt(k.C1,2)} ÷ ${fmt(k.C0,2)} × 100 = ${fmt(k.C1/k.C0*100,2)}.`,f:"IPC = costo de la canasta actual ÷ costo de la canasta base × 100"})});
+add(4,4,"Tasa de inflación con el IPC",()=>{const I1=R(104,118,0.1),I2=+(I1*(1+R(0.01,0.08,0.001))).toFixed(1);
+ return NUM({q:`El IPC del país de destino fue ${fmt(I1,1)} en diciembre del año 1 y ${fmt(I2,1)} en diciembre del año 2 (datos hipotéticos).\n¿Cuál fue la inflación anual?`,ans:(I2/I1-1)*100,dec:2,unit:"%",
+ errs:[{v:I2-I1,msg:"Esa es la diferencia en puntos del índice."},{v:I2-100,msg:"Esa es la subida acumulada desde el año base."},{v:(I2-I1)/I2*100,msg:"Dividiste para el año 2; la base es el año 1."}],show:v=>p(v),
+ exp:`Inflación = (${fmt(I2,1)} − ${fmt(I1,1)}) ÷ ${fmt(I1,1)} × 100 = ${p((I2/I1-1)*100)}.`,f:"Inflación = (IPC₂ − IPC₁) ÷ IPC₁ × 100"})});
+add(4,4,"Costo de la canasta en el año base",()=>{const IPC=R(106,125,1),Cn=R(380,520,5);
+ return NUM({q:`Hoy la canasta de un hogar cuesta $${Cn} y el IPC es ${IPC} (año base = 100; datos hipotéticos).\n¿Cuánto costaba la misma canasta en el año base?`,ans:Cn/IPC*100,dec:2,
+ errs:[{v:Cn*IPC/100,msg:"Multiplicaste por el índice: para volver al año base hay que dividir."},{v:Cn-(IPC-100),msg:"Restaste puntos del índice como si fueran dólares."},{v:Cn*(1-(IPC-100)/100),msg:"Restaste el porcentaje: hay que dividir para el índice."}],show:v=>$(v,2),
+ exp:`Costo base = ${Cn} ÷ ${IPC} × 100 = $${fmt(Cn/IPC*100,2)}.`,f:"Costo base = costo actual ÷ IPC × 100"})});
+add(4,4,"Salario real",()=>{const a=R(3,9,0.5),pi=R(1,6,0.5);if(Math.abs(a-pi)<1)return null;
+ return NUM({q:`El salario de los trabajadores de una exportadora subió ${p(a,1)} y la inflación del año fue ${p(pi,1)} (datos hipotéticos).\n¿Cuánto cambió su salario real?`,ans:((1+a/100)/(1+pi/100)-1)*100,dec:2,unit:"%",
+ errs:[{v:a+pi,msg:"Sumaste la inflación: hay que descontarla."},{v:a,msg:"Ese es el cambio nominal."},{v:pi-a,msg:"Restaste en el orden equivocado."}],show:v=>p(v),
+ exp:`(1 + ${fmt(a/100,3)}) ÷ (1 + ${fmt(pi/100,3)}) − 1 = ${p(((1+a/100)/(1+pi/100)-1)*100)}.`,f:"1 + cambio real = (1 + cambio nominal) ÷ (1 + inflación)"})});
+add(4,4,"Valor de hoy de un precio pasado",()=>{const P0=R(200,800,10),IPC=R(108,130,1);
+ return NUM({q:`En el año base, un curso costaba $${P0}. Hoy el IPC es ${IPC} (año base = 100; datos hipotéticos).\n¿Cuánto debería costar hoy para mantener el mismo poder de compra?`,ans:P0*IPC/100,dec:2,
+ errs:[{v:P0/IPC*100,msg:"Dividiste: para llevar un valor pasado a precios de hoy se multiplica por el índice."},{v:P0+IPC,msg:"Sumaste el índice como si fueran dólares."},{v:P0*(1+IPC/100),msg:"Usaste el índice completo como porcentaje de aumento."}],show:v=>$(v,2),
+ exp:`${P0} × ${IPC} ÷ 100 = $${fmt(P0*IPC/100,2)}.`,f:"Valor de hoy = valor del año base × IPC ÷ 100"})});
+add(4,4,"Inflación con el costo de la canasta",()=>{const C1=R(400,520,5),C2=+(C1*(1+R(0.02,0.09,0.005))).toFixed(2);
+ return NUM({q:`La canasta mensual de un hogar costaba $${fmt(C1,2)} el año pasado y hoy cuesta $${fmt(C2,2)} (datos hipotéticos).\n¿Cuál fue la inflación del año?`,ans:(C2/C1-1)*100,dec:2,unit:"%",
+ errs:[{v:C2-C1,msg:"Esa es la diferencia en dólares, no en porcentaje."},{v:(C2-C1)/C2*100,msg:"Dividiste para el costo actual; la base es el año anterior."},{v:C2/C1*100,msg:"Ese es el índice: falta restar 100."}],show:v=>p(v),
+ exp:`(${fmt(C2,2)} ÷ ${fmt(C1,2)} − 1) × 100 = ${p((C2/C1-1)*100)}.`,f:"Inflación = (costo₂ ÷ costo₁ − 1) × 100"})});
+add(4,4,"Inflación acumulada",()=>{const a=R(2,8,0.5),b=R(2,8,0.5);
+ return NUM({q:`La inflación del país de destino fue ${p(a,1)} el año 1 y ${p(b,1)} el año 2 (datos hipotéticos).\n¿Cuánto subieron los precios en los dos años juntos?`,ans:((1+a/100)*(1+b/100)-1)*100,dec:2,unit:"%",
+ errs:[{v:a+b-0.0001,msg:"Sumaste las tasas: los aumentos se acumulan sobre precios que ya subieron."},{v:(a+b)/2,msg:"Promediaste: eso da la inflación media de un año, no la acumulada."},{v:b,msg:"Usaste solo el último año."}],show:v=>p(v),
+ exp:`(1 + ${fmt(a/100,3)}) × (1 + ${fmt(b/100,3)}) − 1 = ${p(((1+a/100)*(1+b/100)-1)*100)}.`,f:"Acumulada = (1 + π₁) × (1 + π₂) − 1"})});
+add(4,4,"Qué significa el valor del IPC",()=>{const I=R(103,112,1);return CON(`En diciembre, el IPC del país de destino es ${I} (año base = 100; datos hipotéticos).\n¿Qué se puede afirmar con ese dato?`,
+ `Que la canasta cuesta ${I-100} % más que en el año base.`,[[`Que la inflación de este año fue ${I-100} %.`,"El IPC compara con el año base; para la inflación del año hace falta el IPC del año anterior."],[`Que los precios bajaron ${I-100} %.`,"Un IPC mayor que 100 indica precios más altos que en el año base."],[`Que el poder de compra de los hogares subió.`,"Con precios más altos, el mismo ingreso compra menos."]],
+ `IPC ${I} = costo actual ${I} % del costo base: ${I-100} % más caro que en el año base.`,"IPC = costo actual ÷ costo base × 100")});
+add(4,4,"Deflación con el IPC",()=>{const I1=R(108,115,0.1),I2=+(I1-R(0.4,1.5,0.1)).toFixed(1);
+ return NUM({q:`El IPC del país de destino pasó de ${fmt(I1,1)} a ${fmt(I2,1)} en un año (datos hipotéticos).\n¿Cuál fue la tasa de inflación?`,ans:(I2/I1-1)*100,dec:2,unit:"%",
+ errs:[{v:(I1/I2-1)*100,msg:"Invertiste la fórmula: el resultado debe ser negativo porque el IPC bajó."},{v:I2-I1,msg:"Esa es la diferencia en puntos del índice."},{v:I2-100,msg:"Esa es la variación desde el año base."}],show:v=>p(v),
+ exp:`(${fmt(I2,1)} ÷ ${fmt(I1,1)} − 1) × 100 = ${p((I2/I1-1)*100)}: inflación negativa, es decir, deflación.`,f:"Inflación = (IPC₂ − IPC₁) ÷ IPC₁ × 100"})});
+add(4,4,"Peso de un bien en el IPC",()=>{const s=R(10,40,5),x=R(10,40,5);
+ return NUM({q:`El transporte pesa ${s} % del costo de la canasta del IPC. Si solo sube el pasaje, un ${x} %, y los demás precios no cambian (datos hipotéticos), ¿cuánto sube el IPC?`,ans:s*x/100,dec:2,unit:"%",
+ errs:[{v:x,msg:"El IPC no sube todo lo que sube un bien: depende de su peso en la canasta."},{v:x/3,msg:"Repartiste el aumento por igual: hay que usar el peso del bien."},{v:s,msg:"Ese es el peso del transporte, no el aumento del IPC."}],show:v=>p(v),
+ exp:`Aumento del IPC = peso × aumento = ${fmt(s/100,2)} × ${x} % = ${p(s*x/100)}.`,f:"ΔIPC (%) ≈ peso del bien × Δ precio del bien (%)"})});
+
+/* ---------- POSICIÓN 5: modelos conceptual (8) ---------- */
+add(5,5,"Supuestos del modelo clásico",()=>CON(`¿Cuáles de estos supuestos corresponden al modelo clásico?\n1. Precios y salarios flexibles.\n2. La economía vuelve sola al pleno empleo.\n3. Precios rígidos en el corto plazo.\n4. El dinero es neutral: solo cambia los precios.\n5. La producción se ajusta al gasto planeado.`,
+ "1, 2 y 4",[["1, 3 y 5","3 y 5 son supuestos del modelo keynesiano simple."],["2, 3 y 4","Los precios rígidos (3) son keynesianos."],["2, 4 y 5","Que la producción siga al gasto (5) es keynesiano."]],
+ "Clásico: precios y salarios flexibles, pleno empleo automático y dinero neutral. Keynesiano: precios rígidos y producción determinada por el gasto.","Clásico: Y = Y potencial · Keynesiano: Y = GP"));
+add(5,5,"Supuestos del modelo keynesiano",()=>CON(`¿Cuáles de estos supuestos corresponden al modelo keynesiano simple?\n1. Los precios son rígidos en el corto plazo.\n2. El gasto planeado determina la producción.\n3. Los salarios bajan de inmediato cuando hay desempleo.\n4. Puede haber equilibrio con desempleo.\n5. La economía siempre produce su PIB potencial.`,
+ "1, 2 y 4",[["1, 3 y 5","3 y 5 son ideas del modelo clásico."],["2, 3 y 4","Salarios que bajan de inmediato (3) es un supuesto clásico."],["1, 4 y 5","Producir siempre el PIB potencial (5) es la conclusión clásica."]],
+ "Con precios rígidos, la producción la determina el gasto, y el equilibrio puede quedar por debajo del pleno empleo.","Y* = A ÷ (1 − c)"));
+add(5,5,"Ajuste por inventarios (producción menor que el gasto)",()=>CON(`Las empresas producen menos que el gasto planeado. Ordene los pasos del ajuste:\n1. Las ventas superan la producción y los inventarios bajan sin planearlo.\n2. Sube el ingreso de los hogares y con él su consumo.\n3. Las empresas aumentan la producción para reponer inventarios.\n4. La producción llega al nivel en que es igual al gasto planeado.\n5. A ese nivel de producción, el gasto planeado es mayor que lo producido.`,
+ "5, 1, 3, 2, 4",[["1, 5, 3, 2, 4","Primero está la diferencia entre gasto y producción; después bajan los inventarios."],["5, 3, 1, 2, 4","Las empresas suben la producción porque bajaron los inventarios, no antes."],["5, 1, 2, 3, 4","El ingreso sube porque aumenta la producción."]],
+ "Gasto > producción → inventarios bajan → más producción → más ingreso y consumo → equilibrio.","Equilibrio: Y = GP"));
+add(5,5,"Ajuste por inventarios (producción mayor que el gasto)",()=>CON(`Las empresas producen más que el gasto planeado. ¿Qué ocurre?`,
+ "Se acumulan inventarios no deseados y las empresas reducen la producción.",[["Bajan los inventarios y las empresas producen más.","Eso ocurre cuando el gasto supera la producción."],["Los precios suben hasta igualar el gasto con la producción.","En el modelo keynesiano los precios son rígidos: se ajustan las cantidades."],["Nada: la producción determina el gasto.","En el modelo keynesiano el gasto determina la producción."]],
+ "Si Y > GP, sobran bienes, los inventarios crecen sin planearlo y la producción baja hasta Y*.","Cambio no planeado de inventarios = Y − GP"));
+add(5,5,"El modelo clásico ante una recesión",()=>CON(`Una caída de la demanda deja desempleados a muchos trabajadores. Según el modelo clásico, ¿qué ocurre?`,
+ "Los salarios y los precios bajan hasta que la economía vuelve al pleno empleo.",[["El gobierno debe aumentar el gasto para recuperar el empleo.","Esa es la receta keynesiana."],["La producción queda baja de forma permanente.","Para los clásicos, la flexibilidad de precios restablece el pleno empleo."],["Los inventarios se acumulan y la producción se ajusta al gasto.","Ese es el mecanismo keynesiano."]],
+ "En el modelo clásico, la flexibilidad de salarios y precios elimina el desempleo sin intervención del Estado.","Clásico: Y = Y potencial"));
+add(5,5,"Neutralidad del dinero",()=>CON(`Según el modelo clásico, si la cantidad de dinero aumenta 10 %, ¿qué ocurre en el largo plazo?`,
+ "Los precios suben y la producción real no cambia.",[["La producción real sube 10 %.","Para los clásicos, el dinero no afecta a las variables reales."],["Los precios y la producción suben 5 % cada uno.","El dinero es neutral: no cambia la producción."],["El desempleo baja de forma permanente.","La neutralidad implica que el empleo no depende del dinero."]],
+ "Dinero neutral: cambia las variables nominales (precios), no las reales (producción y empleo).","MV = PY con Y en su nivel potencial"));
+add(5,5,"Equilibrio con desempleo",()=>CON(`¿Por qué, en el modelo keynesiano, la economía puede quedarse con desempleo?`,
+ "Porque con precios rígidos el gasto planeado puede ser insuficiente para comprar la producción de pleno empleo.",[["Porque los trabajadores no quieren trabajar al salario vigente.","Eso sería desempleo voluntario; Keynes explica desempleo involuntario."],["Porque los salarios bajan demasiado rápido.","En el modelo keynesiano los salarios son rígidos."],["Porque la tecnología limita la producción.","El límite aquí es la demanda, no la capacidad."]],
+ "Si el gasto planeado es bajo, Y* queda por debajo del pleno empleo y nada lo corrige solo.","Y* = A ÷ (1 − c)"));
+add(5,5,"Clásico frente a keynesiano",()=>CON(`Relacione cada idea con el modelo al que pertenece.\nIDEAS\n1. La oferta determina la producción.\n2. El gasto planeado determina la producción.\n3. El Estado debe estabilizar la demanda en las recesiones.\n4. Los mercados se ajustan solos con precios flexibles.\nMODELOS\na) Clásico\nb) Keynesiano`,
+ "1a, 2b, 3b, 4a",[["1b, 2a, 3b, 4a","Inviertes 1 y 2: la oferta manda en el clásico y el gasto en el keynesiano."],["1a, 2b, 3a, 4b","Estabilizar la demanda es keynesiano; el ajuste solo es clásico."],["1a, 2a, 3b, 4b","El gasto determina la producción solo en el keynesiano."]],
+ "Clásico: oferta, precios flexibles, sin intervención. Keynesiano: demanda, precios rígidos, papel estabilizador del Estado.","Clásico: Y = Y potencial · Keynesiano: Y = GP"));
+
+/* ---------- POSICIÓN 6: modelos cálculo (10) ---------- */
+add(6,5,"Propensión marginal a consumir",()=>{const Y1=R(1000,3000,100),dY=R(200,600,50),c=pick([0.6,0.7,0.75,0.8,0.85,0.9]),C1=Math.round(Y1*R(0.82,0.95,0.01)/10)*10,dC=dY*c;
+ return NUM({q:`Cuando el ingreso disponible del país de destino pasa de $${fmt(Y1)} a $${fmt(Y1+dY)} millones, el consumo pasa de $${fmt(C1)} a $${fmt(C1+dC)} millones (datos hipotéticos).\n¿Cuál es la PMC?`,ans:c,dec:2,
+ errs:[{v:C1/Y1,msg:"Esa es la propensión media del año 1 (C ÷ Yd), no la marginal."},{v:(C1+dC)/(Y1+dY),msg:"Esa es la propensión media del año 2."},{v:dY/dC,msg:"Invertiste la fórmula: es ΔC ÷ ΔYd."},{v:1-c,msg:"Esa es la propensión marginal a ahorrar."}],
+ exp:`PMC = ΔC ÷ ΔYd = ${fmt(dC)} ÷ ${fmt(dY)} = ${fmt(c,2)}.`,f:"PMC = ΔC ÷ ΔYd"})});
+add(6,5,"Función consumo",()=>{const a=R(50,150,10),c=pick([0.6,0.7,0.75,0.8]),Y=R(800,2000,100),T=R(100,300,50);
+ return NUM({q:`En el país de destino, C = ${a} + ${fmt(c,2)}(Y − T). Si Y = ${fmt(Y)} y T = ${T} (millones de dólares; datos hipotéticos), ¿cuánto es el consumo?`,ans:a+c*(Y-T),dec:1,
+ errs:[{v:a+c*Y,msg:"Olvidaste restar los impuestos: el consumo depende del ingreso disponible."},{v:c*(Y-T),msg:"Olvidaste el consumo autónomo a."},{v:a+c*Y-T,msg:"Restaste los impuestos completos; se restan multiplicados por c."}],show:v=>$(v,1),
+ exp:`C = ${a} + ${fmt(c,2)} × (${fmt(Y)} − ${T}) = ${fmt(a+c*(Y-T),1)}.`,f:"C = a + c(Y − T)"})});
+add(6,5,"Propensión marginal a ahorrar",()=>{const dY=R(100,500,50),c=pick([0.6,0.7,0.75,0.8,0.9]),dC=dY*c;
+ return NUM({q:`Cuando el ingreso disponible sube $${dY} millones, el consumo sube $${fmt(dC)} millones (datos hipotéticos).\n¿Cuál es la propensión marginal a ahorrar?`,ans:1-c,dec:2,
+ errs:[{v:c,msg:"Esa es la PMC."},{v:dY/dC-1,msg:"Esa fórmula no es la PMgS: es 1 − ΔC ÷ ΔYd."},{v:(1-c)/c,msg:"Dividiste el ahorro para el consumo; la PMgS se calcula sobre el ingreso disponible."},{v:1/c,msg:"Invertiste la PMC (ΔYd ÷ ΔC); la PMgS es 1 − PMC."}],
+ exp:`PMC = ${fmt(dC)} ÷ ${dY} = ${fmt(c,2)}; PMgS = 1 − ${fmt(c,2)} = ${fmt(1-c,2)}.`,f:"PMgS = 1 − PMC"})});
+add(6,5,"Equilibrio con gobierno",()=>{const a=R(50,150,10),c=pick([0.6,0.75,0.8]),I=R(80,200,10),G=R(100,250,10),T=R(50,200,10),A=a-c*T+I+G;
+ return NUM({q:`Economía cerrada: C = ${a} + ${fmt(c,2)}(Y − T), I = ${I}, G = ${G}, T = ${T} (millones de dólares; datos hipotéticos).\n¿Cuál es la producción de equilibrio?`,ans:A/(1-c),dec:1,
+ errs:[{v:(a+I+G)/(1-c),msg:"Olvidaste los impuestos."},{v:(a-T+I+G)/(1-c),msg:"Restaste T completo; se resta c × T."},{v:A/c,msg:"Dividiste para c; es 1 − c."}],show:v=>$(v,1),
+ exp:`A = ${a} − ${fmt(c,2)} × ${T} + ${I} + ${G} = ${fmt(A,1)}. Y* = ${fmt(A,1)} ÷ (1 − ${fmt(c,2)}) = ${fmt(A/(1-c),1)}.`,f:"Y* = (a − cT + I + G) ÷ (1 − c)"})});
+add(6,5,"Equilibrio sin gobierno",()=>{const a=R(50,200,10),c=pick([0.6,0.75,0.8,0.9]),I=R(50,200,10);
+ return NUM({q:`Economía cerrada sin gobierno: C = ${a} + ${fmt(c,2)}Y e I = ${I} (millones de dólares; datos hipotéticos).\n¿Cuál es la producción de equilibrio?`,ans:(a+I)/(1-c),dec:1,
+ errs:[{v:(a+I)/c,msg:"Dividiste para c; es 1 − c."},{v:a+I,msg:"Ese es el gasto autónomo: falta el multiplicador."},{v:(a+I)*c/(1-c),msg:"Usaste c ÷ (1 − c)."}],show:v=>$(v,1),
+ exp:`Y* = (${a} + ${I}) ÷ (1 − ${fmt(c,2)}) = ${fmt((a+I)/(1-c),1)}.`,f:"Y* = (a + I) ÷ (1 − c)"})});
+add(6,5,"Cambio no planeado de inventarios",()=>{const A=R(200,400,20),c=pick([0.75,0.8]),Ys=A/(1-c),Y=Math.round(Ys*(1+R(0.1,0.3,0.05))/10)*10,GP=A+c*Y;
+ return NUM({q:`El gasto planeado de una economía es GP = ${A} + ${fmt(c,2)}Y (millones de dólares; datos hipotéticos). Las empresas producen Y = ${fmt(Y)}.\n¿En cuánto cambian los inventarios no planeados?`,ans:Y-GP,dec:1,
+ errs:[{v:GP-Y,msg:"El signo está invertido: si se produce más de lo que se gasta, los inventarios suben."},{v:Y-Ys,msg:"Esa es la distancia al equilibrio, no el cambio de inventarios."},{v:GP,msg:"Ese es el gasto planeado."}],show:v=>(v>0?"+":"")+$(v,1),
+ exp:`GP = ${A} + ${fmt(c,2)} × ${fmt(Y)} = ${fmt(GP,1)}. Inventarios = Y − GP = ${fmt(Y-GP,1)}: se acumulan y la producción bajará hacia ${fmt(Ys,1)}.`,f:"Cambio no planeado de inventarios = Y − GP"})});
+add(6,5,"Gasto autónomo",()=>{const a=R(50,150,10),c=pick([0.6,0.75,0.8]),I=R(80,200,10),G=R(100,250,10),T=R(50,200,10);
+ return NUM({q:`C = ${a} + ${fmt(c,2)}(Y − T), I = ${I}, G = ${G}, T = ${T} (datos hipotéticos).\n¿Cuánto es el gasto autónomo A = a − cT + I + G?`,ans:a-c*T+I+G,dec:1,
+ errs:[{v:a+I+G-T,msg:"Restaste T completo; se resta c × T."},{v:a+I+G,msg:"Olvidaste los impuestos."},{v:a-c*T,msg:"Te faltaron I y G."}],show:v=>$(v,1),
+ exp:`A = ${a} − ${fmt(c,2)} × ${T} + ${I} + ${G} = ${fmt(a-c*T+I+G,1)}.`,f:"A = a − cT + I + G"})});
+function cruzSVG(A,c,Ys,Y1){const M=Math.ceil(Ys*1.6/100)*100,W=320,H=240,x=v=>40+v/M*(W-55),y=v=>H-30-v/M*(H-45);
+ return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cruz keynesiana"><line x1="40" y1="${H-30}" x2="${W-10}" y2="${H-30}" stroke="currentColor"/><line x1="40" y1="${H-30}" x2="40" y2="10" stroke="currentColor"/><line x1="${x(0)}" y1="${y(0)}" x2="${x(M)}" y2="${y(M)}" stroke="#888" stroke-dasharray="5 4"/><line x1="${x(0)}" y1="${y(A)}" x2="${x(M)}" y2="${y(A+c*M)}" stroke="#E87722" stroke-width="2.5"/><line x1="${x(Ys)}" y1="${y(0)}" x2="${x(Ys)}" y2="${y(Ys)}" stroke="currentColor" stroke-dasharray="2 3"/><line x1="${x(Y1)}" y1="${y(0)}" x2="${x(Y1)}" y2="${y(Math.max(Y1,A+c*Y1))}" stroke="currentColor" stroke-dasharray="2 3"/><text x="${x(Ys)}" y="${H-14}" font-size="11" text-anchor="middle" fill="currentColor">${fmt(Ys)}</text><text x="${x(Y1)}" y="${H-14}" font-size="11" text-anchor="middle" fill="currentColor">${fmt(Y1)}</text><text x="36" y="${y(A)+4}" font-size="11" text-anchor="end" fill="currentColor">${A}</text><text x="${x(M)-4}" y="${y(A+c*M)-8}" font-size="11" text-anchor="end" fill="#E87722">GP</text><text x="${x(M)-4}" y="${y(M)+16}" font-size="11" text-anchor="end" fill="#888">45°</text><text x="${W-12}" y="${H-2}" font-size="11" text-anchor="end" fill="currentColor">Y</text></svg>`}
+add(6,5,"Cruz keynesiana",()=>{const c=pick([0.75,0.8]),A=R(150,300,10),Ys=A/(1-c),Y1=Math.round(Ys*R(1.15,1.3,0.05)/10)*10,G1=A+c*Y1;
+ return CON(`El gráfico muestra GP = ${A} + ${fmt(c,2)}Y y la línea de 45° (millones de dólares; datos hipotéticos).\n¿Cuál es la producción de equilibrio y qué pasa si las empresas producen ${fmt(Y1)}?`,
+ `Y* = ${fmt(Ys)}; a ${fmt(Y1)} se acumulan inventarios y la producción baja.`,[[`Y* = ${fmt(Ys)}; a ${fmt(Y1)} bajan los inventarios y la producción sube.`,"Por encima de Y*, la línea de gasto está debajo de la de 45°: sobra producción."],[`Y* = ${fmt(G1)}; a ${fmt(Y1)} se acumulan inventarios y la producción baja.`,`${fmt(G1)} es el gasto planeado cuando Y = ${fmt(Y1)}, no el equilibrio.`],[`Y* = ${A}; a ${fmt(Y1)} se acumulan inventarios y la producción baja.`,`${A} es el gasto autónomo (corte con el eje vertical).`]],
+ `Y* = ${A} ÷ (1 − ${fmt(c,2)}) = ${fmt(Ys)}. En Y = ${fmt(Y1)}, GP = ${fmt(G1)} < ${fmt(Y1)}: sobran ${fmt(Y1-G1)} en inventarios.`,"Y* = A ÷ (1 − c), donde GP corta la línea de 45°",cruzSVG(A,c,Ys,Y1))});
+add(6,5,"Ahorro en equilibrio",()=>{const a=R(50,150,10),c=pick([0.75,0.8,0.9]),I=R(80,200,10),Y=(a+I)/(1-c);
+ return NUM({q:`Economía cerrada sin gobierno: C = ${a} + ${fmt(c,2)}Y e I = ${I} (datos hipotéticos). La producción de equilibrio es ${fmt(Y,1)}.\n¿Cuánto ahorran los hogares en el equilibrio?`,ans:Y-(a+c*Y),dec:1,
+ errs:[{v:(1-c)*Y,msg:"Olvidaste el consumo autónomo: S = Y − C = −a + (1 − c)Y."},{v:a+c*Y,msg:"Ese es el consumo."},{v:Y,msg:"Esa es la producción."}],show:v=>$(v,1),
+ exp:`C = ${a} + ${fmt(c,2)} × ${fmt(Y,1)} = ${fmt(a+c*Y,1)}. S = ${fmt(Y,1)} − ${fmt(a+c*Y,1)} = ${fmt(Y-(a+c*Y),1)}, igual a la inversión: en equilibrio S = I.`,f:"S = Y − C · en equilibrio sin gobierno, S = I"})});
+add(6,5,"Ahorro con impuestos",()=>{const a=R(50,150,10),c=pick([0.6,0.75,0.8]),Y=R(1000,2500,100),T=R(100,300,50),Yd=Y-T,Cc=a+c*Yd;
+ return NUM({q:`C = ${a} + ${fmt(c,2)}(Y − T). Si Y = ${fmt(Y)} y T = ${T} (datos hipotéticos), ¿cuánto ahorran los hogares?`,ans:Yd-Cc,dec:1,
+ errs:[{v:Y-Cc,msg:"El ahorro sale del ingreso disponible (Y − T), no de Y."},{v:Yd-c*Yd,msg:"Olvidaste el consumo autónomo."},{v:Cc,msg:"Ese es el consumo."}],show:v=>$(v,1),
+ exp:`Yd = ${fmt(Y)} − ${T} = ${fmt(Yd)}; C = ${a} + ${fmt(c,2)} × ${fmt(Yd)} = ${fmt(Cc,1)}; S = ${fmt(Yd)} − ${fmt(Cc,1)} = ${fmt(Yd-Cc,1)}.`,f:"S = (Y − T) − C"})});
+
+/* ---------- POSICIÓN 7: multiplicador (12) ---------- */
+const CS=[0.6,0.7,0.75,0.8,0.9];
+add(7,6,"Multiplicador del gasto",()=>{const c=pick(CS);return NUM({q:`En el país de destino (economía cerrada), la PMC es ${fmt(c,2)} (dato hipotético).\n¿Cuánto vale el multiplicador del gasto?`,ans:1/(1-c),dec:2,
+ errs:[{v:1/c,msg:"Usaste 1 ÷ c; es 1 ÷ (1 − c)."},{v:c/(1-c),msg:"Ese es el multiplicador de los impuestos en valor absoluto."},{v:1-c,msg:"Esa es la PMgS."}],
+ exp:`kG = 1 ÷ (1 − ${fmt(c,2)}) = ${fmt(1/(1-c),2)}.`,f:"kG = 1 ÷ (1 − c)"})});
+add(7,6,"Efecto de un aumento del gasto público",()=>{const c=pick(CS),dG=R(20,100,10);return NUM({q:`El gobierno del país de destino (economía cerrada, PMC = ${fmt(c,2)}) aumenta el gasto público en $${dG} millones (datos hipotéticos).\n¿Cuánto aumenta la producción de equilibrio, en millones?`,ans:dG/(1-c),dec:1,
+ errs:[{v:dG/c,msg:"Usaste 1 ÷ c como multiplicador."},{v:dG,msg:"No aplicaste el multiplicador."},{v:dG*c/(1-c),msg:"Usaste el multiplicador de los impuestos."}],show:v=>$(v,1),
+ exp:`ΔY = ${dG} ÷ (1 − ${fmt(c,2)}) = ${fmt(dG/(1-c),1)}.`,f:"ΔY = ΔG ÷ (1 − c)"})});
+add(7,6,"Multiplicador de los impuestos",()=>{const c=pick(CS);return NUM({q:`Con una PMC de ${fmt(c,2)} (economía cerrada; dato hipotético), ¿cuánto vale el multiplicador de los impuestos?`,ans:-c/(1-c),dec:2,
+ errs:[{v:1/(1-c),msg:"Ese es el multiplicador del gasto."},{v:c/(1-c),msg:"Falta el signo: subir impuestos reduce la producción."},{v:-1/(1-c),msg:"El numerador es c: los hogares solo dejan de gastar c por cada dólar de impuesto."}],
+ exp:`kT = −${fmt(c,2)} ÷ (1 − ${fmt(c,2)}) = ${fmt(-c/(1-c),2)}.`,f:"kT = −c ÷ (1 − c)"})});
+add(7,6,"Efecto de una rebaja de impuestos",()=>{const c=pick(CS),dT=R(20,100,10);return NUM({q:`El gobierno del país de destino (economía cerrada, PMC = ${fmt(c,2)}) reduce los impuestos en $${dT} millones (datos hipotéticos).\n¿Cuánto cambia la producción de equilibrio, en millones?`,ans:c*dT/(1-c),dec:1,
+ errs:[{v:dT/(1-c),msg:"Usaste el multiplicador del gasto: de la rebaja, los hogares ahorran una parte."},{v:-c*dT/(1-c),msg:"El signo está invertido: bajar impuestos aumenta la producción."},{v:c*dT,msg:"Ese es solo el gasto de la primera ronda: falta el multiplicador."}],show:v=>(v>0?"+":"")+$(v,1),
+ exp:`ΔY = −${fmt(c,2)} ÷ (1 − ${fmt(c,2)}) × (−${dT}) = +${fmt(c*dT/(1-c),1)}.`,f:"ΔY = −c ÷ (1 − c) × ΔT"})});
+add(7,6,"Presupuesto equilibrado",()=>{const c=pick(CS),X=R(20,100,10);return NUM({q:`El gobierno del país de destino (economía cerrada, PMC = ${fmt(c,2)}) sube el gasto público en $${X} millones y lo financia subiendo los impuestos en $${X} millones (datos hipotéticos).\n¿Cuánto cambia la producción, en millones?`,ans:X,dec:1,
+ errs:[{v:0,msg:"Los efectos no se compensan: el gasto entra completo y la rebaja de consumo es solo c × ΔT."},{v:X/(1-c),msg:"Consideraste solo el gasto."},{v:-c*X/(1-c),msg:"Consideraste solo los impuestos."}],show:v=>(v>0?"+":"")+$(v,1),
+ exp:`${fmt(1/(1-c),2)} × ${X} − ${fmt(c/(1-c),2)} × ${X} = ${X}. Con presupuesto equilibrado, el multiplicador es 1.`,f:"ΔY = ΔG cuando ΔG = ΔT (economía cerrada)"})});
+add(7,6,"Multiplicador en economía abierta",()=>{const c=pick([0.7,0.75,0.8,0.9]),m=pick([0.1,0.2,0.25,0.3]);return NUM({q:`El país de destino es una economía abierta con PMC = ${fmt(c,2)} y propensión marginal a importar m = ${fmt(m,2)} (datos hipotéticos).\n¿Cuánto vale el multiplicador del gasto?`,ans:1/(1-c+m),dec:2,
+ errs:[{v:1/(1-c),msg:"Ese es el multiplicador de economía cerrada: falta la filtración por importaciones."},{v:1/(1-c-m),msg:"La importación se suma en el denominador: es una filtración."},{v:1/m,msg:"Usaste solo m."}],
+ exp:`k = 1 ÷ (1 − ${fmt(c,2)} + ${fmt(m,2)}) = ${fmt(1/(1-c+m),2)}.`,f:"k = 1 ÷ (1 − c + m)"})});
+add(7,6,"Efecto del gasto en economía abierta",()=>{const c=pick([0.7,0.75,0.8,0.9]),m=pick([0.1,0.2,0.25,0.3]),dG=R(20,100,10);return NUM({q:`Economía abierta con PMC = ${fmt(c,2)} y m = ${fmt(m,2)}. El gobierno aumenta el gasto en $${dG} millones (datos hipotéticos).\n¿Cuánto aumenta la producción, en millones?`,ans:dG/(1-c+m),dec:1,
+ errs:[{v:dG/(1-c),msg:"Usaste el multiplicador de economía cerrada."},{v:dG,msg:"No aplicaste el multiplicador."},{v:m*dG/(1-c+m),msg:"Ese es el aumento de las importaciones."}],show:v=>$(v,1),
+ exp:`ΔY = ${dG} ÷ (1 − ${fmt(c,2)} + ${fmt(m,2)}) = ${fmt(dG/(1-c+m),1)}.`,f:"ΔY = ΔG ÷ (1 − c + m)"})});
+add(7,6,"Aumento de las importaciones",()=>{const c=pick([0.7,0.75,0.8,0.9]),m=pick([0.1,0.2,0.25,0.3]),dG=R(50,200,10),dY=dG/(1-c+m);return NUM({q:`El país de destino (PMC = ${fmt(c,2)}, m = ${fmt(m,2)}) aumenta el gasto público en $${dG} millones (datos hipotéticos). A la exportadora le interesa cuánto más comprará ese país al exterior.\n¿Cuánto aumentan sus importaciones, en millones?`,ans:m*dY,dec:1,
+ errs:[{v:m*dG,msg:"Aplicaste m al gasto inicial; se aplica al cambio en la producción."},{v:m*dG/(1-c),msg:"Usaste el multiplicador de economía cerrada."},{v:dY,msg:"Ese es el aumento de la producción."}],show:v=>$(v,1),
+ exp:`ΔY = ${dG} ÷ (1 − ${fmt(c,2)} + ${fmt(m,2)}) = ${fmt(dY,1)}; ΔM = ${fmt(m,2)} × ${fmt(dY,1)} = ${fmt(m*dY,1)}.`,f:"ΔM = m × ΔY"})});
+add(7,6,"Gasto necesario para cerrar una brecha",()=>{const c=pick([0.6,0.75,0.8]),gap=R(100,400,20);return NUM({q:`La producción del país de destino (economía cerrada, PMC = ${fmt(c,2)}) está $${gap} millones por debajo del pleno empleo (datos hipotéticos).\n¿Cuánto debe aumentar el gasto público para cerrar la brecha, en millones?`,ans:gap*(1-c),dec:1,
+ errs:[{v:gap,msg:"No consideraste el multiplicador: basta un gasto menor que la brecha."},{v:gap/(1-c),msg:"Multiplicaste la brecha: hay que dividirla para el multiplicador."},{v:gap*c,msg:"Usaste c en lugar de 1 − c."}],show:v=>$(v,1),
+ exp:`ΔG = brecha ÷ kG = ${gap} × (1 − ${fmt(c,2)}) = ${fmt(gap*(1-c),1)}.`,f:"ΔG = ΔY ÷ kG = ΔY × (1 − c)"})});
+add(7,6,"Gasto e impuestos a la vez",()=>{const c=pick([0.6,0.75,0.8]),dG=R(40,120,10),dT=R(10,dG-20,10);return NUM({q:`El gobierno del país de destino (economía cerrada, PMC = ${fmt(c,2)}) sube el gasto en $${dG} millones y los impuestos en $${dT} millones (datos hipotéticos).\n¿Cuánto cambia la producción, en millones?`,ans:(dG-c*dT)/(1-c),dec:1,
+ errs:[{v:(dG-dT)/(1-c),msg:"Restaste los impuestos completos; se restan multiplicados por c."},{v:dG/(1-c),msg:"Olvidaste los impuestos."},{v:(dG+c*dT)/(1-c),msg:"Sumaste el efecto de los impuestos: subir impuestos reduce la producción."}],show:v=>$(v,1),
+ exp:`ΔY = (${dG} − ${fmt(c,2)} × ${dT}) ÷ (1 − ${fmt(c,2)}) = ${fmt((dG-c*dT)/(1-c),1)}.`,f:"ΔY = (ΔG − c·ΔT) ÷ (1 − c)"})});
+add(7,6,"PMC a partir del multiplicador",()=>{const k=pick([2,2.5,4,5,10]);return NUM({q:`Un estudio estima que el multiplicador del gasto de un país (economía cerrada) es ${fmt(k,1)} (dato hipotético).\n¿Cuál es la PMC?`,ans:1-1/k,dec:2,
+ errs:[{v:1/k,msg:"Esa es la PMgS: 1 ÷ k = 1 − c."},{v:k/10,msg:"El multiplicador no se convierte en PMC dividiendo para 10."},{v:1-1/(k+1),msg:"Revisa el despeje: c = 1 − 1 ÷ k."}],
+ exp:`k = 1 ÷ (1 − c) → 1 − c = 1 ÷ ${fmt(k,1)} = ${fmt(1/k,2)} → c = ${fmt(1-1/k,2)}.`,f:"c = 1 − 1 ÷ k"})});
+add(7,6,"Caída de la inversión privada",()=>{const c=pick(CS),dI=R(20,80,10);return NUM({q:`Por la incertidumbre, la inversión privada del país de destino (economía cerrada, PMC = ${fmt(c,2)}) cae $${dI} millones (datos hipotéticos).\n¿Cuánto cambia la producción, en millones?`,ans:-dI/(1-c),dec:1,
+ errs:[{v:-dI,msg:"No aplicaste el multiplicador: la caída se transmite en rondas."},{v:-dI*c/(1-c),msg:"Usaste el multiplicador de los impuestos."},{v:-dI/c,msg:"Usaste 1 ÷ c como multiplicador."}],show:v=>$(v,1),
+ exp:`ΔY = −${dI} ÷ (1 − ${fmt(c,2)}) = ${fmt(-dI/(1-c),1)}. El multiplicador actúa igual ante cualquier cambio del gasto autónomo.`,f:"ΔY = ΔI ÷ (1 − c)"})});
+
+/* ---------- POSICIÓN 8: política fiscal conceptual (8) ---------- */
+add(8,6,"Gasto público frente a rebaja de impuestos",()=>{const c=pick([0.75,0.8]),X=R(20,80,10);return CON(`Para reactivar la economía (cerrada, PMC = ${fmt(c,2)}), un asesor compara subir el gasto público en $${X} millones o bajar los impuestos en $${X} millones.\n¿Cuál expande más la producción y por qué?`,
+ `El gasto: de la rebaja, los hogares gastan solo $${fmt(c*X)} millones en la primera ronda.`,[["Ambas igual: las dos inyectan el mismo monto.","Se olvida que los hogares ahorran parte de la rebaja."],["La rebaja: los hogares deciden mejor en qué gastar.","Es un juicio de eficiencia; no responde cuánto cambia la producción."],["El gasto: el multiplicador de impuestos es negativo y la rebaja reduce Y.","El signo negativo significa que subir impuestos reduce Y; bajarlos la aumenta."]],
+ `Gasto: ΔY = ${fmt(1/(1-c),0)} × ${X} = ${fmt(X/(1-c))}. Rebaja: ΔY = ${fmt(c/(1-c),0)} × ${X} = ${fmt(c*X/(1-c))}.`,"kG = 1 ÷ (1 − c) · |kT| = c ÷ (1 − c)")});
+add(8,6,"Filtración por importaciones",()=>CON(`Dos países aplican el mismo aumento del gasto público. Tienen la misma PMC, pero el país A importa mucho más que el B.\n¿En cuál crece más la producción interna?`,
+ "En el B: en A una parte mayor del gasto se va en importaciones.",[["En el A, porque comercia más con el mundo.","Las importaciones son una filtración: reducen el multiplicador."],["En los dos por igual, porque tienen la misma PMC.","El multiplicador también depende de m."],["En el A, porque sus importaciones suman al PIB.","Las importaciones se restan en el PIB."]],
+ "k = 1 ÷ (1 − c + m): a mayor m, menor multiplicador.","k = 1 ÷ (1 − c + m)"));
+add(8,6,"Política fiscal expansiva y contractiva",()=>CON(`Relacione cada medida con el tipo de política fiscal.\nMEDIDAS\n1. Aumentar la inversión pública en vías.\n2. Subir el IVA.\n3. Reducir el impuesto a la renta.\n4. Recortar el gasto corriente del Estado.\nTIPO\na) Expansiva\nb) Contractiva`,
+ "1a, 2b, 3a, 4b",[["1a, 2a, 3b, 4b","Subir impuestos es contractiva; reducirlos es expansiva."],["1b, 2b, 3a, 4a","Más gasto es expansiva; recortarlo es contractiva."],["1a, 2b, 3b, 4a","Bajar impuestos expande; recortar gasto contrae."]],
+ "Expansiva: más gasto o menos impuestos. Contractiva: menos gasto o más impuestos.","ΔY = kG·ΔG + kT·ΔT"));
+add(8,6,"PMC y tamaño del multiplicador",()=>CON(`En el país A la PMC es 0,9 y en el país B, 0,6. Los dos son economías cerradas.\n¿En cuál tiene más efecto un aumento del gasto público?`,
+ "En el A: su multiplicador es 10 y el de B, 2,5.",[["En el B: sus hogares ahorran más.","Más ahorro significa una filtración mayor y un multiplicador menor."],["En los dos por igual.","El multiplicador depende de la PMC."],["En el A: su multiplicador es 0,9.","El multiplicador es 1 ÷ (1 − c), no c."]],
+ "kA = 1 ÷ 0,1 = 10; kB = 1 ÷ 0,4 = 2,5.","kG = 1 ÷ (1 − c)"));
+add(8,6,"Política fiscal del destino y exportaciones",()=>CON(`El gobierno del país de destino aplica una política fiscal expansiva. ¿Cómo afecta a una exportadora ecuatoriana que le vende?`,
+ "Favorablemente: sube el ingreso del destino y, con él, sus importaciones.",[["No la afecta: la política fiscal solo cambia la demanda interna del destino.","Parte del mayor ingreso se gasta en importaciones (m × ΔY)."],["Desfavorablemente: el destino compra menos al exterior.","Con más ingreso, el destino importa más, no menos."],["Solo la afecta si el gobierno del destino compra directamente sus productos.","El efecto llega por el mayor ingreso de todos los hogares y empresas."]],
+ "ΔM = m × ΔY: la expansión del destino aumenta sus compras al exterior.","ΔM = m × ΔY"));
+add(8,6,"Política contractiva en recesión",()=>CON(`En plena recesión, un gobierno sube impuestos para equilibrar sus cuentas. Según el modelo keynesiano, ¿qué ocurre en el corto plazo?`,
+ "La producción cae aún más, porque baja el consumo de los hogares.",[["La producción sube, porque el gobierno tiene más recursos.","Si no gasta más, el mayor impuesto solo reduce el consumo."],["No cambia, porque el impuesto es una transferencia.","Reduce el ingreso disponible y el consumo."],["La producción sube, porque mejora la confianza.","El modelo keynesiano simple no incluye ese canal."]],
+ "ΔY = −c ÷ (1 − c) × ΔT < 0: la medida es contractiva.","kT = −c ÷ (1 − c)"));
+add(8,6,"Presupuesto equilibrado (concepto)",()=>CON(`Un gobierno sube el gasto y los impuestos en el mismo monto (economía cerrada). Un analista dice que el efecto sobre la producción es cero.\n¿Qué evaluación es correcta?`,
+ "Es incorrecta: la producción sube en el mismo monto del gasto (multiplicador 1).",[["Es correcta: lo que entra por un lado sale por el otro.","El gasto entra completo; los hogares solo reducen su consumo en c × ΔT."],["Es incorrecta: la producción cae, porque los impuestos pesan más.","|kT| < kG: el efecto del gasto es mayor."],["Es correcta en una economía cerrada.","En la economía cerrada el multiplicador de presupuesto equilibrado es exactamente 1."]],
+ "kG + kT = (1 − c) ÷ (1 − c) = 1.","ΔY = ΔG cuando ΔG = ΔT"));
+add(8,6,"Qué medida es contractiva",()=>CON(`¿Cuáles de estas medidas reducen la demanda agregada en el corto plazo?\n1. Subir el impuesto a la renta.\n2. Aumentar el gasto en salud.\n3. Recortar la inversión pública.\n4. Bajar el IVA.\n5. Eliminar un subsidio que reciben los hogares.`,
+ "1, 3 y 5",[["1, 2 y 4","Más gasto (2) y menos IVA (4) expanden la demanda."],["2, 3 y 5","Más gasto en salud (2) es expansivo."],["1, 4 y 5","Bajar el IVA (4) aumenta el ingreso disponible."]],
+ "Reducen la demanda: más impuestos, menos gasto y menos transferencias a los hogares.","ΔY = kG·ΔG + kT·ΔT"));
+
+/* ---------- POSICIÓN 9: choques (8) ---------- */
+function dasSVG(kind){const W=300,H=220;const L=(x1,y1,x2,y2,col,da="")=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="2.4" ${da?`stroke-dasharray="${da}"`:""}/>`;
+ const P="#5B2A86",O="#E87722";let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Oferta y demanda agregadas"><line x1="30" y1="${H-25}" x2="${W-10}" y2="${H-25}" stroke="currentColor"/><line x1="30" y1="${H-25}" x2="30" y2="10" stroke="currentColor"/><text x="${W-12}" y="${H-8}" font-size="11" text-anchor="end" fill="currentColor">PIB real</text><text x="34" y="16" font-size="11" fill="currentColor">P</text>`;
+ const da0=L(60,30,250,180,P),oa0=L(60,170,260,60,O);
+ const sh={dl:[L(40,60,200,190,P,"6 4"),"DA1",200,185,P],dr:[L(100,20,280,160,P,"6 4"),"DA1",280,155,P],ol:[L(40,140,230,30,O,"6 4"),"OA1",228,40,O],or:[L(90,190,280,95,O,"6 4"),"OA1",280,108,O]}[kind];
+ s+=da0+oa0+sh[0]+`<text x="252" y="190" font-size="11" fill="${P}">DA0</text><text x="262" y="62" font-size="11" fill="${O}">OAcp0</text><text x="${sh[2]}" y="${sh[3]}" font-size="11" text-anchor="end" fill="${sh[4]}">${sh[1]}</text></svg>`;return s}
+const GTXT="El gráfico muestra la economía del país de destino antes (curvas 0, continuas) y después (curvas 1, discontinuas) de un cambio. El país importa el petróleo que consume.\n¿Qué noticia es coherente con el gráfico?";
+const NOT={dl:"Una recesión en sus principales socios reduce sus exportaciones.",dr:"El gobierno aumenta el gasto en obra pública.",ol:"Sube el precio internacional del petróleo que importan sus empresas.",or:"Una nueva tecnología reduce los costos de producción de sus empresas."};
+const MSGN={dl:"Esa noticia reduce la demanda agregada (DA a la izquierda).",dr:"Esa noticia aumenta la demanda agregada (DA a la derecha).",ol:"Esa noticia reduce la oferta agregada (OA a la izquierda).",or:"Esa noticia aumenta la oferta agregada (OA a la derecha)."};
+const EXPG={dl:"La DA se desplaza a la izquierda: bajan los precios y la producción.",dr:"La DA se desplaza a la derecha: suben los precios y la producción.",ol:"La OA se desplaza a la izquierda: suben los precios y baja la producción (estanflación).",or:"La OA se desplaza a la derecha: bajan los precios y sube la producción."};
+for(const k of ["dl","dr","ol","or"]) add(9,7,"Desplazamientos de la DA y la OA (gráfico)",()=>CON(GTXT,NOT[k],Object.keys(NOT).filter(j=>j!==k).map(j=>[NOT[j],MSGN[j]]),EXPG[k],"DA: Y = C + I + G + XN · OA cp: P sube con Y",dasSVG(k)));
+add(9,7,"Choques de oferta y de demanda",()=>CON(`El país de destino importa todo el petróleo que consume. Relacione cada noticia con su efecto de corto plazo.\nNOTICIAS\n1. Sube con fuerza el precio del petróleo.\n2. Una recesión en sus socios reduce sus exportaciones.\n3. Su gobierno aumenta el gasto en infraestructura.\n4. Una nueva tecnología reduce los costos.\nEFECTOS\na) Sube la DA: suben P e Y.\nb) Baja la DA: bajan P e Y.\nc) Baja la OA: sube P y baja Y.\nd) Sube la OA: baja P y sube Y.`,
+ "1c, 2b, 3a, 4d",[["1b, 2c, 3a, 4d","El petróleo encarece producir: es un choque de oferta; la recesión externa es de demanda."],["1c, 2d, 3a, 4b","La caída de exportaciones reduce la demanda, no la oferta."],["1a, 2b, 3c, 4d","Para un importador de petróleo, su alza es un choque negativo de oferta."]],
+ "Costos (petróleo, tecnología) mueven la OA; componentes del gasto (exportaciones, gasto público) mueven la DA.","DA: C + I + G + XN · OA: costos y productividad"));
+add(9,7,"Petróleo en una economía exportadora",()=>CON(`El Ecuador exporta petróleo. Si el precio internacional del crudo sube con fuerza, ¿qué efecto de demanda tiene sobre la economía ecuatoriana en el corto plazo?`,
+ "Aumenta la DA, porque suben el valor de las exportaciones y los ingresos del Estado.",[["Reduce la DA, porque encarece los combustibles.","En un exportador neto, el efecto dominante es el mayor ingreso por exportaciones."],["Reduce la OA, como en cualquier país.","En un importador el alza es choque de oferta; aquí la pregunta es por el efecto de demanda de un exportador."],["No tiene efecto, porque el precio lo fija el mercado mundial.","Aunque el precio sea externo, cambia el ingreso del país."]],
+ "Para un exportador neto de petróleo, un alza del crudo aumenta XN y el gasto público: la DA se desplaza a la derecha.","DA: C + I + G + XN"));
+add(9,7,"Choques simultáneos",()=>CON(`En el mismo año, el gobierno del país de destino aumenta el gasto público y sube el precio de una materia prima que el país importa. Sin conocer el tamaño de cada choque, ¿qué se puede afirmar con certeza?`,
+ "Sube el nivel de precios; la producción puede subir o bajar.",[["Suben los precios y la producción.","El choque de oferta reduce la producción: el efecto neto es incierto."],["Baja la producción; los precios pueden subir o bajar.","Los dos choques suben los precios: eso es seguro."],["Sube la producción; los precios pueden subir o bajar.","Los precios suben con certeza; la producción es la incierta."]],
+ "DA a la derecha: P↑ Y↑. OA a la izquierda: P↑ Y↓. Seguro: P↑. Incierto: Y.","Combinar los dos desplazamientos"));
+
+add(9,7,"Política fiscal con oferta y demanda agregadas",()=>{const c=pick([0.75,0.8]),dG=R(20,60,10);return CON(`El gobierno del país de destino (PMC = ${fmt(c,2)}) aumenta el gasto en $${dG} millones. Con precios fijos, la producción subiría ${fmt(dG/(1-c))} millones (multiplicador ${fmt(1/(1-c))}). Con una OA de corto plazo de pendiente positiva, ¿qué ocurre?`,
+ `La DA se desplaza ${fmt(dG/(1-c))} millones a la derecha, pero la producción sube menos porque también suben los precios.`,[[`La producción sube exactamente ${fmt(dG/(1-c))} millones y los precios no cambian.`,"Eso solo ocurre con OA horizontal (precios fijos)."],["La producción no cambia y solo suben los precios.","Eso ocurre con la OA vertical de largo plazo."],[`La producción sube más de ${fmt(dG/(1-c))} millones porque los precios más altos estimulan el gasto.`,"Un nivel de precios mayor reduce la cantidad demandada de producción, no la aumenta."]],
+ "El multiplicador mide el desplazamiento horizontal de la DA; con OA creciente, parte del impulso se va en precios.","ΔDA = k × ΔG · ΔY < k × ΔG si la OA cp tiene pendiente positiva")});
+
+/* ---------- POSICIÓN 10: OA e inflación-desempleo (8) ---------- */
+add(10,7,"Oferta agregada de largo plazo",()=>CON(`Complete: «La oferta agregada de largo plazo es ______ porque, cuando precios y salarios se ajustan por completo, la producción depende de ______ y no del ______».`,
+ "vertical – los recursos y la tecnología – nivel de precios",[["horizontal – el nivel de precios – gasto planeado","Esa es la OA keynesiana de precios fijos."],["creciente – el nivel de precios – capital","Esa es la OA de corto plazo."],["vertical – la demanda agregada – nivel de precios","La forma es correcta, pero la producción de largo plazo depende de los recursos, no de la demanda."]],
+ "En el largo plazo la producción vuelve al PIB potencial, que depende de trabajo, capital, recursos y tecnología.","OA LP: Y = Y potencial"));
+add(10,7,"Oferta agregada de corto plazo",()=>CON(`¿Por qué la oferta agregada de corto plazo tiene pendiente positiva?`,
+ "Porque los salarios y algunos costos tardan en ajustarse: si suben los precios, producir más se vuelve rentable.",[["Porque los consumidores compran más cuando suben los precios.","Eso describe a los consumidores (demanda), y además al revés."],["Porque en el corto plazo la producción está fija en el PIB potencial.","Eso describe la OA de largo plazo (vertical)."],["Porque el gobierno fija los precios.","La pendiente se explica por costos rígidos, no por control de precios."]],
+ "Con salarios rígidos, un nivel de precios mayor aumenta los márgenes y las empresas producen más.","OA cp: P = P₀ + sY"));
+add(10,7,"Relación entre inflación y desempleo",()=>CON(`Un analista afirma: «cuando baja el desempleo, siempre sube la inflación; basta el desempleo para predecir la inflación».\n¿Qué evaluación es más sólida?`,
+ "Es débil: un choque de oferta puede subir a la vez la inflación y el desempleo.",[["Es correcta: la curva de Phillips se cumple en todos los países y periodos.","Es una regularidad de corto plazo ante choques de demanda, no una ley."],["Es incorrecta: inflación y desempleo nunca se relacionan.","La relación inversa sí aparece en ciertos periodos."],["Es correcta: con menos desempleo cae la producción y suben los precios.","Menos desempleo significa más producción, no menos."]],
+ "La relación inversa aparece con choques de demanda; con choques de oferta (estanflación) suben los dos.","Choque de demanda: P e Y en la misma dirección"));
+add(10,7,"OA clásica y keynesiana",()=>CON(`Relacione cada forma de la oferta agregada con su enfoque.\nFORMAS\n1. Vertical en el PIB potencial.\n2. Horizontal a un nivel de precios fijo.\n3. Con pendiente positiva.\nENFOQUES\na) Clásico (largo plazo)\nb) Keynesiano (precios rígidos)\nc) Corto plazo intermedio`,
+ "1a, 2b, 3c",[["1b, 2a, 3c","La OA vertical es clásica; la horizontal, keynesiana."],["1a, 2c, 3b","La OA horizontal corresponde a precios totalmente rígidos (keynesiano)."],["1c, 2b, 3a","La OA vertical corresponde al ajuste completo de precios (clásico)."]],
+ "Clásico: vertical. Keynesiano: horizontal. Corto plazo: pendiente positiva.","OA LP vertical · OA keynesiana horizontal · OA cp creciente"));
+add(10,7,"Largo plazo tras un choque de demanda",()=>CON(`La DA del país de destino aumenta y, en el corto plazo, suben los precios y la producción. ¿Qué ocurre en el largo plazo, cuando los salarios se ajustan?`,
+ "La producción vuelve al PIB potencial y los precios quedan más altos.",[["La producción queda más alta de forma permanente.","En el largo plazo la OA es vertical: la DA solo cambia precios."],["Los precios vuelven al nivel inicial.","El ajuste de salarios eleva costos: los precios quedan más altos."],["La producción y los precios vuelven al punto inicial.","La DA siguió más alta: el nivel de precios es mayor."]],
+ "Con salarios flexibles en el largo plazo, la OA cp se desplaza hasta que Y = potencial: solo queda el efecto en precios.","OA LP: Y = Y potencial"));
+add(10,7,"Brecha recesiva",()=>{const Yp=R(900,1200,50),Y=Yp-R(50,150,10);return CON(`El PIB potencial del país de destino es $${fmt(Yp)} millones y el de equilibrio de corto plazo, $${fmt(Y)} millones (datos hipotéticos).\n¿Qué describe esta situación?`,
+ `Una brecha recesiva de $${fmt(Yp-Y)} millones, con desempleo mayor que la tasa natural.`,[[`Una brecha inflacionaria de $${fmt(Yp-Y)} millones.`,"La producción está por debajo del potencial: la brecha es recesiva."],["Pleno empleo, porque hay equilibrio.","Puede haber equilibrio de corto plazo sin pleno empleo."],["Una estanflación.","La estanflación combina precios en alza y caída de la producción; aquí solo se compara Y con el potencial."]],
+ `Y < Y potencial: brecha recesiva de ${fmt(Yp-Y)}. El desempleo cíclico es positivo.`,"Brecha = Y − Y potencial")});
+add(10,7,"Estanflación",()=>CON(`¿Qué tipo de choque produce a la vez más inflación y más desempleo?`,
+ "Un choque negativo de oferta, como un alza fuerte del costo de un insumo importado.",[["Un aumento del gasto público.","Sube la DA: suben precios y producción, baja el desempleo."],["Una caída de las exportaciones.","Baja la DA: bajan precios y producción."],["Una mejora tecnológica.","Sube la OA: bajan los precios y sube la producción."]],
+ "La OA se desplaza a la izquierda: P↑ e Y↓ (más desempleo). Por eso la relación inversa inflación-desempleo no es fija.","Choque de oferta: P e Y en direcciones opuestas"));
+add(10,7,"Leer datos de inflación y desempleo",()=>{const u1=R(4,5,0.1),u2=+(u1+R(1,2,0.1)).toFixed(1),i1=R(2,3,0.1),i2=+(i1+R(3,5,0.1)).toFixed(1);return CON(`En el país de destino, de un año a otro, el desempleo pasó de ${p(u1,1)} a ${p(u2,1)} y la inflación de ${p(i1,1)} a ${p(i2,1)} (datos hipotéticos).\n¿Qué explicación es más coherente?`,
+ "Un choque negativo de oferta, como el alza de un insumo importado.",[["Un aumento de la demanda agregada.","Con más DA, el desempleo bajaría."],["Una caída de la demanda agregada.","Con menos DA, la inflación bajaría."],["Una mejora de la productividad.","La OA subiría: bajarían la inflación y el desempleo."]],
+ "Inflación y desempleo suben juntos: es la señal de un choque de oferta negativo (estanflación).","Choque de oferta: P↑ Y↓")});
+
+if(typeof module!=="undefined")module.exports={C,SLOTS,TEMAS,REPASO,fmt,near};
+
+</script>
+<script>
+{
+const KEY="macroP1_entrenamiento_v1";
+let S={nombre:"",curso:"",hist:[],cur:null};
+try{const t=localStorage.getItem(KEY);if(t)S=Object.assign(S,JSON.parse(t))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const L="ABCD";
+function gen(c){let q=null,t=0;while(!q&&t<200){q=c.gen();t++}q.tema=c.tema;q.sub=c.sub;q.slot=c.slot;return q}
+C.forEach(c=>{c.calc=!!gen(c).num});
+function newAttempt(){const qs=SLOTS.map(s=>{const pool=C.filter(c=>c.slot===s.n&&(s.n<2||s.n>4||c.calc));return gen(pick(pool))});S.cur={qs,i:0,ans:qs.map(()=>({num:null,choice:null,numDone:false})),start:new Date().toISOString()};save();render()}
+function parseNum(v){let s=String(v).trim().replace(/[\s$% ]/g,"").replace(/−/g,"-");if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");const x=parseFloat(s);return isFinite(x)?x:null}
+const fdate=iso=>{const d=new Date(iso);return d.toLocaleDateString("es-EC")+" "+d.toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit"})};
+
+function home(){
+ const h=S.hist;
+ app.innerHTML=`<div class="card"><h2>Tus datos</h2><p class="mut">Solo se usan para tu PDF. Se guardan en este navegador.</p>
+ <label for="nom">Nombre y apellido</label><input id="nom" value="${esc(S.nombre)}" autocomplete="name">
+ <label for="cur">Curso y paralelo</label><input id="cur" value="${esc(S.curso)}" placeholder="Ej.: Macroeconomía, 4.º nivel">
+ </div>
+ <div class="card"><h2>¿Qué quieres hacer?</h2>
+ <p><b>Intento de 10 preguntas.</b> Una de cada bloque del parcial; siempre hay ejercicios de PIB y deflactor, desempleo, e IPC e inflación. Ves la retroalimentación y tu nota al final.</p>
+ <div class="row"><button class="b1" id="go">${S.cur?"Continuar mi intento":"Empezar un intento"}</button></div>
+ <p style="margin-top:18px"><b>Practicar un tema.</b> Preguntas sin límite del tema que elijas, con retroalimentación inmediata.</p>
+ <label for="tem">Tema</label><select id="tem">${Object.entries(TEMAS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+ <div class="row"><button class="b2" id="pr">Practicar este tema</button></div></div>
+ <div class="card"><h2>Mi registro</h2>${h.length?`<table><tr><th>Intento</th><th>Fecha</th><th class="n">Nota</th></tr>${h.map((a,i)=>`<tr><td>${i+1}</td><td>${fdate(a.fecha)}</td><td class="n">${fmt(a.nota,1)} / 10</td></tr>`).join("")}</table>${refuerzo()}`:`<p class="mut">Todavía no tienes intentos terminados.</p>`}
+ <div class="row"><button class="b3" id="pdf" ${h.length?"":"disabled"}>Descargar mi PDF</button></div><p class="mut" id="pmsg"></p></div>`;
+ const keep=()=>{S.nombre=document.getElementById("nom").value.trim();S.curso=document.getElementById("cur").value.trim();save()};
+ document.getElementById("nom").oninput=keep;document.getElementById("cur").oninput=keep;
+ document.getElementById("go").onclick=()=>{keep();if(!S.nombre){alertBox("Escribe tu nombre para empezar.");return}S.cur?render():newAttempt()};
+ document.getElementById("pr").onclick=()=>{keep();P={tema:+document.getElementById("tem").value,q:null,n:0,ok:0};nextPractice()};
+ document.getElementById("pdf").onclick=()=>{keep();makePDF()};
+}
+function alertBox(t){const m=document.getElementById("pmsg")||document.createElement("p");m.textContent=t;m.className="mut";m.style.color="var(--bad)";if(!m.isConnected)app.querySelector(".card").appendChild(m)}
+function temaStats(){const st={};for(const a of S.hist)for(const [t,[o,n]] of Object.entries(a.porTema)){st[t]=st[t]||[0,0];st[t][0]+=o;st[t][1]+=n}return st}
+function refuerzo(){const st=temaStats();const w=Object.entries(st).filter(([t,[o,n]])=>n&&o/n<0.7).sort((a,b)=>a[1][0]/a[1][1]-b[1][0]/b[1][1]);
+ return w.length?`<h3>Temas para reforzar</h3><ul>${w.map(([t,[o,n]])=>`<li>${TEMAS[t]}: ${o} de ${n} correctas. Repasa: ${REPASO[t]}.</li>`).join("")}</ul>`:`<p class="mut">Vas bien en todos los temas que has practicado.</p>`}
+
+/* ---------- pregunta ---------- */
+function qHTML(q,a,mode){
+ const showOpts=!q.num||a.numDone;
+ let h=`<p class="q">${esc(q.q)}</p>${q.svg?`<div class="fig">${q.svg}</div>`:""}
+ <button class="info" data-f>(i) Fórmula</button><div class="formula hide" id="fx">${esc(q.f)}</div>`;
+ if(q.num){h+=`<div class="numbox"><label for="nv">1. Calcula y escribe tu resultado${q.num.unit?" ("+q.num.unit+")":""}</label><p class="mut" style="margin:0">Usa coma para los decimales, sin separador de miles.</p>
+ <div class="row"><input id="nv" inputmode="decimal" value="${a.num??""}" ${a.numDone?"disabled":""}><button class="b1" id="nb" ${a.numDone?"disabled":""}>Registrar</button><button class="b3" id="nx" ${a.numDone?"disabled":""}>No lo sé</button></div><div id="nfb">${a.numDone&&mode==="p"?numFB(q,a):""}</div></div>`}
+ if(showOpts)h+=`<p><b>${q.num?"2. Ahora elige la opción correcta":"Elige la opción correcta"}</b></p>`+q.opts.map((o,j)=>`<button class="opt ${a.choice===j?"sel":""}" data-o="${j}"><b>${L[j]})</b>${esc(o.t)}</button>`).join("");
+ return h}
+function numFB(q,a){if(a.num===null)return `<p class="mut">Sin resultado registrado.</p>`;const ok=near(a.num,q.num.ans,q.num.dec);return `<p style="color:var(${ok?"--ok":"--bad"})"><b>${ok?"Tu resultado coincide.":"Tu resultado no coincide."}</b> ${ok?"":"Revisa el procedimiento al ver la retroalimentación."}</p>`}
+function fbHTML(q,a){const o=q.opts[a.choice],c=q.opts.findIndex(x=>x.ok);
+ return `<div class="fb ${o&&o.ok?"":"no"}">${o?(o.ok?`<p><b>Correcto.</b></p>`:`<p><b>Incorrecto.</b> ${esc(o.msg)}</p>`):`<p><b>Sin responder.</b></p>`}
+ ${o&&o.ok?"":`<p><b>Respuesta correcta:</b> ${L[c]}) ${esc(q.opts[c].t)}</p>`}<p>${esc(q.exp)}</p><p class="mut">Repasa: ${REPASO[q.tema]}.</p></div>`}
+function wire(q,a,onNum,onOpt){
+ app.querySelector("[data-f]").onclick=()=>document.getElementById("fx").classList.toggle("hide");
+ if(q.num&&!a.numDone){const reg=v=>{a.num=v;a.numDone=true;onNum()};
+  document.getElementById("nb").onclick=()=>{const v=parseNum(document.getElementById("nv").value);if(v===null){document.getElementById("nfb").innerHTML=`<p class="mut">Escribe un número, o pulsa «No lo sé».</p>`;return}reg(v)};
+  document.getElementById("nx").onclick=()=>reg(null)}
+ app.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>onOpt(+b.dataset.o))}
+
+function render(){const A=S.cur;if(!A)return home();if(A.i>=A.qs.length)return finish();
+ const q=A.qs[A.i],a=A.ans[A.i];
+ app.innerHTML=`<div class="card"><span class="chip">${TEMAS[q.tema]}</span> <span class="mut">Pregunta ${A.i+1} de ${A.qs.length}</span><div class="prog"><i style="width:${A.i/A.qs.length*100}%"></i></div>${qHTML(q,a,"i")}
+ <div class="row"><button class="b3" id="bk" ${A.i?"":"disabled"}>Anterior</button><button class="b1" id="nxq" ${a.choice===null?"disabled":""}>${A.i===A.qs.length-1?"Terminar y ver mi nota":"Siguiente"}</button></div>
+ <div class="row"><button class="b3" id="out">Guardar y salir</button></div></div>`;
+ wire(q,a,()=>{save();render()},j=>{a.choice=j;save();render()});
+ document.getElementById("bk").onclick=()=>{A.i--;save();render()};
+ document.getElementById("nxq").onclick=()=>{A.i++;save();render();scrollTo(0,0)};
+ document.getElementById("out").onclick=()=>{save();home()}}
+
+function finish(){const A=S.cur;const porTema={};let ok=0;const err=[];
+ A.qs.forEach((q,i)=>{const a=A.ans[i],o=q.opts[a.choice],good=!!(o&&o.ok);ok+=good;porTema[q.tema]=porTema[q.tema]||[0,0];porTema[q.tema][0]+=good;porTema[q.tema][1]++;if(!good)err.push({n:i+1,tema:q.tema,sub:q.sub,msg:o?o.msg:"Sin responder."})});
+ const rec={fecha:new Date().toISOString(),nota:ok,aciertos:ok,total:A.qs.length,porTema,err,qs:A.qs,ans:A.ans};
+ S.hist.push(rec);S.cur=null;save();results(S.hist.length-1)}
+
+function results(k){const r=S.hist[k];
+ app.innerHTML=`<div class="card"><h2>Tu nota de práctica</h2><div class="big">${fmt(r.nota,1)}<span style="font-size:.4em;color:var(--mut)"> / 10</span></div>
+ <p>Respondiste bien ${r.aciertos} de ${r.total} preguntas. ${r.nota>=7?"Buen resultado: sigue practicando para afianzarlo.":"Revisa los errores de abajo y vuelve a intentarlo: cada intento trae preguntas distintas."}</p>
+ <h3>Por tema</h3>${Object.entries(r.porTema).map(([t,[o,n]])=>`<div class="bar"><span>${TEMAS[t]}</span><span>${o} de ${n}</span><div class="t"><i style="width:${o/n*100}%"></i></div></div>`).join("")}
+ ${r.err.length?`<h3>Por qué perdiste puntos</h3><ul>${r.err.map(e=>`<li><b>Pregunta ${e.n} (${esc(e.sub)}):</b> ${esc(e.msg)}</li>`).join("")}</ul>`:"<p><b>¡Todas correctas!</b></p>"}
+ <div class="row"><button class="b1" id="again">Nuevo intento</button><button class="b3" id="hm">Inicio y PDF</button></div></div>
+ <div class="card"><h2>Revisión de cada pregunta</h2>${r.qs.map((q,i)=>{const a=r.ans[i],o=q.opts[a.choice];return `<details ${o&&o.ok?"":"open"}><summary>${i+1}. ${esc(q.sub)} · ${o&&o.ok?"✔ correcta":"✘ incorrecta"}</summary><p class="q">${esc(q.q)}</p>${q.svg?`<div class="fig">${q.svg}</div>`:""}${q.num?numFB(q,a):""}${q.opts.map((x,j)=>`<div class="opt ${x.ok?"good":(a.choice===j?"wrong":"")}"><b>${L[j]})</b>${esc(x.t)}</div>`).join("")}${fbHTML(q,a)}<p class="mut">Fórmula: ${esc(q.f)}</p></details>`}).join("")}</div>`;
+ document.getElementById("again").onclick=()=>{newAttempt();scrollTo(0,0)};document.getElementById("hm").onclick=()=>{home();scrollTo(0,0)}}
+
+/* ---------- práctica por tema ---------- */
+let P=null;
+function nextPractice(){const pool=C.filter(c=>c.tema===P.tema);P.q=gen(pick(pool));P.a={num:null,choice:null,numDone:false};P.done=false;showPractice();scrollTo(0,0)}
+function showPractice(){const q=P.q,a=P.a;
+ app.innerHTML=`<div class="card"><span class="chip">Práctica · ${TEMAS[P.tema]}</span> <span class="mut">Llevas ${P.ok} de ${P.n} correctas</span>${qHTML(q,a,"p").replace(/<button class="opt/g,P.done?'<button disabled class="opt':'<button class="opt')}
+ <div id="pf">${P.done?fbHTML(q,a):""}</div>
+ <div class="row">${P.done?`<button class="b1" id="pn">Otra pregunta</button>`:""}<button class="b3" id="ph">Volver al inicio</button></div></div>`;
+ if(P.done){app.querySelectorAll("[data-o]").forEach((b,j)=>{const o=q.opts[j];if(o.ok)b.classList.add("good");else if(a.choice===j)b.classList.add("wrong")})}
+ wire(q,a,()=>showPractice(),j=>{if(P.done)return;a.choice=j;P.done=true;P.n++;if(q.opts[j].ok)P.ok++;showPractice()});
+ if(P.done)document.getElementById("pn").onclick=nextPractice;
+ document.getElementById("ph").onclick=()=>{P=null;home()}}
+
+/* ---------- PDF ---------- */
+const clean=s=>String(s).replace(/ /g," ").replace(/−/g,"-").replace(/÷/g,"/").replace(/Δ/g,"var. ").replace(/≈/g,"aprox.").replace(/[₀₁₂ₜ]/g,m=>({"₀":"0","₁":"1","₂":"2","ₜ":"t"}[m])).replace(/[↑]/g," sube").replace(/[↓]/g," baja").replace(/→/g,"->").replace(/[✔✘]/g,"").replace(/Σ/g,"suma de ").replace(/π/g,"inflación ");
+function makePDF(){const msg=document.getElementById("pmsg");
+ if(!window.jspdf){msg.textContent="No se pudo cargar el generador de PDF. Revisa tu conexión y vuelve a intentarlo.";return}
+ const {jsPDF}=window.jspdf,d=new jsPDF({unit:"mm",format:"a4"});let y=18;const W=180;
+ const line=(t,o={})=>{d.setFont("helvetica",o.b?"bold":"normal");d.setFontSize(o.s||10.5);const ls=d.splitTextToSize(clean(t),W);for(const l of ls){if(y>282){d.addPage();y=18}d.text(l,15,y);y+=(o.s||10.5)*0.45}y+=o.gap??1.5};
+ d.setFillColor(91,42,134);d.rect(0,0,210,10,"F");
+ line("Entrenamiento para el Parcial 1 · Macroeconomía",{b:1,s:15,gap:3});
+ line(`Estudiante: ${S.nombre||"(sin nombre)"}`);line(`Curso: ${S.curso||"(sin curso)"}`);line(`Fecha de descarga: ${fdate(new Date().toISOString())}`,{gap:2});
+ line("Nota de práctica: no cuenta para la calificación. Sirve para identificar qué temas reforzar antes de la prueba.",{s:9.5,gap:4});
+ line("Intentos",{b:1,s:12});S.hist.forEach((a,i)=>line(`Intento ${i+1} · ${fdate(a.fecha)} · Nota: ${fmt(a.nota,1)} / 10 (${a.aciertos} de ${a.total})`));
+ y+=2;line("Aciertos acumulados por tema",{b:1,s:12});const st=temaStats();for(const [t,[o,n]] of Object.entries(st))line(`${TEMAS[t]}: ${o} de ${n} (${fmt(o/n*100,0)} %)`);
+ y+=2;line("Temas para reforzar",{b:1,s:12});const w=Object.entries(st).filter(([t,[o,n]])=>o/n<0.7);if(w.length)w.forEach(([t])=>line(`${TEMAS[t]}. Repasar: ${REPASO[t]}.`));else line("Ninguno: más de 70 % de aciertos en todos los temas practicados.");
+ const r=S.hist[S.hist.length-1];y+=2;line(`Detalle del último intento (nota ${fmt(r.nota,1)} / 10)`,{b:1,s:12});
+ r.qs.forEach((q,i)=>{const a=r.ans[i],o=q.opts[a.choice];line(`${i+1}. ${TEMAS[q.tema]} - ${q.sub}: ${o&&o.ok?"correcta":"incorrecta"}`,{b:1,s:10});if(!(o&&o.ok)){line(`Error: ${o?o.msg:"sin responder"}`,{s:9.5,gap:0.5});line(`Explicación: ${q.exp}`,{s:9.5})}});
+ const n=(S.nombre||"estudiante").replace(/[^\wáéíóúñÁÉÍÓÚÑ ]/g,"").trim().replace(/\s+/g,"_");
+ try{d.save(`Entrenamiento_Macro_P1_${n}.pdf`);msg.textContent="PDF descargado."}catch(e){msg.textContent="Este visor no permite descargas. Abre el enlace en tu navegador."}}
+
+render();
+}
+</script>
+</body>
+</html>
