@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrenamiento · Parcial 1 de Microeconomía</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--mor:#4b2c83;--mor2:#6b4ba3;--nar:#e87722;--fondo:#f6f3fb;--ok:#2e7d32;--mal:#c62828;}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--fondo);color:#222;line-height:1.45}
+header{background:var(--mor);color:#fff;padding:14px 18px;border-bottom:5px solid var(--nar)}
+header h1{margin:0;font-size:1.15rem}
+header p{margin:2px 0 0;font-size:.85rem;opacity:.9}
+main{max-width:820px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+h2{color:var(--mor);font-size:1.1rem;margin:0 0 10px}
+label{display:block;font-weight:600;margin:10px 0 4px}
+input[type=text],select{width:100%;padding:10px;border:1px solid #bbb;border-radius:8px;font-size:1rem}
+button{background:var(--mor);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-size:1rem;cursor:pointer;margin:6px 6px 0 0}
+button.sec{background:#fff;color:var(--mor);border:2px solid var(--mor)}
+button.nar{background:var(--nar)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.aviso{background:#fff4e8;border-left:4px solid var(--nar);padding:8px 12px;border-radius:6px;font-size:.9rem}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.chip{background:#ece6f6;color:var(--mor);border-radius:999px;padding:2px 10px;font-size:.8rem;font-weight:600}
+.chip.tipo{background:#fde9d7;color:#a14d0c}
+.enun{white-space:pre-line;margin:6px 0 10px}
+.graf{width:100%;max-width:420px;display:block;margin:6px auto;background:#fff}
+.opc{display:block;border:2px solid #ddd;border-radius:10px;padding:10px 12px;margin:8px 0;cursor:pointer;background:#fff}
+.opc input{margin-right:8px}
+.opc.sel{border-color:var(--mor);background:#f3eefb}
+.opc.ok{border-color:var(--ok);background:#e8f5e9}
+.opc.mal{border-color:var(--mal);background:#fdecea}
+.opc.dis{opacity:.5;pointer-events:none}
+.entrada{background:#f3eefb;border-radius:10px;padding:10px;margin:8px 0}
+.entrada input{width:180px;padding:8px;font-size:1rem;border:1px solid #aaa;border-radius:6px}
+.fb{overflow-wrap:anywhere;border-radius:8px;padding:10px;margin-top:10px;font-size:.95rem}
+.fb.ok{background:#e8f5e9;border-left:4px solid var(--ok)}
+.fb.mal{background:#fdecea;border-left:4px solid var(--mal)}
+.info{background:none;color:var(--mor);border:2px solid var(--mor);border-radius:50%;width:30px;height:30px;padding:0;font-weight:bold;font-style:italic}
+.formula{display:none;background:#fffaf3;border:1px dashed var(--nar);border-radius:8px;padding:8px;margin-top:6px;font-size:.92rem}
+.prog{height:8px;background:#e5def0;border-radius:4px;overflow:hidden;margin-bottom:10px}
+.prog div{height:100%;background:var(--nar)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{border-bottom:1px solid #eee;padding:6px;text-align:left}
+th{color:var(--mor)}
+.nota{font-size:2.2rem;font-weight:800;color:var(--mor)}
+.peq{font-size:.85rem;color:#555}
+.oculto{display:none}
+@media (max-width:520px){main{padding:10px}.card{padding:12px}button{width:100%;margin-right:0}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Entrenamiento · Parcial 1 de Microeconomía</h1>
+  <p>Negocios Internacionales · Práctica no calificada</p>
+</header>
+<main id="app"></main>
+
+<script>
+/* Banco de casos — Entrenamiento parcial 1 de Microeconomía (datos hipotéticos) */
+(function (root) {
+  "use strict";
+  var rnd = function (a, b) { return a + Math.floor(Math.random() * (b - a + 1)); };
+  var rstep = function (a, b, s) { return a + s * rnd(0, Math.floor((b - a) / s)); };
+  var pick = function (arr) { return arr[Math.floor(Math.random() * arr.length)]; };
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function fmt(x, d) {
+    d = d || 0; var neg = x < 0; var s = Math.abs(x).toFixed(d).split(".");
+    var i = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return (neg ? "−" : "") + i + (s[1] ? "," + s[1] : "");
+  }
+  function fq(x) { return Number.isInteger(x) ? fmt(x) : fmt(x, 1); }
+  var usd = function (x) { return "$" + fmt(x); };
+  var r2 = function (x) { return Math.round(x * 100) / 100; };
+  function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+  function lcm(a, b) { return a * b / gcd(a, b); }
+  function calcQ(texto, opts, extra) { // opts: [{t,ok,msg,k}] -> orden ascendente por k
+    var o = opts.slice().sort(function (x, y) { return x.k - y.k; });
+    return Object.assign({ tipo: "calc", texto: texto, opciones: o }, extra);
+  }
+  function otherQ(tipo, texto, opts, extra) { return Object.assign({ tipo: tipo, texto: texto, opciones: shuffle(opts) }, extra); }
+  function fail() { throw new Error("regen"); }
+
+  var REP = {
+    mercado: "Presentación «Oferta, demanda y equilibrio» (mercado, ley de la demanda y de la oferta)",
+    equil: "Presentación «Oferta, demanda y equilibrio» (cálculo de Q* y P*)",
+    choques: "Presentación «Choques en el mercado»",
+    exced: "Presentación «Equilibrio, excedentes e impuestos» (excedentes y eficiencia)",
+    imp: "Presentación «Equilibrio, excedentes e impuestos» (impuesto y pérdida de peso muerto) y applet de equilibrio y eficiencia, paso 2",
+    elas: "Presentaciones de elasticidad A y B y applet de elasticidades (nattycadena.github.io/applet/elasticidades.html)",
+    cons: "Presentaciones «Utilidad» y «Restricción presupuestaria y elección» y applet del consumidor"
+  };
+
+  // ---------- Parámetros de mercado lineal ----------
+  function mercado() {
+    var b = pick([10, 15, 20, 25, 30]), d = pick([5, 10, 15, 20]);
+    if (b === d) d = b === 20 ? 10 : 20;
+    var Q = rstep(60, 200, 10), c = rstep(400, 1500, 100);
+    var P = c + d * Q, a = P + b * Q;
+    return { a: a, b: b, c: c, d: d, Q: Q, P: P };
+  }
+  function curvas(m, ctx) {
+    return "Demanda de los " + ctx.comp + ": P = " + fmt(m.a) + " − " + m.b + "Q\nOferta de los " + ctx.vend + ": P = " + fmt(m.c) + " + " + m.d + "Q\n(Q en " + ctx.u + " por mes; P en dólares por " + ctx.u1 + ")";
+  }
+  var CTX = [
+    { prod: "mango", txt: "Una empresa de Guayas exporta mango a importadores de Estados Unidos.", comp: "importadores estadounidenses", vend: "exportadores ecuatorianos", u: "toneladas", u1: "tonelada", pais: "Estados Unidos" },
+    { prod: "palmito", txt: "Una procesadora de Santo Domingo exporta palmito en conserva a Francia.", comp: "importadores franceses", vend: "exportadores ecuatorianos", u: "toneladas", u1: "tonelada", pais: "Francia" },
+    { prod: "tilapia", txt: "Una acuícola de El Oro exporta filetes de tilapia a Estados Unidos.", comp: "importadores estadounidenses", vend: "exportadores ecuatorianos", u: "toneladas", u1: "tonelada", pais: "Estados Unidos" },
+    { prod: "chocolate fino", txt: "Una pyme de Quito exporta barras de chocolate fino a Japón.", comp: "importadores japoneses", vend: "exportadores ecuatorianos", u: "cajas", u1: "caja", pais: "Japón" },
+    { prod: "quinua orgánica", txt: "Una cooperativa de Chimborazo exporta quinua orgánica a Canadá.", comp: "importadores canadienses", vend: "exportadores ecuatorianos", u: "toneladas", u1: "tonelada", pais: "Canadá" },
+    { prod: "uchuva", txt: "Una asociación de Imbabura exporta uchuva a Países Bajos.", comp: "importadores neerlandeses", vend: "exportadores ecuatorianos", u: "toneladas", u1: "tonelada", pais: "Países Bajos" },
+    { prod: "café de especialidad", txt: "Una finca de Zamora exporta café de especialidad a Corea del Sur.", comp: "tostadores coreanos", vend: "exportadores ecuatorianos", u: "sacos", u1: "saco", pais: "Corea del Sur" },
+    { prod: "rosas", txt: "Una florícola de Tabacundo exporta rosas a Rusia y Europa del Este.", comp: "importadores europeos", vend: "exportadores ecuatorianos", u: "cajas", u1: "caja", pais: "Europa del Este" },
+    { prod: "artesanías de tagua", txt: "Un taller de Manabí exporta artesanías de tagua a Italia.", comp: "distribuidores italianos", vend: "talleres ecuatorianos", u: "lotes", u1: "lote", pais: "Italia" },
+    { prod: "harina de plátano", txt: "Una pyme de Los Ríos exporta harina de plátano a Chile.", comp: "importadores chilenos", vend: "exportadores ecuatorianos", u: "toneladas", u1: "tonelada", pais: "Chile" }
+  ];
+  var FORM_EQ = "Equilibrio: a − bQ = c + dQ → Q* = (a − c) ÷ (b + d); P* = c + dQ*";
+
+  // ---------- 3. Equilibrio ----------
+  function genEquilibrio(ctx) {
+    return function () {
+      var m = mercado();
+      var dq = [
+        { Q: (m.a - m.c) / m.b, msg: "Dividiste (a − c) solo para b: olvidaste sumar la pendiente de la oferta (b + d)." },
+        { Q: (m.a + m.c) / (m.b + m.d), msg: "Sumaste los interceptos (a + c). En el equilibrio se restan: a − c." },
+        { Q: (m.a - m.c) / Math.abs(m.b - m.d), msg: "Dividiste para la resta de las pendientes. Al pasar dQ al otro lado, las pendientes se suman: b + d." }
+      ];
+      var qs = [m.Q].concat(dq.map(function (x) { return x.Q; }));
+      if (new Set(qs.map(function (x) { return x.toFixed(1); })).size < 4) fail();
+      var lab = function (q) { return "Q* = " + fq(q) + " " + ctx.u + "; P* = " + usd(Math.round(m.c + m.d * q)); };
+      var ops = [{ t: lab(m.Q), ok: true, k: m.Q, msg: "Correcto." }].concat(dq.map(function (x) { return { t: lab(x.Q), ok: false, k: x.Q, msg: x.msg }; }));
+      return calcQ(ctx.txt + " El área comercial estimó estas funciones:\n" + curvas(m, ctx) + "\nPara negociar los contratos del próximo mes, ¿cuáles son la cantidad y el precio de equilibrio?", ops, {
+        input: { label: "Escribe Q* (" + ctx.u + ")", valor: m.Q },
+        explic: "En equilibrio, " + fmt(m.a) + " − " + m.b + "Q = " + fmt(m.c) + " + " + m.d + "Q → " + fmt(m.a - m.c) + " = " + (m.b + m.d) + "Q → Q* = " + fmt(m.Q) + ". P* = " + fmt(m.c) + " + " + m.d + "(" + m.Q + ") = " + usd(m.P) + ".",
+        formula: FORM_EQ, repaso: REP.equil
+      });
+    };
+  }
+  function genFaltante(ctx) {
+    return function () {
+      var m = mercado(), L = lcm(m.b, m.d), k = rnd(1, 4), D = k * L;
+      var arriba = Math.random() < 0.5, P0 = arriba ? m.P + D : m.P - D;
+      var Qd = (m.a - P0) / m.b, Qo = (P0 - m.c) / m.d;
+      if (Qd <= 0 || Qo <= 0) fail();
+      var gap = Math.abs(Qd - Qo), tipo = arriba ? "Excedente" : "Faltante", otro = arriba ? "Faltante" : "Excedente";
+      var big = Math.max(Qd, Qo);
+      if (big === gap || Qd + Qo === gap) fail();
+      var ops = [
+        { t: tipo + " de " + fq(gap) + " " + ctx.u, ok: true, k: gap, msg: "Correcto." },
+        { t: otro + " de " + fq(gap) + " " + ctx.u, ok: false, k: gap + 0.001, msg: arriba ? "Por encima del equilibrio los vendedores ofrecen más de lo que se demanda: es excedente, no faltante." : "Por debajo del equilibrio se demanda más de lo que se ofrece: es faltante, no excedente." },
+        { t: tipo + " de " + fq(big) + " " + ctx.u, ok: false, k: big, msg: "Esa es solo una de las cantidades. El " + tipo.toLowerCase() + " es la diferencia entre la cantidad demandada y la ofrecida." },
+        { t: tipo + " de " + fq(Qd + Qo) + " " + ctx.u, ok: false, k: Qd + Qo, msg: "Sumaste las cantidades. El " + tipo.toLowerCase() + " es la diferencia |Qd − Qo|." }
+      ];
+      return calcQ(ctx.txt + " Las funciones del mercado son:\n" + curvas(m, ctx) + "\nEl equilibrio está en " + usd(m.P) + " por " + ctx.u1 + ", pero este mes el precio de mercado es " + usd(P0) + ". ¿Qué ocurre en el mercado a ese precio?", ops, {
+        input: { label: "Escribe la diferencia |Qd − Qo| (" + ctx.u + ")", valor: gap },
+        explic: "A " + usd(P0) + ": Qd = (" + fmt(m.a) + " − " + fmt(P0) + ") ÷ " + m.b + " = " + fq(Qd) + " y Qo = (" + fmt(P0) + " − " + fmt(m.c) + ") ÷ " + m.d + " = " + fq(Qo) + ". " + tipo + " de " + fq(gap) + " " + ctx.u + "; " + (arriba ? "el precio tiende a bajar." : "el precio tiende a subir."),
+        formula: "Qd = (a − P) ÷ b; Qo = (P − c) ÷ d. Si Qd > Qo hay faltante; si Qo > Qd hay excedente.", repaso: REP.equil
+      });
+    };
+  }
+
+  // ---------- 4. Excedentes ----------
+  function genExcedentes(ctx) {
+    return function () {
+      var m = mercado(), EC = m.Q * (m.a - m.P) / 2, EP = m.Q * (m.P - m.c) / 2;
+      if (EC === EP) fail();
+      var lab = function (x, y) { return "EC = " + usd(x) + "; EP = " + usd(y); };
+      var ops = [
+        { t: lab(EC, EP), ok: true, k: EC, msg: "Correcto." },
+        { t: lab(EP, EC), ok: false, k: EP, msg: "Invertiste los excedentes: el del consumidor está entre la demanda y P*; el del productor, entre P* y la oferta." },
+        { t: lab(EC + EP, EP), ok: false, k: EC + EP + 0.5, msg: "Ese valor es el excedente total (EC + EP), no solo el del consumidor." },
+        { t: lab(2 * EC, 2 * EP), ok: false, k: 2 * EC, msg: "Olvidaste multiplicar por ½: los excedentes son triángulos." }
+      ];
+      if (new Set(ops.map(function (o) { return o.t; })).size < 4) fail();
+      return calcQ(ctx.txt + " Las funciones del mercado son:\n" + curvas(m, ctx) + "\nEl equilibrio está en Q* = " + m.Q + " " + ctx.u + " y P* = " + usd(m.P) + ". ¿Cuánto valen el excedente del consumidor (compradores) y el excedente del productor (vendedores)?", ops, {
+        input: { label: "Escribe el EC (en dólares)", valor: EC },
+        explic: "EC = ½ × " + m.Q + " × (" + fmt(m.a) + " − " + fmt(m.P) + ") = " + usd(EC) + ". EP = ½ × " + m.Q + " × (" + fmt(m.P) + " − " + fmt(m.c) + ") = " + usd(EP) + ".",
+        formula: "EC = ½ × Q* × (a − P*); EP = ½ × Q* × (P* − c)", repaso: REP.exced
+      });
+    };
+  }
+
+  // ---------- Gráficos ----------
+  var LETRAS = ["A", "B", "C", "E", "F", "G", "H", "J", "K", "L", "M", "N", "R", "S", "T", "V", "W", "X", "Z"];
+  function svgBase(polys, extra) {
+    // coordenadas en espacio de datos: Q 0..250, P 0..4700 -> svg 300x220
+    var X = function (q) { return 40 + q * 1.0; }, Y = function (p) { return 190 - p * 0.037; };
+    var D = function (q) { return 4200 - 15 * q; }, S = function (q) { return 1200 + 10 * q; };
+    var s = '<svg viewBox="0 0 310 225" class="graf" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">';
+    polys.forEach(function (p) {
+      s += '<polygon points="' + p.pts.map(function (v) { return X(v[0]).toFixed(1) + "," + Y(v[1]).toFixed(1); }).join(" ") + '" fill="' + p.fill + '" opacity="0.75"/>';
+      s += '<text x="' + X(p.lab[0]) + '" y="' + Y(p.lab[1]) + '" font-size="15" font-weight="bold" text-anchor="middle" fill="#222">' + p.L + "</text>";
+    });
+    s += '<line x1="' + X(0) + '" y1="' + Y(D(0)) + '" x2="' + X(250) + '" y2="' + Y(D(250)) + '" stroke="#4b2c83" stroke-width="2.5"/>';
+    s += '<line x1="' + X(0) + '" y1="' + Y(S(0)) + '" x2="' + X(250) + '" y2="' + Y(S(250)) + '" stroke="#e87722" stroke-width="2.5"/>';
+    s += '<text x="' + X(245) + '" y="' + (Y(D(245)) - 6) + '" font-size="12">D</text><text x="' + X(240) + '" y="' + (Y(S(240)) + 16) + '" font-size="12">O</text>';
+    s += '<line x1="40" y1="190" x2="295" y2="190" stroke="#333"/><line x1="40" y1="190" x2="40" y2="10" stroke="#333"/>';
+    s += '<text x="290" y="205" font-size="11" text-anchor="end">Q</text><text x="30" y="16" font-size="11">P</text>';
+    s += (extra || "") + "</svg>";
+    return { s: s, X: X, Y: Y };
+  }
+  function graficoExcedentes() {
+    var L = shuffle(LETRAS).slice(0, 3);
+    var g = svgBase([
+      { pts: [[0, 4200], [0, 2400], [120, 2400]], fill: "#c9b6e4", lab: [35, 2900], L: L[0] },
+      { pts: [[0, 2400], [0, 1200], [120, 2400]], fill: "#f7c59f", lab: [35, 2000], L: L[1] },
+      { pts: [[0, 0], [0, 1200], [120, 2400], [120, 0]], fill: "#dddddd", lab: [60, 700], L: L[2] }
+    ], '<line x1="40" y1="101.2" x2="160" y2="101.2" stroke="#777" stroke-dasharray="4"/><line x1="160" y1="101.2" x2="160" y2="190" stroke="#777" stroke-dasharray="4"/><text x="34" y="105" font-size="11" text-anchor="end">P*</text><text x="160" y="203" font-size="11" text-anchor="middle">Q*</text>');
+    return { svg: g.s, EC: L[0], EP: L[1], C: L[2] };
+  }
+  function graficoImpuesto() {
+    var L = shuffle(LETRAS).slice(0, 4);
+    var qt = 80, pc = 4200 - 15 * qt, pv = 1200 + 10 * qt;
+    var X = function (q) { return 40 + q; }, Y = function (p) { return 190 - p * 0.037; };
+    var g = svgBase([
+      { pts: [[0, 4200], [0, pc], [qt, pc]], fill: "#c9b6e4", lab: [22, 3500], L: L[0] },
+      { pts: [[0, pc], [0, pv], [qt, pv], [qt, pc]], fill: "#b7dca6", lab: [40, (pc + pv) / 2 - 120], L: L[1] },
+      { pts: [[0, pv], [0, 1200], [qt, pv]], fill: "#f7c59f", lab: [22, 1650], L: L[2] },
+      { pts: [[qt, pc], [qt, pv], [120, 2400]], fill: "#f28b82", lab: [95, 2330], L: L[3] }
+    ], '<line x1="' + X(qt) + '" y1="' + Y(pc) + '" x2="' + X(qt) + '" y2="190" stroke="#777" stroke-dasharray="4"/><line x1="' + X(120) + '" y1="' + Y(2400) + '" x2="' + X(120) + '" y2="190" stroke="#777" stroke-dasharray="4"/>' +
+      '<text x="34" y="' + (Y(pc) + 4) + '" font-size="11" text-anchor="end">Pc</text><text x="34" y="' + (Y(pv) + 4) + '" font-size="11" text-anchor="end">Pv</text><text x="' + X(qt) + '" y="203" font-size="11" text-anchor="middle">Qt</text><text x="' + X(120) + '" y="203" font-size="11" text-anchor="middle">Q*</text>');
+    return { svg: g.s, EC: L[0], R: L[1], EP: L[2], PPM: L[3] };
+  }
+  function opsLetras(g, correcta, nombres, msgs) {
+    return nombres.map(function (n) { return { t: "Área " + g[n], ok: n === correcta, msg: n === correcta ? "Correcto." : msgs[n] }; });
+  }
+  function genGrafExc(objetivo) {
+    return function () {
+      var g = graficoExcedentes();
+      var preg = {
+        EC: "Un comprador comenta que, en conjunto, «estaban dispuestos a pagar más de lo que finalmente pagaron». ¿Qué área mide esa diferencia?",
+        EP: "Un vendedor quiere mostrar cuánto reciben los exportadores por encima del precio mínimo al que habrían vendido cada unidad. ¿Qué área mide esa ganancia?",
+        ET: "Un analista quiere medir la ganancia total que obtienen compradores y vendedores con el comercio. ¿Qué área o áreas la representan?"
+      }[objetivo];
+      if (objetivo === "ET") {
+        var opsT = [{ t: "Áreas " + g.EC + " + " + g.EP, ok: true, msg: "Correcto." }, { t: "Área " + g.EC, ok: false, msg: "Esa es solo la ganancia de los compradores (excedente del consumidor)." }, { t: "Área " + g.EP, ok: false, msg: "Esa es solo la ganancia de los vendedores (excedente del productor)." }, { t: "Áreas " + g.EP + " + " + g.C, ok: false, msg: "Incluiste el costo de los vendedores (bajo la oferta), que no es ganancia." }];
+        return otherQ("graf", "El gráfico muestra el mercado de exportación de un producto ecuatoriano en equilibrio. D es la demanda de los importadores y O es la oferta de los exportadores. " + preg, opsT, { svg: g.svg, explic: "Excedente total = excedente del consumidor (área " + g.EC + ") + excedente del productor (área " + g.EP + "). El área " + g.C + " es costo.", formula: "Excedente total = EC + EP", repaso: REP.exced });
+      }
+      var msgs = { EC: "Esa área está entre la demanda y P*: es el excedente del consumidor.", EP: "Esa área está entre P* y la oferta: es el excedente del productor.", C: "Esa área está bajo la oferta: es el mínimo que necesitan recibir los vendedores (su costo), no una ganancia." };
+      var ops = opsLetras(g, objetivo, ["EC", "EP", "C"], msgs);
+      ops.push(objetivo === "EC" ? { t: "Áreas " + g.EC + " + " + g.EP, ok: false, msg: "La suma de las dos áreas es el excedente total, no solo el de los compradores." } : { t: "Áreas " + g.EP + " + " + g.C, ok: false, msg: "Sumaste el costo de los vendedores: lo que está bajo la oferta no es ganancia." });
+      return otherQ("graf", "El gráfico muestra el mercado de exportación de un producto ecuatoriano en equilibrio. D es la demanda de los importadores y O es la oferta de los exportadores. " + preg, ops, {
+        svg: g.svg, explic: "La disposición a pagar está en la demanda y el precio mínimo de venta (costo) está en la oferta. Área " + g.EC + ": excedente del consumidor (entre D y P*). Área " + g.EP + ": excedente del productor (entre P* y O). Área " + g.C + ": costo de producir Q*.",
+        formula: "EC: entre la demanda y el precio. EP: entre el precio y la oferta.", repaso: REP.exced
+      });
+    };
+  }
+  function genGrafImp(objetivo) {
+    return function () {
+      var g = graficoImpuesto();
+      var preg = {
+        R: "El gobierno del país importador quiere identificar cuánto ingresa a sus arcas por el impuesto. ¿Qué área lo representa?",
+        PPM: "Un analista quiere señalar el bienestar que se pierde y que nadie recupera, ni siquiera el gobierno. ¿Qué área lo representa?",
+        EC: "Los compradores quieren saber qué parte de su excedente conservan después del impuesto. ¿Qué área lo representa?"
+      }[objetivo];
+      var msgs = { EC: "Esa área está entre la demanda y Pc: es el excedente del consumidor con impuesto.", R: "Ese rectángulo es (Pc − Pv) × Qt: la recaudación, que sí recibe el gobierno.", EP: "Esa área está entre Pv y la oferta: es el excedente del productor con impuesto.", PPM: "Ese triángulo entre Qt y Q* es la pérdida de peso muerto: nadie la recibe." };
+      var ops = opsLetras(g, objetivo, ["EC", "R", "EP", "PPM"], msgs);
+      return otherQ("graf", "El gráfico muestra el mercado de exportación de un producto ecuatoriano con un impuesto por unidad a los compradores. Pc es el precio que pagan los compradores, Pv el que reciben los vendedores, Qt la cantidad con impuesto y Q* la cantidad sin impuesto. " + preg, ops, {
+        svg: g.svg, explic: "Área " + g.R + ": recaudación = (Pc − Pv) × Qt. Área " + g.PPM + ": pérdida de peso muerto (entre Qt y Q*). Área " + g.EC + ": excedente del consumidor. Área " + g.EP + ": excedente del productor.",
+        formula: "Recaudación = t × Qt; PPM = ½ × t × (Q* − Qt)", repaso: REP.imp
+      });
+    };
+  }
+
+  // ---------- 5. Choques ----------
+  var EVD_UP = ["sube el ingreso de los hogares de {pais}, para quienes el {prod} es un bien normal", "una campaña de salud promociona el consumo de {prod} en {pais}", "sube el precio de un sustituto del {prod} en {pais}"];
+  var EVD_DN = ["una recesión reduce el ingreso de los hogares de {pais}, para quienes el {prod} es un bien normal", "baja el precio de un sustituto del {prod} en {pais}", "una alerta sanitaria reduce la confianza de los consumidores de {pais}"];
+  var EVS_DN = ["sube la tarifa del flete refrigerado que pagan los exportadores", "una plaga reduce los rendimientos de las fincas ecuatorianas", "sube el costo de los insumos que usan los productores"];
+  var EVS_UP = ["los productores adoptan una tecnología que reduce el costo por unidad", "baja el precio de los fertilizantes que usan los productores", "entran nuevas empresas exportadoras al mercado"];
+  function genChoque(ctx, lado) {
+    return function () {
+      var m = mercado(), k = rstep(10, 40, 5);
+      if (k >= m.Q - 10) fail();
+      var up = Math.random() < 0.5, D = k * (m.b + m.d), a2 = m.a, c2 = m.c, Q2, ev;
+      var sub = function (s) { return s.replace("{pais}", ctx.pais).replace("{prod}", ctx.prod); };
+      if (lado === "D") { a2 = up ? m.a + D : m.a - D; Q2 = up ? m.Q + k : m.Q - k; ev = sub(pick(up ? EVD_UP : EVD_DN)); }
+      else { c2 = up ? m.c - D : m.c + D; Q2 = up ? m.Q + k : m.Q - k; ev = sub(pick(up ? EVS_UP : EVS_DN)); }
+      if (c2 <= 0) fail();
+      var P2 = c2 + m.d * Q2;
+      var nueva = lado === "D" ? "la demanda pasa a P = " + fmt(a2) + " − " + m.b + "Q; la oferta no cambia: P = " + fmt(m.c) + " + " + m.d + "Q" : "la oferta pasa a P = " + fmt(c2) + " + " + m.d + "Q; la demanda no cambia: P = " + fmt(m.a) + " − " + m.b + "Q";
+      var Pfix = lado === "D" ? a2 - m.b * m.Q : c2 + m.d * m.Q;
+      var dq = [
+        { Q: m.Q, P: Pfix, msg: "No recalculaste la cantidad: después de un choque cambian el precio y la cantidad de equilibrio." },
+        { Q: (a2 - c2) / m.b, msg: "Dividiste solo para b. La cantidad de equilibrio es (a − c) ÷ (b + d)." },
+        { Q: (a2 - c2) / Math.abs(m.b - m.d), msg: "Dividiste para la resta de las pendientes; deben sumarse: b + d." }
+      ];
+      dq.forEach(function (x) { if (x.P === undefined) x.P = c2 + m.d * x.Q; });
+      var all = [Q2].concat(dq.map(function (x) { return x.Q; }));
+      if (new Set(all.map(function (x) { return x.toFixed(1); })).size < 4) fail();
+      var lab = function (q, p) { return "Q = " + fq(q) + " " + ctx.u + "; P = " + usd(Math.round(p)); };
+      var ops = [{ t: lab(Q2, P2), ok: true, k: Q2, msg: "Correcto." }].concat(dq.map(function (x) { return { t: lab(x.Q, x.P), ok: false, k: x.Q + 0.001, msg: x.msg }; }));
+      return calcQ(ctx.txt + " El equilibrio inicial es Q* = " + m.Q + " " + ctx.u + " y P* = " + usd(m.P) + ". Este mes " + ev + ", y " + nueva + " (Q en " + ctx.u + "; P en dólares por " + ctx.u1 + "). ¿Cuál es el nuevo equilibrio?", ops, {
+        input: { label: "Escribe la nueva cantidad de equilibrio (" + ctx.u + ")", valor: Q2 },
+        explic: "Igualando: " + fmt(a2) + " − " + m.b + "Q = " + fmt(c2) + " + " + m.d + "Q → Q = " + fmt(a2 - c2) + " ÷ " + (m.b + m.d) + " = " + Q2 + "; P = " + fmt(c2) + " + " + m.d + "(" + Q2 + ") = " + usd(P2) + ". Frente al inicio, " + (P2 > m.P ? "el precio sube" : "el precio baja") + " y la cantidad " + (Q2 > m.Q ? "sube" : "baja") + ".",
+        formula: FORM_EQ + ". Un choque cambia a (demanda) o c (oferta); se recalcula todo.", repaso: REP.choques
+      });
+    };
+  }
+
+  // ---------- 6. Impuesto ----------
+  function genImpuesto(ctx) {
+    return function () {
+      var m = mercado(), k = rstep(5, 20, 5); if (k >= m.Q - 10) fail();
+      var t = k * (m.b + m.d), Qt = m.Q - k, Pc = m.a - m.b * Qt, Pv = Pc - t, Qs = m.Q + k, Pcs = m.a - m.b * Qs;
+      var lab = function (pc, pv, q) { return "Pc = " + usd(pc) + "; Pv = " + usd(pv) + "; Q = " + fq(q) + " " + ctx.u; };
+      var ops = [
+        { t: lab(Pc, Pv, Qt), ok: true, k: Pc, msg: "Correcto." },
+        { t: lab(m.P, m.P - t, m.Q), ok: false, k: m.P, msg: "Supusiste que el vendedor absorbe todo el impuesto y que la cantidad no cambia." },
+        { t: lab(m.P + t, m.P, m.Q), ok: false, k: m.P + t, msg: "Sumaste todo el impuesto al precio sin recalcular la cantidad. El impuesto reduce la cantidad y se reparte entre compradores y vendedores." },
+        { t: lab(Pcs, Pcs - t, Qs), ok: false, k: Pcs, msg: "Usaste el impuesto con el signo equivocado: con impuesto, Pc = Pv + t, y la cantidad baja." }
+      ];
+      if (new Set(ops.map(function (o) { return o.k; })).size < 4) fail();
+      return calcQ(ctx.txt + " El país importador cobra a los compradores un impuesto de " + usd(t) + " por " + ctx.u1 + ". Las funciones del mercado son:\n" + curvas(m, ctx) + "\n¿Cuáles son el precio que pagan los compradores (Pc), el que reciben los vendedores (Pv) y la cantidad transada?", ops, {
+        input: { label: "Escribe la cantidad con impuesto (" + ctx.u + ")", valor: Qt },
+        explic: "Pc = Pv + " + t + ": " + fmt(m.a) + " − " + m.b + "Q = " + fmt(m.c) + " + " + m.d + "Q + " + t + " → Q = " + fmt(m.a - m.c - t) + " ÷ " + (m.b + m.d) + " = " + Qt + ". Pv = " + fmt(m.c) + " + " + m.d + "(" + Qt + ") = " + usd(Pv) + "; Pc = " + usd(Pc) + ".",
+        formula: "Con impuesto t a los compradores: a − bQ = c + dQ + t → Qt = (a − c − t) ÷ (b + d); Pv = c + dQt; Pc = Pv + t", repaso: REP.imp
+      });
+    };
+  }
+  function genRecaudacion(ctx) {
+    return function () {
+      var m = mercado(), k = rstep(5, 20, 5); if (k >= m.Q - 10) fail();
+      var t = k * (m.b + m.d), Qt = m.Q - k, R = t * Qt, PPM = t * k / 2;
+      var lab = function (r, p) { return "Recaudación = " + usd(r) + "; PPM = " + usd(p); };
+      var ops = [
+        { t: lab(R, PPM), ok: true, k: R, msg: "Correcto." },
+        { t: lab(PPM, R), ok: false, k: PPM, msg: "Confundiste los conceptos: la recaudación es el rectángulo t × Qt; la PPM es el triángulo entre Qt y Q*." },
+        { t: lab(t * m.Q, PPM), ok: false, k: t * m.Q, msg: "Calculaste la recaudación con la cantidad sin impuesto. El impuesto se cobra sobre lo que realmente se vende (Qt)." },
+        { t: lab(R, 2 * PPM), ok: false, k: R + 0.5, msg: "Olvidaste el ½ de la PPM: es un triángulo." }
+      ];
+      if (new Set(ops.map(function (o) { return o.t; })).size < 4) fail();
+      return calcQ(ctx.txt + " Por un impuesto de " + usd(t) + " por " + ctx.u1 + " a los compradores, la cantidad transada baja de " + m.Q + " a " + Qt + " " + ctx.u + " por mes. ¿Cuánto valen la recaudación y la pérdida de peso muerto (PPM)?", ops, {
+        input: { label: "Escribe la recaudación (en dólares)", valor: R },
+        explic: "Recaudación = " + t + " × " + Qt + " = " + usd(R) + ". PPM = ½ × " + t + " × (" + m.Q + " − " + Qt + ") = " + usd(PPM) + ".",
+        formula: "Recaudación = t × Qt; PPM = ½ × t × (Q* − Qt)", repaso: REP.imp
+      });
+    };
+  }
+
+  // ---------- 8. Elasticidades (cálculo) ----------
+  var pm = function (x1, x2) { return (x2 - x1) / ((x1 + x2) / 2); };
+  function genElas(kind, ctx) {
+    return function () {
+      var P1, P2, Q1, Q2, E, Ei, Ef, Einv, texto, lab, input, explic, formula;
+      if (kind === "dem" || kind === "of") {
+        P1 = rstep(10, 60, 2); P2 = P1 + rstep(2, Math.max(4, Math.round(P1 * 0.4)), 2);
+        Q1 = rstep(100, 600, 20); var dqv = rstep(10, Math.round(Q1 * 0.5), 10);
+        Q2 = kind === "dem" ? Q1 - dqv : Q1 + dqv;
+        E = Math.abs(pm(Q1, Q2) / pm(P1, P2));
+        Ei = Math.abs(((Q2 - Q1) / Q1) / ((P2 - P1) / P1)); Ef = Math.abs(((Q2 - Q1) / Q2) / ((P2 - P1) / P2)); Einv = 1 / E;
+        if (Math.abs(E - 1) < 0.08) fail();
+        var cl = function (x) { return x > 1.0049 ? "elástica" : (x < 0.9951 ? "inelástica" : "unitaria"); };
+        lab = function (x) { return (kind === "dem" ? "|E| = " : "Eo = ") + fmt(r2(x), 2) + "; " + cl(r2(x)); };
+        texto = kind === "dem"
+          ? ctx.txt + " Para probar cómo responden sus clientes, subió el precio de $" + P1 + " a $" + P2 + " por " + ctx.u1 + ", y sus ventas mensuales bajaron de " + Q1 + " a " + Q2 + " " + ctx.u + ". Con el método del punto medio, ¿cuál es la elasticidad precio de la demanda (en valor absoluto) y cómo se clasifica?"
+          : ctx.txt + " Cuando el precio internacional subió de $" + P1 + " a $" + P2 + " por " + ctx.u1 + ", los exportadores aumentaron la cantidad ofrecida de " + Q1 + " a " + Q2 + " " + ctx.u + " por mes. Con el método del punto medio, ¿cuál es la elasticidad precio de la oferta y cómo se clasifica?";
+        input = { label: "Escribe la elasticidad (dos decimales)", valor: r2(E), tol: 0.02 };
+        explic = "%ΔQ = (" + Q2 + " − " + Q1 + ") ÷ " + fq((Q1 + Q2) / 2) + " = " + fmt(pm(Q1, Q2) * 100, 2) + " %; %ΔP = (" + P2 + " − " + P1 + ") ÷ " + fq((P1 + P2) / 2) + " = " + fmt(pm(P1, P2) * 100, 2) + " %. Elasticidad = " + fmt(r2(E), 2) + " → " + cl(r2(E)) + "." + (kind === "dem" ? " Ingreso total: " + usd(P1 * Q1) + " → " + usd(P2 * Q2) + "." : "");
+        formula = "Punto medio: %ΔQ = (Q2 − Q1) ÷ [(Q1 + Q2)/2]; %ΔP = (P2 − P1) ÷ [(P1 + P2)/2]; E = %ΔQ ÷ %ΔP. Mayor que 1: elástica; menor que 1: inelástica.";
+        var vals = [E, Ei, Ef, Einv].map(r2);
+        if (new Set(vals).size < 4 || vals.some(function (v) { return Math.abs(v - 1) < 0.01; })) fail();
+        var ops = [
+          { t: lab(E), ok: true, k: r2(E), msg: "Correcto." },
+          { t: lab(Ei), ok: false, k: r2(Ei), msg: "Usaste los valores iniciales como base; el método del punto medio usa el promedio de los dos valores." },
+          { t: lab(Ef), ok: false, k: r2(Ef), msg: "Usaste los valores finales como base; el método del punto medio usa el promedio." },
+          { t: lab(Einv), ok: false, k: r2(Einv), msg: "Invertiste la fórmula: es %ΔQ ÷ %ΔP, no %ΔP ÷ %ΔQ." }
+        ];
+        return calcQ(texto, ops, { input: input, explic: explic, formula: formula, repaso: REP.elas });
+      }
+      // ingreso o cruzada
+      var X1 = kind === "ing" ? rstep(800, 3000, 100) : rstep(2, 20, 1);
+      var X2 = X1 + (kind === "ing" ? rstep(100, Math.round(X1 * 0.4 / 100) * 100 + 100, 100) : rstep(1, Math.max(2, Math.round(X1 * 0.5)), 1));
+      Q1 = rstep(100, 500, 20); var pos = Math.random() < 0.5, dq2 = rstep(10, Math.round(Q1 * 0.5), 10);
+      Q2 = pos ? Q1 + dq2 : Q1 - dq2;
+      E = pm(Q1, Q2) / pm(X1, X2);
+      Ei = ((Q2 - Q1) / Q1) / ((X2 - X1) / X1); Einv = 1 / E;
+      var vals2 = [E, Ei, Einv, -E].map(r2);
+      if (new Set(vals2).size < 4 || vals2.some(function (v) { return Math.abs(v) < 0.05; })) fail();
+      var cls = kind === "ing" ? function (x) { return x > 0 ? "bien normal" : "bien inferior"; } : function (x) { return x > 0 ? "sustitutos" : "complementarios"; };
+      lab = function (x) { return "E = " + fmt(r2(x), 2) + "; " + cls(x); };
+      var otro = kind === "ing" ? "" : pick([{ x: "el té", y: "el café" }, { x: "el banano ecuatoriano", y: "el banano colombiano" }, { x: "las salsas para mariscos", y: "el camarón" }, { x: "el azúcar", y: "el café" }]);
+      texto = kind === "ing"
+        ? "Una consultora estudia la demanda de " + ctx.prod + " ecuatoriano en " + ctx.pais + ". Cuando el ingreso mensual promedio de los hogares pasó de $" + fmt(X1) + " a $" + fmt(X2) + ", la cantidad demandada por mes pasó de " + Q1 + " a " + Q2 + " " + ctx.u + ". Con el método del punto medio, ¿cuál es la elasticidad ingreso y cómo se clasifica el bien?"
+        : "Una consultora estudia el mercado en " + ctx.pais + ". Cuando el precio de " + otro.y + " subió de $" + X1 + " a $" + X2 + " por unidad, la cantidad demandada de " + otro.x + " pasó de " + Q1 + " a " + Q2 + " unidades por mes. Con el método del punto medio, ¿cuál es la elasticidad cruzada y cómo se relacionan los bienes?";
+      var ops2 = [
+        { t: lab(E), ok: true, k: r2(E), msg: "Correcto." },
+        { t: lab(Ei), ok: false, k: r2(Ei) + 0.0001, msg: "Usaste los valores iniciales como base; el método del punto medio usa el promedio." },
+        { t: lab(Einv), ok: false, k: r2(Einv) + 0.0002, msg: "Invertiste la fórmula: la variación de la cantidad va en el numerador." },
+        { t: lab(-E), ok: false, k: r2(-E) + 0.0003, msg: "Te equivocaste de signo. Revisa si la cantidad subió o bajó: " + (kind === "ing" ? "si sube con el ingreso, el bien es normal." : "si sube cuando el otro bien se encarece, son sustitutos.") }
+      ];
+      return calcQ(texto, ops2, {
+        input: { label: "Escribe la elasticidad con su signo (dos decimales)", valor: r2(E), tol: 0.02 },
+        explic: "%ΔQ = (" + Q2 + " − " + Q1 + ") ÷ " + fq((Q1 + Q2) / 2) + " = " + fmt(pm(Q1, Q2) * 100, 2) + " %; %Δ" + (kind === "ing" ? "Y" : "Py") + " = (" + fmt(X2) + " − " + fmt(X1) + ") ÷ " + fq((X1 + X2) / 2) + " = " + fmt(pm(X1, X2) * 100, 2) + " %. E = " + fmt(r2(E), 2) + " → " + cls(E) + ".",
+        formula: kind === "ing" ? "E ingreso = %ΔQ ÷ %ΔY (punto medio). Positiva: bien normal; negativa: bien inferior." : "E cruzada = %ΔQx ÷ %ΔPy (punto medio). Positiva: sustitutos; negativa: complementarios.",
+        repaso: REP.elas
+      });
+    };
+  }
+
+  // ---------- 1. Precio relativo ----------
+  var PARES = [
+    { a: "camarón", b: "banano", pa: [4, 9], pb: [0.3, 0.6], quien: "Un importador de Singapur" },
+    { a: "cacao fino", b: "café arábica", pa: [6, 12], pb: [2, 5], quien: "Un chocolatero belga" },
+    { a: "flores de verano", b: "rosas", pa: [8, 14], pb: [3, 6], quien: "Un mayorista de Miami" },
+    { a: "atún en conserva", b: "palmito en conserva", pa: [5, 10], pb: [2, 4], quien: "Un supermercado chileno" }
+  ];
+  function genRelativo(par) {
+    return function () {
+      var pa = r2(par.pa[0] + Math.random() * (par.pa[1] - par.pa[0])), pb = r2(par.pb[0] + Math.random() * (par.pb[1] - par.pb[0]));
+      pa = Math.round(pa * 10) / 10; pb = Math.round(pb * 20) / 20;
+      var r = r2(pa / pb), inv = r2(pb / pa), dif = r2(pa - pb), sum = r2(pa + pb);
+      if (new Set([r, inv, dif, sum]).size < 4) fail();
+      var lab = function (x) { return fmt(x, 2) + " kg de " + par.b; };
+      var ops = [
+        { t: lab(r), ok: true, k: r, msg: "Correcto." },
+        { t: lab(inv), ok: false, k: inv, msg: "Dividiste al revés: el precio relativo de A en unidades de B es Pa ÷ Pb." },
+        { t: lab(dif), ok: false, k: dif, msg: "Restaste los precios; el precio relativo es un cociente, no una diferencia." },
+        { t: lab(sum), ok: false, k: sum, msg: "Sumaste los precios; el precio relativo es el cociente Pa ÷ Pb." }
+      ];
+      return calcQ(par.quien + " tiene un presupuesto fijo para comprar productos ecuatorianos. El kilo de " + par.a + " le cuesta $" + fmt(pa, 2) + " y el kilo de " + par.b + ", $" + fmt(pb, 2) + " (precios hipotéticos). ¿Cuál es el costo de oportunidad de comprar 1 kg adicional de " + par.a + "?", ops, {
+        input: { label: "Escribe el precio relativo (dos decimales)", valor: r, tol: 0.02 },
+        explic: "Precio relativo = " + fmt(pa, 2) + " ÷ " + fmt(pb, 2) + " = " + fmt(r, 2) + ". Por cada kilo de " + par.a + " se renuncia a " + fmt(r, 2) + " kg de " + par.b + ".",
+        formula: "Precio relativo de A = Pa ÷ Pb (unidades de B a las que se renuncia por cada unidad de A).", repaso: REP.mercado
+      });
+    };
+  }
+
+
+  function genNominal() {
+    return function () {
+      var a1 = rstep(8, 12, 1), b1 = rstep(5, 8, 1), a2 = a1 + rstep(1, 3, 1), b2 = b1 + rstep(3, 6, 1);
+      var r1 = r2(a1 / b1), rr = r2(a2 / b2);
+      if (!(rr < r1)) fail();
+      var vals = [rr, r2(b2 / a2), r1, r2(a2 / b1)];
+      if (new Set(vals).size < 4) fail();
+      var lab = function (x) { return fmt(x, 2) + " kg de cacao"; };
+      var ops = [
+        { t: lab(rr), ok: true, k: rr, msg: "Correcto." },
+        { t: lab(vals[1]), ok: false, k: vals[1], msg: "Dividiste al revés: el precio relativo del café es Pcafé ÷ Pcacao." },
+        { t: lab(r1), ok: false, k: r1, msg: "Ese es el precio relativo del año anterior; usa los precios del año que se pregunta." },
+        { t: lab(vals[3]), ok: false, k: vals[3], msg: "Mezclaste precios de años distintos: usa ambos precios del mismo año." }
+      ];
+      return calcQ("Un tostador de Loja compra café y cacao para elaborar productos de exportación. El año pasado, el kilo de café costaba $" + a1 + " y el de cacao, $" + b1 + ". Este año, el café cuesta $" + a2 + " y el cacao, $" + b2 + " (precios hipotéticos). Su contador dice que el café «se encareció». ¿Cuál es este año el precio relativo del café, medido en kilos de cacao?", ops, {
+        input: { label: "Escribe el precio relativo de este año (dos decimales)", valor: rr, tol: 0.02 },
+        explic: "Año pasado: " + a1 + " ÷ " + b1 + " = " + fmt(r1, 2) + " kg de cacao. Este año: " + a2 + " ÷ " + b2 + " = " + fmt(rr, 2) + ". El precio nominal del café subió, pero su precio relativo bajó: ahora cuesta menos cacao.",
+        formula: "Precio relativo = precio nominal de A ÷ precio nominal de B.", repaso: REP.mercado
+      });
+    };
+  }
+
+  // ---------- 10. Consumidor ----------
+  var CONS = [
+    { quien: "Una estudiante de Quito", x: "café importado", y: "café nacional", ux: "paquete", uy: "paquete", per: "a la semana" },
+    { quien: "Un turista en Otavalo", x: "tapices", y: "pulseras", ux: "tapiz", uy: "pulsera", per: "en su visita" },
+    { quien: "Un estudiante de Ambato", x: "barras de chocolate fino", y: "fundas de fruta deshidratada", ux: "barra", uy: "funda", per: "al mes" },
+    { quien: "Una deportista de Cuenca", x: "batidos de proteína", y: "frutas", ux: "batido", uy: "fruta", per: "a la semana" }
+  ];
+  function decr(n, lo, hi) { var v = [], x = rnd(lo, hi); for (var i = 0; i < n; i++) { v.push(x); x -= rnd(2, Math.max(3, Math.round(x / 3))); if (x < 1) x = 1; } return v; }
+  function strictly(v) { for (var i = 1; i < v.length; i++) if (v[i] >= v[i - 1]) return false; return true; }
+  function bundles(ux, uy, px, py, I) {
+    var out = []; for (var x = 0; x <= ux.length; x++) for (var y = 0; y <= uy.length; y++) {
+      var cost = x * px + y * py, u = ux.slice(0, x).reduce(function (s, v) { return s + v; }, 0) + uy.slice(0, y).reduce(function (s, v) { return s + v; }, 0);
+      out.push({ x: x, y: y, cost: cost, u: u });
+    } return out;
+  }
+  function consumidor(c, modo) {
+    return function () {
+      var px = pick([2, 3, 4]), py = 1;
+      var ux = decr(5, px * 5, px * 9), uy = decr(6, 6, 12);
+      if (!strictly(ux) || !strictly(uy)) fail();
+      var I = rnd(px * 2 + 2, px * 4 + 4), I0 = I, px0 = px;
+      var cambio = "";
+      if (modo === "precio") { px0 = px; px = px + pick([1, 2]); cambio = "El precio de " + c.x + " sube de $" + px0 + " a $" + px + ". "; }
+      if (modo === "ingreso") { I0 = I; I = I + rnd(3, 6); cambio = "Su presupuesto aumenta de $" + I0 + " a $" + I + ". "; }
+      var all = bundles(ux, uy, px, py, I), feas = all.filter(function (b) { return b.cost <= I; });
+      var best = feas.reduce(function (m, b) { return b.u > m.u ? b : m; }, feas[0]);
+      if (feas.filter(function (b) { return b.u === best.u; }).length > 1) fail();
+      if (best.x === 0 || best.y === 0) fail();
+      // goloso por UM sin dividir para el precio
+      var gx = 0, gy = 0, gc = 0; for (;;) { var nx = gx < ux.length && gc + px <= I ? ux[gx] : -1, ny = gy < uy.length && gc + py <= I ? uy[gy] : -1; if (nx < 0 && ny < 0) break; if (nx >= ny) { gx++; gc += px; } else { gy++; gc += py; } }
+      var cands = [];
+      if (!(gx === best.x && gy === best.y)) cands.push({ x: gx, y: gy, msg: "Elegiste por la utilidad marginal sin dividirla para el precio. La regla es comparar UM/P." });
+      var over = all.filter(function (b) { return b.cost > I && b.cost <= I + px && Math.abs(b.x - best.x) + Math.abs(b.y - best.y) <= 2; });
+      if (over.length) { var o = pick(over); cands.push({ x: o.x, y: o.y, msg: "Esa combinación cuesta $" + o.cost + ": supera el presupuesto de $" + I + "." }); }
+      if (modo === "precio" || modo === "ingreso") {
+        var prevAll = bundles(ux, uy, px0, py, I0).filter(function (b) { return b.cost <= I0; });
+        var pb = prevAll.reduce(function (m, b) { return b.u > m.u ? b : m; }, prevAll[0]);
+        if (!(pb.x === best.x && pb.y === best.y)) cands.push({ x: pb.x, y: pb.y, msg: "Esa era la combinación óptima antes del cambio; con el nuevo " + (modo === "precio" ? "precio" : "presupuesto") + " hay que recalcular." });
+      }
+      var rest = feas.filter(function (b) { return !(b.x === best.x && b.y === best.y) && b.u < best.u && b.u >= best.u * 0.75; });
+      shuffle(rest).forEach(function (b) { cands.push({ x: b.x, y: b.y, msg: "Esa combinación es posible, pero da menos utilidad total (" + b.u + " frente a " + best.u + "). Compara UM/P en cada compra." }); });
+      var seen = {}; seen[best.x + "," + best.y] = 1; var dist = [];
+      cands.forEach(function (c2) { var key = c2.x + "," + c2.y; if (!seen[key] && dist.length < 3) { seen[key] = 1; dist.push(c2); } });
+      if (dist.length < 3) fail();
+      var lab = function (b) { return b.x + " de X y " + b.y + " de Y"; };
+      var ops = [{ t: lab(best), ok: true, k: best.x * 100 + best.y, msg: "Correcto." }].concat(dist.map(function (d2) { return { t: lab(d2), ok: false, k: d2.x * 100 + d2.y, msg: d2.msg }; }));
+      var tabla = "UM de " + c.x + " (X), del 1.º al " + ux.length + ".º " + c.ux + ": " + ux.join(", ") + "\nUM de " + c.y + " (Y), del 1.º al " + uy.length + ".º " + c.uy + ": " + uy.join(", ");
+      var base = c.quien + " destina $" + I0 + " " + c.per + " a " + c.x + " (X), a $" + px0 + " cada " + c.ux + ", y a " + c.y + " (Y), a $" + py + " cada " + c.uy + ". Sus utilidades marginales son:\n" + tabla + "\n";
+      var texto = base + (modo === "base" ? "Si quiere la mayor utilidad posible con su presupuesto, ¿qué combinación debe comprar?" : cambio + "Con las mismas utilidades marginales, ¿cuál es ahora la combinación que maximiza su utilidad?");
+      var umpx = ux.map(function (v) { return fmt(r2(v / px), 2); }).join("; "), umpy = uy.join("; ");
+      return calcQ(texto, ops, {
+        input: { label: "Escribe cuántas unidades de X compra", valor: best.x },
+        explic: "UM/P de X (a $" + px + "): " + umpx + ". UM/P de Y (a $" + py + "): " + umpy + ". Comprando en orden de mayor UM por dólar sin pasarse del presupuesto ($" + I + "), la mejor combinación es " + best.x + " de X y " + best.y + " de Y (gasto $" + best.cost + "; utilidad total " + best.u + ")." + (modo === "ingreso" ? " Si ambos bienes son normales, al subir el ingreso se compra más de los dos o al menos no menos." : ""),
+        formula: "Regla: comprar la unidad con mayor UM/P mientras alcance el presupuesto; en el óptimo, UMx/Px ≈ UMy/Py y el gasto no supera el ingreso.", repaso: REP.cons
+      });
+    };
+  }
+
+  // ---------- Relación de columnas (determinantes y elasticidades) ----------
+  function relacion(intro, items, cats, ok, extra) {
+    // items: textos 1..4; cats: a..d; ok: array de letras correctas por ítem
+    return function () {
+      var L = ["a", "b", "c", "d"];
+      var correct = ok.map(function (l, i) { return (i + 1) + l; }).join(", ");
+      var perms = [], tries = 0;
+      while (perms.length < 3 && tries < 200) {
+        tries++; var p = ok.slice(), i = rnd(0, 3), j = rnd(0, 3); if (i === j) continue;
+        var t = p[i]; p[i] = p[j]; p[j] = t;
+        if (Math.random() < 0.5) { var i2 = rnd(0, 3), j2 = rnd(0, 3); if (i2 !== j2) { t = p[i2]; p[i2] = p[j2]; p[j2] = t; } }
+        var s = p.map(function (l, k) { return (k + 1) + l; }).join(", ");
+        if (s !== correct && perms.indexOf(s) < 0) perms.push(s);
+      }
+      var ops = [{ t: correct, ok: true, msg: "Correcto." }].concat(perms.map(function (s) {
+        var bad = s.split(", ").filter(function (x, k) { return x !== (k + 1) + ok[k]; }).map(function (x) { return x[0]; });
+        return { t: s, ok: false, msg: "Revisa los elementos " + bad.join(" y ") + ": " + extra.pista };
+      }));
+      var txt = intro + "\n" + extra.h1 + "\n" + items.map(function (x, k) { return (k + 1) + ". " + x; }).join("\n") + "\n" + extra.h2 + "\n" + cats.map(function (x, k) { return L[k] + ") " + x; }).join("\n");
+      return otherQ("rel", txt, ops, { explic: extra.explic, formula: extra.formula, repaso: extra.repaso });
+    };
+  }
+  var EFECTOS = ["Aumenta la demanda: suben el precio y la cantidad de equilibrio.", "Disminuye la demanda: bajan el precio y la cantidad de equilibrio.", "Aumenta la oferta: baja el precio y sube la cantidad de equilibrio.", "Disminuye la oferta: sube el precio y baja la cantidad de equilibrio."];
+  function relDet(ctx, ev) {
+    // ev: [[texto, letra]x4]
+    return relacion(ctx.txt + " En cuatro semanas distintas, el gerente recibe una noticia diferente y necesita anticipar cómo cambiará el mercado. Analice cada noticia por separado (ceteris paribus). Relacione cada noticia con su efecto en el mercado de exportación.",
+      ev.map(function (e) { return e[0]; }), EFECTOS, ev.map(function (e) { return e[1]; }),
+      { h1: "NOTICIAS", h2: "EFECTOS EN EL MERCADO", pista: "pregúntate si la noticia cambia lo que quieren comprar los importadores (demanda) o los costos y la capacidad de los exportadores (oferta).", explic: "Ingreso, gustos, precio de sustitutos y número de compradores mueven la demanda; costos, tecnología, clima y número de vendedores mueven la oferta. Correcto: " + ev.map(function (e, k) { return (k + 1) + e[1]; }).join(", ") + ".", formula: "Determinantes de la demanda: ingreso, gustos, precios de sustitutos y complementos, expectativas, número de compradores. Determinantes de la oferta: costos, tecnología, clima, expectativas, número de vendedores.", repaso: REP.mercado });
+  }
+
+  // ---------- Preguntas conceptuales (texto) ----------
+  function conc(tipo, texto, opts, extra) {
+    return function () { return otherQ(tipo, texto, opts.map(function (o, i) { return { t: o[0], ok: i === 0, msg: i === 0 ? "Correcto." : o[1] }; }), extra); };
+  }
+
+  var BANK = [];
+  function pos(n, tema, casos) { BANK.push({ pos: n, tema: tema, casos: casos }); }
+
+  // 1. Fundamentos
+  pos(1, "Fundamentos del mercado", [
+    { id: "1-rel-1", gen: genRelativo(PARES[0]) }, { id: "1-rel-2", gen: genRelativo(PARES[1]) }, { id: "1-rel-3", gen: genRelativo(PARES[2]) }, { id: "1-rel-4", gen: genRelativo(PARES[3]) }, { id: "1-nom-1", gen: genNominal() },
+    { id: "1-esc-1", gen: conc("conc", "La oferta mundial de quinua orgánica certificada es limitada y la demanda de tiendas naturistas en Canadá crece. Si nadie interviene en el mercado, ¿cómo se reparte la quinua disponible entre los compradores?",
+      [["El precio sube hasta que solo compran quienes están dispuestos a pagar más.", ""], ["Las tiendas que hicieron su pedido primero reciben toda la quinua disponible.", "El orden de llegada es otra forma de reparto; en un mercado libre reparte el precio."], ["Cada tienda recibe una cuota igual, sin importar cuánto esté dispuesta a pagar.", "Las cuotas iguales requieren que alguien intervenga; aquí nadie interviene."], ["Los productores reservan la quinua para los clientes con contratos más antiguos.", "Las relaciones previas no son el mecanismo de mercado; el precio raciona la escasez."]],
+      { explic: "Ante la escasez, el precio sube hasta igualar la cantidad demandada con la disponible: el bien queda en manos de quienes más lo valoran.", formula: "Escasez: los deseos superan los recursos disponibles; el precio funciona como mecanismo de reparto.", repaso: REP.mercado }) },
+    { id: "1-esc-2", gen: conc("conc", "Una helada reduce la cosecha de uchuva en la Sierra justo cuando aumentan los pedidos de los importadores neerlandeses. ¿Qué papel cumple el precio en esta situación?",
+      [["Raciona la fruta: al subir, iguala la cantidad demandada con la disponible.", ""], ["Ninguno: la fruta se reparte según el tamaño de cada importador sin importar el precio.", "El tamaño del comprador no reparte el bien en un mercado; lo hace el precio."], ["Baja para que todos los importadores puedan comprar la misma cantidad que antes.", "Con menos fruta y más pedidos el precio sube, no baja."], ["Se mantiene fijo porque los costos de producir uchuva no cambiaron.", "El precio responde a la escasez relativa, no solo a los costos."]],
+      { explic: "Cuando hay menos producto del que se desea comprar, el precio sube; eso reduce la cantidad demandada e incentiva a ofrecer más, hasta que se igualan.", formula: "Escasez → precio como racionador.", repaso: REP.mercado }) },
+    { id: "1-comp-1", gen: conc("sel", "Un estudiante sostiene que el mercado mundial de café arábica estándar se parece a un mercado competitivo. ¿Cuáles de estos rasgos respaldan su afirmación?\n1. Hay miles de productores en muchos países.\n2. Ningún productor puede fijar por sí solo el precio internacional.\n3. Para el comprador, el café estándar de distintos orígenes es muy parecido.\n4. Un solo comprador adquiere toda la producción mundial.\n5. Cada productor cobra el precio que considera conveniente.",
+      [["1, 2 y 3", ""], ["1, 2 y 4", "Un solo comprador (4) es lo contrario de la competencia."], ["2, 3 y 5", "Si cada productor fija su precio (5), tiene poder de mercado."], ["1, 3 y 5", "Cobrar el precio que se desea (5) no ocurre en un mercado competitivo."]],
+      { explic: "Mercado competitivo: muchos compradores y vendedores, producto muy parecido y nadie puede fijar el precio (1, 2 y 3).", formula: "Mercado competitivo: muchos participantes, producto homogéneo, precio dado.", repaso: REP.mercado }) },
+    { id: "1-comp-2", gen: conc("sel", "Un analista evalúa si el mercado de rosas en una subasta internacional es competitivo. ¿Cuáles de estos rasgos lo acercan a un mercado competitivo?\n1. Participan cientos de productores y cientos de compradores.\n2. Las rosas se clasifican por calidad estándar, de modo que un lote se parece a otro.\n3. Un solo productor ecuatoriano vende la mitad de todas las rosas.\n4. Ningún comprador ni vendedor puede fijar el precio por sí solo.\n5. Los compradores solo pueden adquirir rosas de un vendedor autorizado.",
+      [["1, 2 y 4", ""], ["1, 3 y 4", "Un vendedor con la mitad del mercado (3) tendría poder de mercado."], ["2, 4 y 5", "Un único vendedor autorizado (5) elimina la competencia."], ["1, 2 y 5", "Comprar solo a un vendedor autorizado (5) no es competencia."]],
+      { explic: "Muchos participantes (1), producto estandarizado (2) y nadie fija el precio (4) son rasgos de un mercado competitivo.", formula: "Mercado competitivo: muchos participantes, producto homogéneo, precio dado.", repaso: REP.mercado }) },
+    { id: "1-comp-3", gen: conc("conc", "Un exportador ecuatoriano de banano estándar quiere vender a $1 más por caja que el precio internacional, sin cambiar nada de su producto. Si el mercado es competitivo, ¿qué le ocurrirá?",
+      [["Perderá a sus compradores, que consiguen banano igual a precio de mercado.", ""], ["Venderá lo mismo, porque sus clientes son leales a su marca.", "En un mercado competitivo el producto es homogéneo; no hay marca que retenga al comprador."], ["Subirá el precio internacional, porque los demás exportadores lo imitarán de inmediato.", "Un vendedor individual no puede mover el precio de un mercado competitivo."], ["Ganará más, porque la demanda del banano es inelástica.", "La demanda del mercado puede ser inelástica, pero la que enfrenta un vendedor individual es muy elástica."]],
+      { explic: "En un mercado competitivo, cada vendedor es tomador de precios: si cobra más que el mercado, los compradores se van con otros vendedores de un producto igual.", formula: "Tomador de precios: el vendedor individual no puede influir en el precio.", repaso: REP.mercado }) }
+  ]);
+
+  // 2. Demanda y oferta
+  pos(2, "Demanda y oferta", [
+    { id: "2-det-1", gen: relDet(CTX[0], [["Sube el ingreso de los hogares estadounidenses, para quienes el mango es un bien normal.", "a"], ["Una plaga de mosca de la fruta reduce los rendimientos en Guayas.", "d"], ["Baja el precio del mango que Estados Unidos importa de México.", "b"], ["Los productores adoptan un sistema de riego que eleva el rendimiento.", "c"]]) },
+    { id: "2-det-2", gen: relDet(CTX[1], [["Sube la tarifa del flete marítimo que pagan los exportadores.", "d"], ["Un chef famoso promociona recetas con palmito en la televisión francesa.", "a"], ["Nuevas procesadoras ecuatorianas empiezan a exportar palmito.", "c"], ["Una recesión reduce el ingreso de los hogares franceses (bien normal).", "b"]]) },
+    { id: "2-det-3", gen: relDet(CTX[2], [["Los consumidores estadounidenses prefieren el salmón a la tilapia.", "b"], ["Baja el precio del alimento balanceado para peces.", "c"], ["Sube el precio del pollo, un sustituto de la tilapia en Estados Unidos.", "a"], ["Una enfermedad reduce la producción de las piscinas de El Oro.", "d"]]) },
+    { id: "2-det-4", gen: relDet(CTX[3], [["Sube el precio del cacao que usa la pyme como insumo.", "d"], ["Crece el turismo japonés a Ecuador y se difunde el chocolate ecuatoriano en Japón.", "a"], ["La pyme compra una máquina que produce más barras por hora.", "c"], ["Baja el precio del chocolate suizo en Japón.", "b"]]) },
+    { id: "2-mov-1", gen: conc("conc", "Una pyme de Quito exporta chocolate fino a Japón. En diciembre vendió más cajas que en noviembre y a un precio más alto. Con esos dos datos, el gerente concluye: «En el chocolate no se cumple la ley de la demanda». ¿Cuál es la explicación correcta?",
+      [["Las fiestas desplazaron la demanda; cada mes está en una curva distinta.", ""], ["El chocolate es una excepción: se compra más cuando sube su precio.", "La ley se cumple sobre una misma curva; aquí cambió un determinante."], ["La oferta aumentó en diciembre, y eso hizo subir el precio del chocolate fino.", "Un aumento de la oferta bajaría el precio, no lo subiría."], ["El precio más alto de diciembre hizo que aumentara la demanda.", "Confundes causa y efecto: el precio no desplaza la demanda del propio bien."]],
+      { explic: "La ley de la demanda compara precio y cantidad con todo lo demás constante. En diciembre cambiaron las preferencias (fiestas) y la demanda se desplazó a la derecha.", formula: "Cambio en el precio del bien → movimiento a lo largo de la curva. Cambio en un determinante → desplazamiento de la curva.", repaso: REP.mercado }) },
+    { id: "2-mov-2", gen: conc("conc", "Una acuícola de El Oro bajó el precio de la tilapia en Estados Unidos y, aun así, vendió menos que el mes anterior, porque se difundió una alerta sanitaria sobre pescados importados. Un socio concluye: «Bajar el precio no sirve». ¿Qué explicación es correcta?",
+      [["La alerta desplazó la demanda; cada mes está en una curva distinta.", ""], ["La tilapia es una excepción, porque se compra menos cuando baja su precio.", "La ley se cumple sobre una misma curva; aquí cambió un determinante."], ["La oferta de tilapia disminuyó, y eso redujo la cantidad vendida.", "Una caída de la oferta subiría el precio, no lo bajaría."], ["El precio más bajo provocó que la demanda de tilapia se contrajera.", "Confundes causa y efecto: el precio no desplaza la demanda del propio bien."]],
+      { explic: "La alerta sanitaria cambió las preferencias y la demanda se desplazó a la izquierda: por eso se vendió menos aunque el precio bajó.", formula: "Cambio en un determinante → desplazamiento de la curva.", repaso: REP.mercado }) },
+    { id: "2-sim-1", gen: conc("conc", "Una buena cosecha aumenta la oferta de mango ecuatoriano y, al mismo tiempo, una moda de batidos tropicales aumenta la demanda en Estados Unidos. Sin conocer el tamaño de cada cambio, ¿qué se puede concluir con certeza?",
+      [["Sube la cantidad; el precio puede subir o bajar según qué cambio sea mayor.", ""], ["Sube el precio; la cantidad puede subir o bajar según qué cambio sea mayor.", "Los dos cambios suben la cantidad; es el precio el que queda indeterminado."], ["Suben el precio y la cantidad, porque domina el aumento de la demanda.", "No se conoce el tamaño de cada cambio; no puedes suponer cuál domina."], ["Baja el precio, porque la buena cosecha siempre pesa más que la demanda.", "Sin magnitudes no se sabe qué efecto sobre el precio domina."]],
+      { explic: "Más oferta: precio ↓ y cantidad ↑. Más demanda: precio ↑ y cantidad ↑. La cantidad sube con certeza; el precio depende de qué desplazamiento sea mayor.", formula: "Choques simultáneos: la variable en la que ambos efectos coinciden es segura; la otra queda indeterminada.", repaso: REP.choques }) },
+    { id: "2-sim-2", gen: conc("conc", "Sube el costo del flete para el palmito ecuatoriano y, en la misma temporada, una recesión reduce la demanda en Francia (bien normal). Sin conocer el tamaño de cada cambio, ¿qué se puede concluir con certeza?",
+      [["Baja la cantidad; el precio puede subir o bajar según qué cambio sea mayor.", ""], ["Baja el precio; la cantidad puede subir o bajar según qué cambio sea mayor.", "Los dos cambios bajan la cantidad; es el precio el que queda indeterminado."], ["Bajan el precio y la cantidad, porque domina la caída de la demanda.", "No se conoce el tamaño de cada cambio; no puedes suponer cuál domina."], ["Sube el precio, porque el flete más caro siempre se traslada al comprador.", "Sin magnitudes no se sabe qué efecto sobre el precio domina."]],
+      { explic: "Menos oferta: precio ↑ y cantidad ↓. Menos demanda: precio ↓ y cantidad ↓. La cantidad baja con certeza; el precio depende de qué desplazamiento sea mayor.", formula: "Choques simultáneos: la variable en la que ambos efectos coinciden es segura; la otra queda indeterminada.", repaso: REP.choques }) },
+    { id: "2-ley-p2", p2: true, gen: conc("comp", "Una empresa de Cotopaxi exporta brócoli a Japón. Complete: «Cuando sube el precio del brócoli ecuatoriano, los importadores compran menos por el efecto ______, porque otros vegetales se vuelven relativamente más baratos, y por el efecto ______, porque con el mismo presupuesto alcanza para menos. Por eso la demanda tiene pendiente ______».",
+      [["sustitución – ingreso – negativa", ""], ["ingreso – sustitución – negativa", "Invertiste los efectos: el que compara con otros bienes es el de sustitución."], ["sustitución – ingreso – positiva", "Si la cantidad baja cuando sube el precio, la pendiente es negativa."], ["ingreso – sustitución – positiva", "Invertiste los efectos y la pendiente."]],
+      { explic: "Efecto sustitución: el bien se encarece frente a sus alternativas. Efecto ingreso: el presupuesto alcanza para menos. Ambos reducen la cantidad demandada: pendiente negativa.", formula: "Ley de la demanda: ↑P → ↓Qd (efecto sustitución + efecto ingreso).", repaso: REP.mercado }) },
+    { id: "2-cmg-p2", p2: true, gen: conc("sel", "Un taller de Manabí exporta artesanías de tagua a Italia y ofrece más lotes cuando sube el precio. ¿Cuáles afirmaciones explican por qué?\n1. Producir lotes adicionales exige horas extra de los artesanos, con un costo mayor por unidad.\n2. Con un precio mayor, el taller cubre el costo de lotes que antes no le convenía producir.\n3. Los distribuidores italianos están dispuestos a pagar más por cada lote.\n4. Al subir el precio, el costo de producir cada lote adicional disminuye.\n5. Para producir más, el taller debe atraer artesanos de otras actividades pagando más.",
+      [["1, 2 y 5", ""], ["1, 3 y 4", "La disposición a pagar (3) explica la demanda, y la afirmación 4 es falsa."], ["2, 3 y 5", "La disposición a pagar de los compradores (3) explica la demanda, no la oferta."], ["1, 4 y 5", "El precio no reduce el costo de producir (4)."]],
+      { explic: "La oferta tiene pendiente positiva porque el costo marginal es creciente (1 y 5): solo un precio mayor cubre el costo de las unidades adicionales (2).", formula: "Ley de la oferta: ↑P → ↑Qo, porque el costo marginal es creciente.", repaso: REP.mercado }) }
+  ]);
+
+  // 3. Equilibrio (cálculo obligatorio)
+  pos(3, "Equilibrio de mercado", [0, 1, 2, 3, 4, 5].map(function (i) { return { id: "3-eq-" + i, gen: genEquilibrio(CTX[i]) }; })
+    .concat([6, 7, 8, 9].map(function (i) { return { id: "3-falt-" + i, gen: genFaltante(CTX[i]) }; })));
+
+  // 4. Excedentes y eficiencia
+  pos(4, "Excedentes y eficiencia", [0, 1, 2, 3].map(function (i) { return { id: "4-exc-" + i, gen: genExcedentes(CTX[i + 4]) }; }).concat([
+    { id: "4-graf-EC", gen: genGrafExc("EC") }, { id: "4-graf-EP", gen: genGrafExc("EP") },
+    { id: "4-graf-ET", gen: genGrafExc("ET") },
+    { id: "4-ef-1", gen: conc("conc", "Para abaratar el café a sus consumidores, un país importador fija un precio máximo por debajo del equilibrio para el café de especialidad ecuatoriano. A ese precio, los exportadores ofrecen menos sacos que antes. ¿Qué ocurre con el excedente total del mercado?",
+      [["Disminuye, porque dejan de venderse sacos que beneficiaban a ambos.", ""], ["Aumenta, porque los tostadores pagan menos por cada saco que compran.", "Miras solo el precio; el excedente total cae porque se transa menos cantidad."], ["No cambia, porque lo que pierden los exportadores lo ganan los tostadores.", "Ignoras que la cantidad transada baja: se pierde excedente que nadie recupera."], ["Aumenta, porque al precio más bajo los tostadores demandan más sacos.", "Se demanda más, pero solo se puede comprar lo que se ofrece."]],
+      { explic: "Fuera del equilibrio se transa menos que Q*: las unidades que dejan de venderse valían para los compradores más que su costo. El excedente total cae.", formula: "El equilibrio maximiza el excedente total (EC + EP).", repaso: REP.exced }) },
+    { id: "4-ef-2", gen: conc("conc", "Para proteger a los productores, se fija un precio mínimo de exportación de uchuva por encima del equilibrio. A ese precio, los importadores neerlandeses compran menos toneladas. ¿Qué ocurre con el excedente total del mercado?",
+      [["Disminuye, porque dejan de venderse toneladas que beneficiaban a ambos.", ""], ["Aumenta, porque los exportadores reciben más por cada tonelada vendida.", "Miras solo el precio; el excedente total cae porque se transa menos cantidad."], ["No cambia, porque lo que ganan los exportadores lo pierden los importadores.", "Ignoras que la cantidad transada baja: se pierde excedente que nadie recupera."], ["Aumenta, porque al precio más alto los exportadores ofrecen más toneladas.", "Se ofrece más, pero solo se vende lo que se demanda."]],
+      { explic: "Con el precio mínimo solo se vende lo que demandan los importadores, menos que Q*. Esas unidades perdidas reducen el excedente total.", formula: "El equilibrio maximiza el excedente total (EC + EP).", repaso: REP.exced }) },
+    { id: "4-ef-3", gen: conc("conc", "Un estudiante afirma: «En el equilibrio el excedente total es máximo, porque se venden todas las unidades cuyo valor para el comprador supera su costo para el vendedor». ¿Qué evaluación es correcta?",
+      [["Es correcta: producir más o menos que Q* reduce el excedente total.", ""], ["Es incorrecta: el excedente total es máximo cuando el precio es el más bajo posible.", "Un precio muy bajo reduce la cantidad ofrecida y el excedente total."], ["Es incorrecta: el excedente total es máximo cuando se vende la mayor cantidad posible.", "Vender más allá de Q* incluye unidades que cuestan más de lo que valen."], ["Es correcta solo si el excedente del consumidor es igual al del productor.", "La eficiencia no exige que los excedentes sean iguales."]],
+      { explic: "Hasta Q*, cada unidad vale para el comprador más de lo que cuesta al vendedor; después de Q*, cuesta más de lo que vale. Por eso el excedente total es máximo en Q*.", formula: "Eficiencia: excedente total máximo en Q*.", repaso: REP.exced }) }
+  ]));
+
+  // 5. Choques (cálculo obligatorio)
+  pos(5, "Choques de oferta y de demanda", [0, 1, 2, 3, 4].map(function (i) { return { id: "5-D-" + i, gen: genChoque(CTX[i], "D") }; })
+    .concat([5, 6, 7, 8, 9].map(function (i) { return { id: "5-S-" + i, gen: genChoque(CTX[i], "S") }; })));
+
+  // 6. Impuesto (cálculo obligatorio)
+  pos(6, "Impuestos: cálculo", [0, 2, 4, 6, 8].map(function (i) { return { id: "6-imp-" + i, gen: genImpuesto(CTX[i]) }; })
+    .concat([1, 3, 5, 7, 9].map(function (i) { return { id: "6-rec-" + i, gen: genRecaudacion(CTX[i]) }; })));
+
+  // 7. Impuesto: análisis
+  pos(7, "Impuestos: incidencia y bienestar", [
+    { id: "7-graf-R", gen: genGrafImp("R") }, { id: "7-graf-PPM", gen: genGrafImp("PPM") }, { id: "7-graf-EC", gen: genGrafImp("EC") },
+    { id: "7-inc-1", gen: conc("conc", "Un país europeo cobra a los compradores el mismo impuesto por kilo a dos productos ecuatorianos: cacao fino de aroma, que los chocolateros difícilmente pueden reemplazar, y banano, que los supermercados pueden traer de muchos países. La oferta de ambos es igual de elástica. ¿En cuál producto los exportadores ecuatorianos soportan una mayor parte del impuesto?",
+      [["En el banano, porque los supermercados cambian de proveedor.", ""], ["En el cacao, porque los chocolateros no pueden dejar de comprarlo.", "Invertiste la lógica: si los compradores no pueden dejar de comprar, ellos pagan más."], ["En los dos por igual, porque el impuesto es el mismo.", "La carga depende de las elasticidades, no solo del monto del impuesto."], ["En el cacao, porque su precio por kilo supera al del banano.", "El precio del producto no determina quién soporta el impuesto."]],
+      { explic: "El impuesto recae más sobre el lado menos elástico. Con demanda elástica (banano), los compradores se van y el precio que reciben los vendedores baja más.", formula: "Incidencia: paga más quien tiene la curva más inelástica.", repaso: REP.imp }) },
+    { id: "7-inc-2", gen: conc("conc", "Un país cobra a los compradores el mismo impuesto por unidad a rosas frescas, que las florícolas deben vender en pocos días porque se marchitan, y a artesanías de tagua, que los talleres pueden guardar o vender en otros mercados. La demanda de ambos es igual de elástica. ¿En cuál producto los productores ecuatorianos soportan una mayor parte del impuesto?",
+      [["En las rosas, porque las florícolas no pueden retenerlas.", ""], ["En la tagua, porque los talleres pueden guardarla sin venderla.", "Invertiste la lógica: poder almacenar hace la oferta más elástica y la carga menor."], ["En los dos por igual, porque la demanda tiene la misma elasticidad.", "Ignoras la elasticidad de la oferta, que es distinta en los dos productos."], ["En la tagua, porque es una artesanía con un precio unitario mayor.", "El precio del producto no determina quién soporta el impuesto."]],
+      { explic: "Las florícolas tienen una oferta muy inelástica (deben vender ya): soportan la mayor parte del impuesto. Los talleres de tagua pueden esperar o vender en otro lado.", formula: "Incidencia: paga más quien tiene la curva más inelástica.", repaso: REP.imp }) },
+    { id: "7-inc-3", gen: conc("conc", "Con un impuesto de $40 por caja a los compradores, el precio que pagan los importadores sube $30 y el que reciben los exportadores baja $10. ¿Qué indica este reparto?",
+      [["La demanda es más inelástica que la oferta en este mercado.", ""], ["La oferta es más inelástica que la demanda en este mercado.", "Si la oferta fuera más inelástica, los vendedores cargarían más del impuesto."], ["El impuesto lo pagan los compradores porque la ley se lo cobra a ellos.", "Quién entrega el impuesto al fisco no determina quién lo soporta."], ["Las dos curvas tienen la misma elasticidad en este mercado.", "Con igual elasticidad, el impuesto se repartiría en partes más parecidas."]],
+      { explic: "Los compradores cargan $30 de $40: son el lado menos elástico (menos capaces de dejar de comprar).", formula: "Incidencia: paga más quien tiene la curva más inelástica.", repaso: REP.imp }) },
+    { id: "7-inc-4", gen: conc("conc", "Un estudiante afirma: «Si el impuesto se cobra a los compradores, ellos lo pagan todo». ¿Qué evaluación es correcta?",
+      [["Es incorrecta: el reparto depende de las elasticidades.", ""], ["Es correcta: quien entrega el impuesto al gobierno es quien lo soporta.", "Al bajar la cantidad, también baja el precio que reciben los vendedores."], ["Es incorrecta: el impuesto siempre lo soportan por completo los vendedores.", "Lo soportan ambos lados, en proporción a sus elasticidades."], ["Es correcta solo si la oferta es más elástica que la demanda.", "Aun así los vendedores cargan una parte; nunca es todo de un lado salvo casos extremos."]],
+      { explic: "Con impuesto, Pc sube y Pv baja: ambos lados cargan una parte. El reparto depende de las elasticidades relativas.", formula: "Pc − Pv = t; la carga se reparte según elasticidades.", repaso: REP.imp }) },
+    { id: "7-ppm-1", gen: conc("conc", "Un gobierno analiza duplicar un impuesto por unidad. Con demanda y oferta lineales, ¿qué ocurre con la pérdida de peso muerto?",
+      [["Se multiplica por cuatro, porque crecen la base y la altura.", ""], ["Se duplica, porque crece en la misma proporción que el impuesto.", "El triángulo crece en base (impuesto) y en altura (reducción de cantidad)."], ["No cambia, porque la pérdida solo depende de las elasticidades.", "Depende también del tamaño del impuesto."], ["Disminuye, porque el gobierno recauda más.", "La recaudación no compensa la pérdida de peso muerto."]],
+      { explic: "PPM = ½ × t × ΔQ, y ΔQ es proporcional a t. Si t se duplica, ΔQ también: la PPM se multiplica por 4.", formula: "PPM = ½ × t × (Q* − Qt)", repaso: REP.imp }) },
+    { id: "7-ppm-2", gen: conc("conc", "Después de un impuesto, un analista suma el excedente del consumidor, el excedente del productor y la recaudación, y obtiene menos que el excedente total sin impuesto. ¿Cómo se explica la diferencia?",
+      [["Es la pérdida de peso muerto de las unidades que dejan de venderse.", ""], ["Es un error de cálculo: la suma debería ser igual al excedente inicial.", "Sin sumar la PPM la cuenta no cuadra; esa diferencia existe siempre."], ["Es la parte del impuesto que pagan los vendedores.", "Esa parte ya está dentro de la recaudación."], ["Es la ganancia adicional que obtiene el gobierno por el impuesto.", "La ganancia del gobierno es la recaudación, que ya se sumó."]],
+      { explic: "EC + EP + recaudación + PPM = excedente total sin impuesto. La PPM es lo que se pierde y nadie recibe.", formula: "EC' + EP' + R + PPM = EC + EP (sin impuesto)", repaso: REP.imp }) },
+    { id: "7-ppm-3", gen: conc("conc", "¿Por qué la pérdida de peso muerto de un impuesto no la recibe nadie?",
+      [["Porque son unidades que dejan de producirse y venderse.", ""], ["Porque el gobierno la gasta en administrar el impuesto.", "Los costos administrativos son otra cosa; la PPM existe aunque no haya costos."], ["Porque se la quedan los vendedores como mayor ganancia.", "Los vendedores pierden excedente; no ganan la PPM."], ["Porque los compradores la ahorran al comprar menos unidades.", "Lo que se deja de comprar valía más que su costo: es una pérdida, no un ahorro."]],
+      { explic: "Al subir Pc y bajar Pv, se dejan de transar unidades que habrían generado excedente. Como no se transan, nadie recibe ese valor.", formula: "PPM = ½ × t × (Q* − Qt)", repaso: REP.imp }) }
+  ]);
+
+  // 8. Elasticidad (cálculo obligatorio)
+  pos(8, "Elasticidad: cálculo", [
+    { id: "8-dem-1", gen: genElas("dem", CTX[7]) }, { id: "8-dem-2", gen: genElas("dem", CTX[3]) }, { id: "8-dem-3", gen: genElas("dem", CTX[8]) },
+    { id: "8-of-1", gen: genElas("of", CTX[0]) }, { id: "8-of-2", gen: genElas("of", CTX[4]) }, { id: "8-of-3", gen: genElas("of", CTX[6]) },
+    { id: "8-ing-1", gen: genElas("ing", CTX[2]) }, { id: "8-ing-2", gen: genElas("ing", CTX[5]) }, { id: "8-ing-3", gen: genElas("ing", CTX[1]) },
+    { id: "8-cru-1", gen: genElas("cru", CTX[0]) }, { id: "8-cru-2", gen: genElas("cru", CTX[3]) }, { id: "8-cru-3", gen: genElas("cru", CTX[6]) }
+  ]);
+
+  // 9. Elasticidad: interpretación
+  pos(9, "Elasticidad: interpretación", [
+    { id: "9-it-1", gen: conc("conc", "Una florícola estima |E| = 1,40 en el mercado A y |E| = 0,55 en el mercado B. Su objetivo es aumentar el ingreso total. ¿Qué decisión de precio cumple ese objetivo?",
+      [["Bajar el precio en A y subirlo en B.", ""], ["Subir el precio en A y bajarlo en B.", "Aplicaste la regla al revés: en demanda elástica conviene bajar el precio."], ["Subir el precio en ambos mercados.", "En A (elástica) subir el precio reduce el ingreso total."], ["Mantener ambos precios.", "El ingreso total sí depende de la elasticidad: puedes aumentarlo."]],
+      { explic: "Demanda elástica: si baja el precio, la cantidad sube más que proporcionalmente y el ingreso total sube. Demanda inelástica: si sube el precio, el ingreso total sube.", formula: "|E| > 1: P↓ → IT↑. |E| < 1: P↑ → IT↑.", repaso: REP.elas }) },
+    { id: "9-it-2", gen: conc("conc", "Un taller vende artesanías de tagua en dos mercados. En Italia, sus clientes las consideran piezas únicas y casi no encuentran sustitutos. En Estados Unidos compiten con muchas artesanías parecidas de otros países. Su objetivo es aumentar el ingreso total. ¿Qué decisión de precio es la más adecuada?",
+      [["Subir el precio en Italia y bajarlo en Estados Unidos.", ""], ["Bajar el precio en Italia y subirlo en Estados Unidos.", "Al revés: pocos sustitutos implica demanda inelástica, donde conviene subir el precio."], ["Subir el precio en los dos mercados.", "En Estados Unidos, con muchos sustitutos, subir el precio reduce el ingreso."], ["Bajar el precio en los dos mercados.", "En Italia, con demanda inelástica, bajar el precio reduce el ingreso."]],
+      { explic: "Pocos sustitutos → demanda inelástica → subir el precio aumenta el ingreso total. Muchos sustitutos → demanda elástica → bajar el precio aumenta el ingreso total.", formula: "|E| > 1: P↓ → IT↑. |E| < 1: P↑ → IT↑.", repaso: REP.elas }) },
+    { id: "9-it-3", gen: conc("conc", "Una exportadora de quinua subió su precio un 10 % y su ingreso total por ventas aumentó. ¿Qué se puede concluir sobre la demanda que enfrenta?",
+      [["Es inelástica: la cantidad bajó menos que proporcionalmente al precio.", ""], ["Es elástica: la cantidad bajó en mayor proporción que la subida del precio.", "Si la cantidad bajara más que proporcionalmente, el ingreso total caería."], ["Es unitaria: el ingreso total no puede cambiar cuando sube el precio.", "Con demanda unitaria el ingreso no cambia; aquí aumentó."], ["No se puede saber, porque el ingreso no depende de la elasticidad.", "La relación entre precio e ingreso total revela la elasticidad."]],
+      { explic: "Si al subir el precio el ingreso total sube, la cantidad cayó menos que proporcionalmente: demanda inelástica.", formula: "IT = P × Q. |E| < 1: P↑ → IT↑.", repaso: REP.elas }) },
+    { id: "9-det-1", gen: conc("sel", "Una exportadora de chocolate fino evalúa subir precios y quiere saber en qué mercados perdería más clientes. ¿Qué situaciones hacen más elástica la demanda de su chocolate?\n1. En el mercado de destino hay muchas marcas de chocolate parecidas.\n2. El chocolate representa una parte muy pequeña del gasto de los compradores.\n3. Los distribuidores tienen meses para buscar otros proveedores antes de renovar contratos.\n4. Los compradores consideran que el chocolate ecuatoriano es único.\n5. En ese mercado, el chocolate fino se compra como artículo de lujo.",
+      [["1, 3 y 5", ""], ["1, 2 y 4", "Poco peso en el gasto (2) y percibirse como único (4) hacen la demanda menos elástica."], ["2, 3 y 5", "Que pese poco en el gasto (2) hace la demanda menos elástica."], ["1, 4 y 5", "Percibirse como único (4) hace la demanda menos elástica."]],
+      { explic: "Más elástica cuando: hay sustitutos cercanos (1), más tiempo para ajustarse (3), bien de lujo (5). Menos elástica cuando pesa poco en el gasto o no tiene sustitutos.", formula: "Determinantes: sustitutos, necesidad o lujo, peso en el gasto, plazo.", repaso: REP.elas }) },
+    { id: "9-det-2", gen: conc("conc", "¿En cuál de estos casos es más probable que la demanda sea inelástica?",
+      [["Sal de mesa, que pesa poco en el gasto y casi no tiene sustitutos.", ""], ["Viajes de turismo a Galápagos, que son un gasto alto y además opcional.", "Un bien de lujo con gasto alto suele tener demanda elástica."], ["Una marca específica de banano, entre muchas marcas parecidas.", "Una marca entre muchas parecidas tiene sustitutos cercanos: demanda elástica."], ["Chocolates finos importados, comprados como regalo ocasional.", "Un artículo de lujo ocasional suele tener demanda elástica."]],
+      { explic: "Bienes necesarios, con pocos sustitutos y que pesan poco en el gasto tienen demanda inelástica.", formula: "Determinantes de la elasticidad.", repaso: REP.elas }) },
+    { id: "9-of-1", gen: conc("conc", "Dos empacadoras de atún de Manta exportan a la Unión Europea. La primera trabaja al 60 % de su capacidad; la segunda, al 100 %. El precio internacional sube de forma inesperada. En las próximas semanas, ¿cuál puede aumentar más su producción?",
+      [["La primera, porque tiene capacidad ociosa y oferta más elástica.", ""], ["La segunda, porque a plena capacidad su oferta es más elástica.", "A plena capacidad no puede producir más sin ampliar la planta: su oferta es menos elástica."], ["Ninguna, porque la oferta no responde al precio en el corto plazo.", "La oferta sí responde si hay capacidad disponible."], ["Las dos por igual, porque enfrentan el mismo precio internacional.", "La respuesta depende de la capacidad de cada una, no solo del precio."]],
+      { explic: "Con capacidad ociosa, la empresa puede aumentar la producción rápidamente: su oferta es más elástica.", formula: "Elasticidad de la oferta: mayor con capacidad ociosa y a largo plazo.", repaso: REP.elas }) },
+    { id: "9-of-2", gen: conc("conc", "El precio mundial del cacao sube con fuerza. Un productor de Los Ríos decide sembrar más hectáreas porque «el precio alto va a durar». Un árbol nuevo tarda varios años en producir. ¿Qué evaluación es más sólida?",
+      [["Es riesgosa: a largo plazo otros también siembran y el precio baja.", ""], ["Es acertada: si la demanda sigue alta, el precio se mantendrá alto.", "Ignoras la respuesta de la oferta en el largo plazo."], ["Es acertada: a largo plazo la oferta es menos elástica y el precio sube más.", "Al revés: a largo plazo la oferta es más elástica."], ["Es riesgosa: a largo plazo la oferta se vuelve menos elástica que hoy.", "La conclusión es correcta, pero la razón no: la oferta se vuelve más elástica."]],
+      { explic: "A corto plazo la oferta de cacao es poco elástica y el precio sube mucho. A largo plazo muchos siembran, la oferta se vuelve más elástica y el precio tiende a bajar.", formula: "Elasticidad de la oferta: mayor a largo plazo.", repaso: REP.elas }) },
+    { id: "9-rel-1", gen: relacion("Una consultora estimó varias elasticidades (valores hipotéticos) para orientar a exportadores ecuatorianos. Relacione cada elasticidad con su clasificación.",
+      ["Elasticidad ingreso de la demanda de camarón premium: +1,6", "Elasticidad ingreso de la demanda de arroz de grano partido: −0,4", "Elasticidad cruzada entre la demanda de banano ecuatoriano y el precio del banano colombiano: +1,2", "Elasticidad cruzada entre la demanda de café y el precio del azúcar: −0,5"],
+      ["Bien normal", "Bien inferior", "Bienes sustitutos", "Bienes complementarios"], ["a", "b", "c", "d"],
+      { h1: "ELASTICIDADES", h2: "CLASIFICACIONES", pista: "revisa el tipo de elasticidad (ingreso o cruzada) y su signo.", explic: "Ingreso: positiva → normal; negativa → inferior. Cruzada: positiva → sustitutos; negativa → complementarios.", formula: "Signo de la elasticidad ingreso y de la cruzada.", repaso: REP.elas }) }
+  ]);
+
+  // 10. Consumidor
+  pos(10, "Decisión del consumidor", [
+    { id: "10-opt-1", gen: consumidor(CONS[0], "base") }, { id: "10-opt-2", gen: consumidor(CONS[1], "base") }, { id: "10-opt-3", gen: consumidor(CONS[2], "base") }, { id: "10-opt-4", gen: consumidor(CONS[3], "base") },
+    { id: "10-pre-1", gen: consumidor(CONS[0], "precio") }, { id: "10-pre-2", gen: consumidor(CONS[2], "precio") },
+    { id: "10-ing-1", gen: consumidor(CONS[1], "ingreso") }, { id: "10-ing-2", gen: consumidor(CONS[3], "ingreso") },
+    { id: "10-umd-1", gen: conc("conc", "Un turista en Otavalo compra pulseras. La primera le da mucha satisfacción, la segunda algo menos y la quinta casi nada. ¿Qué concepto describe esta situación?",
+      [["Utilidad marginal decreciente: cada unidad extra aporta menos.", ""], ["Utilidad total decreciente: con más pulseras, su satisfacción total baja.", "La utilidad total sigue subiendo; lo que baja es lo que aporta cada unidad adicional."], ["Restricción presupuestaria: el dinero le alcanza para menos pulseras.", "La restricción se refiere al ingreso y los precios, no a la satisfacción."], ["Efecto sustitución: prefiere otras artesanías más baratas.", "El caso no menciona precios ni otros bienes."]],
+      { explic: "La utilidad marginal es la satisfacción adicional de cada unidad; suele disminuir a medida que se consume más.", formula: "UM = cambio en la utilidad total por una unidad adicional.", repaso: REP.cons }) },
+    { id: "10-umd-2", gen: conc("conc", "Un consumidor está en su combinación óptima entre café nacional y café importado. Sube el precio del café importado. Según la regla UM/P, ¿qué hará?",
+      [["Comprará menos café importado: bajó su UM por dólar.", ""], ["Comprará más café importado para mantener su satisfacción.", "Con un precio mayor, cada dólar gastado en ese café rinde menos utilidad."], ["No cambiará nada, porque su utilidad marginal no cambió.", "La UM no cambió, pero sí la UM por dólar (UM/P)."], ["Dejará de comprar café importado por completo.", "Ajusta en el margen hasta igualar UM/P; no necesariamente deja todo."]],
+      { explic: "Al subir Px, baja UMx/Px. El consumidor pasa gasto hacia el café nacional hasta que vuelvan a igualarse las UM por dólar.", formula: "Óptimo: UMx/Px = UMy/Py.", repaso: REP.cons }) }
+  ]);
+
+  var api = { BANK: BANK, fmt: fmt, shuffle: shuffle };
+  api.generar = function (caso) {
+    for (var i = 0; i < 300; i++) { try { var q = caso.gen(); q.id = caso.id; return q; } catch (e) { if (e.message !== "regen") throw e; } }
+    throw new Error("No se pudo generar " + caso.id);
+  };
+  if (typeof module !== "undefined") module.exports = api; else root.BANCO = api;
+})(this);
+
+</script>
+<script>
+(function(){
+"use strict";
+var B = window.BANCO, LS_KEY = "entrenoMicroP1_v1";
+var st = cargar() || { alumno:null, actual:null, historial:[] };
+var practica = null;
+
+function cargar(){ try { var s = localStorage.getItem(LS_KEY); return s ? JSON.parse(s) : null; } catch(e){ return null; } }
+function guardar(){ try { localStorage.setItem(LS_KEY, JSON.stringify(st)); } catch(e){} }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function $(id){ return document.getElementById(id); }
+var app = $("app");
+
+function casosPermitidos(p){ var p2 = st.alumno && st.alumno.curso.indexOf("Paralelo 2") >= 0; return p.casos.filter(function(c){ return !c.p2 || p2; }); }
+function nuevaPregunta(p){ var cs = casosPermitidos(p); var c = cs[Math.floor(Math.random()*cs.length)]; var q = B.generar(c); q.pos = p.pos; q.tema = p.tema; return q; }
+function parseNum(s){ s = String(s).trim().replace(/\s| /g,""); if (s.indexOf(",")>=0) s = s.replace(/\./g,"").replace(",","."); s = s.replace("−","-"); var v = parseFloat(s); return isFinite(v) ? v : null; }
+function tolOK(q, v){ var t = q.input.tol != null ? q.input.tol : Math.max(Math.abs(q.input.valor)*0.01, 0.5); return Math.abs(v - q.input.valor) <= t + 1e-9; }
+var TIPOS = {calc:"Cálculo", conc:"Conceptual", graf:"Gráfico", rel:"Relación de columnas", sel:"Selección de elementos", comp:"Completar", ord:"Ordenar"};
+
+// ---------- Pantallas ----------
+function inicio(){
+  if (!st.alumno) return registro();
+  var h = '<div class="card"><h2>Hola, ' + esc(st.alumno.nombre) + '</h2><p class="peq">' + esc(st.alumno.curso) + ' · <a href="#" id="cambiar">cambiar datos</a></p>' +
+    '<p class="aviso">Esta es una <b>nota de práctica</b>: no cuenta para la calificación. Las preguntas se parecen a las de la prueba, pero no son las mismas, y los números cambian en cada intento.</p>';
+  if (st.actual) h += '<button class="nar" id="seguir">Continuar el intento en curso (' + (st.actual.idx+1) + ' de 10)</button>';
+  h += '<button id="intento">Nuevo intento de 10 preguntas</button>';
+  h += '<label for="tema">Practicar un tema (preguntas sin límite y retroalimentación inmediata)</label><select id="tema">' +
+    B.BANK.map(function(p){ return '<option value="'+p.pos+'">'+p.pos+'. '+esc(p.tema)+'</option>'; }).join("") + '</select><button class="sec" id="practicar">Practicar este tema</button></div>';
+  h += historialHTML();
+  app.innerHTML = h;
+  $("cambiar").onclick = function(e){ e.preventDefault(); registro(); };
+  if ($("seguir")) $("seguir").onclick = function(){ mostrarIntento(); };
+  $("intento").onclick = function(){
+    if (st.actual && !confirm("Tienes un intento sin terminar. ¿Quieres descartarlo y empezar otro?")) return;
+    st.actual = { inicio: new Date().toISOString(), idx: 0, preguntas: B.BANK.map(function(p){ var q = nuevaPregunta(p); q.elegida = null; q.escrito = null; return q; }) };
+    guardar(); mostrarIntento();
+  };
+  $("practicar").onclick = function(){ var p = B.BANK.filter(function(x){ return x.pos == $("tema").value; })[0]; practica = { p: p, buenas: 0, total: 0 }; mostrarPractica(); };
+  if ($("pdf")) $("pdf").onclick = descargarPDF;
+}
+
+function registro(){
+  var a = st.alumno || { nombre:"", curso:"" };
+  app.innerHTML = '<div class="card"><h2>Tus datos</h2><p class="peq">Solo se guardan en este dispositivo y aparecen en tu PDF.</p>' +
+    '<label for="nom">Nombre y apellido</label><input type="text" id="nom" value="' + esc(a.nombre) + '">' +
+    '<label for="cur">Curso</label><select id="cur"><option value="">Elige tu curso</option>' +
+    ["3.º Negocios Internacionales – Paralelo 1","3.º Negocios Internacionales – Paralelo 2"].map(function(c){ return '<option'+(a.curso===c?' selected':'')+'>'+c+'</option>'; }).join("") +
+    '</select><button id="ok">Guardar y continuar</button><p id="err" class="peq" style="color:var(--mal)"></p></div>';
+  $("ok").onclick = function(){
+    var n = $("nom").value.trim(), c = $("cur").value;
+    if (n.length < 5 || n.split(/\s+/).length < 2){ $("err").textContent = "Escribe tu nombre y tu apellido."; return; }
+    if (!c){ $("err").textContent = "Elige tu curso."; return; }
+    st.alumno = { nombre: n, curso: c }; guardar(); inicio();
+  };
+}
+
+function preguntaHTML(q, n, tot){
+  var h = '<div class="card">';
+  if (tot) h += '<div class="prog"><div style="width:'+(100*n/tot)+'%"></div></div><p class="peq">Pregunta '+n+' de '+tot+'</p>';
+  h += '<div class="meta"><span class="chip">'+q.pos+'. '+esc(q.tema)+'</span><span class="chip tipo">'+TIPOS[q.tipo]+'</span> <button class="info" id="ibtn" title="Ver fórmula o idea clave">i</button></div>' +
+    '<div class="formula" id="form"><b>Fórmula o idea clave:</b> '+esc(q.formula)+'</div>' +
+    '<div class="enun">'+esc(q.texto)+'</div>' + (q.svg || "");
+  if (q.tipo === "calc") h += '<div class="entrada"><b>Paso 1.</b> '+esc(q.input.label)+':<br><input type="text" inputmode="decimal" id="num" value="'+(q.escrito!=null?esc(q.escrito):"")+'"> <button class="sec" id="numok">Registrar</button><div id="numfb" class="peq"></div></div><p class="peq"><b>Paso 2.</b> Elige la opción que coincide con tu resultado.</p>';
+  h += '<div id="opcs">' + q.opciones.map(function(o,i){ return '<label class="opc" data-i="'+i+'"><input type="radio" name="op" value="'+i+'"'+(q.elegida===i?' checked':'')+'>'+String.fromCharCode(65+i)+') '+esc(o.t)+'</label>'; }).join("") + '</div>';
+  return h;
+}
+function enlazarPregunta(q, onElegir, inmediato){
+  $("ibtn").onclick = function(){ var f = $("form"); f.style.display = f.style.display === "block" ? "none" : "block"; };
+  var bloqueado = q.tipo === "calc" && q.escrito == null;
+  var labs = document.querySelectorAll(".opc");
+  function marcar(){ labs.forEach(function(l){ l.classList.toggle("dis", bloqueado); l.classList.toggle("sel", +l.dataset.i === q.elegida); }); }
+  marcar();
+  if (q.tipo === "calc") $("numok").onclick = function(){
+    var v = parseNum($("num").value);
+    if (v == null){ $("numfb").textContent = "Escribe un número (usa coma para los decimales)."; return; }
+    q.escrito = $("num").value.trim(); bloqueado = false; marcar();
+    if (inmediato) { $("numfb").innerHTML = tolOK(q, v) ? '<span style="color:var(--ok)">✓ Tu resultado es correcto. Ahora elige la opción.</span>' : '<span style="color:var(--mal)">✗ Tu resultado no coincide. Revisa el procedimiento o usa el botón (i); luego elige la opción.</span>'; }
+    else $("numfb").textContent = "Resultado registrado. Ahora elige la opción.";
+    onElegir(null);
+  };
+  labs.forEach(function(l){ l.onclick = function(e){ if (bloqueado) { e.preventDefault(); return; } q.elegida = +l.dataset.i; marcar(); onElegir(q.elegida); }; });
+}
+
+function mostrarIntento(){
+  var a = st.actual, q = a.preguntas[a.idx];
+  app.innerHTML = preguntaHTML(q, a.idx+1, 10) + '<button class="sec" id="ant"'+(a.idx===0?' disabled':'')+'>Anterior</button><button id="sig">'+(a.idx===9?'Terminar y ver resultados':'Siguiente')+'</button><button class="sec" id="salir">Guardar y salir</button></div>';
+  enlazarPregunta(q, function(){ guardar(); }, false);
+  $("ant").onclick = function(){ a.idx--; guardar(); mostrarIntento(); };
+  $("salir").onclick = function(){ guardar(); inicio(); };
+  $("sig").onclick = function(){
+    if (q.elegida == null){ alert(q.tipo === "calc" && q.escrito == null ? "Primero registra tu resultado y luego elige una opción." : "Elige una opción."); return; }
+    if (a.idx < 9){ a.idx++; guardar(); mostrarIntento(); } else terminarIntento();
+  };
+  window.scrollTo(0,0);
+}
+
+function terminarIntento(){
+  var a = st.actual, nota = 0, porTema = [], errores = [];
+  a.preguntas.forEach(function(q){
+    var ok = q.opciones[q.elegida].ok; if (ok) nota++;
+    porTema.push({ pos:q.pos, tema:q.tema, ok:ok });
+    if (!ok) { var c = q.opciones.filter(function(o){ return o.ok; })[0];
+      errores.push({ pos:q.pos, tema:q.tema, texto:q.texto, elegida:q.opciones[q.elegida].t, msg:q.opciones[q.elegida].msg, correcta:c.t, explic:q.explic, repaso:q.repaso, escrito:q.escrito }); }
+  });
+  var reg = { fecha: new Date().toISOString(), nota: nota, porTema: porTema, errores: errores };
+  st.historial.push(reg); st.actual = null; guardar();
+  resultados(reg);
+}
+
+function resultados(reg){
+  var h = '<div class="card"><h2>Resultado del intento</h2><div class="nota">'+reg.nota+' / 10</div><p class="aviso">Nota de práctica: no cuenta para la calificación.</p>' +
+    '<table><tr><th>Tema</th><th>Resultado</th></tr>' + reg.porTema.map(function(t){ return '<tr><td>'+t.pos+'. '+esc(t.tema)+'</td><td>'+(t.ok?'<span style="color:var(--ok)">✓ Correcta</span>':'<span style="color:var(--mal)">✗ Incorrecta</span>')+'</td></tr>'; }).join("") + '</table></div>';
+  if (reg.errores.length){
+    h += '<div class="card"><h2>Tus errores y qué repasar</h2>' + reg.errores.map(function(e){
+      return '<div style="margin-bottom:14px"><span class="chip">'+e.pos+'. '+esc(e.tema)+'</span><div class="enun peq">'+esc(e.texto)+'</div>' +
+        (e.escrito!=null?'<p class="peq">Tu resultado escrito: '+esc(e.escrito)+'</p>':'') +
+        '<div class="fb mal"><b>Elegiste:</b> '+esc(e.elegida)+'<br>'+esc(e.msg)+'</div><div class="fb ok"><b>Respuesta correcta:</b> '+esc(e.correcta)+'<br>'+esc(e.explic)+'<br><i>Repasa: '+esc(e.repaso)+'</i></div></div>';
+    }).join("") + '</div>';
+  } else h += '<div class="card"><p>¡Excelente! No tuviste errores en este intento.</p></div>';
+  h += '<div class="card"><button id="otro">Hacer otro intento</button><button class="nar" id="pdf2">Descargar PDF</button><button class="sec" id="volver">Volver al inicio</button></div>';
+  app.innerHTML = h;
+  $("otro").onclick = function(){ st.actual = { inicio: new Date().toISOString(), idx: 0, preguntas: B.BANK.map(function(p){ var q = nuevaPregunta(p); q.elegida = null; q.escrito = null; return q; }) }; guardar(); mostrarIntento(); };
+  $("pdf2").onclick = descargarPDF; $("volver").onclick = inicio;
+  window.scrollTo(0,0);
+}
+
+function mostrarPractica(){
+  var q = nuevaPregunta(practica.p); q.elegida = null; q.escrito = null; var resp = false;
+  app.innerHTML = preguntaHTML(q) + '<div id="fb"></div><p class="peq" id="cont">Llevas '+practica.buenas+' correctas de '+practica.total+' en esta práctica.</p><button id="comp">Comprobar</button><button class="sec" id="otra">Otra pregunta</button><button class="sec" id="salir">Volver al inicio</button></div>';
+  enlazarPregunta(q, function(){}, true);
+  $("comp").onclick = function(){
+    if (resp) return;
+    if (q.elegida == null){ alert(q.tipo === "calc" && q.escrito == null ? "Primero registra tu resultado y luego elige una opción." : "Elige una opción."); return; }
+    resp = true; practica.total++; var o = q.opciones[q.elegida]; if (o.ok) practica.buenas++;
+    document.querySelectorAll(".opc").forEach(function(l){ var i = +l.dataset.i; l.classList.add("dis"); if (q.opciones[i].ok) l.classList.add("ok"); else if (i === q.elegida) l.classList.add("mal"); });
+    $("cont").textContent = "Llevas " + practica.buenas + " correctas de " + practica.total + " en esta práctica.";
+    $("fb").innerHTML = (o.ok ? '<div class="fb ok"><b>¡Correcto!</b> ' : '<div class="fb mal"><b>Incorrecto.</b> ' + esc(o.msg) + '<br>') + esc(q.explic) + '<br><i>Repasa: ' + esc(q.repaso) + '</i></div>';
+  };
+  $("otra").onclick = mostrarPractica; $("salir").onclick = inicio;
+  window.scrollTo(0,0);
+}
+
+function historialHTML(){
+  if (!st.historial.length) return '<div class="card"><h2>Tus intentos</h2><p class="peq">Aún no has terminado ningún intento.</p></div>';
+  var h = '<div class="card"><h2>Tus intentos</h2><table><tr><th>#</th><th>Fecha</th><th>Nota de práctica</th></tr>' +
+    st.historial.map(function(r,i){ return '<tr><td>'+(i+1)+'</td><td>'+new Date(r.fecha).toLocaleString("es-EC")+'</td><td>'+r.nota+' / 10</td></tr>'; }).join("") + '</table>';
+  var ref = temasReforzar(); if (ref.length) h += '<p><b>Temas a reforzar:</b> ' + ref.map(esc).join("; ") + '</p>';
+  h += '<button class="nar" id="pdf">Descargar PDF</button></div>';
+  return h;
+}
+function temasReforzar(){
+  var cnt = {}; st.historial.slice(-3).forEach(function(r){ r.porTema.forEach(function(t){ if (!t.ok) cnt[t.pos + ". " + t.tema] = (cnt[t.pos + ". " + t.tema] || 0) + 1; }); });
+  return Object.keys(cnt).sort(function(a,b){ return cnt[b]-cnt[a]; });
+}
+
+// ---------- PDF ----------
+function pdfTxt(s){
+  return String(s).replace(/−/g,"-").replace(/→/g,"->").replace(/Δ/g,"var.").replace(/↑/g," sube").replace(/↓/g," baja").replace(/≈/g,"~").replace(/≤/g,"<=").replace(/≥/g,">=").replace(/[✓]/g,"OK").replace(/[✗]/g,"X").replace(/ /g," ").replace(/[\u2013\u2014]/g,"-").replace(/[^\x00-\xFF]/g,"");
+}
+function descargarPDF(){
+  if (!window.jspdf){ alert("No se pudo cargar la librería del PDF. Revisa tu conexión a internet y vuelve a intentar."); return; }
+  if (!st.historial.length){ alert("Termina al menos un intento para descargar el PDF."); return; }
+  var doc = new window.jspdf.jsPDF({ unit:"mm", format:"a4" }), y = 15, W = 180;
+  function linea(t, size, bold, color){ doc.setFont("helvetica", bold?"bold":"normal"); doc.setFontSize(size||10); doc.setTextColor.apply(doc, color||[34,34,34]);
+    doc.splitTextToSize(pdfTxt(t), W).forEach(function(l){ if (y > 282){ doc.addPage(); y = 15; } doc.text(l, 15, y); y += (size||10)*0.45; }); y += 1.5; }
+  doc.setFillColor(75,44,131); doc.rect(0,0,210,10,"F"); doc.setFillColor(232,119,34); doc.rect(0,10,210,1.5,"F"); y = 20;
+  linea("Entrenamiento - Parcial 1 de Microeconomía", 15, true, [75,44,131]);
+  linea("Estudiante: " + st.alumno.nombre, 11, true);
+  linea("Curso: " + st.alumno.curso, 10);
+  linea("Fecha de descarga: " + new Date().toLocaleString("es-EC"), 10);
+  linea("NOTA DE PRÁCTICA, NO CUENTA PARA LA CALIFICACIÓN.", 10, true, [232,119,34]);
+  y += 2; linea("Intentos realizados", 12, true, [75,44,131]);
+  st.historial.forEach(function(r,i){ linea((i+1) + ". " + new Date(r.fecha).toLocaleString("es-EC") + "  -  Nota de práctica: " + r.nota + " / 10", 10); });
+  var u = st.historial[st.historial.length-1];
+  y += 2; linea("Detalle del último intento (" + u.nota + " / 10)", 12, true, [75,44,131]);
+  u.porTema.forEach(function(t){ linea((t.ok ? "[OK] " : "[X]  ") + t.pos + ". " + t.tema, 10); });
+  if (u.errores.length){ y += 2; linea("Errores del último intento", 12, true, [75,44,131]);
+    u.errores.forEach(function(e){ linea(e.pos + ". " + e.tema, 10, true); linea(e.texto, 9); if (e.escrito != null) linea("Resultado escrito: " + e.escrito, 9); linea("Elegiste: " + e.elegida + " -> " + e.msg, 9, false, [198,40,40]); linea("Correcta: " + e.correcta + " -> " + e.explic, 9, false, [46,125,50]); linea("Repasa: " + e.repaso, 9, false, [90,90,90]); y += 1; }); }
+  var ref = temasReforzar(); y += 2; linea("Temas a reforzar (últimos 3 intentos)", 12, true, [75,44,131]);
+  linea(ref.length ? ref.join("; ") : "Ninguno: acertaste todos los temas.", 10);
+  var nombre = "Entrenamiento_Micro_P1_" + st.alumno.nombre.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ ]/g,"").trim().replace(/\s+/g,"_") + ".pdf";
+  try { doc.save(nombre); } catch(e) {
+    try { var url = URL.createObjectURL(doc.output("blob")); var a = document.createElement("a"); a.href = url; a.download = nombre; document.body.appendChild(a); a.click(); a.remove(); }
+    catch(e2){ alert("Tu navegador bloqueó la descarga. Abre el applet desde Chrome o Safari y vuelve a intentar."); }
+  }
+}
+
+inicio();
+})();
+</script>
+</body>
+</html>
