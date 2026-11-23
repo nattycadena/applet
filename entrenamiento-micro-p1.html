@@ -3,61 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Entrenamiento · Parcial 1 de Microeconomía</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<title>Entrenamiento Parcial 1 · Microeconomía</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--mor:#4b2c83;--mor2:#6b4ba3;--nar:#e87722;--fondo:#f6f3fb;--ok:#2e7d32;--mal:#c62828;}
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--fondo);color:#222;line-height:1.45}
-header{background:var(--mor);color:#fff;padding:14px 18px;border-bottom:5px solid var(--nar)}
-header h1{margin:0;font-size:1.15rem}
-header p{margin:2px 0 0;font-size:.85rem;opacity:.9}
-main{max-width:820px;margin:0 auto;padding:16px}
-.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-h2{color:var(--mor);font-size:1.1rem;margin:0 0 10px}
-label{display:block;font-weight:600;margin:10px 0 4px}
-input[type=text],select{width:100%;padding:10px;border:1px solid #bbb;border-radius:8px;font-size:1rem}
-button{background:var(--mor);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-size:1rem;cursor:pointer;margin:6px 6px 0 0}
-button.sec{background:#fff;color:var(--mor);border:2px solid var(--mor)}
-button.nar{background:var(--nar)}
-button:disabled{opacity:.45;cursor:not-allowed}
-.aviso{background:#fff4e8;border-left:4px solid var(--nar);padding:8px 12px;border-radius:6px;font-size:.9rem}
-.meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.chip{background:#ece6f6;color:var(--mor);border-radius:999px;padding:2px 10px;font-size:.8rem;font-weight:600}
-.chip.tipo{background:#fde9d7;color:#a14d0c}
-.enun{white-space:pre-line;margin:6px 0 10px}
-.graf{width:100%;max-width:420px;display:block;margin:6px auto;background:#fff}
-.opc{display:block;border:2px solid #ddd;border-radius:10px;padding:10px 12px;margin:8px 0;cursor:pointer;background:#fff}
-.opc input{margin-right:8px}
-.opc.sel{border-color:var(--mor);background:#f3eefb}
-.opc.ok{border-color:var(--ok);background:#e8f5e9}
-.opc.mal{border-color:var(--mal);background:#fdecea}
-.opc.dis{opacity:.5;pointer-events:none}
-.entrada{background:#f3eefb;border-radius:10px;padding:10px;margin:8px 0}
-.entrada input{width:180px;padding:8px;font-size:1rem;border:1px solid #aaa;border-radius:6px}
-.fb{overflow-wrap:anywhere;border-radius:8px;padding:10px;margin-top:10px;font-size:.95rem}
-.fb.ok{background:#e8f5e9;border-left:4px solid var(--ok)}
-.fb.mal{background:#fdecea;border-left:4px solid var(--mal)}
-.info{background:none;color:var(--mor);border:2px solid var(--mor);border-radius:50%;width:30px;height:30px;padding:0;font-weight:bold;font-style:italic}
-.formula{display:none;background:#fffaf3;border:1px dashed var(--nar);border-radius:8px;padding:8px;margin-top:6px;font-size:.92rem}
-.prog{height:8px;background:#e5def0;border-radius:4px;overflow:hidden;margin-bottom:10px}
-.prog div{height:100%;background:var(--nar)}
-table{width:100%;border-collapse:collapse;font-size:.92rem}
-th,td{border-bottom:1px solid #eee;padding:6px;text-align:left}
-th{color:var(--mor)}
-.nota{font-size:2.2rem;font-weight:800;color:var(--mor)}
-.peq{font-size:.85rem;color:#555}
-.oculto{display:none}
-@media (max-width:520px){main{padding:10px}.card{padding:12px}button{width:100%;margin-right:0}}
+/* VOICE: un cuaderno de práctica tranquilo, claro y alentador.
+   IDEA: la hoja de ejercicios con su solución al reverso.
+   PICTURE: la propia pregunta, grande, con su gráfico.
+   COLOUR and TYPE: morado institucional, acento naranja; Source Sans 3.
+   LAYOUT: una columna de lectura, controles grandes para el celular. */
+:root{color-scheme:light dark;--bg:light-dark(#f6f4f9,#17131d);--card:light-dark(#fff,#221c2b);--ink:light-dark(#1f1a26,#eee9f4);--mut:light-dark(#655d70,#b3aabf);--pur:light-dark(#5B2A86,#c9a6ee);--pur2:light-dark(#efe7f7,#2e2340);--ora:#E87722;--ok:light-dark(#1d7a46,#6fd49b);--okb:light-dark(#e6f4ec,#173527);--bad:light-dark(#b3261e,#ff8a80);--badb:light-dark(#fbe9e7,#3a1d1b);--line:light-dark(#e2dcea,#3a3146)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,sans-serif;overflow-x:clip}
+header{background:#5B2A86;color:#fff;padding:18px max(5vw,16px) 22px}
+header h1{margin:0;font-size:clamp(24px,5vw,34px);line-height:1.1}
+header p{margin:6px 0 0;opacity:.9;font-size:15px}
+main{max-width:760px;margin:0 auto;padding:18px max(4vw,14px) 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:0 0 16px}
+h2{font-size:22px;margin:0 0 10px;line-height:1.2}
+h3{font-size:17px;margin:14px 0 6px}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input,select{width:100%;font:inherit;font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--ora);outline-offset:2px}
+button{font:inherit;font-weight:600;min-height:46px;padding:10px 16px;border-radius:10px;border:0;cursor:pointer}
+.b1{background:#5B2A86;color:#fff}.b2{background:var(--ora);color:#fff}.b3{background:var(--pur2);color:var(--pur)}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.row>button{flex:1 1 200px}
+.mut{color:var(--mut);font-size:15px}
+.chip{display:inline-block;background:var(--pur2);color:var(--pur);border-radius:99px;padding:2px 10px;font-size:13px;font-weight:600}
+.prog{height:8px;background:var(--pur2);border-radius:99px;margin:8px 0 14px;overflow:hidden}.prog i{display:block;height:100%;background:var(--ora)}
+.q{white-space:pre-line;font-size:17px}
+.fig{margin:12px 0;max-width:420px}.fig svg{width:100%;height:auto;color:var(--ink)}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);color:var(--ink);border:2px solid var(--line);margin:8px 0;font-weight:400;padding:12px 14px}
+.opt b{color:var(--pur);margin-right:6px}
+.opt.sel{border-color:#5B2A86;background:var(--pur2)}
+.opt.good{border-color:var(--ok);background:var(--okb)}.opt.wrong{border-color:var(--bad);background:var(--badb)}
+.opt:disabled{cursor:default}
+button:disabled:not(.opt){opacity:.45;cursor:default}
+.numbox{background:var(--pur2);border-radius:12px;padding:12px;margin:12px 0}
+.numbox .row{margin-top:8px}.numbox input{flex:1 1 160px}
+.fb{border-left:5px solid var(--ok);background:var(--okb);padding:12px 14px;border-radius:8px;margin-top:12px}
+.fb.no{border-color:var(--bad);background:var(--badb)}
+.fb p{margin:4px 0}
+.info{background:none;color:var(--pur);border:1.5px solid var(--pur);min-height:34px;padding:4px 12px;font-size:14px;margin-top:6px}
+.formula{font-family:"Source Sans 3";background:var(--pur2);padding:8px 12px;border-radius:8px;margin-top:6px}
+.big{font-size:clamp(48px,12vw,72px);font-weight:700;color:var(--pur);line-height:1}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 70px;gap:8px;align-items:center;margin:6px 0;font-size:15px}
+.bar .t{position:relative;height:10px;background:var(--pur2);border-radius:99px;grid-column:1/-1}.bar .t i{position:absolute;inset:0 auto 0 0;background:#5B2A86;border-radius:99px}
+.bar span:last-of-type{text-align:right;white-space:nowrap}
+details{border-top:1px solid var(--line);padding:8px 0}summary{cursor:pointer;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:15px}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}td.n{text-align:right;white-space:nowrap}
+.hide{display:none}
+@media(prefers-reduced-motion:no-preference){.prog i{transition:width .3s}}
 </style>
 </head>
 <body>
-<header>
-  <h1>Entrenamiento · Parcial 1 de Microeconomía</h1>
-  <p>Negocios Internacionales · Práctica no calificada</p>
-</header>
+<header><h1>Entrenamiento para el Parcial 1</h1><p>Microeconomía · Practica, revisa tus errores y mira cuánto vas mejorando. Nota de práctica: no cuenta para la calificación.</p></header>
 <main id="app"></main>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 /* Banco de casos — Entrenamiento parcial 1 de Microeconomía (datos hipotéticos) */
 (function (root) {
@@ -188,7 +192,7 @@ th{color:var(--mor)}
     // coordenadas en espacio de datos: Q 0..250, P 0..4700 -> svg 300x220
     var X = function (q) { return 40 + q * 1.0; }, Y = function (p) { return 190 - p * 0.037; };
     var D = function (q) { return 4200 - 15 * q; }, S = function (q) { return 1200 + 10 * q; };
-    var s = '<svg viewBox="0 0 310 225" class="graf" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">';
+    var s = '<svg viewBox="0 0 310 225" class="graf" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif"><rect width="310" height="225" fill="#fff" rx="8"/>';
     polys.forEach(function (p) {
       s += '<polygon points="' + p.pts.map(function (v) { return X(v[0]).toFixed(1) + "," + Y(v[1]).toFixed(1); }).join(" ") + '" fill="' + p.fill + '" opacity="0.75"/>';
       s += '<text x="' + X(p.lab[0]) + '" y="' + Y(p.lab[1]) + '" font-size="15" font-weight="bold" text-anchor="middle" fill="#222">' + p.L + "</text>";
@@ -361,6 +365,7 @@ th{color:var(--mor)}
         formula = "Punto medio: %ΔQ = (Q2 − Q1) ÷ [(Q1 + Q2)/2]; %ΔP = (P2 − P1) ÷ [(P1 + P2)/2]; E = %ΔQ ÷ %ΔP. Mayor que 1: elástica; menor que 1: inelástica.";
         var vals = [E, Ei, Ef, Einv].map(r2);
         if (new Set(vals).size < 4 || vals.some(function (v) { return Math.abs(v - 1) < 0.01; })) fail();
+        var sv = vals.slice().sort(function (a, b) { return a - b; }); for (var z = 1; z < 4; z++) if (sv[z] - sv[z - 1] < 0.06) fail();
         var ops = [
           { t: lab(E), ok: true, k: r2(E), msg: "Correcto." },
           { t: lab(Ei), ok: false, k: r2(Ei), msg: "Usaste los valores iniciales como base; el método del punto medio usa el promedio de los dos valores." },
@@ -378,6 +383,7 @@ th{color:var(--mor)}
       Ei = ((Q2 - Q1) / Q1) / ((X2 - X1) / X1); Einv = 1 / E;
       var vals2 = [E, Ei, Einv, -E].map(r2);
       if (new Set(vals2).size < 4 || vals2.some(function (v) { return Math.abs(v) < 0.05; })) fail();
+      var sv2 = vals2.slice().sort(function (a, b) { return a - b; }); for (var z2 = 1; z2 < 4; z2++) if (sv2[z2] - sv2[z2 - 1] < 0.06) fail();
       var cls = kind === "ing" ? function (x) { return x > 0 ? "bien normal" : "bien inferior"; } : function (x) { return x > 0 ? "sustitutos" : "complementarios"; };
       lab = function (x) { return "E = " + fmt(r2(x), 2) + "; " + cls(x); };
       var otro = kind === "ing" ? "" : pick([{ x: "el té", y: "el café" }, { x: "el banano ecuatoriano", y: "el banano colombiano" }, { x: "las salsas para mariscos", y: "el camarón" }, { x: "el azúcar", y: "el café" }]);
@@ -705,194 +711,177 @@ th{color:var(--mor)}
 
 </script>
 <script>
-(function(){
-"use strict";
-var B = window.BANCO, LS_KEY = "entrenoMicroP1_v1";
-var st = cargar() || { alumno:null, actual:null, historial:[] };
-var practica = null;
+/* ===== Adaptador: banco de Microeconomía al formato del entrenamiento ===== */
+const TEMAS={1:"Fundamentos del mercado",2:"Demanda y oferta",3:"Equilibrio de mercado",4:"Excedentes y eficiencia",5:"Choques de oferta y de demanda",6:"Impuestos: cálculo",7:"Impuestos: incidencia y bienestar",8:"Elasticidad: cálculo",9:"Elasticidad: interpretación",10:"Decisión del consumidor"};
+const REPASO={
+ 1:"presentación «Oferta, demanda y equilibrio» (mercado y precios) y applet de mercado",
+ 2:"presentaciones «Oferta, demanda y equilibrio» y «Choques en el mercado», y applet de mercado",
+ 3:"presentación «Oferta, demanda y equilibrio» (cálculo de Q* y P*) y applet de equilibrio de mercado y eficiencia",
+ 4:"presentación «Equilibrio, excedentes e impuestos» y applet de equilibrio de mercado y eficiencia",
+ 5:"presentación «Choques en el mercado» y applet de choques de oferta y demanda",
+ 6:"presentación «Equilibrio, excedentes e impuestos» y applet de equilibrio de mercado y eficiencia (paso 2)",
+ 7:"presentación «Equilibrio, excedentes e impuestos» y applet de equilibrio de mercado y eficiencia (paso 2)",
+ 8:"presentaciones de elasticidad A y B y applet de elasticidades",
+ 9:"presentaciones de elasticidad A y B y applet de elasticidades",
+ 10:"presentaciones «Utilidad» y «Restricción presupuestaria y elección», y applets de utilidad y de decisión del consumidor"};
+const SLOTS=[
+ {n:1,lab:"Fundamentos del mercado"},
+ {n:2,lab:"Demanda y oferta (conceptual)"},
+ {n:3,lab:"Ejercicio de equilibrio"},
+ {n:4,lab:"Excedentes y eficiencia"},
+ {n:5,lab:"Ejercicio de choques de oferta o demanda"},
+ {n:6,lab:"Ejercicio de impuestos"},
+ {n:7,lab:"Impuestos: incidencia y bienestar"},
+ {n:8,lab:"Ejercicio de elasticidad"},
+ {n:9,lab:"Elasticidad: interpretación"},
+ {n:10,lab:"Decisión del consumidor"}];
+const OBLIG=[3,5,6,8];
+const SUB={
+ "1-rel":"Precio relativo y costo de oportunidad","1-nom":"Precio nominal y precio relativo","1-esc":"Escasez y precio","1-comp":"Mercado competitivo",
+ "2-det":"Determinantes de la demanda y de la oferta","2-mov":"Movimiento a lo largo de la curva y desplazamiento","2-sim":"Cambios simultáneos","2-ley":"Efecto sustitución y efecto ingreso","2-cmg":"Ley de la oferta y costo marginal",
+ "3-eq":"Cálculo del equilibrio","3-falt":"Faltante, excedente y ajuste del precio",
+ "4-exc":"Excedente del consumidor y del productor","4-graf":"Lectura de excedentes en el gráfico","4-ef":"Excedente total y eficiencia",
+ "5-D":"Choque de demanda","5-S":"Choque de oferta",
+ "6-imp":"Precios y cantidad con impuesto","6-rec":"Recaudación y pérdida de peso muerto",
+ "7-graf":"Impuesto en el gráfico","7-inc":"Incidencia del impuesto","7-ppm":"Pérdida de peso muerto",
+ "8-dem":"Elasticidad precio de la demanda","8-of":"Elasticidad precio de la oferta","8-ing":"Elasticidad ingreso","8-cru":"Elasticidad cruzada",
+ "9-it":"Elasticidad e ingreso total","9-det":"Determinantes de la elasticidad","9-of":"Elasticidad de la oferta: plazo y capacidad","9-rel":"Clasificación de elasticidades",
+ "10-opt":"Elección óptima con UM/P","10-pre":"Cambio de precio y elección","10-ing":"Cambio de ingreso y elección","10-umd":"Utilidad marginal"};
+const rnd=Math.random;
+const pick=a=>a[Math.floor(rnd()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function fmt(x,d=0){if(!isFinite(x))return "—";const neg=x<0;x=Math.abs(x);let s=x.toFixed(d);let [i,f]=s.split(".");i=i.replace(/\B(?=(\d{3})+(?!\d))/g," ");return (neg?"−":"")+i+(f?","+f:"")}
+const near=(a,b,d)=>Math.abs(a-b)<=Math.max(Math.pow(10,-d)*1.01,Math.abs(b)*0.01);
+const C=[];
+BANCO.BANK.forEach(p=>p.casos.forEach(c=>{
+ const pre=c.id.split("-").slice(0,2).join("-");
+ C.push({slot:p.pos,tema:p.pos,sub:SUB[pre]||TEMAS[p.pos],p2:!!c.p2,gen:()=>{
+  let q;try{q=BANCO.generar(c)}catch(e){return null}
+  const calc=q.tipo==="calc";
+  const v=calc?q.input.valor:null, dec=calc?(q.input.tol?2:(Number.isInteger(v)?0:1)):0;
+  return {tipo:calc?"calc":"con",q:q.texto,opts:q.opciones.map(o=>({t:o.t,ok:!!o.ok,msg:o.ok?"":o.msg})),
+   num:calc?{ans:v,dec,unit:"",lab:q.input.label.replace(/^Escribe /,"")}:null,exp:q.explic,f:q.formula,svg:q.svg||""};
+ }});
+}));
 
-function cargar(){ try { var s = localStorage.getItem(LS_KEY); return s ? JSON.parse(s) : null; } catch(e){ return null; } }
-function guardar(){ try { localStorage.setItem(LS_KEY, JSON.stringify(st)); } catch(e){} }
-function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
-function $(id){ return document.getElementById(id); }
-var app = $("app");
+</script>
+<script>
+{
+const KEY="microP1_entrenamiento_v1";
+let S={nombre:"",curso:"",hist:[],cur:null};
+try{const t=localStorage.getItem(KEY);if(t)S=Object.assign(S,JSON.parse(t))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const L="ABCD";
+function gen(c){let q=null,t=0;while(!q&&t<200){q=c.gen();t++}q.tema=c.tema;q.sub=c.sub;q.slot=c.slot;return q}
+C.forEach(c=>{c.calc=!!gen(c).num});
+const esP2=()=>/Paralelo 2/.test(S.curso||"");
+function newAttempt(){const qs=SLOTS.map(s=>{const pool=C.filter(c=>c.slot===s.n&&(!OBLIG.includes(s.n)||c.calc)&&(!c.p2||esP2()));return gen(pick(pool))});S.cur={qs,i:0,ans:qs.map(()=>({num:null,choice:null,numDone:false})),start:new Date().toISOString()};save();render()}
+function parseNum(v){let s=String(v).trim().replace(/[\s$% ]/g,"").replace(/−/g,"-");if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");const x=parseFloat(s);return isFinite(x)?x:null}
+const fdate=iso=>{const d=new Date(iso);return d.toLocaleDateString("es-EC")+" "+d.toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit"})};
 
-function casosPermitidos(p){ var p2 = st.alumno && st.alumno.curso.indexOf("Paralelo 2") >= 0; return p.casos.filter(function(c){ return !c.p2 || p2; }); }
-function nuevaPregunta(p){ var cs = casosPermitidos(p); var c = cs[Math.floor(Math.random()*cs.length)]; var q = B.generar(c); q.pos = p.pos; q.tema = p.tema; return q; }
-function parseNum(s){ s = String(s).trim().replace(/\s| /g,""); if (s.indexOf(",")>=0) s = s.replace(/\./g,"").replace(",","."); s = s.replace("−","-"); var v = parseFloat(s); return isFinite(v) ? v : null; }
-function tolOK(q, v){ var t = q.input.tol != null ? q.input.tol : Math.max(Math.abs(q.input.valor)*0.01, 0.5); return Math.abs(v - q.input.valor) <= t + 1e-9; }
-var TIPOS = {calc:"Cálculo", conc:"Conceptual", graf:"Gráfico", rel:"Relación de columnas", sel:"Selección de elementos", comp:"Completar", ord:"Ordenar"};
+function home(){
+ const h=S.hist;
+ app.innerHTML=`<div class="card"><h2>Tus datos</h2><p class="mut">Solo se usan para tu PDF. Se guardan en este navegador.</p>
+ <label for="nom">Nombre y apellido</label><input id="nom" value="${esc(S.nombre)}" autocomplete="name">
+ <label for="cur">Curso y paralelo</label><select id="cur"><option value="">Elige tu curso y paralelo</option>${["Microeconomía · 3.º Negocios Internacionales · Paralelo 1","Microeconomía · 3.º Negocios Internacionales · Paralelo 2"].map(c=>`<option ${S.curso===c?"selected":""}>${c}</option>`).join("")}</select>
+ </div>
+ <div class="card"><h2>¿Qué quieres hacer?</h2>
+ <p><b>Intento de 10 preguntas.</b> Una de cada bloque del parcial; siempre hay ejercicios de equilibrio, choques de oferta o demanda, impuestos y elasticidad. Ves la retroalimentación y tu nota al final.</p>
+ <div class="row"><button class="b1" id="go">${S.cur?"Continuar mi intento":"Empezar un intento"}</button></div>
+ <p style="margin-top:18px"><b>Practicar un tema.</b> Preguntas sin límite del tema que elijas, con retroalimentación inmediata.</p>
+ <label for="tem">Tema</label><select id="tem">${Object.entries(TEMAS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+ <div class="row"><button class="b2" id="pr">Practicar este tema</button></div></div>
+ <div class="card"><h2>Mi registro</h2>${h.length?`<table><tr><th>Intento</th><th>Fecha</th><th class="n">Nota</th></tr>${h.map((a,i)=>`<tr><td>${i+1}</td><td>${fdate(a.fecha)}</td><td class="n">${fmt(a.nota,1)} / 10</td></tr>`).join("")}</table>${refuerzo()}`:`<p class="mut">Todavía no tienes intentos terminados.</p>`}
+ <div class="row"><button class="b3" id="pdf" ${h.length?"":"disabled"}>Descargar mi PDF</button></div><p class="mut" id="pmsg"></p></div>`;
+ const keep=()=>{S.nombre=document.getElementById("nom").value.trim();S.curso=document.getElementById("cur").value.trim();save()};
+ document.getElementById("nom").oninput=keep;document.getElementById("cur").onchange=keep;
+ document.getElementById("go").onclick=()=>{keep();if(!S.nombre){alertBox("Escribe tu nombre para empezar.");return}if(!S.curso){alertBox("Elige tu curso y paralelo para empezar.");return}S.cur?render():newAttempt()};
+ document.getElementById("pr").onclick=()=>{keep();if(!S.curso){alertBox("Elige tu curso y paralelo para practicar.");return}P={tema:+document.getElementById("tem").value,q:null,n:0,ok:0};nextPractice()};
+ document.getElementById("pdf").onclick=()=>{keep();makePDF()};
+}
+function alertBox(t){const m=document.getElementById("pmsg")||document.createElement("p");m.textContent=t;m.className="mut";m.style.color="var(--bad)";if(!m.isConnected)app.querySelector(".card").appendChild(m)}
+function temaStats(){const st={};for(const a of S.hist)for(const [t,[o,n]] of Object.entries(a.porTema)){st[t]=st[t]||[0,0];st[t][0]+=o;st[t][1]+=n}return st}
+function refuerzo(){const st=temaStats();const w=Object.entries(st).filter(([t,[o,n]])=>n&&o/n<0.7).sort((a,b)=>a[1][0]/a[1][1]-b[1][0]/b[1][1]);
+ return w.length?`<h3>Temas para reforzar</h3><ul>${w.map(([t,[o,n]])=>`<li>${TEMAS[t]}: ${o} de ${n} correctas. Repasa: ${REPASO[t]}.</li>`).join("")}</ul>`:`<p class="mut">Vas bien en todos los temas que has practicado.</p>`}
 
-// ---------- Pantallas ----------
-function inicio(){
-  if (!st.alumno) return registro();
-  var h = '<div class="card"><h2>Hola, ' + esc(st.alumno.nombre) + '</h2><p class="peq">' + esc(st.alumno.curso) + ' · <a href="#" id="cambiar">cambiar datos</a></p>' +
-    '<p class="aviso">Esta es una <b>nota de práctica</b>: no cuenta para la calificación. Las preguntas se parecen a las de la prueba, pero no son las mismas, y los números cambian en cada intento.</p>';
-  if (st.actual) h += '<button class="nar" id="seguir">Continuar el intento en curso (' + (st.actual.idx+1) + ' de 10)</button>';
-  h += '<button id="intento">Nuevo intento de 10 preguntas</button>';
-  h += '<label for="tema">Practicar un tema (preguntas sin límite y retroalimentación inmediata)</label><select id="tema">' +
-    B.BANK.map(function(p){ return '<option value="'+p.pos+'">'+p.pos+'. '+esc(p.tema)+'</option>'; }).join("") + '</select><button class="sec" id="practicar">Practicar este tema</button></div>';
-  h += historialHTML();
-  app.innerHTML = h;
-  $("cambiar").onclick = function(e){ e.preventDefault(); registro(); };
-  if ($("seguir")) $("seguir").onclick = function(){ mostrarIntento(); };
-  $("intento").onclick = function(){
-    if (st.actual && !confirm("Tienes un intento sin terminar. ¿Quieres descartarlo y empezar otro?")) return;
-    st.actual = { inicio: new Date().toISOString(), idx: 0, preguntas: B.BANK.map(function(p){ var q = nuevaPregunta(p); q.elegida = null; q.escrito = null; return q; }) };
-    guardar(); mostrarIntento();
-  };
-  $("practicar").onclick = function(){ var p = B.BANK.filter(function(x){ return x.pos == $("tema").value; })[0]; practica = { p: p, buenas: 0, total: 0 }; mostrarPractica(); };
-  if ($("pdf")) $("pdf").onclick = descargarPDF;
-}
+/* ---------- pregunta ---------- */
+function qHTML(q,a,mode){
+ const showOpts=!q.num||a.numDone;
+ let h=`<p class="q">${esc(q.q)}</p>${q.svg?`<div class="fig">${q.svg}</div>`:""}
+ <button class="info" data-f>(i) Fórmula</button><div class="formula hide" id="fx">${esc(q.f)}</div>`;
+ if(q.num){h+=`<div class="numbox"><label for="nv">1. Calcula y escribe ${q.num.lab?esc(q.num.lab):"tu resultado"}</label><p class="mut" style="margin:0">Usa coma para los decimales, sin separador de miles.</p>
+ <div class="row"><input id="nv" inputmode="decimal" value="${a.num??""}" ${a.numDone?"disabled":""}><button class="b1" id="nb" ${a.numDone?"disabled":""}>Registrar</button><button class="b3" id="nx" ${a.numDone?"disabled":""}>No lo sé</button></div><div id="nfb">${a.numDone&&mode==="p"?numFB(q,a):""}</div></div>`}
+ if(showOpts)h+=`<p><b>${q.num?"2. Ahora elige la opción correcta":"Elige la opción correcta"}</b></p>`+q.opts.map((o,j)=>`<button class="opt ${a.choice===j?"sel":""}" data-o="${j}"><b>${L[j]})</b>${esc(o.t)}</button>`).join("");
+ return h}
+function numFB(q,a){if(a.num===null)return `<p class="mut">Sin resultado registrado.</p>`;const ok=near(a.num,q.num.ans,q.num.dec);return `<p style="color:var(${ok?"--ok":"--bad"})"><b>${ok?"Tu resultado coincide.":"Tu resultado no coincide."}</b> ${ok?"":"Revisa el procedimiento al ver la retroalimentación."}</p>`}
+function fbHTML(q,a){const o=q.opts[a.choice],c=q.opts.findIndex(x=>x.ok);
+ return `<div class="fb ${o&&o.ok?"":"no"}">${o?(o.ok?`<p><b>Correcto.</b></p>`:`<p><b>Incorrecto.</b> ${esc(o.msg)}</p>`):`<p><b>Sin responder.</b></p>`}
+ ${o&&o.ok?"":`<p><b>Respuesta correcta:</b> ${L[c]}) ${esc(q.opts[c].t)}</p>`}<p>${esc(q.exp)}</p><p class="mut">Repasa: ${REPASO[q.tema]}.</p></div>`}
+function wire(q,a,onNum,onOpt){
+ app.querySelector("[data-f]").onclick=()=>document.getElementById("fx").classList.toggle("hide");
+ if(q.num&&!a.numDone){const reg=v=>{a.num=v;a.numDone=true;onNum()};
+  document.getElementById("nb").onclick=()=>{const v=parseNum(document.getElementById("nv").value);if(v===null){document.getElementById("nfb").innerHTML=`<p class="mut">Escribe un número, o pulsa «No lo sé».</p>`;return}reg(v)};
+  document.getElementById("nx").onclick=()=>reg(null)}
+ app.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>onOpt(+b.dataset.o))}
 
-function registro(){
-  var a = st.alumno || { nombre:"", curso:"" };
-  app.innerHTML = '<div class="card"><h2>Tus datos</h2><p class="peq">Solo se guardan en este dispositivo y aparecen en tu PDF.</p>' +
-    '<label for="nom">Nombre y apellido</label><input type="text" id="nom" value="' + esc(a.nombre) + '">' +
-    '<label for="cur">Curso</label><select id="cur"><option value="">Elige tu curso</option>' +
-    ["3.º Negocios Internacionales – Paralelo 1","3.º Negocios Internacionales – Paralelo 2"].map(function(c){ return '<option'+(a.curso===c?' selected':'')+'>'+c+'</option>'; }).join("") +
-    '</select><button id="ok">Guardar y continuar</button><p id="err" class="peq" style="color:var(--mal)"></p></div>';
-  $("ok").onclick = function(){
-    var n = $("nom").value.trim(), c = $("cur").value;
-    if (n.length < 5 || n.split(/\s+/).length < 2){ $("err").textContent = "Escribe tu nombre y tu apellido."; return; }
-    if (!c){ $("err").textContent = "Elige tu curso."; return; }
-    st.alumno = { nombre: n, curso: c }; guardar(); inicio();
-  };
-}
+function render(){const A=S.cur;if(!A)return home();if(A.i>=A.qs.length)return finish();
+ const q=A.qs[A.i],a=A.ans[A.i];
+ app.innerHTML=`<div class="card"><span class="chip">${TEMAS[q.tema]}</span> <span class="mut">Pregunta ${A.i+1} de ${A.qs.length}</span><div class="prog"><i style="width:${A.i/A.qs.length*100}%"></i></div>${qHTML(q,a,"i")}
+ <div class="row"><button class="b3" id="bk" ${A.i?"":"disabled"}>Anterior</button><button class="b1" id="nxq" ${a.choice===null?"disabled":""}>${A.i===A.qs.length-1?"Terminar y ver mi nota":"Siguiente"}</button></div>
+ <div class="row"><button class="b3" id="out">Guardar y salir</button></div></div>`;
+ wire(q,a,()=>{save();render()},j=>{a.choice=j;save();render()});
+ document.getElementById("bk").onclick=()=>{A.i--;save();render()};
+ document.getElementById("nxq").onclick=()=>{A.i++;save();render();scrollTo(0,0)};
+ document.getElementById("out").onclick=()=>{save();home()}}
 
-function preguntaHTML(q, n, tot){
-  var h = '<div class="card">';
-  if (tot) h += '<div class="prog"><div style="width:'+(100*n/tot)+'%"></div></div><p class="peq">Pregunta '+n+' de '+tot+'</p>';
-  h += '<div class="meta"><span class="chip">'+q.pos+'. '+esc(q.tema)+'</span><span class="chip tipo">'+TIPOS[q.tipo]+'</span> <button class="info" id="ibtn" title="Ver fórmula o idea clave">i</button></div>' +
-    '<div class="formula" id="form"><b>Fórmula o idea clave:</b> '+esc(q.formula)+'</div>' +
-    '<div class="enun">'+esc(q.texto)+'</div>' + (q.svg || "");
-  if (q.tipo === "calc") h += '<div class="entrada"><b>Paso 1.</b> '+esc(q.input.label)+':<br><input type="text" inputmode="decimal" id="num" value="'+(q.escrito!=null?esc(q.escrito):"")+'"> <button class="sec" id="numok">Registrar</button><div id="numfb" class="peq"></div></div><p class="peq"><b>Paso 2.</b> Elige la opción que coincide con tu resultado.</p>';
-  h += '<div id="opcs">' + q.opciones.map(function(o,i){ return '<label class="opc" data-i="'+i+'"><input type="radio" name="op" value="'+i+'"'+(q.elegida===i?' checked':'')+'>'+String.fromCharCode(65+i)+') '+esc(o.t)+'</label>'; }).join("") + '</div>';
-  return h;
-}
-function enlazarPregunta(q, onElegir, inmediato){
-  $("ibtn").onclick = function(){ var f = $("form"); f.style.display = f.style.display === "block" ? "none" : "block"; };
-  var bloqueado = q.tipo === "calc" && q.escrito == null;
-  var labs = document.querySelectorAll(".opc");
-  function marcar(){ labs.forEach(function(l){ l.classList.toggle("dis", bloqueado); l.classList.toggle("sel", +l.dataset.i === q.elegida); }); }
-  marcar();
-  if (q.tipo === "calc") $("numok").onclick = function(){
-    var v = parseNum($("num").value);
-    if (v == null){ $("numfb").textContent = "Escribe un número (usa coma para los decimales)."; return; }
-    q.escrito = $("num").value.trim(); bloqueado = false; marcar();
-    if (inmediato) { $("numfb").innerHTML = tolOK(q, v) ? '<span style="color:var(--ok)">✓ Tu resultado es correcto. Ahora elige la opción.</span>' : '<span style="color:var(--mal)">✗ Tu resultado no coincide. Revisa el procedimiento o usa el botón (i); luego elige la opción.</span>'; }
-    else $("numfb").textContent = "Resultado registrado. Ahora elige la opción.";
-    onElegir(null);
-  };
-  labs.forEach(function(l){ l.onclick = function(e){ if (bloqueado) { e.preventDefault(); return; } q.elegida = +l.dataset.i; marcar(); onElegir(q.elegida); }; });
-}
+function finish(){const A=S.cur;const porTema={};let ok=0;const err=[];
+ A.qs.forEach((q,i)=>{const a=A.ans[i],o=q.opts[a.choice],good=!!(o&&o.ok);ok+=good;porTema[q.tema]=porTema[q.tema]||[0,0];porTema[q.tema][0]+=good;porTema[q.tema][1]++;if(!good)err.push({n:i+1,tema:q.tema,sub:q.sub,msg:o?o.msg:"Sin responder."})});
+ const rec={fecha:new Date().toISOString(),nota:ok,aciertos:ok,total:A.qs.length,porTema,err,qs:A.qs,ans:A.ans};
+ S.hist.push(rec);S.cur=null;save();results(S.hist.length-1)}
 
-function mostrarIntento(){
-  var a = st.actual, q = a.preguntas[a.idx];
-  app.innerHTML = preguntaHTML(q, a.idx+1, 10) + '<button class="sec" id="ant"'+(a.idx===0?' disabled':'')+'>Anterior</button><button id="sig">'+(a.idx===9?'Terminar y ver resultados':'Siguiente')+'</button><button class="sec" id="salir">Guardar y salir</button></div>';
-  enlazarPregunta(q, function(){ guardar(); }, false);
-  $("ant").onclick = function(){ a.idx--; guardar(); mostrarIntento(); };
-  $("salir").onclick = function(){ guardar(); inicio(); };
-  $("sig").onclick = function(){
-    if (q.elegida == null){ alert(q.tipo === "calc" && q.escrito == null ? "Primero registra tu resultado y luego elige una opción." : "Elige una opción."); return; }
-    if (a.idx < 9){ a.idx++; guardar(); mostrarIntento(); } else terminarIntento();
-  };
-  window.scrollTo(0,0);
-}
+function results(k){const r=S.hist[k];
+ app.innerHTML=`<div class="card"><h2>Tu nota de práctica</h2><div class="big">${fmt(r.nota,1)}<span style="font-size:.4em;color:var(--mut)"> / 10</span></div>
+ <p>Respondiste bien ${r.aciertos} de ${r.total} preguntas. ${r.nota>=7?"Buen resultado: sigue practicando para afianzarlo.":"Revisa los errores de abajo y vuelve a intentarlo: cada intento trae preguntas distintas."}</p>
+ <h3>Por tema</h3>${Object.entries(r.porTema).map(([t,[o,n]])=>`<div class="bar"><span>${TEMAS[t]}</span><span>${o} de ${n}</span><div class="t"><i style="width:${o/n*100}%"></i></div></div>`).join("")}
+ ${r.err.length?`<h3>Por qué perdiste puntos</h3><ul>${r.err.map(e=>`<li><b>Pregunta ${e.n} (${esc(e.sub)}):</b> ${esc(e.msg)}</li>`).join("")}</ul>`:"<p><b>¡Todas correctas!</b></p>"}
+ <div class="row"><button class="b1" id="again">Nuevo intento</button><button class="b3" id="hm">Inicio y PDF</button></div></div>
+ <div class="card"><h2>Revisión de cada pregunta</h2>${r.qs.map((q,i)=>{const a=r.ans[i],o=q.opts[a.choice];return `<details ${o&&o.ok?"":"open"}><summary>${i+1}. ${esc(q.sub)} · ${o&&o.ok?"✔ correcta":"✘ incorrecta"}</summary><p class="q">${esc(q.q)}</p>${q.svg?`<div class="fig">${q.svg}</div>`:""}${q.num?numFB(q,a):""}${q.opts.map((x,j)=>`<div class="opt ${x.ok?"good":(a.choice===j?"wrong":"")}"><b>${L[j]})</b>${esc(x.t)}</div>`).join("")}${fbHTML(q,a)}<p class="mut">Fórmula: ${esc(q.f)}</p></details>`}).join("")}</div>`;
+ document.getElementById("again").onclick=()=>{newAttempt();scrollTo(0,0)};document.getElementById("hm").onclick=()=>{home();scrollTo(0,0)}}
 
-function terminarIntento(){
-  var a = st.actual, nota = 0, porTema = [], errores = [];
-  a.preguntas.forEach(function(q){
-    var ok = q.opciones[q.elegida].ok; if (ok) nota++;
-    porTema.push({ pos:q.pos, tema:q.tema, ok:ok });
-    if (!ok) { var c = q.opciones.filter(function(o){ return o.ok; })[0];
-      errores.push({ pos:q.pos, tema:q.tema, texto:q.texto, elegida:q.opciones[q.elegida].t, msg:q.opciones[q.elegida].msg, correcta:c.t, explic:q.explic, repaso:q.repaso, escrito:q.escrito }); }
-  });
-  var reg = { fecha: new Date().toISOString(), nota: nota, porTema: porTema, errores: errores };
-  st.historial.push(reg); st.actual = null; guardar();
-  resultados(reg);
-}
+/* ---------- práctica por tema ---------- */
+let P=null;
+function nextPractice(){const pool=C.filter(c=>c.tema===P.tema&&(!c.p2||esP2()));P.q=gen(pick(pool));P.a={num:null,choice:null,numDone:false};P.done=false;showPractice();scrollTo(0,0)}
+function showPractice(){const q=P.q,a=P.a;
+ app.innerHTML=`<div class="card"><span class="chip">Práctica · ${TEMAS[P.tema]}</span> <span class="mut">Llevas ${P.ok} de ${P.n} correctas</span>${qHTML(q,a,"p").replace(/<button class="opt/g,P.done?'<button disabled class="opt':'<button class="opt')}
+ <div id="pf">${P.done?fbHTML(q,a):""}</div>
+ <div class="row">${P.done?`<button class="b1" id="pn">Otra pregunta</button>`:""}<button class="b3" id="ph">Volver al inicio</button></div></div>`;
+ if(P.done){app.querySelectorAll("[data-o]").forEach((b,j)=>{const o=q.opts[j];if(o.ok)b.classList.add("good");else if(a.choice===j)b.classList.add("wrong")})}
+ wire(q,a,()=>showPractice(),j=>{if(P.done)return;a.choice=j;P.done=true;P.n++;if(q.opts[j].ok)P.ok++;showPractice()});
+ if(P.done)document.getElementById("pn").onclick=nextPractice;
+ document.getElementById("ph").onclick=()=>{P=null;home()}}
 
-function resultados(reg){
-  var h = '<div class="card"><h2>Resultado del intento</h2><div class="nota">'+reg.nota+' / 10</div><p class="aviso">Nota de práctica: no cuenta para la calificación.</p>' +
-    '<table><tr><th>Tema</th><th>Resultado</th></tr>' + reg.porTema.map(function(t){ return '<tr><td>'+t.pos+'. '+esc(t.tema)+'</td><td>'+(t.ok?'<span style="color:var(--ok)">✓ Correcta</span>':'<span style="color:var(--mal)">✗ Incorrecta</span>')+'</td></tr>'; }).join("") + '</table></div>';
-  if (reg.errores.length){
-    h += '<div class="card"><h2>Tus errores y qué repasar</h2>' + reg.errores.map(function(e){
-      return '<div style="margin-bottom:14px"><span class="chip">'+e.pos+'. '+esc(e.tema)+'</span><div class="enun peq">'+esc(e.texto)+'</div>' +
-        (e.escrito!=null?'<p class="peq">Tu resultado escrito: '+esc(e.escrito)+'</p>':'') +
-        '<div class="fb mal"><b>Elegiste:</b> '+esc(e.elegida)+'<br>'+esc(e.msg)+'</div><div class="fb ok"><b>Respuesta correcta:</b> '+esc(e.correcta)+'<br>'+esc(e.explic)+'<br><i>Repasa: '+esc(e.repaso)+'</i></div></div>';
-    }).join("") + '</div>';
-  } else h += '<div class="card"><p>¡Excelente! No tuviste errores en este intento.</p></div>';
-  h += '<div class="card"><button id="otro">Hacer otro intento</button><button class="nar" id="pdf2">Descargar PDF</button><button class="sec" id="volver">Volver al inicio</button></div>';
-  app.innerHTML = h;
-  $("otro").onclick = function(){ st.actual = { inicio: new Date().toISOString(), idx: 0, preguntas: B.BANK.map(function(p){ var q = nuevaPregunta(p); q.elegida = null; q.escrito = null; return q; }) }; guardar(); mostrarIntento(); };
-  $("pdf2").onclick = descargarPDF; $("volver").onclick = inicio;
-  window.scrollTo(0,0);
-}
+/* ---------- PDF ---------- */
+const clean=s=>String(s).replace(/ /g," ").replace(/−/g,"-").replace(/÷/g,"/").replace(/Δ/g,"var. ").replace(/≈/g,"aprox.").replace(/[₀₁₂ₜ]/g,m=>({"₀":"0","₁":"1","₂":"2","ₜ":"t"}[m])).replace(/[↑]/g," sube").replace(/[↓]/g," baja").replace(/→/g,"->").replace(/[✔✘]/g,"").replace(/Σ/g,"suma de ").replace(/π/g,"inflación ").replace(/[–—]/g,"-").replace(/[≤]/g,"<=").replace(/[≥]/g,">=").replace(/[^\x00-\xFF]/g,"");
+function makePDF(){const msg=document.getElementById("pmsg");
+ if(!window.jspdf){msg.textContent="No se pudo cargar el generador de PDF. Revisa tu conexión y vuelve a intentarlo.";return}
+ const {jsPDF}=window.jspdf,d=new jsPDF({unit:"mm",format:"a4"});let y=18;const W=180;
+ const line=(t,o={})=>{d.setFont("helvetica",o.b?"bold":"normal");d.setFontSize(o.s||10.5);const ls=d.splitTextToSize(clean(t),W);for(const l of ls){if(y>282){d.addPage();y=18}d.text(l,15,y);y+=(o.s||10.5)*0.45}y+=o.gap??1.5};
+ d.setFillColor(91,42,134);d.rect(0,0,210,10,"F");
+ line("Entrenamiento para el Parcial 1 · Microeconomía",{b:1,s:15,gap:3});
+ line(`Estudiante: ${S.nombre||"(sin nombre)"}`);line(`Curso: ${S.curso||"(sin curso)"}`);line(`Fecha de descarga: ${fdate(new Date().toISOString())}`,{gap:2});
+ line("Nota de práctica: no cuenta para la calificación. Sirve para identificar qué temas reforzar antes de la prueba.",{s:9.5,gap:4});
+ line("Intentos",{b:1,s:12});S.hist.forEach((a,i)=>line(`Intento ${i+1} · ${fdate(a.fecha)} · Nota: ${fmt(a.nota,1)} / 10 (${a.aciertos} de ${a.total})`));
+ y+=2;line("Aciertos acumulados por tema",{b:1,s:12});const st=temaStats();for(const [t,[o,n]] of Object.entries(st))line(`${TEMAS[t]}: ${o} de ${n} (${fmt(o/n*100,0)} %)`);
+ y+=2;line("Temas para reforzar",{b:1,s:12});const w=Object.entries(st).filter(([t,[o,n]])=>o/n<0.7);if(w.length)w.forEach(([t])=>line(`${TEMAS[t]}. Repasar: ${REPASO[t]}.`));else line("Ninguno: más de 70 % de aciertos en todos los temas practicados.");
+ const r=S.hist[S.hist.length-1];y+=2;line(`Detalle del último intento (nota ${fmt(r.nota,1)} / 10)`,{b:1,s:12});
+ r.qs.forEach((q,i)=>{const a=r.ans[i],o=q.opts[a.choice];line(`${i+1}. ${TEMAS[q.tema]} - ${q.sub}: ${o&&o.ok?"correcta":"incorrecta"}`,{b:1,s:10});if(!(o&&o.ok)){line(`Error: ${o?o.msg:"sin responder"}`,{s:9.5,gap:0.5});line(`Explicación: ${q.exp}`,{s:9.5})}});
+ const n=(S.nombre||"estudiante").replace(/[^\wáéíóúñÁÉÍÓÚÑ ]/g,"").trim().replace(/\s+/g,"_");
+ try{d.save(`Entrenamiento_Micro_P1_${n}.pdf`);msg.textContent="PDF descargado."}catch(e){msg.textContent="Este visor no permite descargas. Abre el enlace en tu navegador."}}
 
-function mostrarPractica(){
-  var q = nuevaPregunta(practica.p); q.elegida = null; q.escrito = null; var resp = false;
-  app.innerHTML = preguntaHTML(q) + '<div id="fb"></div><p class="peq" id="cont">Llevas '+practica.buenas+' correctas de '+practica.total+' en esta práctica.</p><button id="comp">Comprobar</button><button class="sec" id="otra">Otra pregunta</button><button class="sec" id="salir">Volver al inicio</button></div>';
-  enlazarPregunta(q, function(){}, true);
-  $("comp").onclick = function(){
-    if (resp) return;
-    if (q.elegida == null){ alert(q.tipo === "calc" && q.escrito == null ? "Primero registra tu resultado y luego elige una opción." : "Elige una opción."); return; }
-    resp = true; practica.total++; var o = q.opciones[q.elegida]; if (o.ok) practica.buenas++;
-    document.querySelectorAll(".opc").forEach(function(l){ var i = +l.dataset.i; l.classList.add("dis"); if (q.opciones[i].ok) l.classList.add("ok"); else if (i === q.elegida) l.classList.add("mal"); });
-    $("cont").textContent = "Llevas " + practica.buenas + " correctas de " + practica.total + " en esta práctica.";
-    $("fb").innerHTML = (o.ok ? '<div class="fb ok"><b>¡Correcto!</b> ' : '<div class="fb mal"><b>Incorrecto.</b> ' + esc(o.msg) + '<br>') + esc(q.explic) + '<br><i>Repasa: ' + esc(q.repaso) + '</i></div>';
-  };
-  $("otra").onclick = mostrarPractica; $("salir").onclick = inicio;
-  window.scrollTo(0,0);
+render();
 }
-
-function historialHTML(){
-  if (!st.historial.length) return '<div class="card"><h2>Tus intentos</h2><p class="peq">Aún no has terminado ningún intento.</p></div>';
-  var h = '<div class="card"><h2>Tus intentos</h2><table><tr><th>#</th><th>Fecha</th><th>Nota de práctica</th></tr>' +
-    st.historial.map(function(r,i){ return '<tr><td>'+(i+1)+'</td><td>'+new Date(r.fecha).toLocaleString("es-EC")+'</td><td>'+r.nota+' / 10</td></tr>'; }).join("") + '</table>';
-  var ref = temasReforzar(); if (ref.length) h += '<p><b>Temas a reforzar:</b> ' + ref.map(esc).join("; ") + '</p>';
-  h += '<button class="nar" id="pdf">Descargar PDF</button></div>';
-  return h;
-}
-function temasReforzar(){
-  var cnt = {}; st.historial.slice(-3).forEach(function(r){ r.porTema.forEach(function(t){ if (!t.ok) cnt[t.pos + ". " + t.tema] = (cnt[t.pos + ". " + t.tema] || 0) + 1; }); });
-  return Object.keys(cnt).sort(function(a,b){ return cnt[b]-cnt[a]; });
-}
-
-// ---------- PDF ----------
-function pdfTxt(s){
-  return String(s).replace(/−/g,"-").replace(/→/g,"->").replace(/Δ/g,"var.").replace(/↑/g," sube").replace(/↓/g," baja").replace(/≈/g,"~").replace(/≤/g,"<=").replace(/≥/g,">=").replace(/[✓]/g,"OK").replace(/[✗]/g,"X").replace(/ /g," ").replace(/[\u2013\u2014]/g,"-").replace(/[^\x00-\xFF]/g,"");
-}
-function descargarPDF(){
-  if (!window.jspdf){ alert("No se pudo cargar la librería del PDF. Revisa tu conexión a internet y vuelve a intentar."); return; }
-  if (!st.historial.length){ alert("Termina al menos un intento para descargar el PDF."); return; }
-  var doc = new window.jspdf.jsPDF({ unit:"mm", format:"a4" }), y = 15, W = 180;
-  function linea(t, size, bold, color){ doc.setFont("helvetica", bold?"bold":"normal"); doc.setFontSize(size||10); doc.setTextColor.apply(doc, color||[34,34,34]);
-    doc.splitTextToSize(pdfTxt(t), W).forEach(function(l){ if (y > 282){ doc.addPage(); y = 15; } doc.text(l, 15, y); y += (size||10)*0.45; }); y += 1.5; }
-  doc.setFillColor(75,44,131); doc.rect(0,0,210,10,"F"); doc.setFillColor(232,119,34); doc.rect(0,10,210,1.5,"F"); y = 20;
-  linea("Entrenamiento - Parcial 1 de Microeconomía", 15, true, [75,44,131]);
-  linea("Estudiante: " + st.alumno.nombre, 11, true);
-  linea("Curso: " + st.alumno.curso, 10);
-  linea("Fecha de descarga: " + new Date().toLocaleString("es-EC"), 10);
-  linea("NOTA DE PRÁCTICA, NO CUENTA PARA LA CALIFICACIÓN.", 10, true, [232,119,34]);
-  y += 2; linea("Intentos realizados", 12, true, [75,44,131]);
-  st.historial.forEach(function(r,i){ linea((i+1) + ". " + new Date(r.fecha).toLocaleString("es-EC") + "  -  Nota de práctica: " + r.nota + " / 10", 10); });
-  var u = st.historial[st.historial.length-1];
-  y += 2; linea("Detalle del último intento (" + u.nota + " / 10)", 12, true, [75,44,131]);
-  u.porTema.forEach(function(t){ linea((t.ok ? "[OK] " : "[X]  ") + t.pos + ". " + t.tema, 10); });
-  if (u.errores.length){ y += 2; linea("Errores del último intento", 12, true, [75,44,131]);
-    u.errores.forEach(function(e){ linea(e.pos + ". " + e.tema, 10, true); linea(e.texto, 9); if (e.escrito != null) linea("Resultado escrito: " + e.escrito, 9); linea("Elegiste: " + e.elegida + " -> " + e.msg, 9, false, [198,40,40]); linea("Correcta: " + e.correcta + " -> " + e.explic, 9, false, [46,125,50]); linea("Repasa: " + e.repaso, 9, false, [90,90,90]); y += 1; }); }
-  var ref = temasReforzar(); y += 2; linea("Temas a reforzar (últimos 3 intentos)", 12, true, [75,44,131]);
-  linea(ref.length ? ref.join("; ") : "Ninguno: acertaste todos los temas.", 10);
-  var nombre = "Entrenamiento_Micro_P1_" + st.alumno.nombre.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ ]/g,"").trim().replace(/\s+/g,"_") + ".pdf";
-  try { doc.save(nombre); } catch(e) {
-    try { var url = URL.createObjectURL(doc.output("blob")); var a = document.createElement("a"); a.href = url; a.download = nombre; document.body.appendChild(a); a.click(); a.remove(); }
-    catch(e2){ alert("Tu navegador bloqueó la descarga. Abre el applet desde Chrome o Safari y vuelve a intentar."); }
-  }
-}
-
-inicio();
-})();
 </script>
 </body>
 </html>
