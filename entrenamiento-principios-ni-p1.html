@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrenamiento Parcial 1 · Principios de Economía NI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: un cuaderno de práctica tranquilo, claro y alentador.
+   IDEA: la hoja de ejercicios con su solución al reverso.
+   PICTURE: la propia pregunta, grande, con su gráfico.
+   COLOUR and TYPE: morado institucional, acento naranja; Source Sans 3.
+   LAYOUT: una columna de lectura, controles grandes para el celular. */
+:root{color-scheme:light dark;--bg:light-dark(#f6f4f9,#17131d);--card:light-dark(#fff,#221c2b);--ink:light-dark(#1f1a26,#eee9f4);--mut:light-dark(#655d70,#b3aabf);--pur:light-dark(#5B2A86,#c9a6ee);--pur2:light-dark(#efe7f7,#2e2340);--ora:#E87722;--ok:light-dark(#1d7a46,#6fd49b);--okb:light-dark(#e6f4ec,#173527);--bad:light-dark(#b3261e,#ff8a80);--badb:light-dark(#fbe9e7,#3a1d1b);--line:light-dark(#e2dcea,#3a3146)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,sans-serif;overflow-x:clip}
+header{background:#5B2A86;color:#fff;padding:18px max(5vw,16px) 22px}
+header h1{margin:0;font-size:clamp(24px,5vw,34px);line-height:1.1}
+header p{margin:6px 0 0;opacity:.9;font-size:15px}
+main{max-width:760px;margin:0 auto;padding:18px max(4vw,14px) 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:0 0 16px}
+h2{font-size:22px;margin:0 0 10px;line-height:1.2}
+h3{font-size:17px;margin:14px 0 6px}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input,select{width:100%;font:inherit;font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--ora);outline-offset:2px}
+button{font:inherit;font-weight:600;min-height:46px;padding:10px 16px;border-radius:10px;border:0;cursor:pointer}
+.b1{background:#5B2A86;color:#fff}.b2{background:var(--ora);color:#fff}.b3{background:var(--pur2);color:var(--pur)}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.row>button{flex:1 1 200px}
+.mut{color:var(--mut);font-size:15px}
+.chip{display:inline-block;background:var(--pur2);color:var(--pur);border-radius:99px;padding:2px 10px;font-size:13px;font-weight:600}
+.prog{height:8px;background:var(--pur2);border-radius:99px;margin:8px 0 14px;overflow:hidden}.prog i{display:block;height:100%;background:var(--ora)}
+.q{white-space:pre-line;font-size:17px}
+.fig{margin:12px 0;max-width:420px}.fig svg{width:100%;height:auto;color:var(--ink)}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);color:var(--ink);border:2px solid var(--line);margin:8px 0;font-weight:400;padding:12px 14px}
+.opt b{color:var(--pur);margin-right:6px}
+.opt.sel{border-color:#5B2A86;background:var(--pur2)}
+.opt.good{border-color:var(--ok);background:var(--okb)}.opt.wrong{border-color:var(--bad);background:var(--badb)}
+.opt:disabled{cursor:default}
+button:disabled:not(.opt){opacity:.45;cursor:default}
+.numbox{background:var(--pur2);border-radius:12px;padding:12px;margin:12px 0}
+.numbox .row{margin-top:8px}.numbox input{flex:1 1 160px}
+.fb{border-left:5px solid var(--ok);background:var(--okb);padding:12px 14px;border-radius:8px;margin-top:12px}
+.fb.no{border-color:var(--bad);background:var(--badb)}
+.fb p{margin:4px 0}
+.info{background:none;color:var(--pur);border:1.5px solid var(--pur);min-height:34px;padding:4px 12px;font-size:14px;margin-top:6px}
+.formula{font-family:"Source Sans 3";background:var(--pur2);padding:8px 12px;border-radius:8px;margin-top:6px}
+.big{font-size:clamp(48px,12vw,72px);font-weight:700;color:var(--pur);line-height:1}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 70px;gap:8px;align-items:center;margin:6px 0;font-size:15px}
+.bar .t{position:relative;height:10px;background:var(--pur2);border-radius:99px;grid-column:1/-1}.bar .t i{position:absolute;inset:0 auto 0 0;background:#5B2A86;border-radius:99px}
+.bar span:last-of-type{text-align:right;white-space:nowrap}
+details{border-top:1px solid var(--line);padding:8px 0}summary{cursor:pointer;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:15px}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}td.n{text-align:right;white-space:nowrap}
+.hide{display:none}
+@media(prefers-reduced-motion:no-preference){.prog i{transition:width .3s}}
+</style>
+</head>
+<body>
+<header><h1>Entrenamiento para el Parcial 1</h1><p>Principios de Economía · Negocios Internacionales · Practica, revisa tus errores y mira cuánto vas mejorando. Nota de práctica: no cuenta para la calificación.</p></header>
+<main id="app"></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ===== Banco de casos: Entrenamiento Parcial 1, Principios de Economía, Negocios Internacionales ===== */
+const TEMAS={1:"Escasez y fundamentos",2:"Costo de oportunidad",3:"Agentes, sistemas y Estado",4:"Escuelas clásica y keynesiana",5:"Frontera de posibilidades de producción",6:"Teoría de la utilidad"};
+const REPASO={1:"presentaciones «Escasez, elección y costo de oportunidad» y «Pensamiento marginal e incentivos»",2:"presentación «Escasez, elección y costo de oportunidad» y applet «Mis 24 horas»",3:"presentaciones de agentes económicos y «Sistemas económicos y papel del Estado»",4:"presentación «Escuelas clásica y keynesiana»",5:"presentaciones de la frontera de posibilidades de producción y su applet",6:"presentaciones «Utilidad 1» y «Utilidad 2» y applet de utilidad"};
+const SLOTS=[
+ {n:1,lab:"Escasez y fundamentos"},
+ {n:2,lab:"Ejercicio de costo de oportunidad"},
+ {n:3,lab:"Costo de oportunidad (conceptual)"},
+ {n:4,lab:"Agentes, sistemas y Estado"},
+ {n:5,lab:"Escuelas clásica y keynesiana"},
+ {n:6,lab:"Ejercicio de la frontera de posibilidades de producción"},
+ {n:7,lab:"Puntos de la frontera (gráfico)"},
+ {n:8,lab:"Forma y supuestos de la frontera"},
+ {n:9,lab:"Desplazamientos de la frontera"},
+ {n:10,lab:"Ejercicio de utilidad"}];
+const CALC=[2,6,10];
+
+const rnd=Math.random;
+const R=(a,b,s=1)=>{const k=Math.round((b-a)/s);return +(a+s*Math.floor(rnd()*(k+1))).toFixed(6)};
+const pick=a=>a[Math.floor(rnd()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function fmt(x,d=0){if(!isFinite(x))return "—";const neg=x<0;x=Math.abs(x);let s=x.toFixed(d);let [i,f]=s.split(".");i=i.replace(/\B(?=(\d{3})+(?!\d))/g," ");return (neg?"−":"")+i+(f?","+f:"")}
+const $=(x,d=0)=>(x<0?"−$":"$")+fmt(Math.abs(x),d);
+const near=(a,b,d)=>Math.abs(a-b)<=Math.max(Math.pow(10,-d)*1.01,Math.abs(b)*0.01);
+function NUM(o){
+ const d=o.dec??0, show=o.show||(v=>fmt(v,d));
+ const ok=+o.ans.toFixed(d);
+ const ds=[];
+ for(const e of o.errs){const v=+e.v.toFixed(d); if(!isFinite(v)||v<0)continue; if(near(v,ok,d))continue; if(ds.some(x=>near(x.v,v,d)))continue; ds.push({v,msg:e.msg}); if(ds.length===3)break;}
+ if(ds.length<3) return null;
+ const opts=[{v:ok,ok:true,msg:""},...ds].sort((a,b)=>a.v-b.v).map(x=>({t:show(x.v),ok:x.ok||false,msg:x.msg}));
+ return {tipo:"calc",q:o.q,opts,num:{ans:ok,dec:d,unit:o.unit||""},exp:o.exp,f:o.f,svg:o.svg};
+}
+function CON(q,ok,ds,exp,f,svg){
+ return {tipo:"con",q,opts:shuffle([{t:ok,ok:true,msg:""},...ds.map(x=>({t:x[0],ok:false,msg:x[1]}))]),exp,f,svg};
+}
+const C=[];
+const add=(slot,tema,sub,gen)=>C.push({slot,tema,sub,gen});
+const REL=(pre,items,lets)=>pre;
+
+/* ---------- POSICIÓN 1: escasez y fundamentos (10) ---------- */
+const ESC=[
+ ["Una cooperativa lechera de El Carchi recibe cada día 3 000 litros de leche. Sus socios quieren hacer queso, yogur y manjar para todos los pedidos que reciben, pero la leche disponible no alcanza para todo.","la leche disponible no alcanza"],
+ ["Una estudiante de Negocios Internacionales quiere estudiar, trabajar medio tiempo, hacer deporte y visitar a su familia cada día, pero sus 24 horas no le alcanzan para todo.","sus 24 horas no alcanzan"],
+ ["El municipio de un cantón tiene un presupuesto anual fijo. Los barrios le piden alcantarillado, canchas, alumbrado y vías, pero el dinero no alcanza para todas las obras.","el presupuesto no alcanza"]];
+for(const [t,r] of ESC) add(1,1,"Escasez y problema económico",()=>CON(`${t} (caso hipotético)\n¿Qué concepto económico describe mejor esta situación?`,
+ `Escasez: ${r} para todo lo que se desea.`,
+ [["Inflación: los precios de casi todos los bienes suben de forma generalizada.","El caso no habla de precios: el problema es que los recursos no alcanzan para todo lo que se desea."],
+  ["Desempleo: hay recursos disponibles que se quedan sin usar en la producción.","Al contrario: los recursos se usan y aun así no alcanzan."],
+  ["Pobreza: quien decide no tiene ingresos suficientes.","La escasez existe incluso con ingresos altos: los recursos siempre son limitados frente a los deseos."]],
+ "La escasez es la situación en la que los recursos son limitados frente a necesidades y deseos ilimitados. Obliga a elegir, y cada elección tiene un costo de oportunidad.",
+ "Problema económico: necesidades ilimitadas frente a recursos escasos; por eso hay que elegir."));
+
+add(1,1,"Clasificación de la economía",()=>CON(`En un foro sobre el cacao fino de aroma se escucharon estas afirmaciones.\nRelacione cada afirmación con el tipo de análisis económico.\nAFIRMACIONES\n1. Si sube el precio del cacao en grano, las chocolateras artesanales de Quito comprarán menos cacao.\n2. Si el país crece más rápido, el desempleo nacional bajará.\n3. Las chocolateras deberían pagar un precio más justo a los productores de cacao.\n4. El gobierno debería priorizar el empleo aunque suba el déficit fiscal.\nTIPOS\na) Microeconomía positiva\nb) Microeconomía normativa\nc) Macroeconomía positiva\nd) Macroeconomía normativa`,
+ "1a, 2c, 3b, 4d",[["1c, 2a, 3d, 4b","Confundiste micro y macro: las chocolateras son decisiones de un mercado (micro); el desempleo nacional es de todo el país (macro)."],["1b, 2d, 3a, 4c","Invertiste positiva y normativa: «debería» expresa un juicio de valor (normativa); «si… entonces…» se puede contrastar con datos (positiva)."],["1a, 2d, 3b, 4c","En la macro invertiste positiva y normativa: la afirmación 2 se puede comprobar con datos; la 4 dice qué debería hacerse."]],
+ "Positiva: describe y se puede contrastar con datos. Normativa: dice qué debería hacerse. Micro: decisiones de hogares, empresas y mercados. Macro: la economía del país en su conjunto.",
+ "Positiva = lo que es. Normativa = lo que debería ser. Micro = mercados y empresas. Macro = producción, empleo y precios del país."));
+add(1,1,"Clasificación de la economía",()=>CON(`En un conversatorio sobre turismo se escucharon estas afirmaciones.\nRelacione cada afirmación con el tipo de análisis económico.\nAFIRMACIONES\n1. El país debería subir el salario básico para reducir la pobreza.\n2. Si un hotel de Baños sube su tarifa, recibirá menos huéspedes.\n3. Si aumentan las exportaciones, aumenta el PIB del país.\n4. Las agencias deberían cobrar lo mismo a turistas nacionales y extranjeros.\nTIPOS\na) Microeconomía positiva\nb) Microeconomía normativa\nc) Macroeconomía positiva\nd) Macroeconomía normativa`,
+ "1d, 2a, 3c, 4b",[["1c, 2b, 3d, 4a","Invertiste positiva y normativa: «debería» expresa un juicio de valor; «si… entonces…» se puede contrastar con datos."],["1b, 2c, 3a, 4d","Confundiste micro y macro: un hotel o unas agencias son micro; el PIB y la pobreza del país son macro."],["1d, 2b, 3c, 4a","En la micro invertiste positiva y normativa: la afirmación 2 se puede comprobar con datos; la 4 dice qué debería hacerse."]],
+ "Positiva: se puede contrastar con datos. Normativa: contiene un «debería». Micro: un hotel, unas agencias. Macro: el PIB, el salario básico y la pobreza del país.",
+ "Positiva = lo que es. Normativa = lo que debería ser. Micro = mercados y empresas. Macro = producción, empleo y precios del país."));
+add(1,1,"Microeconomía y macroeconomía",()=>CON(`Una exportadora prepara preguntas para su plan anual.\n¿Cuáles son preguntas de microeconomía?\n1. ¿Cuántos sacos de café compra una tostadora de Loja cuando sube el precio?\n2. ¿Cuánto creció el PIB del Ecuador el último año?\n3. ¿Qué precio debe fijar una heladería para su nuevo sabor?\n4. ¿Por qué subió el desempleo en todo el país?\n5. ¿Cuántos trabajadores contrata una florícola en temporada alta?`,
+ "1, 3 y 5",[["1, 2 y 3","El crecimiento del PIB del país (2) es macroeconomía."],["2, 4 y 5","El PIB (2) y el desempleo nacional (4) son macroeconomía."],["1, 4 y 5","El desempleo de todo el país (4) es macroeconomía."]],
+ "La microeconomía estudia decisiones de hogares, empresas y mercados particulares (1, 3 y 5). La macroeconomía estudia agregados del país, como el PIB y el desempleo (2 y 4).",
+ "Microeconomía = decisiones de hogares, empresas y mercados. Macroeconomía = la economía en su conjunto."));
+
+add(1,1,"Pensamiento marginal",()=>{const cupos=R(15,20,5),fijo=R(400,600,50),pn=R(25,35,5),extra=R(2,5,1),ofer=R(10,18,1);
+ return CON(`Una agencia de turismo de Otavalo opera un tour en un bus de ${cupos} cupos. El tour cuesta $${fijo} (bus y guía), con o sin pasajeros adicionales, y el precio normal es $${pn}. A la hora de salir quedan 2 cupos vacíos y un turista ofrece $${ofer} por uno. Llevarlo solo añade $${extra} (entrada y refrigerio). Datos hipotéticos.\n¿Qué debería hacer la agencia si piensa en el margen?`,
+ `Aceptar: el ingreso adicional ($${ofer}) es mayor que el costo adicional ($${extra}).`,
+ [[`No aceptar: $${ofer} es menos que el costo promedio de $${fmt(fijo/cupos,2)} por cupo.`,"El costo promedio incluye el bus y el guía, que se pagan igual. Se decide comparando el ingreso adicional con el costo adicional."],
+  [`No aceptar: perdería $${pn-ofer} frente al precio normal de $${pn}.`,"Ese turista no va a pagar el precio normal; su alternativa real es un cupo vacío."],
+  ["Aceptar, porque cualquier ingreso es mejor que un cupo vacío.","La decisión es correcta, pero la razón no: si el turista ofreciera menos que el costo adicional, aceptar haría perder dinero."]],
+ `La agencia gana ${ofer} − ${extra} = $${ofer-extra} más que dejando el cupo vacío. El bus y el guía se pagan igual, así que no cuentan en esta decisión.`,
+ "Decisión en el margen: hacer algo más solo si el beneficio adicional es mayor que el costo adicional.")});
+add(1,1,"Pensamiento marginal",()=>{const pn=R(0.25,0.30,0.05),ofer=R(0.10,0.13,0.01),cm=R(0.15,0.19,0.01),n=R(50,100,10);
+ return CON(`Una panadería de Ibarra ya tiene el horno encendido. Un restaurante le pide ${n} panes adicionales y ofrece pagar $${fmt(ofer,2)} por pan; el precio normal es $${fmt(pn,2)}. Cada pan adicional le cuesta $${fmt(cm,2)} en harina, gas y trabajo. Datos hipotéticos.\n¿Qué debería hacer la panadería si piensa en el margen?`,
+ `No aceptar: cada pan adicional le cuesta $${fmt(cm,2)} y solo recibiría $${fmt(ofer,2)}.`,
+ [[`Aceptar: venderá ${n} panes más.`,"Vender más no basta: cada pan adicional le haría perder dinero."],
+  ["Aceptar: como el horno ya está encendido, producir más no cuesta nada.","El horno encendido no cambia, pero la harina, el gas y el trabajo de cada pan adicional sí cuestan."],
+  [`No aceptar: $${fmt(ofer,2)} es menos que el precio normal de $${fmt(pn,2)}.`,"La decisión es correcta, pero la razón no: lo que importa es si el ingreso adicional cubre el costo adicional."]],
+ `Por cada pan adicional recibe $${fmt(ofer,2)} y gasta $${fmt(cm,2)}: perdería $${fmt(cm-ofer,2)} por pan, en total $${fmt((cm-ofer)*n,2)}.`,
+ "Decisión en el margen: hacer algo más solo si el beneficio adicional es mayor que el costo adicional.")});
+add(1,1,"Incentivos",()=>CON(`El municipio de una ciudad empieza a cobrar $0,50 por cada funda plástica que se entrega en los mercados.\n¿Qué es lo más probable que ocurra?`,
+ "Habrá más bolsas reutilizables: la gente responde a los incentivos.",
+ [["Nada cambia, porque el monto es pequeño.","Aunque sea pequeño, el cobro cambia el costo de usar fundas y muchas personas ajustan su decisión."],
+  ["Se usarán más fundas, porque ahora tienen un precio.","Cuando algo cuesta más, se usa menos: el cobro desincentiva el uso de fundas."],
+  ["Solo cambiaría si se prohibieran las fundas por ley.","Los incentivos de precio también cambian el comportamiento, sin necesidad de prohibir."]],
+ "Un incentivo cambia los costos o beneficios de una decisión. Al cobrar por las fundas, su costo sube y la gente usa menos.",
+ "Las personas responden a los incentivos: si algo cuesta más, se hace menos."));
+add(1,1,"Recursos o factores de producción",()=>CON(`Relacione cada recurso de una finca cacaotera de Esmeraldas con el tipo de factor de producción.\nRECURSOS\n1. Las 10 hectáreas de la finca.\n2. Los jornaleros que cosechan las mazorcas.\n3. La secadora y la bodega de la finca.\n4. La persona que decide crear una marca de chocolate y asume el riesgo.\nFACTORES\na) Tierra (recursos naturales)\nb) Trabajo\nc) Capital\nd) Capacidad empresarial`,
+ "1a, 2b, 3c, 4d",[["1c, 2b, 3a, 4d","La tierra es un recurso natural; la secadora es capital, porque fue producida para producir otros bienes."],["1a, 2d, 3c, 4b","Quien organiza y asume el riesgo aporta la capacidad empresarial; los jornaleros aportan trabajo."],["1a, 2b, 3d, 4c","La secadora y la bodega son capital; la persona que crea la marca aporta la capacidad empresarial."]],
+ "Tierra: recursos naturales. Trabajo: esfuerzo humano. Capital: bienes producidos que sirven para producir. Capacidad empresarial: organizar y asumir riesgos.",
+ "Factores de producción: tierra, trabajo, capital y capacidad empresarial."));
+
+/* ---------- POSICIÓN 2: ejercicios de costo de oportunidad (12) ---------- */
+const MA=[
+ {t:(v,a,b)=>`Un estudiante tiene libre el sábado y debe elegir una sola opción: trabajar en un evento, que le paga $${v}; dar clases particulares, por $${a}; o vender en una feria, donde ganaría $${b}. Elige trabajar en el evento.`},
+ {t:(v,a,b)=>`El dueño de un local propio en Ibarra lo usa para su tienda, que le deja $${v} al mes. Podría arrendarlo a una farmacia por $${a} al mes o a una academia de baile por $${b} al mes. Decide seguir con su tienda.`},
+ {t:(v,a,b)=>`Una finca de Pimampiro tiene una camioneta libre el lunes. Puede usarla para llevar su propio aguacate al mercado, lo que le ahorra $${v}; alquilarla a un vecino por $${a}; o hacer fletes, por $${b}. Decide llevar su aguacate.`}];
+MA.forEach((m,k)=>add(2,2,"Mejor alternativa descartada",()=>{const sc=[1,10,1][k],b=R(20,60,5)*sc,a=b+R(5,30,5)*sc,v=a+R(5,40,5)*sc;
+ return NUM({q:m.t(fmt(v),fmt(a),fmt(b))+" Datos hipotéticos.\n¿Cuál es el costo de oportunidad de su decisión, en dólares?",ans:a,
+ errs:[{v:a+b,msg:"Sumaste las dos alternativas descartadas: solo cuenta la mejor, porque no podía hacer las dos a la vez."},{v:b,msg:"Tomaste la alternativa de menor valor: el costo de oportunidad es la mejor alternativa a la que se renuncia."},{v:v,msg:"Ese es el beneficio de la opción elegida, no lo que sacrifica."},{v:v-a,msg:"Esa es la ganancia de elegir bien, no el costo de oportunidad."}],
+ show:x=>$(x),unit:"dólares",exp:`La mejor alternativa descartada vale $${fmt(a)}. Como lo elegido vale $${fmt(v)}, la decisión es racional: gana $${fmt(v-a)} más que en su mejor alternativa.`,
+ f:"Costo de oportunidad = valor de la mejor alternativa a la que se renuncia"})}));
+
+const VJ=[["ir de Ibarra a Quito a un trámite","bus","un auto compartido"],["ir de Quito a Guayaquil a una reunión","bus","avión"],["ir de Loja a Cuenca a una feria","bus","una camioneta privada"]];
+VJ.forEach(([ruta,o1,o2])=>add(2,2,"Costo del tiempo y del dinero",()=>{const w=R(6,15,1),h1=R(4,9,1),p1=R(5,15,1),h2=R(1,h1-2,1),p2=p1+R(20,70,5);const askBus=rnd()<0.5;
+ const [h,pp,o,ho,po,oo]=askBus?[h1,p1,o1,h2,p2,o2]:[h2,p2,o2,h1,p1,o1];
+ return NUM({q:`Una comerciante gana $${w} por hora y esta semana tiene trabajo para todas las horas que quiera; no puede trabajar mientras viaja. Debe ${ruta} y tiene dos opciones:\n• ${o1[0].toUpperCase()+o1.slice(1)}: ${h1} horas de viaje y pasaje de $${p1}.\n• ${o2[0].toUpperCase()+o2.slice(1)}: ${h2} horas en total y pasaje de $${p2}.\nDatos hipotéticos. ¿Cuál es el costo total de ir en ${o}, incluido el costo de oportunidad de su tiempo, en dólares?`,ans:pp+h*w,
+ errs:[{v:pp,msg:"Contaste solo el pasaje: también renuncia a lo que ganaría trabajando esas horas."},{v:h*w,msg:"Contaste solo el tiempo: falta el pasaje."},{v:po+ho*w,msg:`Ese es el costo total de ir en ${oo}.`},{v:pp+h,msg:"Sumaste las horas como si fueran dólares: hay que multiplicarlas por lo que gana por hora."}],
+ show:x=>$(x),unit:"dólares",exp:`Costo total de ir en ${o} = $${pp} + ${h} × $${w} = $${fmt(pp+h*w)}. En ${oo} sería $${po} + ${ho} × $${w} = $${fmt(po+ho*w)}: conviene la opción con menor costo total.`,
+ f:"Costo total = dinero que se paga + horas usadas × lo que se gana por hora"})}));
+
+[["abrir una cafetería en Ibarra"],["abrir un taller de bicicletas en Quito"]].forEach(([neg])=>add(2,2,"Costo de oportunidad de emprender",()=>{const s=R(450,900,50),m=R(5,12,1),r=R(4,8,1),K=m*1200,i=m*r;
+ return NUM({q:`Andrea deja un empleo en el que ganaba $${s} al mes para ${neg}. Para equiparla usa $${fmt(K)} de sus ahorros, que en una póliza le rendirían ${r} % al año. Datos hipotéticos.\n¿Cuál es su costo de oportunidad mensual, en dólares?`,ans:s+i,
+ errs:[{v:s,msg:"Olvidaste lo que dejan de rendir sus ahorros."},{v:s+K,msg:"Sumaste todo el ahorro: no lo pierde, solo deja de ganar sus intereses."},{v:i,msg:"Olvidaste el sueldo al que renuncia."},{v:s+K*r/100,msg:"Usaste el interés de todo el año: la pregunta es mensual."}],
+ show:x=>$(x),unit:"dólares",exp:`Sueldo: $${s}. Interés mensual: ${fmt(K)} × ${r} % ÷ 12 = $${i}. Costo de oportunidad = ${s} + ${i} = $${s+i} al mes. El negocio le conviene si le deja más que eso.`,
+ f:"Costo de oportunidad de emprender = sueldo al que se renuncia + rendimiento que dejan de dar los ahorros"})}));
+
+[["una costurera de Atuntaqui","camisas","pantalones"],["una traductora","páginas de manuales","cartas comerciales"]].forEach(([q,A,B])=>add(2,2,"Costo de oportunidad por unidad",()=>{let x=R(4,10,1),y=R(6,30,1);while(y===x||(y%x===0&&rnd()<0.5))y=R(6,30,1);
+ return NUM({q:`En una jornada, ${q} puede hacer ${x} ${A} o ${y} ${B}, o cualquier combinación proporcional de ambos. Datos hipotéticos.\n¿Cuál es el costo de oportunidad de hacer una unidad de ${A}, medido en ${B}?`,ans:y/x,dec:2,
+ errs:[{v:x/y,msg:`Dividiste al revés: ese es el costo de una unidad de ${B}, medido en ${A}.`},{v:y,msg:`Eso es todo lo que sacrifica por ${x} ${A}, no por una.`},{v:y-x,msg:"Restaste las cantidades: el costo de oportunidad es un cociente."},{v:x,msg:`Esa es la cantidad de ${A} que hace en una jornada.`}],
+ unit:B,exp:`${x} ${A} equivalen a ${y} ${B}. Una unidad cuesta ${y} ÷ ${x} = ${fmt(y/x,2)} ${B}.`,
+ f:"Costo de oportunidad de una unidad de A = unidades de B a las que se renuncia ÷ unidades de A que se ganan"})}));
+
+[["La asociación de cafetaleros","quintales de café","Loja","Japón"],["Una cooperativa cacaotera","quintales de cacao","Esmeraldas","Bélgica"]].forEach(([who,u,loc,pais])=>add(2,2,"Exportar o vender localmente",()=>{const q=R(50,200,10),pl=R(150,250,10),c=R(20,60,5),pe=pl+c+R(20,80,10);
+ return NUM({q:`${who} tiene ${q} ${u} y dos opciones excluyentes: venderlos a un intermediario en ${loc} a $${pl} cada uno, o exportarlos a ${pais} a $${pe} cada uno, pagando $${c} por unidad de transporte y trámites. Decide exportar. Datos hipotéticos.\n¿Cuál es el costo de oportunidad de exportar, en dólares?`,ans:q*pl,
+ errs:[{v:q*c,msg:"Ese es el costo de transporte y trámites, no la alternativa a la que renuncia."},{v:q*(pe-pl),msg:"Esa es la diferencia de precios: es lo que gana de más, no lo que sacrifica."},{v:q*(pe-c),msg:"Eso es lo que recibe neto al exportar, no la alternativa descartada."},{v:q*pe,msg:"Ese es el ingreso bruto de exportar."}],
+ show:x=>$(x),unit:"dólares",exp:`Al exportar renuncia a vender en ${loc}: ${q} × $${pl} = $${fmt(q*pl)}. Exportando recibe ${q} × ($${pe} − $${c}) = $${fmt(q*(pe-c))}, más que su costo de oportunidad: la decisión es racional.`,
+ f:"Costo de oportunidad = lo que se habría recibido en la mejor alternativa descartada"})}));
+
+/* ---------- POSICIÓN 3: costo de oportunidad, conceptual (10) ---------- */
+add(3,2,"Qué cuenta en el costo de oportunidad",()=>CON(`Camila deja su trabajo en Quito para estudiar una maestría de un año en España.\n¿Cuáles de estos elementos forman parte del costo de oportunidad de la maestría?\n1. El sueldo que deja de ganar en Quito.\n2. La matrícula y los pasajes.\n3. La comida del año, que compraría igual si se quedara en Quito.\n4. El curso de alemán que pagó el año pasado y no puede recuperar.\n5. El ascenso que habría tenido este año en su empresa.`,
+ "1, 2 y 5",[["1, 2 y 3","La comida (3) la pagaría igual si se queda: no depende de la decisión."],["2, 3 y 4","El curso de alemán (4) es un costo hundido, y la comida (3) se paga igual; falta el sueldo al que renuncia."],["1, 4 y 5","El curso de alemán (4) ya se pagó y no se recupera: es un costo hundido. Falta la matrícula."]],
+ "Cuenta todo aquello a lo que Camila renuncia por irse: el sueldo (1), el dinero de la matrícula y los pasajes (2) y el ascenso (5). No cuentan los gastos que haría igual (3) ni los costos hundidos (4).",
+ "Costo de oportunidad = todo aquello a lo que se renuncia por elegir una opción"));
+add(3,2,"Qué cuenta en el costo de oportunidad",()=>CON(`Una MIPYME de artesanías de Otavalo evalúa ir una semana a una feria en Bogotá.\n¿Cuáles de estos elementos forman parte del costo de oportunidad de ir a la feria?\n1. El alquiler del stand y los pasajes.\n2. Las ventas que deja de hacer en su local esa semana.\n3. El arriendo del local, que paga igual vaya o no a la feria.\n4. Los catálogos que imprimió el año pasado.\n5. Las horas que la dueña deja de dedicar a producir.`,
+ "1, 2 y 5",[["1, 2 y 3","El arriendo del local (3) se paga igual: no cambia con la decisión."],["2, 3 y 4","Los catálogos del año pasado (4) son un costo hundido y el arriendo (3) se paga igual."],["1, 4 y 5","Los catálogos (4) ya se pagaron: son un costo hundido. Faltan las ventas del local."]],
+ "Cuentan el stand y los pasajes (1), las ventas perdidas en el local (2) y el tiempo de producción de la dueña (5). No cuentan los gastos que se pagan igual (3) ni los costos hundidos (4).",
+ "Costo de oportunidad = todo aquello a lo que se renuncia por elegir una opción"));
+add(3,2,"Costos hundidos",()=>{const x=R(30,80,5),y=R(40,120,10);return CON(`Mateo compró hace un mes una entrada no reembolsable de $${x} para un concierto. Esa misma noche le ofrecen un trabajo que paga $${y}.\n¿Qué debería pesar en su decisión?`,
+ `Solo comparar cuánto valora el concierto con los $${y} del trabajo; los $${x} ya se gastaron.`,
+ [[`Ir al concierto, para no desperdiciar los $${x} de la entrada.`,"Los $${x} no se recuperan vaya o no: son un costo hundido y no deben influir."],
+  [`Sumar los $${x} de la entrada a los $${y} del trabajo.`,"La entrada ya pagada no cambia con la decisión: no se suma a nada."],
+  [`Restar los $${x} al valor que le da al concierto.`,"La entrada ya se pagó: ir o no ir no cambia ese gasto."]].map(([t,m])=>[t,m.replace("${x}",x)]),
+ `Pase lo que pase, los $${x} ya se gastaron. Si va al concierto renuncia a $${y}: debe ir solo si lo valora en más de $${y}.`,
+ "Los costos hundidos (ya pagados y no recuperables) no forman parte del costo de oportunidad.")});
+add(3,2,"Costos hundidos",()=>{const g=R(15,25,5)*1000,t=R(6,10,1)*1000,n=R(3,5,1)*1000;return CON(`Una empresa exportadora gastó $${fmt(g)} en un sistema de inventarios que todavía no funciona. Terminarlo cuesta $${fmt(t)} más. Un sistema nuevo, que hace lo mismo, cuesta $${fmt(n)}.\n¿Qué conviene y por qué?`,
+ `Comprar el nuevo: se comparan los $${fmt(t)} que faltan con los $${fmt(n)}; lo ya gastado no se recupera.`,
+ [["Terminar el sistema actual, porque ya se invirtió mucho en él.","Lo gastado es un costo hundido: no se recupera con ninguna de las dos opciones."],
+  [`Comprar el nuevo, porque el actual ya costó $${fmt(g)}.`,"La decisión es correcta, pero no por lo ya gastado: sería la misma aunque el sistema actual hubiera costado poco."],
+  ["No hacer nada, para no perder más dinero.","Si la empresa necesita el sistema, no hacer nada no resuelve el problema; hay que elegir la opción más barata desde hoy."]],
+ `Desde hoy, terminar cuesta $${fmt(t)} y el nuevo cuesta $${fmt(n)}: conviene el nuevo. Los $${fmt(g)} ya se gastaron con ambas opciones.`,
+ "Los costos hundidos no forman parte del costo de oportunidad: solo cuenta lo que cambia con la decisión.")});
+add(3,2,"Recursos propios",()=>CON(`Relacione cada decisión con su costo de oportunidad.\nDECISIONES\n1. Un estudiante ve una serie 3 horas en lugar de trabajar como repartidor, por $12.\n2. Un agricultor de Pimampiro siembra fréjol donde el aguacate le dejaría $900.\n3. Una MIPYME guarda su mercadería en su propio galpón, que podría arrendar por $250 al mes.\nCOSTOS DE OPORTUNIDAD\na) $12 del pago que deja de recibir\nb) $900 del aguacate que deja de cosechar\nc) $250 del arriendo que deja de cobrar\nd) $0, porque el galpón ya es de la empresa`,
+ "1a, 2b, 3c",[["1a, 2b, 3d","Usar un recurso propio sí tiene costo de oportunidad: el arriendo al que se renuncia."],["1b, 2a, 3c","Intercambiaste los costos del estudiante y del agricultor."],["1c, 2b, 3a","Asignaste el arriendo al estudiante y el pago al galpón."]],
+ "En cada caso, el costo de oportunidad es el valor de la mejor alternativa descartada, también cuando el recurso es propio.",
+ "Costo de oportunidad = valor de la mejor alternativa a la que se renuncia"));
+[["Un emprendedor decide vender en una feria el sábado","trabajar como mesero"],["Una diseñadora decide aceptar un proyecto de un fin de semana","dar un taller en línea"]].forEach(([d,alt])=>add(3,2,"Decisión racional",()=>{const A=R(60,120,10);const B=rnd()<0.5?A+R(10,50,10):A-R(10,40,10);const rac=B>A;
+ return CON(`${d}: espera ganar $${B}. Su mejor alternativa era ${alt}, por $${A}. Datos hipotéticos.\n¿Fue una decisión racional?`,
+ rac?`Sí, porque lo que gana ($${B}) supera su costo de oportunidad ($${A}).`:`No, porque su costo de oportunidad ($${A}) supera lo que gana ($${B}).`,
+ [[rac?`No, porque su costo de oportunidad ($${A}) supera lo que gana ($${B}).`:`Sí, porque lo que gana ($${B}) supera su costo de oportunidad ($${A}).`,`Revisa los números: gana $${B} y su costo de oportunidad es $${A}.`],
+  ["Sí, porque cualquier ganancia positiva justifica la decisión.","No basta con ganar algo: hay que compararlo con lo que se deja de ganar en la mejor alternativa."],
+  ["No se puede saber sin conocer los gastos que ya hizo antes.","Los gastos pasados son costos hundidos: no cambian la decisión."]],
+ `Una decisión es racional si el beneficio de lo elegido es mayor que su costo de oportunidad: ${B} frente a ${A}.`,
+ "Decisión racional: elegir la opción cuyo beneficio supera su costo de oportunidad.")}));
+add(3,2,"Nada es gratis",()=>CON(`Juan asiste el sábado por la tarde a un concierto gratuito en el parque. Esa tarde podía trabajar en la tienda de su familia o estudiar para un examen.\nPara Juan, ¿tiene costo de oportunidad asistir al concierto?`,
+ "Sí: el tiempo que dedica al concierto.",
+ [["No, porque la entrada es gratis.","Aunque no pague entrada, renuncia a usar ese tiempo en otra cosa."],
+  ["Solo el pasaje de ida y vuelta al parque.","El pasaje cuenta, pero el principal costo es el tiempo al que renuncia."],
+  ["Lo que el municipio paga a los músicos.","Ese es un costo para el municipio; la pregunta es a qué renuncia Juan."]],
+ "Nada es gratis: incluso sin pagar, asistir le quita tiempo que podría usar en su mejor alternativa.",
+ "Costo de oportunidad = valor de la mejor alternativa a la que se renuncia, aunque no se pague dinero"));
+add(3,2,"Concepto de costo de oportunidad",()=>CON(`Complete los espacios en blanco:\n«El costo de oportunidad de una decisión es el valor de la ______ alternativa a la que se ______. Por eso, los costos ______ no se consideran: no cambian con la decisión».`,
+ "mejor – renuncia – hundidos",
+ [["peor – renuncia – hundidos","Se toma la mejor alternativa descartada, no la peor."],["mejor – elige – variables","El costo de oportunidad es la alternativa a la que se renuncia, no la que se elige."],["suma de cada – renuncia – fijos","No se suman todas las alternativas: solo cuenta la mejor, porque no se pueden hacer todas a la vez."]],
+ "El costo de oportunidad es la mejor alternativa descartada. Los costos hundidos ya se pagaron y no cambian con la decisión.",
+ "Costo de oportunidad = valor de la mejor alternativa a la que se renuncia"));
+add(3,2,"Costo de oportunidad del dinero",()=>{const K=R(5,20,1)*1000,r=R(4,8,1);return CON(`Una MIPYME guarda $${fmt(K)} en caja «por si acaso». Podría depositarlos en una póliza que paga ${r} % al año. Datos hipotéticos.\n¿Cuál es el costo de oportunidad de tener ese dinero en caja durante un año?`,
+ `$${fmt(K*r/100)}, el interés que deja de ganar.`,
+ [["$0, porque el dinero sigue siendo de la empresa.","Tener el dinero quieto también cuesta: el interés que deja de ganar."],
+  [`$${fmt(K)}, el dinero guardado.`,"No pierde el dinero: pierde lo que podría rendirle."],
+  [`$${fmt(K*(1+r/100))}, el dinero más el interés.`,"El dinero lo conserva; solo renuncia al interés."]],
+ `${fmt(K)} × ${r} % = $${fmt(K*r/100)} al año.`,
+ "Costo de oportunidad del dinero = rendimiento que dejaría en su mejor uso alternativo")});
+
+/* ---------- POSICIÓN 4: agentes, sistemas y Estado (10) ---------- */
+const AGF={h:"Ofrecen su trabajo y compran bienes para su consumo.",e:"Contrata trabajadores, compra insumos y produce para vender.",s:"Cobra impuestos, regula y provee bienes públicos.",x:"Fija el precio internacional del producto que se exporta."};
+add(4,3,"Agentes económicos",()=>CON(`Una florícola de Cayambe contrata trabajadores de las comunidades cercanas, compra plántulas, paga impuestos y exporta rosas.\nRelacione cada agente con la función que cumple en este caso.\nAGENTES\n1. Hogares de la zona\n2. Florícola\n3. Estado\nFUNCIONES\na) ${AGF.h}\nb) ${AGF.e}\nc) ${AGF.s}\nd) ${AGF.x}`,
+ "1a, 2b, 3c",[["1b, 2a, 3c","Intercambiaste hogares y empresa: los hogares ofrecen trabajo; la florícola contrata y produce."],["1a, 2b, 3d","El precio internacional de las rosas se forma en el mercado mundial; el Estado ecuatoriano no lo fija."],["1c, 2b, 3a","Intercambiaste hogares y Estado: el Estado cobra impuestos y provee bienes públicos."]],
+ "Hogares: ofrecen factores y consumen. Empresas: contratan factores y producen. Estado: cobra impuestos, regula y provee bienes públicos.",
+ "Agentes económicos: hogares (familias), empresas y Estado."));
+add(4,3,"Agentes económicos",()=>CON(`Una fábrica textil de Atuntaqui contrata costureras, compra tela, paga impuestos y vende ropa a familias de todo el país.\nRelacione cada agente con la función que cumple en este caso.\nAGENTES\n1. Estado\n2. Hogares\n3. Fábrica textil\nFUNCIONES\na) ${AGF.h}\nb) ${AGF.e}\nc) ${AGF.s}\nd) ${AGF.x}`,
+ "1c, 2a, 3b",[["1c, 2b, 3a","Intercambiaste hogares y empresa: los hogares ofrecen trabajo; la fábrica contrata y produce."],["1d, 2a, 3b","El Estado no fija el precio internacional de la ropa: cobra impuestos, regula y provee bienes públicos."],["1a, 2c, 3b","Intercambiaste Estado y hogares."]],
+ "Hogares: ofrecen factores y consumen. Empresas: contratan factores y producen. Estado: cobra impuestos, regula y provee bienes públicos.",
+ "Agentes económicos: hogares (familias), empresas y Estado."));
+add(4,3,"Flujo circular",()=>CON(`Relacione cada transacción con el mercado del flujo circular en que ocurre.\nTRANSACCIONES\n1. Una familia compra jeans en una tienda de Atuntaqui.\n2. La fábrica de jeans paga los salarios de sus costureras.\n3. La fábrica paga el arriendo del galpón al dueño del terreno.\n4. Un hogar paga su servicio de internet.\nMERCADOS\na) Mercado de bienes y servicios\nb) Mercado de factores de producción`,
+ "1a, 2b, 3b, 4a",[["1a, 2b, 3a, 4a","El arriendo del galpón paga un factor de producción (tierra o inmuebles), no un bien de consumo."],["1b, 2a, 3a, 4b","Invertiste todos los mercados: en el de bienes compran los hogares; en el de factores compran las empresas."],["1a, 2a, 3b, 4a","Los salarios pagan el trabajo, que es un factor de producción."]],
+ "En el mercado de bienes, los hogares compran lo que producen las empresas. En el de factores, las empresas pagan trabajo, tierra y capital a los hogares.",
+ "Flujo circular: mercado de bienes y servicios y mercado de factores de producción."));
+add(4,3,"Flujos reales y monetarios",()=>CON(`En el flujo circular de una fábrica de jeans, los flujos reales van en sentido contrario a los flujos de dinero.\n¿Cuál de estos es un flujo real?`,
+ "Las horas de trabajo que las costureras entregan a la fábrica.",
+ [["Los salarios que la fábrica paga a las costureras.","Es un pago en dinero: flujo monetario."],["Las ventas en dólares de la fábrica en el mes.","Es dinero que entra: flujo monetario."],["Los impuestos que la fábrica paga al Estado.","Es un pago en dinero: flujo monetario."]],
+ "Los flujos reales son bienes, servicios y factores, y se miden en unidades físicas (horas, prendas). Los monetarios son los pagos en dólares.",
+ "Flujo real = bienes, servicios y factores. Flujo monetario = pagos que van en sentido contrario."));
+const SIS={lib:"Economía de libre mercado (capitalismo)",pla:"Economía de planificación central (socialismo)",mix:"Economía mixta",eps:"Economía popular y solidaria"};
+const SMSG={lib:"En el libre mercado, los precios y las empresas privadas deciden casi todo, con un Estado mínimo.",pla:"En la planificación central, un organismo del Estado decide qué, cuánto y a qué precio se produce.",mix:"En una economía mixta, el mercado asigna la mayoría de los recursos y el Estado regula, produce algunos bienes y ofrece servicios públicos.",eps:"La economía popular y solidaria es una forma de organización (cooperativas, asociaciones y organizaciones comunitarias) dentro del sistema económico, no un sistema completo."};
+[["mix","La mayoría de las empresas son privadas y los precios se forman en el mercado; sin embargo, el Estado cobra impuestos, regula a los bancos, es dueño de la empresa eléctrica y ofrece educación y salud públicas."],
+ ["pla","Un organismo central del Estado decide qué se produce, cuánto y a qué precio; casi todas las fábricas y tierras son del Estado."],
+ ["lib","Casi todas las empresas son privadas, los precios se forman sin intervención y el Estado se limita a proteger la propiedad y hacer cumplir los contratos."]].forEach(([k,d])=>add(4,3,"Sistemas económicos",()=>CON(`Un analista describe la economía de un país a un cliente que quiere invertir: «${d}».\n¿Qué sistema económico describe?`,
+ SIS[k],Object.keys(SIS).filter(j=>j!==k).map(j=>[SIS[j],SMSG[j]]),SMSG[k],"Sistemas económicos: libre mercado, planificación central y economía mixta, según quién decide qué, cómo y para quién producir.")));
+add(4,3,"Fallas de mercado: externalidades",()=>CON(`Una camaronera descarga sus aguas residuales en un estero donde trabajan recolectores de conchas, que pierden parte de su producción. La camaronera no paga nada por ese daño y el precio del camarón no lo refleja.\n¿Qué argumento justifica que el Estado intervenga?`,
+ "Hay una externalidad negativa que el mercado no toma en cuenta.",
+ [["El precio del camarón es injusto y el Estado debe fijar uno justo.","El problema no es un precio injusto, sino un costo para terceros que el mercado no considera."],["La camaronera tiene poder de mercado.","El caso no describe a un vendedor único que fije precios."],["El mercado nunca asigna bien los recursos.","Los mercados suelen asignar bien los recursos, salvo cuando hay fallas como esta."]],
+ "Una externalidad negativa es un costo que una actividad impone a terceros sin pagarlo. Es una falla de mercado que justifica la intervención del Estado.",
+ "El Estado puede mejorar los resultados del mercado cuando hay fallas de mercado (externalidades, bienes públicos, poder de mercado)."));
+add(4,3,"Fallas de mercado: bienes públicos",()=>CON(`¿Por qué ninguna empresa privada instala por su cuenta el alumbrado de las calles de un barrio para cobrar a los vecinos?`,
+ "Porque es un bien público: no se puede cobrar a quien lo usa.",
+ [["Porque el alumbrado es un bien escaso.","Casi todos los bienes son escasos; eso no explica por qué el mercado no lo ofrece."],["Porque los vecinos no valoran tener luz en la calle.","Sí lo valoran; el problema es que pueden usarlo sin pagar."],["Porque está prohibido que una empresa privada genere electricidad.","La razón económica es que no se puede cobrar a quien lo usa."]],
+ "Un bien público no es excluible (no se puede impedir su uso) ni rival (el uso de uno no reduce el de otro). Por eso el mercado no lo ofrece y lo provee el Estado.",
+ "Bien público: no excluible y no rival; lo provee el Estado."));
+add(4,3,"Economía popular y solidaria",()=>CON(`La Constitución de 2008 establece que el sistema económico del Ecuador es social y solidario e incluye formas de organización pública, privada, mixta y popular y solidaria.\n¿Cuál de estas organizaciones forma parte de la economía popular y solidaria?`,
+ "Una cooperativa de ahorro y crédito de una comunidad.",
+ [["Una sociedad anónima que cotiza en la bolsa.","Es una empresa privada de capital."],["La empresa pública de electricidad.","Es parte del sector público."],["Una multinacional de alimentos.","Es una empresa privada."]],
+ "La economía popular y solidaria agrupa cooperativas, asociaciones y organizaciones comunitarias, que priorizan a las personas sobre el capital.",
+ "Sistema económico social y solidario: formas pública, privada, mixta y popular y solidaria."));
+
+/* ---------- POSICIÓN 5: escuelas (8) ---------- */
+add(5,4,"Ideas de las escuelas",()=>CON(`Relacione cada idea con la escuela que la sostiene.\nIDEAS\n1. Lo que se produce se termina comprando: la oferta crea su propia demanda.\n2. Cuando cae la demanda privada, el Estado debe aumentar su gasto.\n3. El libre mercado, guiado por la «mano invisible», asigna bien los recursos.\n4. Los salarios no bajan con facilidad y el desempleo puede durar años.\nESCUELAS\na) Escuela clásica\nb) Escuela keynesiana`,
+ "1a, 2b, 3a, 4b",[["1b, 2a, 3a, 4b","La idea de que la oferta crea su demanda es clásica; el gasto público ante la crisis es keynesiano."],["1a, 2b, 3b, 4a","La mano invisible es de Adam Smith (clásica); el desempleo persistente es una idea keynesiana."],["1a, 2a, 3a, 4b","Recomendar más gasto público cuando cae la demanda es la idea central de Keynes."]],
+ "Clásicos: los mercados se ajustan solos y la oferta crea su demanda. Keynes: la demanda puede quedarse corta y el Estado debe sostenerla.",
+ "Escuela clásica: libre mercado y ajuste de precios. Escuela keynesiana: demanda agregada y papel activo del Estado."));
+add(5,4,"Autores y contexto",()=>CON(`Relacione cada elemento con su escuela.\nELEMENTOS\n1. Adam Smith, «La riqueza de las naciones» (1776).\n2. John Maynard Keynes, «Teoría general» (1936).\n3. Surge tras la Gran Depresión de los años treinta.\n4. Surge con la Revolución Industrial y la expansión del comercio.\nESCUELAS\na) Escuela clásica\nb) Escuela keynesiana`,
+ "1a, 2b, 3b, 4a",[["1b, 2a, 3b, 4a","Adam Smith es el fundador de la escuela clásica; Keynes, de la keynesiana."],["1a, 2b, 3a, 4b","La Gran Depresión es el contexto de Keynes; la Revolución Industrial, el de los clásicos."],["1a, 2b, 3a, 4a","La Gran Depresión de 1929 es el contexto en el que surge la escuela keynesiana."]],
+ "Adam Smith escribe en plena Revolución Industrial (1776). Keynes escribe tras la Gran Depresión (1936), cuando el desempleo masivo no se corregía solo.",
+ "Escuela clásica: Adam Smith, 1776. Escuela keynesiana: Keynes, 1936."));
+[["Una caída de la demanda internacional reduce en 40 % las exportaciones de flores, y muchas florícolas despiden trabajadores."],["Una crisis reduce el turismo y el consumo de los hogares; hoteles y restaurantes cierran y aumenta el desempleo."]].forEach(([d])=>add(5,4,"Respuesta keynesiana ante una crisis",()=>CON(`${d} Las autoridades piden consejo a un economista keynesiano.\n¿Qué recomendaría?`,
+ "Aumentar el gasto público o las transferencias temporales para sostener la demanda.",
+ [["Esperar a que bajen los salarios y los precios para que el mercado se ajuste solo.","Esa es la respuesta clásica: dejar que el mercado se ajuste."],["Reducir el gasto público para equilibrar el presupuesto.","Para Keynes, recortar el gasto en una crisis reduce aún más la demanda."],["Fijar por ley precios mínimos altos para los productos afectados.","Un precio mínimo no aumenta las compras; con precios más altos se vende menos."]],
+ "Para Keynes, en una crisis la demanda agregada es insuficiente y el desempleo puede persistir; el Estado debe sostener la demanda con más gasto.",
+ "Escuela keynesiana: en una crisis, el Estado sostiene la demanda con gasto público.")));
+add(5,4,"Respuesta clásica ante una crisis",()=>CON(`Una crisis reduce las ventas de las MIPYME de un país. Las autoridades piden consejo a un economista de la escuela clásica.\n¿Qué recomendaría?`,
+ "Dejar que los precios y los salarios se ajusten, sin intervención del Estado.",
+ [["Aumentar el gasto público para sostener la demanda.","Esa es la receta keynesiana."],["Controlar los precios para que no bajen.","Los clásicos confían en que los precios se ajusten libremente."],["Que el Estado compre las empresas en problemas.","Los clásicos defienden la propiedad privada y un Estado mínimo."]],
+ "Para la escuela clásica, si precios y salarios son flexibles, el mercado vuelve solo al pleno empleo.",
+ "Escuela clásica: libre mercado; el Estado no interviene en el ajuste."));
+add(5,4,"Mano invisible",()=>CON(`¿Qué quiso decir Adam Smith con la «mano invisible»?`,
+ "Que el interés propio de cada persona, coordinado por los precios, lleva al bienestar general.",
+ [["Que el Estado guía en secreto las decisiones de las empresas y de los hogares.","Smith se refería al mercado, no al Estado."],["Que los precios de los mercados los fijan unos pocos comerciantes poderosos.","La mano invisible describe la competencia entre muchos, no el poder de unos pocos."],["Que el mercado siempre necesita ayuda del gobierno.","Es lo contrario: el mercado coordina sin una dirección central."]],
+ "La mano invisible es la coordinación que logran los precios cuando muchos compradores y vendedores buscan su propio interés.",
+ "Escuela clásica: la mano invisible del mercado coordina las decisiones individuales."));
+add(5,4,"Crítica de Keynes a los clásicos",()=>CON(`¿Cuál fue la principal crítica de Keynes a la escuela clásica?`,
+ "Que en una crisis la demanda puede quedarse corta y el desempleo durar.",
+ [["Que el mercado nunca funciona y debe ser reemplazado.","Keynes no rechazó el mercado; señaló que puede quedarse atascado en una crisis."],["Que el Estado debe planificar toda la producción.","Eso es planificación central, no la propuesta de Keynes."],["Que los precios suben siempre que el Estado gasta.","Keynes justamente recomendaba gastar cuando hay recursos ociosos."]],
+ "Keynes sostuvo que la economía puede quedarse con desempleo por falta de demanda, y que el Estado debe intervenir para sostenerla.",
+ "Escuela keynesiana: la demanda agregada determina la producción y el empleo a corto plazo."));
+add(5,4,"Límites de la escuela clásica",()=>CON(`¿Cuál es un límite de la escuela clásica que señaló la experiencia de la Gran Depresión?`,
+ "Supone un ajuste rápido de precios y salarios, que no ocurrió en la crisis.",
+ [["Defiende que el Estado gaste más durante las crisis económicas.","Eso lo defiende la escuela keynesiana."],["No explica por qué existen los mercados.","Los clásicos sí explican el funcionamiento de los mercados."],["Supone que la producción la decide el Estado.","Los clásicos defienden el libre mercado, no la planificación."]],
+ "En la Gran Depresión el desempleo masivo persistió, contra la idea clásica de un ajuste rápido hacia el pleno empleo.",
+ "Escuela clásica: supone ajuste rápido de precios y salarios hacia el pleno empleo."));
+
+/* ---------- Frontera: datos ---------- */
+const FCTX=[
+ {x:"quintales de café",y:"quintales de aguacate",sx:"café",sy:"aguacate",who:"Una finca de Intag (caso hipotético) cultiva café y aguacate en sus 12 hectáreas."},
+ {x:"cajas de rosas",y:"cajas de gypsophila",sx:"rosas",sy:"gypsophila",who:"Una florícola de Tabacundo (caso hipotético) produce rosas y gypsophila en sus invernaderos."},
+ {x:"sitios web",y:"campañas en redes",sx:"sitios web",sy:"campañas",who:"Una agencia digital de Quito (caso hipotético) diseña sitios web y campañas en redes con sus tres diseñadores."},
+ {x:"bandejas de pan",y:"pasteles",sx:"pan",sy:"pasteles",who:"Una panadería de Ibarra (caso hipotético) hace pan y pasteles con un solo horno."}];
+function fpp(ctx){const s=pick([5,10,20]);const d=[R(2,8,1)];for(const k of [3,3,4])d.push(d[d.length-1]+R(k,k+8,1));const ym=d.reduce((a,b)=>a+b,0);
+ const xs=[0,s,2*s,3*s,4*s],ys=[ym];d.forEach(v=>ys.push(ys[ys.length-1]-v));const L="ABCDE";
+ return {...ctx,s,d,xs,ys,L,tab:xs.map((x,i)=>`Punto ${L[i]}: ${x} ${ctx.x} y ${ys[i]} ${ctx.y}`).join("\n"),corta:xs.map((x,i)=>`${L[i]}: ${x} y ${ys[i]}`).join("; ")}}
+function fppSVG(F,pts,F2){const W=320,H=240,x0=44,y0=H-34;const mx=Math.max(F.xs[4],F2?F2.xs[4]:0)*1.12,my=Math.max(F.ys[0],F2?F2.ys[0]:0)*1.12;
+ const X=v=>(x0+v/mx*(W-x0-12)).toFixed(1),Y=v=>(y0-v/my*(y0-14)).toFixed(1);
+ const line=(G,col,da)=>`<polyline fill="none" stroke="${col}" stroke-width="2.4" ${da?'stroke-dasharray="6 4"':""} points="${G.xs.map((x,i)=>X(x)+","+Y(G.ys[i])).join(" ")}"/>`;
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Frontera de posibilidades de producción"><line x1="${x0}" y1="${y0}" x2="${W-6}" y2="${y0}" stroke="currentColor"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="6" stroke="currentColor"/>`;
+ s+=`<text x="${W-6}" y="${H-4}" font-size="11" text-anchor="end" fill="currentColor">${F.x[0].toUpperCase()+F.x.slice(1)}</text><text x="${x0+4}" y="12" font-size="11" fill="currentColor">${F.y[0].toUpperCase()+F.y.slice(1)}</text>`;
+ if(!F2){F.xs.forEach(x=>s+=`<text x="${X(x)}" y="${y0+13}" font-size="10" text-anchor="middle" fill="currentColor">${x}</text>`);let ly=-99;F.ys.forEach(y=>{if(y>0&&Math.abs(+Y(y)-ly)>=11){ly=+Y(y);s+=`<text x="${x0-4}" y="${+Y(y)+3}" font-size="10" text-anchor="end" fill="currentColor">${y}</text>`}})}
+ s+=line(F,"#5B2A86");
+ if(F2){s+=line(F2,"#E87722",1)+`<text x="${W-8}" y="24" font-size="11" text-anchor="end" fill="#5B2A86">— Frontera inicial</text><text x="${W-8}" y="38" font-size="11" text-anchor="end" fill="#E87722">- - Frontera final</text>`}
+ (pts||[]).forEach(p=>s+=`<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="5" fill="#E87722"/><text x="${+X(p.x)+7}" y="${+Y(p.y)-6}" font-size="13" font-weight="700" fill="currentColor">${p.n}</text>`);
+ return s+"</svg>"}
+
+/* ---------- POSICIÓN 6: ejercicios de la frontera (12) ---------- */
+const FF="Costo de oportunidad de una unidad de X = unidades de Y a las que se renuncia ÷ unidades de X que se ganan";
+const QF=[
+ F=>{const i=Math.floor(rnd()*4),j=i+1,dy=F.d[i];const o=i<3?F.d[i+1]:F.d[i-1];
+  return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nAl pasar del punto ${F.L[i]} al punto ${F.L[j]}, ¿cuál es el costo de oportunidad de cada unidad adicional de ${F.sx}, medido en ${F.y}?`,ans:dy/F.s,dec:2,
+  errs:[{v:F.s/dy,msg:`Dividiste al revés: ese es el costo de una unidad de ${F.sy}, medido en ${F.x}.`},{v:dy,msg:`Ese es el sacrificio total de las ${F.s} unidades, no el de cada una.`},{v:o/F.s,msg:"Usaste otro tramo de la tabla: fíjate en los dos puntos que pide la pregunta."},{v:F.ys[j]/F.xs[j],msg:"Dividiste las cantidades del punto final: el costo de oportunidad compara los cambios entre dos puntos."}],
+  unit:F.y,exp:`De ${F.L[i]} a ${F.L[j]} se ganan ${F.s} ${F.x} y se pierden ${F.ys[i]} − ${F.ys[j]} = ${dy} ${F.y}. Costo por unidad: ${dy} ÷ ${F.s} = ${fmt(dy/F.s,2)}.`,f:FF})},
+ F=>{const i=Math.floor(rnd()*3),j=i+2,dy=F.ys[i]-F.ys[j],dx=F.xs[j]-F.xs[i];
+  return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nUn cliente pide más ${F.sx} y la gerencia evalúa pasar del punto ${F.L[i]} al punto ${F.L[j]}. ¿Cuál es el costo de oportunidad de cada unidad adicional de ${F.sx}, medido en ${F.y}?`,ans:dy/dx,dec:2,
+  errs:[{v:dx/dy,msg:"Dividiste al revés: pusiste las unidades que se ganan sobre las que se pierden."},{v:dy,msg:`Ese es el sacrificio total de las ${dx} unidades, no el de cada una.`},{v:F.d[i]/F.s,msg:"Usaste solo el primer tramo: el movimiento va de un punto a otro que está dos filas más abajo."},{v:F.d[i+1]/F.s,msg:"Usaste solo el segundo tramo: hay que tomar todo el movimiento entre los dos puntos."}],
+  unit:F.y,exp:`De ${F.L[i]} a ${F.L[j]} se ganan ${dx} ${F.x} y se pierden ${F.ys[i]} − ${F.ys[j]} = ${dy} ${F.y}. Costo por unidad: ${dy} ÷ ${dx} = ${fmt(dy/dx,2)}.`,f:FF})},
+ F=>{const i=Math.floor(rnd()*4),j=i+1,dy=F.d[i];const o=i<3?F.d[i+1]:F.d[i-1];
+  return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nHoy produce en el punto ${F.L[j]}, pero un cliente pide más ${F.sy} y la gerencia evalúa volver al punto ${F.L[i]}. ¿Cuál es el costo de oportunidad de cada unidad adicional de ${F.sy}, medido en ${F.x}?`,ans:F.s/dy,dec:2,
+  errs:[{v:dy/F.s,msg:`Ese es el costo de una unidad de ${F.sx}, medido en ${F.y}: aquí se pregunta por el otro bien.`},{v:F.s,msg:`Ese es el sacrificio total de ${F.x}, no el de cada unidad de ${F.sy}.`},{v:F.s/o,msg:"Usaste otro tramo de la tabla."},{v:F.xs[j]/F.ys[j],msg:"Dividiste las cantidades de un punto: hay que comparar los cambios entre los dos puntos."}],
+  unit:F.x,exp:`De ${F.L[j]} a ${F.L[i]} se ganan ${dy} ${F.y} y se pierden ${F.s} ${F.x}. Costo por unidad de ${F.sy}: ${F.s} ÷ ${dy} = ${fmt(F.s/dy,2)}. Es el inverso del costo del otro bien.`,f:"Costo de oportunidad de una unidad de Y = unidades de X a las que se renuncia ÷ unidades de Y que se ganan"})},
+ F=>{const k=2+Math.floor(rnd()*3),dy=F.ys[0]-F.ys[k];
+  return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nSi pasa del punto A al punto ${F.L[k]}, ¿a cuántas unidades de ${F.sy} renuncia en total?`,ans:dy,dec:0,
+  errs:[{v:F.xs[k],msg:`Esa es la cantidad de ${F.x} que gana, no lo que sacrifica.`},{v:F.ys[k],msg:`Esa es la producción de ${F.sy} que le queda en el punto ${F.L[k]}, no la que sacrifica.`},{v:F.ys[0],msg:"Ese es el máximo posible: solo renunciaría a todo si llegara al último punto."},{v:F.d[k-1],msg:"Tomaste solo el último tramo: hay que contar desde el punto A."}],
+  unit:F.y,exp:`Renuncia a ${F.ys[0]} − ${F.ys[k]} = ${dy} ${F.y} para ganar ${F.xs[k]} ${F.x}.`,f:"Sacrificio total = producción de Y en el punto inicial − producción de Y en el punto final"})}];
+QF.forEach((g,t)=>{for(let k=0;k<3;k++){const ctx=FCTX[(t+k)%4];add(6,5,["Costo de oportunidad entre puntos contiguos","Costo de oportunidad entre puntos separados","Costo de oportunidad del otro bien","Sacrificio total"][t],()=>g(fpp(ctx)))}});
+
+/* ---------- POSICIÓN 7: puntos de la frontera (10) ---------- */
+const PT={E:"Eficiente: está sobre la frontera y no se puede producir más de un bien sin producir menos del otro.",I:"Ineficiente: está dentro de la frontera; hay recursos sin usar o mal usados.",N:"Inalcanzable: está fuera de la frontera; no se puede producir con los recursos y la tecnología actuales.",O:"Óptimo: es el mejor punto posible para la empresa."};
+function ptOf(F,type){const i=1+Math.floor(rnd()*3),x=F.xs[i],yf=F.ys[i];let y=yf;if(type==="I")y=Math.max(1,yf-Math.max(2,Math.round(yf*R(0.25,0.5,0.05))));if(type==="N")y=yf+Math.max(3,Math.round(F.ys[0]*R(0.15,0.3,0.05)));return {x,y,yf}}
+FCTX.forEach(ctx=>add(7,5,"Puntos eficientes, ineficientes e inalcanzables",()=>{const F=fpp(ctx),ty=pick(["E","I","N"]),P=ptOf(F,ty);
+ const desc={E:"está sobre la frontera",I:"está dentro de la frontera",N:"está fuera de la frontera"}[ty];
+ const msg=`Con ${P.x} ${F.x}, la frontera permite ${P.yf} ${F.y}; el punto P tiene ${P.y}, así que ${desc}.`;
+ return CON(`${F.who} El gráfico muestra su frontera de posibilidades de producción mensual (${F.corta}). La gerencia marca el punto P: ${P.x} ${F.x} y ${P.y} ${F.y}.\n¿Cómo se clasifica el punto P?`,
+ PT[ty],Object.keys(PT).filter(k=>k!==ty).map(k=>[PT[k],k==="O"?"La frontera no dice cuál punto es el mejor; eso depende de lo que quieran la empresa y sus clientes.":msg]),
+ `${msg} Eficiente: sobre la frontera. Ineficiente: dentro. Inalcanzable: fuera.`,"Sobre la frontera: eficiente. Dentro: ineficiente. Fuera: inalcanzable.",fppSVG(F,[{n:"P",x:P.x,y:P.y}]))}));
+const TL={E:"a",I:"b",N:"c"};
+[0,1].forEach(k=>add(7,5,"Clasificación de varios puntos",()=>{const F=fpp(FCTX[k+1]);let ty;do{ty=shuffle(["E","I","N",pick(["E","I","N"])])}while(new Set(ty).size<3);
+ const used=new Set();const P=ty.map((t,j)=>{let p,g=0;do{p=ptOf(F,t);g++}while(used.has(p.x+"_"+p.y)&&g<50);used.add(p.x+"_"+p.y);return {...p,n:"JKLM"[j],t}});
+ const ans=P.map((p,j)=>`${j+1}${TL[p.t]}`).join(", ");
+ const mk=f=>P.map((p,j)=>`${j+1}${TL[f(p.t,j)]}`).join(", ");
+ const cands=[[mk(t=>t==="I"?"N":t==="N"?"I":t),"Confundiste los puntos de adentro con los de afuera de la frontera."],[mk((t,j)=>j===P.findIndex(q=>q.t==="E")?"I":t),"Un punto sobre la frontera es eficiente, aunque no produzca el máximo de un bien."],[mk((t,j)=>j===P.findIndex(q=>q.t!=="E")?"E":t),"Compara cada punto con la frontera en el mismo valor del eje horizontal."],[mk(()=>"E"),"No todos los puntos con producción de ambos bienes son eficientes: solo los que están sobre la frontera."]];
+ const ds=[];for(const c of cands)if(c[0]!==ans&&!ds.some(d=>d[0]===c[0]))ds.push(c);
+ return CON(`${F.who} El gráfico muestra su frontera de posibilidades de producción mensual (${F.corta}). Se marcaron cuatro combinaciones: ${P.map(p=>`${p.n} (${p.x} ${F.sx} y ${p.y} ${F.sy})`).join(", ")}.\nRelacione cada punto con su clasificación.\nPUNTOS\n${P.map((p,j)=>`${j+1}. ${p.n}`).join("\n")}\nCLASIFICACIÓN\na) Eficiente\nb) Ineficiente\nc) Inalcanzable`,
+ ans,ds.slice(0,3),P.map(p=>`${p.n}: con ${p.x} ${F.sx}, la frontera permite ${p.yf}; el punto tiene ${p.y}.`).join(" "),"Sobre la frontera: eficiente. Dentro: ineficiente. Fuera: inalcanzable.",fppSVG(F,P))}));
+[2,3].forEach(k=>add(7,5,"Producción perdida en un punto ineficiente",()=>{const F=fpp(FCTX[k]),i=1+Math.floor(rnd()*3),g=Math.max(2,Math.round(F.ys[i]*R(0.2,0.5,0.05))),y=F.ys[i]-g;
+ return NUM({q:`${F.who} El gráfico muestra su frontera de posibilidades de producción mensual (${F.corta}). El mes pasado produjo ${F.xs[i]} ${F.x} y ${y} ${F.y}.\nCon esos mismos ${F.xs[i]} ${F.x}, ¿cuántas unidades más de ${F.sy} pudo producir si aprovechaba todos sus recursos?`,ans:g,
+ errs:[{v:F.ys[i],msg:"Esa es la producción máxima con esa cantidad del otro bien; falta restar lo que sí produjo."},{v:y,msg:"Eso es lo que produjo, no lo que pudo producir de más."},{v:F.ys[i-1]-y,msg:"Usaste la frontera de otro punto: fíjate en el mismo valor del eje horizontal."},{v:F.ys[0]-y,msg:"Usaste el máximo del bien, que exige no producir nada del otro."}],
+ unit:F.y,exp:`Con ${F.xs[i]} ${F.x}, la frontera permite ${F.ys[i]} ${F.y}. Produjo ${y}: pudo hacer ${F.ys[i]} − ${y} = ${g} más. Estaba en un punto ineficiente.`,
+ f:"Producción perdida = producción en la frontera − producción real, con la misma cantidad del otro bien",svg:fppSVG(F,[{n:"R",x:F.xs[i],y}])})}));
+add(7,5,"Por qué se produce dentro de la frontera",()=>{const F=pick(FCTX);return CON(`${F.who} Este mes produjo en un punto dentro de su frontera de posibilidades de producción.\n¿Qué puede explicarlo?`,
+ "Hubo personal sin tareas o equipos parados.",
+ [["Decidió producir más de un bien y menos del otro.","Cambiar la combinación es moverse sobre la frontera, no quedar dentro de ella."],["Sus clientes prefieren uno de los dos productos.","Las preferencias deciden qué punto se elige, no si se usan todos los recursos."],["Tiene una tecnología moderna.","La tecnología determina dónde está la frontera, no si se produce dentro de ella."]],
+ "Un punto dentro de la frontera indica recursos ociosos o mal usados: se podría producir más de un bien sin renunciar al otro.","Dentro de la frontera: ineficiente (recursos sin usar o mal usados).")});
+add(7,5,"Desempleo y frontera del país",()=>CON(`Un país tiene 15 % de desempleo y muchas fábricas trabajan a media capacidad.\n¿Dónde está su producción respecto de su frontera de posibilidades de producción?`,
+ "Dentro de la frontera: hay recursos sin usar.",
+ [["Sobre la frontera, porque todas las empresas siguen produciendo.","Con trabajadores y fábricas sin usar, la producción queda dentro de la frontera."],["Fuera de la frontera, porque el país tiene problemas.","Fuera de la frontera están las combinaciones inalcanzables; el desempleo deja la producción por debajo."],["La frontera se desplazó hacia adentro, porque hay desempleo.","Los trabajadores desempleados siguen existiendo: la frontera no se mueve, la producción queda dentro."]],
+ "El desempleo y la capacidad ociosa son recursos sin usar: la economía está en un punto ineficiente, dentro de su frontera.","Dentro de la frontera: ineficiente (recursos sin usar o mal usados)."));
+
+/* ---------- POSICIÓN 8: forma y supuestos (8) ---------- */
+add(8,5,"Supuestos de la frontera",()=>CON(`¿Cuál de estos es un supuesto con el que se construye la frontera de posibilidades de producción?`,
+ "Los recursos y la tecnología están dados.",
+ [["La empresa siempre produce sobre la frontera.","No es un supuesto: se puede producir dentro de la frontera si hay recursos ociosos."],["Los dos productos se venden al mismo precio.","Los precios no intervienen en la construcción de la frontera."],["La empresa vende todo lo que produce.","Las ventas no intervienen en la construcción de la frontera."]],
+ "La frontera muestra lo máximo que se puede producir con recursos y tecnología dados, para dos bienes.","Supuestos: dos bienes, recursos dados y tecnología dada."));
+add(8,5,"Supuestos de la frontera",()=>CON(`La frontera de posibilidades de producción se construye con varios supuestos.\n¿Cuál de estas afirmaciones NO es uno de ellos?`,
+ "Los dos bienes se venden al mismo precio.",
+ [["Se producen solo dos bienes o dos grupos de bienes.","Sí es un supuesto: simplifica el análisis a dos bienes."],["La cantidad de recursos está dada.","Sí es un supuesto: si cambian los recursos, se desplaza la frontera."],["La tecnología no cambia durante el periodo.","Sí es un supuesto: si mejora la tecnología, se desplaza la frontera."]],
+ "Los precios no forman parte de los supuestos: la frontera habla de cantidades posibles, no de valores.","Supuestos: dos bienes, recursos dados y tecnología dada."));
+add(8,5,"Costo de oportunidad creciente",()=>{const F=pick(FCTX);return CON(`${F.who} Cada vez que produce más ${F.sx}, el costo de oportunidad de cada unidad adicional aumenta.\n¿Qué lo explica?`,
+ "Los recursos no son igual de aptos para producir los dos bienes.",
+ [["El precio sube a medida que produce más.","Los precios no definen la forma de la frontera."],["La empresa se vuelve ineficiente al especializarse.","Todos los puntos sobre la frontera son eficientes."],["La demanda de ese producto crece más rápido.","La demanda no cambia la forma de la frontera."]],
+ "Primero se pasan los recursos más aptos y después los que eran mejores para el otro bien: cada unidad adicional cuesta más. Por eso la frontera es curva hacia afuera.","Costo de oportunidad creciente: frontera curva hacia afuera (cóncava).")});
+add(8,5,"Costo de oportunidad constante",()=>{const a=R(60,120,20),b=a/2;return CON(`Una imprenta puede hacer ${a} tarjetas o ${b} afiches por hora, o cualquier combinación proporcional, con una máquina y operarios igual de buenos para ambos productos.\n¿Qué forma tiene su frontera de posibilidades de producción?`,
+ "Una línea recta: cada afiche cuesta siempre 2 tarjetas.",
+ [["Curva hacia afuera, porque el costo de oportunidad crece.","Eso ocurre cuando los recursos no son igual de aptos; aquí sí lo son."],["Curva hacia el origen, porque producir afiches se vuelve más barato.","Eso implicaría un costo de oportunidad decreciente, que no es el caso."],["Vertical, porque la máquina es la misma.","Una frontera vertical significaría que solo se puede producir un bien."]],
+ `${a} tarjetas equivalen a ${b} afiches: el costo de un afiche es siempre ${a} ÷ ${b} = 2 tarjetas. Con costo constante, la frontera es una recta.`,"Costo de oportunidad constante: frontera recta.")});
+add(8,5,"Frontera, escasez y elección",()=>CON(`Complete los espacios en blanco:\n«La frontera de posibilidades de producción muestra la ______: no se puede tener todo. Moverse sobre ella obliga a ______, y lo que se sacrifica de un bien es el ______».`,
+ "escasez – elegir – costo de oportunidad",
+ [["abundancia – elegir – costo de oportunidad","La frontera muestra un límite: es un reflejo de la escasez."],["escasez – producir más de ambos – precio","Sobre la frontera no se puede producir más de ambos: hay que elegir."],["escasez – elegir – beneficio","Lo que se sacrifica es el costo de oportunidad, no un beneficio."]],
+ "La frontera resume tres ideas: la escasez (el límite), la elección (el punto) y el costo de oportunidad (lo que se sacrifica).","Frontera: escasez, elección y costo de oportunidad."));
+add(8,5,"Eficiencia",()=>CON(`¿Qué significa que un punto de la frontera de posibilidades de producción sea eficiente?`,
+ "Que no se puede producir más de un bien sin producir menos del otro.",
+ [["Que se produce la misma cantidad de ambos bienes.","La eficiencia no exige cantidades iguales."],["Que se obtiene la mayor ganancia posible.","La frontera habla de cantidades, no de ganancias."],["Que se produce el máximo de uno de los bienes.","Todos los puntos sobre la frontera son eficientes, no solo los extremos."]],
+ "Eficiencia: los recursos se usan plenamente, así que ganar en un bien exige perder en el otro.","Sobre la frontera: eficiente."));
+add(8,5,"Forma de la frontera según los datos",()=>{const a=R(0.3,0.6,0.1),b=+(a+R(0.3,0.6,0.1)).toFixed(1),c=+(b+R(0.4,0.8,0.1)).toFixed(1),d=+(c+R(0.6,1.2,0.1)).toFixed(1);const F=pick(FCTX);
+ return CON(`${F.who} Calcula que cada unidad adicional de ${F.sx} le cuesta ${fmt(a,1)}, ${fmt(b,1)}, ${fmt(c,1)} y ${fmt(d,1)} unidades de ${F.sy} en tramos sucesivos.\n¿Qué forma tiene su frontera?`,
+ "Curva hacia afuera (cóncava), porque el costo de oportunidad aumenta.",
+ [["Una línea recta, porque produce siempre los dos bienes.","La recta corresponde a un costo de oportunidad constante."],["Curva hacia el origen (convexa), porque producir se vuelve más barato.","Los datos muestran que el costo aumenta, no que disminuye."],["Curva hacia afuera, porque los precios suben.","La forma es correcta, pero la causa no son los precios."]],
+ "Un costo de oportunidad creciente da una frontera curva hacia afuera.","Costo de oportunidad creciente: frontera cóncava. Constante: recta.")});
+add(8,5,"Movimiento sobre la frontera",()=>{const F=pick(FCTX);return CON(`${F.who} Sube el precio de ${F.sx} y la empresa decide producir más ${F.sx} y menos ${F.sy}, sin cambiar sus recursos.\n¿Qué ocurre con su frontera?`,
+ "No cambia: la empresa se mueve a otro punto de la misma frontera.",
+ [["Se desplaza hacia afuera, porque el precio es más alto.","El precio no cambia los recursos ni la tecnología."],["Se desplaza solo en el eje de este bien.","Eso requeriría una mejora técnica específica para este bien."],["La empresa pasa a un punto inalcanzable.","Sigue usando los mismos recursos: el nuevo punto está en la misma frontera."]],
+ "Un cambio en los precios puede cambiar la combinación elegida, pero no lo que se puede producir.","Solo cambios en recursos o tecnología desplazan la frontera.")});
+
+/* ---------- POSICIÓN 9: desplazamientos (10) ---------- */
+const SH={both:(F)=>`Contrata más trabajadores que pueden producir ${F.sx} y ${F.sy}.`,inn:(F)=>"Un daño en sus instalaciones reduce los recursos para producir ambos bienes.",x:(F)=>`Adopta una tecnología que solo acelera la producción de ${F.sx}.`,y:(F)=>`Adopta una tecnología que solo acelera la producción de ${F.sy}.`};
+const SHM={both:"Esa noticia desplazaría hacia afuera los dos extremos de la frontera.",inn:"Esa noticia desplazaría la frontera hacia adentro.",x:"Esa noticia solo ampliaría el extremo del eje horizontal.",y:"Esa noticia solo ampliaría el extremo del eje vertical."};
+const SHE={both:"Los dos extremos se alejan del origen: aumentaron los recursos que sirven para ambos bienes.",inn:"La frontera se acerca al origen: se perdieron recursos.",x:"Solo crece el máximo del bien del eje horizontal: el cambio favorece únicamente a ese bien.",y:"Solo crece el máximo del bien del eje vertical: el cambio favorece únicamente a ese bien."};
+["both","inn","x","y"].forEach(k=>add(9,5,"Desplazamientos de la frontera (gráfico)",()=>{const F=fpp(pick(FCTX));const fx=k==="both"||k==="x"?1.25:k==="inn"?0.75:1,fy=k==="both"||k==="y"?1.25:k==="inn"?0.75:1;
+ const F2={xs:F.xs.map(v=>v*fx),ys:F.ys.map(v=>v*fy)};
+ return CON(`${F.who} El gráfico muestra su frontera de posibilidades de producción antes (línea continua) y después (línea discontinua) de un cambio.\n¿Qué noticia es coherente con el gráfico?`,
+ SH[k](F),Object.keys(SH).filter(j=>j!==k).map(j=>[SH[j](F),SHM[j]]),SHE[k],"La frontera se desplaza si cambian los recursos o la tecnología; si el cambio sirve a un solo bien, solo se mueve ese extremo.",fppSVG(F,[],F2))}));
+add(9,5,"Qué desplaza la frontera",()=>CON(`Un informe sobre la economía del país enumera varios cambios.\n¿Cuáles desplazan hacia afuera la frontera de posibilidades de producción del país?\n1. Llegan inversiones que construyen nuevas plantas industriales.\n2. Unas semillas mejoradas aumentan el rendimiento de los cultivos.\n3. Las empresas empiezan a usar maquinaria que tenían parada.\n4. Sube el precio internacional del petróleo que exporta el país.\n5. Más jóvenes terminan carreras técnicas y entran a trabajar.`,
+ "1, 2 y 5",[["1, 2 y 3","Usar maquinaria parada (3) acerca la producción a la frontera, pero no la mueve."],["2, 4 y 5","Un precio más alto (4) no cambia los recursos ni la tecnología."],["1, 3 y 4","Usar capacidad ociosa (3) y un precio mayor (4) no desplazan la frontera."]],
+ "La frontera se desplaza hacia afuera con más capital (1), mejor tecnología (2) o más trabajo calificado (5).","Más recursos o mejor tecnología: la frontera se desplaza hacia afuera."));
+add(9,5,"Qué desplaza la frontera",()=>CON(`Una panadería de Ibarra analiza varios cambios.\n¿Cuáles desplazan hacia afuera su frontera de posibilidades de producción?\n1. Compra un segundo horno.\n2. Sube el precio del pan en el barrio.\n3. Contrata un panadero más.\n4. Decide hacer más pasteles y menos pan.\n5. Una nueva receta reduce el tiempo de horneado.`,
+ "1, 3 y 5",[["1, 2 y 3","Un precio más alto (2) no cambia los recursos de la panadería."],["3, 4 y 5","Hacer más pasteles y menos pan (4) es moverse sobre la misma frontera."],["1, 2 y 4","El precio (2) y la combinación elegida (4) no desplazan la frontera."]],
+ "Más capital (1), más trabajo (3) y mejor tecnología (5) amplían lo que se puede producir.","Más recursos o mejor tecnología: la frontera se desplaza hacia afuera."));
+add(9,5,"Bienes de capital y crecimiento",()=>CON(`Dos países tienen hoy la misma frontera entre bienes de consumo y bienes de capital (maquinaria, infraestructura). Este año, el país A dedica más recursos a bienes de capital y el país B, a bienes de consumo. Ambos producen sobre su frontera.\n¿Qué se puede esperar para los próximos años?`,
+ "La frontera del país A se desplazará más hacia afuera.",
+ [["El país B crecerá más, porque su población consume más.","Consumir más hoy no amplía la capacidad de producir mañana."],["Las fronteras seguirán iguales, porque hoy son iguales.","La inversión de hoy cambia los recursos de mañana."],["El país A queda en un punto ineficiente, porque sacrifica consumo.","Produce sobre su frontera: sacrificar consumo no es ineficiencia."]],
+ "Los bienes de capital sirven para producir en el futuro: quien invierte más hoy amplía más su frontera. El costo es el consumo al que renuncia hoy.","Más capital hoy: frontera más amplia mañana."));
+add(9,5,"Recursos ociosos frente a desplazamiento",()=>CON(`El desempleo de un país baja de 8 % a 5 % porque personas que ya buscaban trabajo consiguen empleo.\n¿Qué ocurre con la frontera de posibilidades de producción?`,
+ "No se mueve: la producción se acerca a la frontera.",
+ [["Se desplaza hacia afuera, porque hay más personas trabajando.","Esos trabajadores ya eran parte de los recursos disponibles."],["Se desplaza hacia adentro, porque los salarios suben.","Los salarios no cambian la cantidad de recursos."],["El país pasa a un punto inalcanzable.","Usar recursos que ya existían no permite superar la frontera."]],
+ "Usar recursos ociosos mueve la producción desde dentro hacia la frontera; la frontera solo se mueve si cambian los recursos o la tecnología.","Recursos ociosos: producción dentro de la frontera."));
+add(9,5,"Pérdida de recursos",()=>CON(`Miles de trabajadores calificados de un país emigran al exterior en pocos años.\n¿Qué efecto tiene sobre su frontera de posibilidades de producción?`,
+ "Se desplaza hacia adentro, porque el país pierde trabajo calificado.",
+ [["Se desplaza hacia afuera, porque llegan remesas.","Las remesas son ingresos, pero no reemplazan el trabajo que se perdió para producir."],["No cambia, porque la población sigue siendo grande.","Perder trabajadores calificados reduce los recursos productivos."],["La producción queda dentro de la frontera, sin moverla.","No son recursos ociosos: dejaron de estar disponibles en el país."]],
+ "Menos recursos (trabajo calificado) reducen lo que se puede producir: la frontera se desplaza hacia adentro.","Menos recursos: la frontera se desplaza hacia adentro."));
+add(9,5,"Cierre temporal frente a pérdida de recursos",()=>CON(`Durante un mes, una emergencia obliga a cerrar muchos negocios, pero las máquinas, los locales y los trabajadores siguen ahí.\n¿Cómo se representa ese mes?`,
+ "Como un punto dentro de la frontera, que no se mueve.",
+ [["Como un desplazamiento de la frontera hacia adentro.","Los recursos siguen existiendo; solo no se usan ese mes."],["Como un desplazamiento hacia afuera, porque luego se reabre.","Reabrir no aumenta los recursos."],["Como un punto inalcanzable.","Producir menos no es inalcanzable: es ineficiente."]],
+ "Recursos que existen pero no se usan dejan la producción dentro de la frontera; si los recursos se destruyeran, la frontera sí se desplazaría hacia adentro.","Recursos sin usar: punto dentro de la frontera. Recursos destruidos: frontera hacia adentro."));
+
+/* ---------- POSICIÓN 10: ejercicios de utilidad (10) ---------- */
+const UCTX=[["empanadas de verde","empanada"],["vasos de jugo de mora","vaso"],["porciones de ceviche","porción"],["rebanadas de pizza","rebanada"]];
+function umList(n){const u=[R(13,18,1)];for(let i=1;i<n;i++)u.push(u[i-1]-R(1,3,1));return u}
+const cum=a=>a.reduce((r,v)=>(r.push((r.length?r[r.length-1]:0)+v),r),[]);
+UCTX.slice(0,3).forEach(([b,u1])=>add(10,6,"Utilidad marginal a partir de la utilidad total",()=>{let um;do{um=umList(5)}while(um[4]<1);const ut=cum(um),k=2+Math.floor(rnd()*3);
+ return NUM({q:`Un cliente registra su utilidad total al consumir ${b} en una tarde (unidades de satisfacción, datos hipotéticos):\n${ut.map((v,i)=>`${i+1}: ${v}`).join("\n")}\n¿Cuál es la utilidad marginal de la unidad número ${k}?`,ans:um[k-1],
+ errs:[{v:ut[k-1],msg:"Esa es la utilidad total de esas unidades, no la que añade la última."},{v:ut[k-1]/k,msg:"Esa es la utilidad promedio por unidad."},{v:um[k-2],msg:"Esa es la utilidad marginal de la unidad anterior."},{v:ut[k-1]+ut[k-2],msg:"Sumaste las utilidades totales: hay que restarlas."}],
+ dec:0,unit:"unidades de satisfacción",exp:`Utilidad marginal = ${ut[k-1]} − ${ut[k-2]} = ${um[k-1]}.`,f:"Utilidad marginal = utilidad total con una unidad más − utilidad total anterior"})}));
+UCTX.slice(1,3).forEach(([b])=>add(10,6,"Utilidad total a partir de la marginal",()=>{const um=umList(5),n=3+Math.floor(rnd()*2),ut=cum(um);
+ return NUM({q:`Una estudiante asigna estas utilidades marginales a ${b} en un día (datos hipotéticos): ${um.join(", ")}.\n¿Cuál es su utilidad total si consume ${n}?`,ans:ut[n-1],
+ errs:[{v:um[n-1],msg:"Esa es solo la utilidad marginal de la última unidad."},{v:ut[4],msg:"Sumaste todas las unidades de la lista, no solo las que consume."},{v:n*um[0],msg:"Supusiste que todas las unidades dan lo mismo que la primera: la utilidad marginal decrece."},{v:ut[n-2],msg:"Te faltó sumar la última unidad."}],
+ dec:0,unit:"unidades de satisfacción",exp:`Utilidad total = ${um.slice(0,n).join(" + ")} = ${ut[n-1]}.`,f:"Utilidad total = suma de las utilidades marginales de las unidades consumidas"})}));
+const MEM=["Ana","Luis","Sofía","Diego"];
+const UT3=[["la utilidad marginal de la 3.ª unidad",2,"m"],["la utilidad total de las 3 unidades",-1,"t"],["la utilidad marginal de la 2.ª unidad",1,"m"]];
+UT3.forEach(([lab,k,ty],z)=>add(10,6,"Cliente típico con las calificaciones del equipo",()=>{const prod=["chalinas de alpaca","tazas de café de Loja","entradas al cine"][z];
+ const sc=MEM.map(()=>{const a=R(7,10,1),b=a-R(1,3,1),c=Math.max(1,b-R(1,4,1));return [a,b,c]});const av=[0,1,2].map(j=>sc.reduce((s,r)=>s+r[j],0)/4);const sum=[0,1,2].map(j=>sc.reduce((s,r)=>s+r[j],0));const tot=av[0]+av[1]+av[2];
+ const ans=ty==="t"?tot:av[k];const o=ty==="t"?av[2]:av[k===2?1:2];
+ return NUM({q:`Un equipo analiza a los clientes de una MIPYME de ${prod}. Cada integrante calificó del 1 al 10 la satisfacción que le da la 1.ª, la 2.ª y la 3.ª unidad:\n${MEM.map((m,i)=>`${m}: ${sc[i].join(", ")}`).join("\n")}\nEl equipo toma el promedio de las calificaciones como el cliente típico. ¿Cuál es ${lab} para el cliente típico?`,ans,dec:2,
+ errs:[{v:ty==="t"?sum[0]+sum[1]+sum[2]:sum[k],msg:"Sumaste las calificaciones sin dividir para los 4 integrantes."},{v:o,msg:ty==="t"?"Esa es la utilidad marginal de la 3.ª unidad, no la total.":"Esa es la utilidad marginal de otra unidad."},{v:ty==="t"?av[0]+av[1]:av[0]+av[1]+av[2],msg:ty==="t"?"Te faltó sumar la 3.ª unidad.":"Esa es la utilidad total de las 3 unidades, no la marginal."},{v:ty==="t"?sc[0][0]+sc[0][1]+sc[0][2]:sc[0][k],msg:"Usaste solo las calificaciones de Ana, no el promedio del equipo."}],
+ unit:"unidades de satisfacción",exp:`Promedios: 1.ª = ${fmt(av[0],2)}, 2.ª = ${fmt(av[1],2)}, 3.ª = ${fmt(av[2],2)}. Cada calificación mide la utilidad marginal; la utilidad total es su suma: ${fmt(tot,2)}.`,
+ f:"Cliente típico = promedio de las calificaciones. Utilidad total = suma de las utilidades marginales."})}));
+[["horas de música en una fiesta","horas"],["rebanadas de pizza en una reunión","rebanadas"]].forEach(([b,u])=>add(10,6,"Utilidad total máxima",()=>{const p=3+Math.floor(rnd()*2);let um=umList(p);um=um.concat([-R(1,3,1),-R(3,6,1)]);const ut=cum(um);
+ return NUM({q:`Un invitado registra su utilidad total con ${b} (datos hipotéticos):\n${ut.map((v,i)=>`${i+1}: ${v}`).join("\n")}\n¿Con cuántas ${u} su utilidad total es máxima?`,ans:p,
+ errs:[{v:p+1,msg:"Con esa unidad la utilidad marginal ya es negativa: la utilidad total baja."},{v:1,msg:"La utilidad marginal es máxima en la primera unidad, pero la total sigue creciendo después."},{v:um.length,msg:"Consumir todo no maximiza la utilidad cuando las últimas unidades restan satisfacción."},{v:ut[p-1],msg:"Ese es el valor máximo de la utilidad total, no el número de unidades."}],
+ dec:0,unit:u,exp:`La utilidad total crece mientras la utilidad marginal es positiva: hasta ${p} ${u} (${ut[p-1]}). Con la siguiente, la utilidad marginal es ${um[p]} y la total baja.`,
+ f:"La utilidad total es máxima en la última unidad con utilidad marginal positiva."})}));
+
+if(typeof module!=="undefined")module.exports={C,SLOTS,TEMAS,REPASO,CALC,fmt,near};
+
+</script>
+<script>
+{
+const KEY="principiosNI_P1_entrenamiento_v1";
+let S={nombre:"",curso:"",hist:[],cur:null};
+try{const t=localStorage.getItem(KEY);if(t)S=Object.assign(S,JSON.parse(t))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const L="ABCD";
+function gen(c){let q=null,t=0;while(!q&&t<200){q=c.gen();t++}q.tema=c.tema;q.sub=c.sub;q.slot=c.slot;return q}
+C.forEach(c=>{c.calc=!!gen(c).num});
+function newAttempt(){const qs=SLOTS.map(s=>{const pool=C.filter(c=>c.slot===s.n&&(!CALC.includes(s.n)||c.calc));return gen(pick(pool))});S.cur={qs,i:0,ans:qs.map(()=>({num:null,choice:null,numDone:false})),start:new Date().toISOString()};save();render()}
+function parseNum(v){let s=String(v).trim().replace(/[\s$% ]/g,"").replace(/−/g,"-");if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");const x=parseFloat(s);return isFinite(x)?x:null}
+const fdate=iso=>{const d=new Date(iso);return d.toLocaleDateString("es-EC")+" "+d.toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit"})};
+
+function home(){
+ const h=S.hist;
+ app.innerHTML=`<div class="card"><h2>Tus datos</h2><p class="mut">Solo se usan para tu PDF. Se guardan en este navegador.</p>
+ <label for="nom">Nombre y apellido</label><input id="nom" value="${esc(S.nombre)}" autocomplete="name">
+ <label for="cur">Curso y paralelo</label><input id="cur" value="${esc(S.curso)}" placeholder="Ej.: Principios de Economía, 2.º Negocios Internacionales">
+ </div>
+ <div class="card"><h2>¿Qué quieres hacer?</h2>
+ <p><b>Intento de 10 preguntas.</b> Una de cada bloque del parcial; siempre hay ejercicios de costo de oportunidad, de la frontera de posibilidades de producción y de utilidad. Ves la retroalimentación y tu nota al final.</p>
+ <div class="row"><button class="b1" id="go">${S.cur?"Continuar mi intento":"Empezar un intento"}</button></div>
+ <p style="margin-top:18px"><b>Practicar un tema.</b> Preguntas sin límite del tema que elijas, con retroalimentación inmediata.</p>
+ <label for="tem">Tema</label><select id="tem">${Object.entries(TEMAS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+ <div class="row"><button class="b2" id="pr">Practicar este tema</button></div></div>
+ <div class="card"><h2>Mi registro</h2>${h.length?`<table><tr><th>Intento</th><th>Fecha</th><th class="n">Nota</th></tr>${h.map((a,i)=>`<tr><td>${i+1}</td><td>${fdate(a.fecha)}</td><td class="n">${fmt(a.nota,1)} / 10</td></tr>`).join("")}</table>${refuerzo()}`:`<p class="mut">Todavía no tienes intentos terminados.</p>`}
+ <div class="row"><button class="b3" id="pdf" ${h.length?"":"disabled"}>Descargar mi PDF</button></div><p class="mut" id="pmsg"></p></div>`;
+ const keep=()=>{S.nombre=document.getElementById("nom").value.trim();S.curso=document.getElementById("cur").value.trim();save()};
+ document.getElementById("nom").oninput=keep;document.getElementById("cur").oninput=keep;
+ document.getElementById("go").onclick=()=>{keep();if(!S.nombre){alertBox("Escribe tu nombre para empezar.");return}S.cur?render():newAttempt()};
+ document.getElementById("pr").onclick=()=>{keep();P={tema:+document.getElementById("tem").value,q:null,n:0,ok:0};nextPractice()};
+ document.getElementById("pdf").onclick=()=>{keep();makePDF()};
+}
+function alertBox(t){const m=document.getElementById("pmsg")||document.createElement("p");m.textContent=t;m.className="mut";m.style.color="var(--bad)";if(!m.isConnected)app.querySelector(".card").appendChild(m)}
+function temaStats(){const st={};for(const a of S.hist)for(const [t,[o,n]] of Object.entries(a.porTema)){st[t]=st[t]||[0,0];st[t][0]+=o;st[t][1]+=n}return st}
+function refuerzo(){const st=temaStats();const w=Object.entries(st).filter(([t,[o,n]])=>n&&o/n<0.7).sort((a,b)=>a[1][0]/a[1][1]-b[1][0]/b[1][1]);
+ return w.length?`<h3>Temas para reforzar</h3><ul>${w.map(([t,[o,n]])=>`<li>${TEMAS[t]}: ${o} de ${n} correctas. Repasa: ${REPASO[t]}.</li>`).join("")}</ul>`:`<p class="mut">Vas bien en todos los temas que has practicado.</p>`}
+
+/* ---------- pregunta ---------- */
+function qHTML(q,a,mode){
+ const showOpts=!q.num||a.numDone;
+ let h=`<p class="q">${esc(q.q)}</p>${q.svg?`<div class="fig">${q.svg}</div>`:""}
+ <button class="info" data-f>(i) Fórmula</button><div class="formula hide" id="fx">${esc(q.f)}</div>`;
+ if(q.num){h+=`<div class="numbox"><label for="nv">1. Calcula y escribe tu resultado${q.num.unit?" ("+q.num.unit+")":""}</label><p class="mut" style="margin:0">Usa coma para los decimales, sin separador de miles.</p>
+ <div class="row"><input id="nv" inputmode="decimal" value="${a.num??""}" ${a.numDone?"disabled":""}><button class="b1" id="nb" ${a.numDone?"disabled":""}>Registrar</button><button class="b3" id="nx" ${a.numDone?"disabled":""}>No lo sé</button></div><div id="nfb">${a.numDone&&mode==="p"?numFB(q,a):""}</div></div>`}
+ if(showOpts)h+=`<p><b>${q.num?"2. Ahora elige la opción correcta":"Elige la opción correcta"}</b></p>`+q.opts.map((o,j)=>`<button class="opt ${a.choice===j?"sel":""}" data-o="${j}"><b>${L[j]})</b>${esc(o.t)}</button>`).join("");
+ return h}
+function numFB(q,a){if(a.num===null)return `<p class="mut">Sin resultado registrado.</p>`;const ok=near(a.num,q.num.ans,q.num.dec);return `<p style="color:var(${ok?"--ok":"--bad"})"><b>${ok?"Tu resultado coincide.":"Tu resultado no coincide."}</b> ${ok?"":"Revisa el procedimiento al ver la retroalimentación."}</p>`}
+function fbHTML(q,a){const o=q.opts[a.choice],c=q.opts.findIndex(x=>x.ok);
+ return `<div class="fb ${o&&o.ok?"":"no"}">${o?(o.ok?`<p><b>Correcto.</b></p>`:`<p><b>Incorrecto.</b> ${esc(o.msg)}</p>`):`<p><b>Sin responder.</b></p>`}
+ ${o&&o.ok?"":`<p><b>Respuesta correcta:</b> ${L[c]}) ${esc(q.opts[c].t)}</p>`}<p>${esc(q.exp)}</p><p class="mut">Repasa: ${REPASO[q.tema]}.</p></div>`}
+function wire(q,a,onNum,onOpt){
+ app.querySelector("[data-f]").onclick=()=>document.getElementById("fx").classList.toggle("hide");
+ if(q.num&&!a.numDone){const reg=v=>{a.num=v;a.numDone=true;onNum()};
+  document.getElementById("nb").onclick=()=>{const v=parseNum(document.getElementById("nv").value);if(v===null){document.getElementById("nfb").innerHTML=`<p class="mut">Escribe un número, o pulsa «No lo sé».</p>`;return}reg(v)};
+  document.getElementById("nx").onclick=()=>reg(null)}
+ app.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>onOpt(+b.dataset.o))}
+
+function render(){const A=S.cur;if(!A)return home();if(A.i>=A.qs.length)return finish();
+ const q=A.qs[A.i],a=A.ans[A.i];
+ app.innerHTML=`<div class="card"><span class="chip">${TEMAS[q.tema]}</span> <span class="mut">Pregunta ${A.i+1} de ${A.qs.length}</span><div class="prog"><i style="width:${A.i/A.qs.length*100}%"></i></div>${qHTML(q,a,"i")}
+ <div class="row"><button class="b3" id="bk" ${A.i?"":"disabled"}>Anterior</button><button class="b1" id="nxq" ${a.choice===null?"disabled":""}>${A.i===A.qs.length-1?"Terminar y ver mi nota":"Siguiente"}</button></div>
+ <div class="row"><button class="b3" id="out">Guardar y salir</button></div></div>`;
+ wire(q,a,()=>{save();render()},j=>{a.choice=j;save();render()});
+ document.getElementById("bk").onclick=()=>{A.i--;save();render()};
+ document.getElementById("nxq").onclick=()=>{A.i++;save();render();scrollTo(0,0)};
+ document.getElementById("out").onclick=()=>{save();home()}}
+
+function finish(){const A=S.cur;const porTema={};let ok=0;const err=[];
+ A.qs.forEach((q,i)=>{const a=A.ans[i],o=q.opts[a.choice],good=!!(o&&o.ok);ok+=good;porTema[q.tema]=porTema[q.tema]||[0,0];porTema[q.tema][0]+=good;porTema[q.tema][1]++;if(!good)err.push({n:i+1,tema:q.tema,sub:q.sub,msg:o?o.msg:"Sin responder."})});
+ const rec={fecha:new Date().toISOString(),nota:ok,aciertos:ok,total:A.qs.length,porTema,err,qs:A.qs,ans:A.ans};
+ S.hist.push(rec);S.cur=null;save();results(S.hist.length-1)}
+
+function results(k){const r=S.hist[k];
+ app.innerHTML=`<div class="card"><h2>Tu nota de práctica</h2><div class="big">${fmt(r.nota,1)}<span style="font-size:.4em;color:var(--mut)"> / 10</span></div>
+ <p>Respondiste bien ${r.aciertos} de ${r.total} preguntas. ${r.nota>=7?"Buen resultado: sigue practicando para afianzarlo.":"Revisa los errores de abajo y vuelve a intentarlo: cada intento trae preguntas distintas."}</p>
+ <h3>Por tema</h3>${Object.entries(r.porTema).map(([t,[o,n]])=>`<div class="bar"><span>${TEMAS[t]}</span><span>${o} de ${n}</span><div class="t"><i style="width:${o/n*100}%"></i></div></div>`).join("")}
+ ${r.err.length?`<h3>Por qué perdiste puntos</h3><ul>${r.err.map(e=>`<li><b>Pregunta ${e.n} (${esc(e.sub)}):</b> ${esc(e.msg)}</li>`).join("")}</ul>`:"<p><b>¡Todas correctas!</b></p>"}
+ <div class="row"><button class="b1" id="again">Nuevo intento</button><button class="b3" id="hm">Inicio y PDF</button></div></div>
+ <div class="card"><h2>Revisión de cada pregunta</h2>${r.qs.map((q,i)=>{const a=r.ans[i],o=q.opts[a.choice];return `<details ${o&&o.ok?"":"open"}><summary>${i+1}. ${esc(q.sub)} · ${o&&o.ok?"✔ correcta":"✘ incorrecta"}</summary><p class="q">${esc(q.q)}</p>${q.svg?`<div class="fig">${q.svg}</div>`:""}${q.num?numFB(q,a):""}${q.opts.map((x,j)=>`<div class="opt ${x.ok?"good":(a.choice===j?"wrong":"")}"><b>${L[j]})</b>${esc(x.t)}</div>`).join("")}${fbHTML(q,a)}<p class="mut">Fórmula: ${esc(q.f)}</p></details>`}).join("")}</div>`;
+ document.getElementById("again").onclick=()=>{newAttempt();scrollTo(0,0)};document.getElementById("hm").onclick=()=>{home();scrollTo(0,0)}}
+
+/* ---------- práctica por tema ---------- */
+let P=null;
+function nextPractice(){const pool=C.filter(c=>c.tema===P.tema);P.q=gen(pick(pool));P.a={num:null,choice:null,numDone:false};P.done=false;showPractice();scrollTo(0,0)}
+function showPractice(){const q=P.q,a=P.a;
+ app.innerHTML=`<div class="card"><span class="chip">Práctica · ${TEMAS[P.tema]}</span> <span class="mut">Llevas ${P.ok} de ${P.n} correctas</span>${qHTML(q,a,"p").replace(/<button class="opt/g,P.done?'<button disabled class="opt':'<button class="opt')}
+ <div id="pf">${P.done?fbHTML(q,a):""}</div>
+ <div class="row">${P.done?`<button class="b1" id="pn">Otra pregunta</button>`:""}<button class="b3" id="ph">Volver al inicio</button></div></div>`;
+ if(P.done){app.querySelectorAll("[data-o]").forEach((b,j)=>{const o=q.opts[j];if(o.ok)b.classList.add("good");else if(a.choice===j)b.classList.add("wrong")})}
+ wire(q,a,()=>showPractice(),j=>{if(P.done)return;a.choice=j;P.done=true;P.n++;if(q.opts[j].ok)P.ok++;showPractice()});
+ if(P.done)document.getElementById("pn").onclick=nextPractice;
+ document.getElementById("ph").onclick=()=>{P=null;home()}}
+
+/* ---------- PDF ---------- */
+const clean=s=>String(s).replace(/ /g," ").replace(/−/g,"-").replace(/÷/g,"/").replace(/Δ/g,"var. ").replace(/≈/g,"aprox.").replace(/[₀₁₂ₜ]/g,m=>({"₀":"0","₁":"1","₂":"2","ₜ":"t"}[m])).replace(/[↑]/g," sube").replace(/[↓]/g," baja").replace(/→/g,"->").replace(/[✔✘]/g,"").replace(/Σ/g,"suma de ").replace(/π/g,"inflación ");
+function makePDF(){const msg=document.getElementById("pmsg");
+ if(!window.jspdf){msg.textContent="No se pudo cargar el generador de PDF. Revisa tu conexión y vuelve a intentarlo.";return}
+ const {jsPDF}=window.jspdf,d=new jsPDF({unit:"mm",format:"a4"});let y=18;const W=180;
+ const line=(t,o={})=>{d.setFont("helvetica",o.b?"bold":"normal");d.setFontSize(o.s||10.5);const ls=d.splitTextToSize(clean(t),W);for(const l of ls){if(y>282){d.addPage();y=18}d.text(l,15,y);y+=(o.s||10.5)*0.45}y+=o.gap??1.5};
+ d.setFillColor(91,42,134);d.rect(0,0,210,10,"F");
+ line("Entrenamiento para el Parcial 1 · Principios de Economía (Negocios Internacionales)",{b:1,s:15,gap:3});
+ line(`Estudiante: ${S.nombre||"(sin nombre)"}`);line(`Curso: ${S.curso||"(sin curso)"}`);line(`Fecha de descarga: ${fdate(new Date().toISOString())}`,{gap:2});
+ line("Nota de práctica: no cuenta para la calificación. Sirve para identificar qué temas reforzar antes de la prueba.",{s:9.5,gap:4});
+ line("Intentos",{b:1,s:12});S.hist.forEach((a,i)=>line(`Intento ${i+1} · ${fdate(a.fecha)} · Nota: ${fmt(a.nota,1)} / 10 (${a.aciertos} de ${a.total})`));
+ y+=2;line("Aciertos acumulados por tema",{b:1,s:12});const st=temaStats();for(const [t,[o,n]] of Object.entries(st))line(`${TEMAS[t]}: ${o} de ${n} (${fmt(o/n*100,0)} %)`);
+ y+=2;line("Temas para reforzar",{b:1,s:12});const w=Object.entries(st).filter(([t,[o,n]])=>o/n<0.7);if(w.length)w.forEach(([t])=>line(`${TEMAS[t]}. Repasar: ${REPASO[t]}.`));else line("Ninguno: más de 70 % de aciertos en todos los temas practicados.");
+ const r=S.hist[S.hist.length-1];y+=2;line(`Detalle del último intento (nota ${fmt(r.nota,1)} / 10)`,{b:1,s:12});
+ r.qs.forEach((q,i)=>{const a=r.ans[i],o=q.opts[a.choice];line(`${i+1}. ${TEMAS[q.tema]} - ${q.sub}: ${o&&o.ok?"correcta":"incorrecta"}`,{b:1,s:10});if(!(o&&o.ok)){line(`Error: ${o?o.msg:"sin responder"}`,{s:9.5,gap:0.5});line(`Explicación: ${q.exp}`,{s:9.5})}});
+ const n=(S.nombre||"estudiante").replace(/[^\wáéíóúñÁÉÍÓÚÑ ]/g,"").trim().replace(/\s+/g,"_");
+ try{d.save(`Entrenamiento_Principios_NI_P1_${n}.pdf`);msg.textContent="PDF descargado."}catch(e){msg.textContent="Este visor no permite descargas. Abre el enlace en tu navegador."}}
+
+render();
+}
+</script>
+</body>
+</html>
