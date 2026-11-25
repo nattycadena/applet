@@ -185,7 +185,7 @@ VJ.forEach(([ruta,o1,o2])=>add(2,2,"Costo del tiempo y del dinero",()=>{const w=
  return NUM({q:`En una jornada, ${q} puede hacer ${x} ${A} o ${y} ${B}, o cualquier combinación proporcional de ambos. Datos hipotéticos.\n¿Cuál es el costo de oportunidad de hacer una unidad de ${A}, medido en ${B}?`,ans:y/x,dec:2,
  errs:[{v:x/y,msg:`Dividiste al revés: ese es el costo de una unidad de ${B}, medido en ${A}.`},{v:y,msg:`Eso es todo lo que sacrifica por ${x} ${A}, no por una.`},{v:y-x,msg:"Restaste las cantidades: el costo de oportunidad es un cociente."},{v:x,msg:`Esa es la cantidad de ${A} que hace en una jornada.`}],
  unit:B,exp:`${x} ${A} equivalen a ${y} ${B}. Una unidad cuesta ${y} ÷ ${x} = ${fmt(y/x,2)} ${B}.`,
- f:"Costo de oportunidad de una unidad de A = unidades de B a las que se renuncia ÷ unidades de A que se ganan"})}));
+ f:"Costo de oportunidad por unidad = unidades del otro bien a las que se renuncia ÷ unidades que se ganan del bien elegido"})}));
 
 [["La asociación de cafetaleros","quintales de café","Loja","Japón"],["Una cooperativa cacaotera","quintales de cacao","Esmeraldas","Bélgica"]].forEach(([who,u,loc,pais])=>add(2,2,"Exportar o vender localmente",()=>{const q=R(50,200,10),pl=R(150,250,10),c=R(20,60,5),pe=pl+c+R(20,80,10);
  return NUM({q:`${who} tiene ${q} ${u} y dos opciones excluyentes: venderlos a un intermediario en ${loc} a $${pl} cada uno, o exportarlos a ${pais} a $${pe} cada uno, pagando $${c} por unidad de transporte y trámites. Decide exportar. Datos hipotéticos.\n¿Cuál es el costo de oportunidad de exportar, en dólares?`,ans:q*pl,
@@ -345,7 +345,7 @@ function fppSVG(F,pts,F2){const W=320,H=240,x0=44,y0=H-34;const mx=Math.max(F.xs
  return s+"</svg>"}
 
 /* ---------- POSICIÓN 6: ejercicios de la frontera (12) ---------- */
-const FF="Costo de oportunidad de una unidad de X = unidades de Y a las que se renuncia ÷ unidades de X que se ganan";
+const FF="Costo de oportunidad por unidad = unidades del otro bien a las que se renuncia ÷ unidades que se ganan del bien que aumenta";
 const QF=[
  F=>{const i=Math.floor(rnd()*4),j=i+1,dy=F.d[i];const o=i<3?F.d[i+1]:F.d[i-1];
   return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nAl pasar del punto ${F.L[i]} al punto ${F.L[j]}, ¿cuál es el costo de oportunidad de cada unidad adicional de ${F.sx}, medido en ${F.y}?`,ans:dy/F.s,dec:2,
@@ -358,11 +358,11 @@ const QF=[
  F=>{const i=Math.floor(rnd()*4),j=i+1,dy=F.d[i];const o=i<3?F.d[i+1]:F.d[i-1];
   return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nHoy produce en el punto ${F.L[j]}, pero un cliente pide más ${F.sy} y la gerencia evalúa volver al punto ${F.L[i]}. ¿Cuál es el costo de oportunidad de cada unidad adicional de ${F.sy}, medido en ${F.x}?`,ans:F.s/dy,dec:2,
   errs:[{v:dy/F.s,msg:`Ese es el costo de una unidad de ${F.sx}, medido en ${F.y}: aquí se pregunta por el otro bien.`},{v:F.s,msg:`Ese es el sacrificio total de ${F.x}, no el de cada unidad de ${F.sy}.`},{v:F.s/o,msg:"Usaste otro tramo de la tabla."},{v:F.xs[j]/F.ys[j],msg:"Dividiste las cantidades de un punto: hay que comparar los cambios entre los dos puntos."}],
-  unit:F.x,exp:`De ${F.L[j]} a ${F.L[i]} se ganan ${dy} ${F.y} y se pierden ${F.s} ${F.x}. Costo por unidad de ${F.sy}: ${F.s} ÷ ${dy} = ${fmt(F.s/dy,2)}. Es el inverso del costo del otro bien.`,f:"Costo de oportunidad de una unidad de Y = unidades de X a las que se renuncia ÷ unidades de Y que se ganan"})},
+  unit:F.x,exp:`De ${F.L[j]} a ${F.L[i]} se ganan ${dy} ${F.y} y se pierden ${F.s} ${F.x}. Costo por unidad de ${F.sy}: ${F.s} ÷ ${dy} = ${fmt(F.s/dy,2)}. Es el inverso del costo del otro bien.`,f:"Costo de oportunidad por unidad = unidades del otro bien a las que se renuncia ÷ unidades que se ganan del bien que aumenta"})},
  F=>{const k=2+Math.floor(rnd()*3),dy=F.ys[0]-F.ys[k];
   return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nSi pasa del punto A al punto ${F.L[k]}, ¿a cuántas unidades de ${F.sy} renuncia en total?`,ans:dy,dec:0,
   errs:[{v:F.xs[k],msg:`Esa es la cantidad de ${F.x} que gana, no lo que sacrifica.`},{v:F.ys[k],msg:`Esa es la producción de ${F.sy} que le queda en el punto ${F.L[k]}, no la que sacrifica.`},{v:F.ys[0],msg:"Ese es el máximo posible: solo renunciaría a todo si llegara al último punto."},{v:F.d[k-1],msg:"Tomaste solo el último tramo: hay que contar desde el punto A."}],
-  unit:F.y,exp:`Renuncia a ${F.ys[0]} − ${F.ys[k]} = ${dy} ${F.y} para ganar ${F.xs[k]} ${F.x}.`,f:"Sacrificio total = producción de Y en el punto inicial − producción de Y en el punto final"})}];
+  unit:F.y,exp:`Renuncia a ${F.ys[0]} − ${F.ys[k]} = ${dy} ${F.y} para ganar ${F.xs[k]} ${F.x}.`,f:"Sacrificio total = producción del bien que se reduce en el punto inicial − su producción en el punto final"})}];
 QF.forEach((g,t)=>{for(let k=0;k<3;k++){const ctx=FCTX[(t+k)%4];add(6,5,["Costo de oportunidad entre puntos contiguos","Costo de oportunidad entre puntos separados","Costo de oportunidad del otro bien","Sacrificio total"][t],()=>g(fpp(ctx)))}});
 
 /* ---------- POSICIÓN 7: puntos de la frontera (10) ---------- */

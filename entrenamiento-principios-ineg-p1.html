@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrenamiento Parcial 1 · Principios de Economía INEG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: un cuaderno de práctica tranquilo, claro y alentador.
+   IDEA: la hoja de ejercicios con su solución al reverso.
+   PICTURE: la propia pregunta, grande, con su gráfico.
+   COLOUR and TYPE: morado institucional, acento naranja; Source Sans 3.
+   LAYOUT: una columna de lectura, controles grandes para el celular. */
+:root{color-scheme:light dark;--bg:light-dark(#f6f4f9,#17131d);--card:light-dark(#fff,#221c2b);--ink:light-dark(#1f1a26,#eee9f4);--mut:light-dark(#655d70,#b3aabf);--pur:light-dark(#5B2A86,#c9a6ee);--pur2:light-dark(#efe7f7,#2e2340);--ora:#E87722;--ok:light-dark(#1d7a46,#6fd49b);--okb:light-dark(#e6f4ec,#173527);--bad:light-dark(#b3261e,#ff8a80);--badb:light-dark(#fbe9e7,#3a1d1b);--line:light-dark(#e2dcea,#3a3146)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,sans-serif;overflow-x:clip}
+header{background:#5B2A86;color:#fff;padding:18px max(5vw,16px) 22px}
+header h1{margin:0;font-size:clamp(24px,5vw,34px);line-height:1.1}
+header p{margin:6px 0 0;opacity:.9;font-size:15px}
+main{max-width:760px;margin:0 auto;padding:18px max(4vw,14px) 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:0 0 16px}
+h2{font-size:22px;margin:0 0 10px;line-height:1.2}
+h3{font-size:17px;margin:14px 0 6px}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input,select{width:100%;font:inherit;font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--ora);outline-offset:2px}
+button{font:inherit;font-weight:600;min-height:46px;padding:10px 16px;border-radius:10px;border:0;cursor:pointer}
+.b1{background:#5B2A86;color:#fff}.b2{background:var(--ora);color:#fff}.b3{background:var(--pur2);color:var(--pur)}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.row>button{flex:1 1 200px}
+.mut{color:var(--mut);font-size:15px}
+.chip{display:inline-block;background:var(--pur2);color:var(--pur);border-radius:99px;padding:2px 10px;font-size:13px;font-weight:600}
+.prog{height:8px;background:var(--pur2);border-radius:99px;margin:8px 0 14px;overflow:hidden}.prog i{display:block;height:100%;background:var(--ora)}
+.q{white-space:pre-line;font-size:17px}
+.fig{margin:12px 0;max-width:420px}.fig svg{width:100%;height:auto;color:var(--ink)}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);color:var(--ink);border:2px solid var(--line);margin:8px 0;font-weight:400;padding:12px 14px}
+.opt b{color:var(--pur);margin-right:6px}
+.opt.sel{border-color:#5B2A86;background:var(--pur2)}
+.opt.good{border-color:var(--ok);background:var(--okb)}.opt.wrong{border-color:var(--bad);background:var(--badb)}
+.opt:disabled{cursor:default}
+button:disabled:not(.opt){opacity:.45;cursor:default}
+.numbox{background:var(--pur2);border-radius:12px;padding:12px;margin:12px 0}
+.numbox .row{margin-top:8px}.numbox input{flex:1 1 160px}
+.fb{border-left:5px solid var(--ok);background:var(--okb);padding:12px 14px;border-radius:8px;margin-top:12px}
+.fb.no{border-color:var(--bad);background:var(--badb)}
+.fb p{margin:4px 0}
+.info{background:none;color:var(--pur);border:1.5px solid var(--pur);min-height:34px;padding:4px 12px;font-size:14px;margin-top:6px}
+.formula{font-family:"Source Sans 3";background:var(--pur2);padding:8px 12px;border-radius:8px;margin-top:6px}
+.big{font-size:clamp(48px,12vw,72px);font-weight:700;color:var(--pur);line-height:1}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 70px;gap:8px;align-items:center;margin:6px 0;font-size:15px}
+.bar .t{position:relative;height:10px;background:var(--pur2);border-radius:99px;grid-column:1/-1}.bar .t i{position:absolute;inset:0 auto 0 0;background:#5B2A86;border-radius:99px}
+.bar span:last-of-type{text-align:right;white-space:nowrap}
+details{border-top:1px solid var(--line);padding:8px 0}summary{cursor:pointer;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:15px}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}td.n{text-align:right;white-space:nowrap}
+.hide{display:none}
+@media(prefers-reduced-motion:no-preference){.prog i{transition:width .3s}}
+</style>
+</head>
+<body>
+<header><h1>Entrenamiento para el Parcial 1</h1><p>Principios de Economía · Inteligencia de Negocios · Practica, revisa tus errores y mira cuánto vas mejorando. Nota de práctica: no cuenta para la calificación.</p></header>
+<main id="app"></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const rnd=Math.random;
+const R=(a,b,s=1)=>{const k=Math.round((b-a)/s);return +(a+s*Math.floor(rnd()*(k+1))).toFixed(6)};
+const pick=a=>a[Math.floor(rnd()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function fmt(x,d=0){if(!isFinite(x))return "—";const neg=x<0;x=Math.abs(x);let s=x.toFixed(d);let [i,f]=s.split(".");i=i.replace(/\B(?=(\d{3})+(?!\d))/g," ");return (neg?"−":"")+i+(f?","+f:"")}
+const $=(x,d=0)=>(x<0?"−$":"$")+fmt(Math.abs(x),d);
+const near=(a,b,d)=>Math.abs(a-b)<=Math.max(Math.pow(10,-d)*1.01,Math.abs(b)*0.01);
+function NUM(o){
+ const d=o.dec??0, show=o.show||(v=>fmt(v,d));
+ const ok=+o.ans.toFixed(d);
+ const ds=[];
+ for(const e of o.errs){const v=+e.v.toFixed(d); if(!isFinite(v)||v<0)continue; if(near(v,ok,d))continue; if(ds.some(x=>near(x.v,v,d)))continue; ds.push({v,msg:e.msg}); if(ds.length===3)break;}
+ if(ds.length<3) return null;
+ const opts=[{v:ok,ok:true,msg:""},...ds].sort((a,b)=>a.v-b.v).map(x=>({t:show(x.v),ok:x.ok||false,msg:x.msg}));
+ return {tipo:"calc",q:o.q,opts,num:{ans:ok,dec:d,unit:o.unit||""},exp:o.exp,f:o.f,svg:o.svg};
+}
+function CON(q,ok,ds,exp,f,svg){
+ return {tipo:"con",q,opts:shuffle([{t:ok,ok:true,msg:""},...ds.map(x=>({t:x[0],ok:false,msg:x[1]}))]),exp,f,svg};
+}
+const C=[];
+const add=(slot,tema,sub,gen)=>C.push({slot,tema,sub,gen});
+const REL=(pre,items,lets)=>pre;
+
+
+function fpp(ctx){const s=pick([5,10,20]);const d=[R(2,8,1)];for(const k of [3,3,4])d.push(d[d.length-1]+R(k,k+8,1));const ym=d.reduce((a,b)=>a+b,0);
+ const xs=[0,s,2*s,3*s,4*s],ys=[ym];d.forEach(v=>ys.push(ys[ys.length-1]-v));const L="ABCDE";
+ return {...ctx,s,d,xs,ys,L,tab:xs.map((x,i)=>`Punto ${L[i]}: ${x} ${ctx.x} y ${ys[i]} ${ctx.y}`).join("\n"),corta:xs.map((x,i)=>`${L[i]}: ${x} y ${ys[i]}`).join("; ")}}
+function fppSVG(F,pts,F2){const W=320,H=240,x0=44,y0=H-34;const mx=Math.max(F.xs[4],F2?F2.xs[4]:0)*1.12,my=Math.max(F.ys[0],F2?F2.ys[0]:0)*1.12;
+ const X=v=>(x0+v/mx*(W-x0-12)).toFixed(1),Y=v=>(y0-v/my*(y0-14)).toFixed(1);
+ const line=(G,col,da)=>`<polyline fill="none" stroke="${col}" stroke-width="2.4" ${da?'stroke-dasharray="6 4"':""} points="${G.xs.map((x,i)=>X(x)+","+Y(G.ys[i])).join(" ")}"/>`;
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Frontera de posibilidades de producción"><line x1="${x0}" y1="${y0}" x2="${W-6}" y2="${y0}" stroke="currentColor"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="6" stroke="currentColor"/>`;
+ s+=`<text x="${W-6}" y="${H-4}" font-size="11" text-anchor="end" fill="currentColor">${F.x[0].toUpperCase()+F.x.slice(1)}</text><text x="${x0+4}" y="12" font-size="11" fill="currentColor">${F.y[0].toUpperCase()+F.y.slice(1)}</text>`;
+ if(!F2){F.xs.forEach(x=>s+=`<text x="${X(x)}" y="${y0+13}" font-size="10" text-anchor="middle" fill="currentColor">${x}</text>`);let ly=-99;F.ys.forEach(y=>{if(y>0&&Math.abs(+Y(y)-ly)>=11){ly=+Y(y);s+=`<text x="${x0-4}" y="${+Y(y)+3}" font-size="10" text-anchor="end" fill="currentColor">${y}</text>`}})}
+ s+=line(F,"#5B2A86");
+ if(F2){s+=line(F2,"#E87722",1)+`<text x="${W-8}" y="24" font-size="11" text-anchor="end" fill="#5B2A86">— Frontera inicial</text><text x="${W-8}" y="38" font-size="11" text-anchor="end" fill="#E87722">- - Frontera final</text>`}
+ (pts||[]).forEach(p=>s+=`<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="5" fill="#E87722"/><text x="${+X(p.x)+7}" y="${+Y(p.y)-6}" font-size="13" font-weight="700" fill="currentColor">${p.n}</text>`);
+ return s+"</svg>"}
+
+
+const FF="Costo de oportunidad por unidad = unidades del otro bien a las que se renuncia ÷ unidades que se ganan del bien que aumenta";
+const QF=[
+ F=>{const i=Math.floor(rnd()*4),j=i+1,dy=F.d[i];const o=i<3?F.d[i+1]:F.d[i-1];
+  return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nAl pasar del punto ${F.L[i]} al punto ${F.L[j]}, ¿cuál es el costo de oportunidad de cada unidad adicional de ${F.sx}, medido en ${F.y}?`,ans:dy/F.s,dec:2,
+  errs:[{v:F.s/dy,msg:`Dividiste al revés: ese es el costo de una unidad de ${F.sy}, medido en ${F.x}.`},{v:dy,msg:`Ese es el sacrificio total de las ${F.s} unidades, no el de cada una.`},{v:o/F.s,msg:"Usaste otro tramo de la tabla: fíjate en los dos puntos que pide la pregunta."},{v:F.ys[j]/F.xs[j],msg:"Dividiste las cantidades del punto final: el costo de oportunidad compara los cambios entre dos puntos."}],
+  unit:F.y,exp:`De ${F.L[i]} a ${F.L[j]} se ganan ${F.s} ${F.x} y se pierden ${F.ys[i]} − ${F.ys[j]} = ${dy} ${F.y}. Costo por unidad: ${dy} ÷ ${F.s} = ${fmt(dy/F.s,2)}.`,f:FF})},
+ F=>{const i=Math.floor(rnd()*3),j=i+2,dy=F.ys[i]-F.ys[j],dx=F.xs[j]-F.xs[i];
+  return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nUn cliente pide más ${F.sx} y la gerencia evalúa pasar del punto ${F.L[i]} al punto ${F.L[j]}. ¿Cuál es el costo de oportunidad de cada unidad adicional de ${F.sx}, medido en ${F.y}?`,ans:dy/dx,dec:2,
+  errs:[{v:dx/dy,msg:"Dividiste al revés: pusiste las unidades que se ganan sobre las que se pierden."},{v:dy,msg:`Ese es el sacrificio total de las ${dx} unidades, no el de cada una.`},{v:F.d[i]/F.s,msg:"Usaste solo el primer tramo: el movimiento va de un punto a otro que está dos filas más abajo."},{v:F.d[i+1]/F.s,msg:"Usaste solo el segundo tramo: hay que tomar todo el movimiento entre los dos puntos."}],
+  unit:F.y,exp:`De ${F.L[i]} a ${F.L[j]} se ganan ${dx} ${F.x} y se pierden ${F.ys[i]} − ${F.ys[j]} = ${dy} ${F.y}. Costo por unidad: ${dy} ÷ ${dx} = ${fmt(dy/dx,2)}.`,f:FF})},
+ F=>{const i=Math.floor(rnd()*4),j=i+1,dy=F.d[i];const o=i<3?F.d[i+1]:F.d[i-1];
+  return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nHoy produce en el punto ${F.L[j]}, pero un cliente pide más ${F.sy} y la gerencia evalúa volver al punto ${F.L[i]}. ¿Cuál es el costo de oportunidad de cada unidad adicional de ${F.sy}, medido en ${F.x}?`,ans:F.s/dy,dec:2,
+  errs:[{v:dy/F.s,msg:`Ese es el costo de una unidad de ${F.sx}, medido en ${F.y}: aquí se pregunta por el otro bien.`},{v:F.s,msg:`Ese es el sacrificio total de ${F.x}, no el de cada unidad de ${F.sy}.`},{v:F.s/o,msg:"Usaste otro tramo de la tabla."},{v:F.xs[j]/F.ys[j],msg:"Dividiste las cantidades de un punto: hay que comparar los cambios entre los dos puntos."}],
+  unit:F.x,exp:`De ${F.L[j]} a ${F.L[i]} se ganan ${dy} ${F.y} y se pierden ${F.s} ${F.x}. Costo por unidad de ${F.sy}: ${F.s} ÷ ${dy} = ${fmt(F.s/dy,2)}. Es el inverso del costo del otro bien.`,f:"Costo de oportunidad por unidad = unidades del otro bien a las que se renuncia ÷ unidades que se ganan del bien que aumenta"})},
+ F=>{const k=2+Math.floor(rnd()*3),dy=F.ys[0]-F.ys[k];
+  return NUM({q:`${F.who}\nLa tabla muestra las combinaciones máximas que puede producir en un mes:\n${F.tab}\nSi pasa del punto A al punto ${F.L[k]}, ¿a cuántas unidades de ${F.sy} renuncia en total?`,ans:dy,dec:0,
+  errs:[{v:F.xs[k],msg:`Esa es la cantidad de ${F.x} que gana, no lo que sacrifica.`},{v:F.ys[k],msg:`Esa es la producción de ${F.sy} que le queda en el punto ${F.L[k]}, no la que sacrifica.`},{v:F.ys[0],msg:"Ese es el máximo posible: solo renunciaría a todo si llegara al último punto."},{v:F.d[k-1],msg:"Tomaste solo el último tramo: hay que contar desde el punto A."}],
+  unit:F.y,exp:`Renuncia a ${F.ys[0]} − ${F.ys[k]} = ${dy} ${F.y} para ganar ${F.xs[k]} ${F.x}.`,f:"Sacrificio total = producción del bien que se reduce en el punto inicial − su producción en el punto final"})}];
+
+const PT={E:"Eficiente: está sobre la frontera y no se puede producir más de un bien sin producir menos del otro.",I:"Ineficiente: está dentro de la frontera; hay recursos sin usar o mal usados.",N:"Inalcanzable: está fuera de la frontera; no se puede producir con los recursos y la tecnología actuales.",O:"Óptimo: es el mejor punto posible para la empresa."};
+function ptOf(F,type){const i=1+Math.floor(rnd()*3),x=F.xs[i],yf=F.ys[i];let y=yf;if(type==="I")y=Math.max(1,yf-Math.max(2,Math.round(yf*R(0.25,0.5,0.05))));if(type==="N")y=yf+Math.max(3,Math.round(F.ys[0]*R(0.15,0.3,0.05)));return {x,y,yf}}
+
+function umList(n){const u=[R(13,18,1)];for(let i=1;i<n;i++)u.push(u[i-1]-R(1,3,1));return u}
+const cum=a=>a.reduce((r,v)=>(r.push((r.length?r[r.length-1]:0)+v),r),[]);
+
+/* ===== Banco de casos: Entrenamiento Parcial 1, Principios de Economía, Inteligencia de Negocios ===== */
+const TEMAS={1:"Fundamentos de la economía",2:"Costo de oportunidad",3:"Agentes y flujo circular",4:"Frontera de posibilidades de producción",5:"Teoría de la utilidad",6:"Mercado: tipos, demanda y oferta",7:"Equilibrio y sus cambios"};
+const REPASO={1:"presentación de escasez, elección y costo de oportunidad",2:"presentación de costo de oportunidad y applet «Mis 24 horas»",3:"presentaciones de agentes económicos (partes 1 y 2 y caso Pacari) y applet «Agentes y flujos»",4:"presentaciones de la frontera de posibilidades de producción (clases 1 a 3) y sus applets",5:"presentación de utilidad y applet de utilidad",6:"presentaciones «Mercados» y «Demanda, oferta y equilibrio»",7:"presentaciones «Demanda, oferta y equilibrio» y «Cambios en la oferta y la demanda», y applet de mercado"};
+const SLOTS=[
+ {n:1,lab:"Fundamentos"},{n:2,lab:"Ejercicio de costo de oportunidad"},{n:3,lab:"Agentes y mercados del flujo circular"},{n:4,lab:"Flujo circular aplicado"},
+ {n:5,lab:"Ejercicio de la frontera de posibilidades de producción"},{n:6,lab:"Puntos y desplazamientos de la frontera"},{n:7,lab:"Ejercicio de utilidad"},
+ {n:8,lab:"Tipos de mercado, demanda y oferta"},{n:9,lab:"Ejercicio de equilibrio"},{n:10,lab:"Cambios en el equilibrio"}];
+const CALC=[2,5,7,9];
+
+/* ---------- POSICIÓN 1: fundamentos (8) ---------- */
+[["Una startup de Quito tiene $20 000 de presupuesto de marketing para el año y quiere pautar en redes, asistir a ferias y anunciar en radio, lo que costaría $35 000.","el presupuesto no alcanza"],
+ ["Una distribuidora de Ambato tiene un solo camión y el mismo día recibe pedidos para entregar en Latacunga, Riobamba y Guaranda.","el camión no alcanza"],
+ ["Un estudiante de Inteligencia de Negocios quiere terminar un tablero para su PIS, estudiar para el parcial, trabajar medio tiempo y dormir ocho horas, pero el día no le alcanza.","las horas del día no alcanzan"]].forEach(([t,r])=>add(1,1,"Escasez y problema económico",()=>CON(`${t} (caso hipotético)\n¿Qué concepto económico describe mejor esta situación?`,
+ `Escasez: ${r} para todo lo que se desea.`,
+ [["Inflación: los precios de casi todos los bienes suben de forma generalizada.","El caso no habla de precios: el problema es que los recursos no alcanzan."],["Desempleo: hay recursos disponibles que se quedan sin usar en la producción.","Al contrario: los recursos se usan y aun así no alcanzan."],["Falta de información: no se conoce cuánto cuesta cada opción.","Aunque se conocieran todos los costos, los recursos seguirían sin alcanzar."]],
+ "La escasez es la situación en la que los recursos son limitados frente a lo que se desea. Obliga a elegir, y cada elección tiene un costo de oportunidad.",
+ "Problema económico: necesidades ilimitadas frente a recursos escasos; por eso hay que elegir.")));
+add(1,1,"Economía positiva y normativa",()=>CON(`El equipo de inteligencia de negocios de una cadena de ferreterías revisa estas afirmaciones.\n¿Cuáles son afirmaciones de economía positiva?\n1. Cuando subimos 5 % el precio del cemento, las ventas cayeron 8 %.\n2. Deberíamos abrir los domingos para atender mejor a los clientes.\n3. Si sube el ingreso de los hogares, aumentan las compras de materiales de construcción.\n4. Es injusto que los proveedores cobren distinto a las ferreterías pequeñas.\n5. Las ventas de pintura aumentan cada diciembre.`,
+ "1, 3 y 5",[["1, 2 y 3","La afirmación 2 dice qué se debería hacer: es normativa."],["2, 4 y 5","Las afirmaciones 2 y 4 contienen juicios de valor («deberíamos», «es injusto»)."],["1, 3 y 4","«Es injusto» (4) es un juicio de valor: es normativa."]],
+ "Positivas: describen hechos o relaciones que se pueden contrastar con datos (1, 3 y 5). Normativas: dicen qué debería ser (2 y 4).",
+ "Positiva = lo que es (se contrasta con datos). Normativa = lo que debería ser (juicio de valor)."));
+add(1,1,"Economía positiva y normativa",()=>CON(`En una reunión sobre el sector de software se escucharon estas afirmaciones.\n¿Cuáles son afirmaciones de economía normativa?\n1. El Estado debería dar exoneraciones a las empresas que contraten jóvenes programadores.\n2. Las exportaciones de software crecieron el último año.\n3. Las universidades deberían formar más analistas de datos.\n4. Si baja el costo del internet, más MIPYME venden en línea.\n5. Es preferible tener menos inflación aunque crezca menos el empleo.`,
+ "1, 3 y 5",[["1, 2 y 3","La afirmación 2 describe un dato: es positiva."],["2, 4 y 5","Las afirmaciones 2 y 4 se pueden contrastar con datos: son positivas."],["1, 3 y 4","La afirmación 4 es una relación que se puede comprobar: es positiva."]],
+ "Normativas: «debería» (1 y 3) y «es preferible» (5) expresan juicios de valor. Positivas: 2 y 4, que se contrastan con datos.",
+ "Positiva = lo que es (se contrasta con datos). Normativa = lo que debería ser (juicio de valor)."));
+add(1,1,"Microeconomía y macroeconomía",()=>CON(`Un analista arma su lista de indicadores para un tablero.\n¿Cuáles corresponden a la microeconomía?\n1. Las ventas mensuales de una cadena de farmacias.\n2. La tasa de inflación del país.\n3. El precio del pasaje en una cooperativa de buses de Ibarra.\n4. El PIB del Ecuador.\n5. La cantidad de clientes que pierde una empresa de internet cuando sube su tarifa.`,
+ "1, 3 y 5",[["1, 2 y 3","La inflación del país (2) es macroeconomía."],["2, 4 y 5","La inflación (2) y el PIB (4) son indicadores de todo el país: macroeconomía."],["1, 4 y 5","El PIB del Ecuador (4) es macroeconomía."]],
+ "La microeconomía estudia empresas, hogares y mercados particulares (1, 3 y 5). La macroeconomía estudia agregados del país, como el PIB y la inflación (2 y 4).",
+ "Microeconomía = decisiones de hogares, empresas y mercados. Macroeconomía = la economía en su conjunto."));
+add(1,1,"Clasificación de la economía",()=>CON(`Relacione cada afirmación con el tipo de análisis económico.\nAFIRMACIONES\n1. Si una cafetería de Cuenca baja sus precios, venderá más cafés.\n2. El gobierno debería reducir los impuestos para que crezca la economía.\n3. Si suben las exportaciones, aumenta el PIB del país.\n4. Las aplicaciones de delivery deberían cobrar menos comisión a los restaurantes.\nTIPOS\na) Microeconomía positiva\nb) Microeconomía normativa\nc) Macroeconomía positiva\nd) Macroeconomía normativa`,
+ "1a, 2d, 3c, 4b",[["1c, 2b, 3a, 4d","Confundiste micro y macro: la cafetería y las aplicaciones son micro; el PIB y los impuestos del país son macro."],["1b, 2c, 3d, 4a","Invertiste positiva y normativa: «debería» expresa un juicio de valor."],["1a, 2c, 3d, 4b","En la macro invertiste positiva y normativa."]],
+ "Positiva: se puede contrastar con datos. Normativa: dice qué debería hacerse. Micro: una cafetería o un mercado. Macro: el PIB o la política del país.",
+ "Positiva = lo que es. Normativa = lo que debería ser. Micro = mercados y empresas. Macro = producción, empleo y precios del país."));
+add(1,1,"Decisión racional",()=>{const A=R(150,300,10);const B=rnd()<0.5?A+R(20,80,10):A-R(20,80,10);const rac=B>A;
+ return CON(`Una analista independiente acepta un proyecto de un fin de semana que le pagará $${B}. Su mejor alternativa era dar un curso de Power BI, por $${A}. Datos hipotéticos.\n¿Fue una decisión racional?`,
+ rac?`Sí: lo que gana ($${B}) supera su costo de oportunidad ($${A}).`:`No: su costo de oportunidad ($${A}) supera lo que gana ($${B}).`,
+ [[rac?`No: su costo de oportunidad ($${A}) supera lo que gana ($${B}).`:`Sí: lo que gana ($${B}) supera su costo de oportunidad ($${A}).`,`Revisa los números: gana $${B} y su costo de oportunidad es $${A}.`],
+  ["Sí, porque cualquier ingreso positivo justifica aceptar el proyecto.","No basta con ganar algo: hay que compararlo con la mejor alternativa."],
+  ["No se puede saber sin conocer lo que gastó antes en su computadora.","Lo gastado antes es un costo hundido: no cambia la decisión."]],
+ `Una decisión es racional si su beneficio supera su costo de oportunidad: ${B} frente a ${A}.`,
+ "Decisión racional: elegir la opción cuyo beneficio supera su costo de oportunidad.")});
+
+/* ---------- POSICIÓN 2: ejercicios de costo de oportunidad (10) ---------- */
+[(v,a,b)=>`Un analista de datos tiene libre el sábado y debe elegir una sola opción: limpiar una base de datos para un cliente, que le paga $${v}; dar una tutoría de Excel, por $${a}; o diseñar un tablero pequeño, por $${b}. Elige limpiar la base.`,
+ (v,a,b)=>`Una empresa tiene un servidor propio que usa para sus reportes internos, lo que le ahorra $${v} al mes. Podría alquilar esa capacidad a otra empresa por $${a} al mes o a una universidad por $${b} al mes. Decide seguir usándolo ella.`,
+ (v,a,b)=>`Una consultora tiene una semana libre de su equipo. Puede hacer un estudio de mercado que le pagan $${v}; un tablero de ventas, por $${a}; o una capacitación, por $${b}. Elige el estudio de mercado.`].forEach((t,k)=>add(2,2,"Mejor alternativa descartada",()=>{const sc=[1,10,100][k],b=R(20,60,5)*sc,a=b+R(5,30,5)*sc,v=a+R(5,40,5)*sc;
+ return NUM({q:t(fmt(v),fmt(a),fmt(b))+" Datos hipotéticos.\n¿Cuál es el costo de oportunidad de su decisión, en dólares?",ans:a,
+ errs:[{v:a+b,msg:"Sumaste las dos alternativas descartadas: solo cuenta la mejor, porque no se podían hacer a la vez."},{v:b,msg:"Tomaste la alternativa de menor valor: cuenta la mejor alternativa descartada."},{v:v,msg:"Ese es el beneficio de la opción elegida, no lo que se sacrifica."},{v:v-a,msg:"Esa es la ganancia de elegir bien, no el costo de oportunidad."}],
+ show:x=>$(x),unit:"dólares",exp:`La mejor alternativa descartada vale $${fmt(a)}. Como lo elegido vale $${fmt(v)}, la decisión es racional.`,
+ f:"Costo de oportunidad = valor de la mejor alternativa a la que se renuncia"})}));
+[["ir de Quito a Guayaquil a presentar un tablero a un cliente","bus","avión"],["ir de Ibarra a Quito a una capacitación","bus","un auto compartido"],["ir de Cuenca a Loja a levantar datos","bus","una camioneta privada"]].forEach(([ruta,o1,o2])=>add(2,2,"Costo del tiempo y del dinero",()=>{const w=R(8,20,1),h1=R(4,9,1),p1=R(5,15,1),h2=R(1,h1-2,1),p2=p1+R(20,70,5);const askBus=rnd()<0.5;
+ const [h,pp,o,ho,po,oo]=askBus?[h1,p1,o1,h2,p2,o2]:[h2,p2,o2,h1,p1,o1];
+ return NUM({q:`Un analista independiente gana $${w} por hora y esta semana tiene trabajo para todas las horas que quiera; no puede trabajar mientras viaja. Debe ${ruta} y tiene dos opciones:\n• ${o1[0].toUpperCase()+o1.slice(1)}: ${h1} horas de viaje y pasaje de $${p1}.\n• ${o2[0].toUpperCase()+o2.slice(1)}: ${h2} horas en total y pasaje de $${p2}.\nDatos hipotéticos. ¿Cuál es el costo total de ir en ${o}, incluido el costo de oportunidad de su tiempo, en dólares?`,ans:pp+h*w,
+ errs:[{v:pp,msg:"Contaste solo el pasaje: también renuncia a lo que ganaría trabajando esas horas."},{v:h*w,msg:"Contaste solo el tiempo: falta el pasaje."},{v:po+ho*w,msg:`Ese es el costo total de ir en ${oo}.`},{v:pp+h,msg:"Sumaste las horas como si fueran dólares: hay que multiplicarlas por lo que gana por hora."}],
+ show:x=>$(x),unit:"dólares",exp:`Costo total de ir en ${o} = $${pp} + ${h} × $${w} = $${fmt(pp+h*w)}. En ${oo} sería $${po} + ${ho} × $${w} = $${fmt(po+ho*w)}.`,
+ f:"Costo total = dinero que se paga + horas usadas × lo que se gana por hora"})}));
+[["una analista","bases de datos limpias","tableros"],["un desarrollador","reportes automáticos","formularios web"]].forEach(([q,A,B])=>add(2,2,"Costo de oportunidad por unidad",()=>{let x=R(2,8,1),y=R(3,20,1);while(y===x)y=R(3,20,1);
+ return NUM({q:`En una semana, ${q} puede hacer ${x} ${A} o ${y} ${B}, o cualquier combinación proporcional de ambos. Datos hipotéticos.\n¿Cuál es el costo de oportunidad de hacer una unidad de ${A}, medido en ${B}?`,ans:y/x,dec:2,
+ errs:[{v:x/y,msg:`Dividiste al revés: ese es el costo de una unidad de ${B}, medido en ${A}.`},{v:y,msg:`Eso es todo lo que sacrifica por ${x} ${A}, no por una.`},{v:Math.abs(y-x),msg:"Restaste las cantidades: el costo de oportunidad es un cociente."},{v:x*y,msg:"Multiplicaste las cantidades: hay que dividir lo que se sacrifica para lo que se gana."}],
+ unit:B,exp:`${x} ${A} equivalen a ${y} ${B}. Una unidad cuesta ${y} ÷ ${x} = ${fmt(y/x,2)} ${B}.`,
+ f:"Costo de oportunidad por unidad = unidades del otro bien a las que se renuncia ÷ unidades que se ganan del bien elegido"})}));
+[["abrir una consultora de datos"],["abrir una tienda en línea"]].forEach(([neg])=>add(2,2,"Costo de oportunidad de emprender",()=>{const s=R(600,1200,50),m=R(5,12,1),r=R(4,8,1),K=m*1200,i=m*r;
+ return NUM({q:`Pablo deja un empleo en el que ganaba $${s} al mes para ${neg}. Usa $${fmt(K)} de sus ahorros, que en una póliza le rendirían ${r} % al año. Datos hipotéticos.\n¿Cuál es su costo de oportunidad mensual, en dólares?`,ans:s+i,
+ errs:[{v:s,msg:"Olvidaste lo que dejan de rendir sus ahorros."},{v:s+K,msg:"Sumaste todo el ahorro: no lo pierde, solo deja de ganar sus intereses."},{v:i,msg:"Olvidaste el sueldo al que renuncia."},{v:s+K*r/100,msg:"Usaste el interés de todo el año: la pregunta es mensual."}],
+ show:x=>$(x),unit:"dólares",exp:`Sueldo: $${s}. Interés mensual: ${fmt(K)} × ${r} % ÷ 12 = $${i}. Costo de oportunidad = $${s+i} al mes.`,
+ f:"Costo de oportunidad de emprender = sueldo al que se renuncia + rendimiento que dejan de dar los ahorros"})}));
+
+/* ---------- POSICIÓN 3: agentes y mercados del flujo circular (10) ---------- */
+const AGF={h:"Ofrecen su trabajo y compran bienes y servicios para su consumo.",e:"Contrata trabajadores, compra insumos y vende lo que produce.",s:"Cobra impuestos, regula y provee bienes públicos.",x:"Fija los precios de todos los productos del mercado."};
+add(3,3,"Agentes económicos",()=>CON(`Una cadena de farmacias contrata químicos y cajeros, compra medicinas a laboratorios, paga impuestos y vende a las familias de la ciudad.\nRelacione cada agente con su función en este caso.\nAGENTES\n1. Hogares\n2. Cadena de farmacias\n3. Estado\nFUNCIONES\na) ${AGF.h}\nb) ${AGF.e}\nc) ${AGF.s}\nd) ${AGF.x}`,
+ "1a, 2b, 3c",[["1b, 2a, 3c","Intercambiaste hogares y empresa."],["1a, 2b, 3d","En una economía de mercado, los precios se forman en el mercado; el Estado cobra impuestos, regula y provee bienes públicos."],["1c, 2b, 3a","Intercambiaste hogares y Estado."]],
+ "Hogares: ofrecen factores y consumen. Empresas: contratan factores y producen. Estado: impuestos, regulación y bienes públicos.","Agentes económicos: hogares (familias), empresas y Estado."));
+add(3,3,"Agentes económicos",()=>CON(`Una empresa de software de Quito contrata programadores, paga el arriendo de su oficina, paga impuestos y vende licencias a otras empresas y a hogares.\nRelacione cada agente con su función en este caso.\nAGENTES\n1. Estado\n2. Empresa de software\n3. Hogares\nFUNCIONES\na) ${AGF.h}\nb) ${AGF.e}\nc) ${AGF.s}\nd) ${AGF.x}`,
+ "1c, 2b, 3a",[["1c, 2a, 3b","Intercambiaste empresa y hogares."],["1d, 2b, 3a","El Estado no fija todos los precios: cobra impuestos, regula y provee bienes públicos."],["1a, 2b, 3c","Intercambiaste Estado y hogares."]],
+ "Hogares: ofrecen factores y consumen. Empresas: contratan factores y producen. Estado: impuestos, regulación y bienes públicos.","Agentes económicos: hogares (familias), empresas y Estado."));
+const MBF="MERCADOS\na) Mercado de bienes y servicios\nb) Mercado de factores de producción";
+add(3,3,"Mercados del flujo circular",()=>CON(`Relacione cada transacción con el mercado del flujo circular en que ocurre.\nTRANSACCIONES\n1. Una familia compra medicinas en una farmacia.\n2. La farmacia paga el sueldo de sus cajeros.\n3. La farmacia paga el arriendo de su local.\n4. Un hogar paga su plan de celular.\n${MBF}`,
+ "1a, 2b, 3b, 4a",[["1a, 2b, 3a, 4a","El arriendo del local paga un factor de producción, no un bien de consumo."],["1b, 2a, 3a, 4b","Invertiste los mercados: en el de bienes compran los hogares; en el de factores compran las empresas."],["1a, 2a, 3b, 4a","El sueldo paga el trabajo, que es un factor de producción."]],
+ "En el mercado de bienes, los hogares compran a las empresas. En el de factores, las empresas pagan trabajo, tierra y capital.","Flujo circular: mercado de bienes y servicios y mercado de factores de producción."));
+add(3,3,"Mercados del flujo circular",()=>CON(`Relacione cada transacción con el mercado del flujo circular en que ocurre.\nTRANSACCIONES\n1. Una empresa de software paga a sus programadores.\n2. Un hogar paga la suscripción a una plataforma de películas.\n3. Una empresa paga intereses a los hogares que le prestaron dinero.\n4. Una familia compra una computadora.\n${MBF}`,
+ "1b, 2a, 3b, 4a",[["1a, 2a, 3b, 4a","Los sueldos de los programadores pagan trabajo: mercado de factores."],["1b, 2a, 3a, 4a","Los intereses pagan el capital que aportan los hogares: mercado de factores."],["1a, 2b, 3a, 4b","Invertiste todos los mercados."]],
+ "Sueldos e intereses pagan factores (trabajo y capital). Las suscripciones y las computadoras son bienes y servicios que compran los hogares.","Flujo circular: mercado de bienes y servicios y mercado de factores de producción."));
+add(3,3,"Mercados del flujo circular",()=>CON(`Relacione cada transacción con el mercado del flujo circular en que ocurre.\nTRANSACCIONES\n1. Una panadería paga el arriendo del terreno donde está su horno.\n2. Un estudiante compra pan para el desayuno.\n3. Una costurera ofrece su trabajo a una fábrica textil.\n4. Un hogar paga el servicio de taxi.\n${MBF}`,
+ "1b, 2a, 3b, 4a",[["1a, 2a, 3b, 4a","El arriendo del terreno paga un factor de producción (tierra)."],["1b, 2b, 3b, 4a","Comprar pan es comprar un bien: mercado de bienes."],["1a, 2b, 3a, 4b","Invertiste todos los mercados."]],
+ "Arriendos y trabajo son factores; el pan y el taxi son bienes y servicios que compran los hogares.","Flujo circular: mercado de bienes y servicios y mercado de factores de producción."));
+add(3,3,"El Estado en el flujo circular",()=>CON(`En el flujo circular con Estado, ¿qué recibe y qué entrega el Estado?`,
+ "Recibe impuestos de hogares y empresas, y entrega bienes públicos, servicios y transferencias.",
+ [["Recibe salarios de las empresas y entrega trabajo a los hogares.","Eso describe a los hogares en el mercado de factores."],["Recibe los bienes de las empresas y entrega dinero a los bancos.","El Estado no recibe toda la producción; sus ingresos principales son los impuestos."],["Solo fija precios y no recibe ni entrega flujos.","El Estado sí participa en los flujos: cobra impuestos y gasta."]],
+ "El Estado cobra impuestos (flujo monetario hacia él) y gasta en bienes públicos, servicios y transferencias.","Estado: recibe impuestos; entrega bienes públicos, servicios y transferencias."));
+add(3,3,"Dueños de los factores",()=>CON(`En el modelo básico del flujo circular, ¿quiénes son dueños de los factores de producción (trabajo, tierra y capital)?`,
+ "Los hogares, que los venden a las empresas a cambio de sueldos, rentas e intereses.",
+ [["Las empresas, que los usan para producir.","Las empresas compran o alquilan los factores; en el modelo, sus dueños son los hogares."],["El Estado, que los asigna a cada empresa.","Eso describiría una economía de planificación central."],["Los bancos, que financian a las empresas.","El modelo básico no tiene bancos como dueños de los factores."]],
+ "Los hogares venden trabajo, tierra y capital en el mercado de factores y reciben sueldos, rentas, intereses y beneficios.","Mercado de factores: los hogares venden factores; las empresas los compran."));
+add(3,3,"Ingresos y gastos en el flujo circular",()=>CON(`Complete los espacios en blanco:\n«En el flujo circular, el ______ de los hogares en bienes y servicios es el ______ de las empresas, y lo que las empresas pagan por los factores es el ______ de los hogares».`,
+ "gasto – ingreso – ingreso",
+ [["ingreso – gasto – gasto","Invertiste los papeles: lo que gastan los hogares lo reciben las empresas."],["gasto – costo – gasto","Lo que pagan las empresas por los factores es ingreso para los hogares."],["ahorro – ingreso – impuesto","El flujo básico une el gasto de los hogares con el ingreso de las empresas."]],
+ "Cada dólar que gasta un agente es el ingreso de otro: el gasto de los hogares es el ingreso de las empresas, y los pagos por factores son el ingreso de los hogares.","Gasto de unos = ingreso de otros."));
+add(3,3,"Flujo real del mercado de factores",()=>CON(`¿Qué flujo real va de los hogares hacia las empresas en el mercado de factores?`,
+ "El trabajo, la tierra y el capital que los hogares ponen a disposición de las empresas.",
+ [["Los sueldos que las empresas pagan a los hogares.","Es un flujo monetario y va en sentido contrario."],["Los bienes que las empresas venden a los hogares.","Eso ocurre en el mercado de bienes y va de las empresas a los hogares."],["Los impuestos que los hogares pagan al Estado.","Es un flujo monetario hacia el Estado."]],
+ "En el mercado de factores, los factores (flujo real) van de los hogares a las empresas, y los pagos (flujo monetario) van de las empresas a los hogares.","Flujo real = bienes, servicios y factores. Flujo monetario = pagos en sentido contrario."));
+add(3,3,"Gasto de los hogares y ventas",()=>CON(`Si los hogares de una ciudad reducen su gasto en restaurantes, ¿qué ocurre directamente en el flujo circular?`,
+ "Bajan los ingresos de los restaurantes y, con ellos, lo que pueden pagar por factores.",
+ [["Suben los ingresos de los restaurantes, porque atienden a menos clientes.","Menos gasto de los hogares significa menos ingreso para las empresas."],["Aumentan los impuestos que cobra el Estado.","Con menos ventas, en todo caso, el Estado recauda menos."],["No pasa nada, porque los hogares guardan ese dinero.","El gasto de unos es el ingreso de otros: si baja el gasto, baja el ingreso de las empresas."]],
+ "En el flujo circular, el gasto de los hogares es el ingreso de las empresas: si cae, las empresas venden menos y pueden pagar menos por los factores.","Gasto de unos = ingreso de otros."));
+
+/* ---------- POSICIÓN 4: flujo circular aplicado (8) ---------- */
+add(4,3,"Flujos reales y monetarios",()=>CON(`Al construir el esquema del flujo circular de una empresa de mermeladas con los datos del mes, ¿cuál de estos es un flujo real?`,
+ "Los 12 000 frascos de mermelada entregados a las tiendas.",
+ [["Los $30 000 que la empresa recibe por las ventas del mes.","Es dinero: flujo monetario."],["Los $8 000 pagados en sueldos.","Es dinero: flujo monetario."],["Los $2 000 de impuestos pagados al Estado.","Es dinero: flujo monetario."]],
+ "Los flujos reales se miden en unidades físicas (frascos, horas). Los monetarios son los pagos en dólares que van en sentido contrario. Un error frecuente es medir un flujo real en dólares.","Flujo real = bienes, servicios y factores en unidades. Flujo monetario = pagos en dólares."));
+add(4,3,"Flujos reales y monetarios",()=>CON(`Un estudiante arma el flujo circular de una empresa de lácteos.\nRelacione cada dato con el tipo de flujo.\nDATOS\n1. 40 000 litros de yogur vendidos a los hogares.\n2. $60 000 cobrados por las ventas.\n3. 3 200 horas de trabajo de los operarios.\n4. $18 000 pagados en sueldos.\nTIPOS\na) Flujo real\nb) Flujo monetario`,
+ "1a, 2b, 3a, 4b",[["1b, 2b, 3a, 4b","Los litros de yogur son producto, no dinero: flujo real."],["1a, 2a, 3a, 4b","Las ventas en dólares son dinero: flujo monetario."],["1a, 2b, 3b, 4a","Las horas de trabajo son un factor (real) y los sueldos son dinero (monetario)."]],
+ "Real: litros y horas (unidades). Monetario: ventas y sueldos (dólares).","Flujo real = bienes, servicios y factores en unidades. Flujo monetario = pagos en dólares."));
+add(4,3,"Impuestos en el flujo circular",()=>CON(`El Estado sube el impuesto a la renta de los hogares y, por ahora, no cambia su gasto.\n¿Cuál es el efecto directo sobre los flujos entre hogares y empresas?`,
+ "Los hogares tienen menos ingreso disponible y gastan menos en bienes de las empresas.",
+ [["Las empresas pagan más sueldos, porque el Estado recauda más.","La recaudación no llega a las empresas como sueldos."],["Aumenta el flujo de bienes de las empresas hacia los hogares.","Con menos gasto, las empresas venden menos."],["No cambia, porque el impuesto lo pagan los hogares y no las empresas.","El gasto de los hogares es el ingreso de las empresas: si cae, ellas venden menos."]],
+ "El impuesto es un flujo de dinero de los hogares al Estado: reduce su ingreso disponible y su gasto en bienes.","Ingreso disponible = ingreso − impuestos."));
+add(4,3,"Gasto público en el flujo circular",()=>CON(`El Estado contrata a una constructora para ampliar una carretera y le paga $2 millones.\n¿Cómo se representa en el flujo circular?`,
+ "Un flujo de dinero del Estado a la empresa y un flujo real de la obra de la empresa al Estado.",
+ [["Un flujo de dinero de la empresa al Estado, como un impuesto.","El dinero va del Estado hacia la constructora, no al revés."],["Una compra de los hogares en el mercado de bienes.","Quien compra la obra es el Estado, no los hogares."],["Un flujo del mercado de factores entre hogares y Estado.","La obra es un bien que produce una empresa."]],
+ "El gasto público es un flujo monetario del Estado hacia las empresas, a cambio de bienes y servicios.","Estado: recibe impuestos y gasta en bienes, servicios y transferencias."));
+add(4,3,"Sector externo: exportaciones",()=>CON(`Una empresa de chocolates de Quito empieza a vender a Alemania y quiere incluirlo en su esquema del flujo circular.\n¿Cómo se representa la exportación?`,
+ "Con el sector externo: la empresa entrega chocolates al exterior y recibe dólares por las exportaciones.",
+ [["Como una venta a los hogares del país.","Los compradores están fuera del país: es el sector externo."],["Como un flujo con el Estado, por los trámites de aduana.","El trámite no es el flujo de la venta."],["Como un flujo del mercado de factores.","Se vende un producto, no se contrata un factor."]],
+ "Cuando una empresa vende al exterior, se añade el sector externo: sale un flujo real (el producto) y entra un flujo monetario (los dólares).","Sector externo: exportaciones (entran dólares) e importaciones (salen dólares)."));
+add(4,3,"Sector externo: importaciones",()=>CON(`La misma empresa de chocolates compra maquinaria a Italia.\n¿Cómo se representa esa importación en el flujo circular?`,
+ "Entra un flujo real (la maquinaria) y sale un flujo de dinero hacia el sector externo.",
+ [["Entra dinero desde Italia y sale maquinaria del país.","Eso describe una exportación, no una importación."],["Es una compra en el mercado de factores a los hogares del país.","El vendedor está fuera del país: es el sector externo."],["No se representa, porque es una compra entre empresas.","Las compras al exterior forman parte del sector externo."]],
+ "En una importación entra el bien al país y salen los dólares hacia el resto del mundo.","Sector externo: exportaciones (entran dólares) e importaciones (salen dólares)."));
+add(4,3,"Transferencias del Estado",()=>CON(`El Estado aumenta un bono mensual que entrega a hogares de bajos ingresos.\n¿Qué efecto directo se espera en el flujo circular?`,
+ "Aumenta el ingreso de esos hogares y, con él, su gasto en bienes de las empresas.",
+ [["Aumentan los impuestos que pagan esos hogares.","El bono es una transferencia hacia los hogares, no un impuesto."],["Disminuyen las ventas de las empresas.","Más ingreso de los hogares tiende a aumentar sus compras."],["Aumenta el flujo de factores de los hogares al Estado.","El bono no exige entregar trabajo a cambio."]],
+ "Una transferencia es un flujo de dinero del Estado a los hogares sin contrapartida; eleva su ingreso disponible y su gasto.","Transferencias: dinero del Estado a los hogares sin contrapartida."));
+add(4,3,"Agente que más influye",()=>CON(`El tablero de una cadena de ferreterías muestra que sus ventas cayeron 20 % justo después de que bajaron los sueldos en el sector de la construcción.\n¿Qué agente explica mejor la caída?`,
+ "Los hogares: con menos ingreso, gastan menos en materiales.",
+ [["El Estado, porque cobra impuestos.","El caso no muestra un cambio de impuestos."],["Las ferreterías, porque producen menos.","Las ferreterías venden menos porque les compran menos, no al revés."],["El sector externo, porque el país importa materiales.","El caso no muestra un cambio en el comercio exterior."]],
+ "El ingreso de los hogares viene de los sueldos; si baja, baja su gasto y, con él, el ingreso de las empresas que les venden.","Gasto de los hogares = ingreso de las empresas."));
+
+/* ---------- Frontera: contextos INEG ---------- */
+const FCI=[
+ {x:"cajas de yogur",y:"cajas de queso",sx:"yogur",sy:"queso",who:"Una empresa de lácteos de Machachi (caso hipotético) produce yogur y queso con la misma planta."},
+ {x:"libros",y:"revistas",sx:"libros",sy:"revistas",who:"Una imprenta de Quito (caso hipotético) imprime libros y revistas con la misma prensa."},
+ {x:"mesas",y:"sillas",sx:"mesas",sy:"sillas",who:"Una fábrica de muebles de Cuenca (caso hipotético) hace mesas y sillas con sus carpinteros y su taller."},
+ {x:"tableros",y:"reportes",sx:"tableros",sy:"reportes",who:"Una consultora de datos de Ambato (caso hipotético) elabora tableros y reportes con sus analistas."}];
+
+/* ---------- POSICIÓN 5: ejercicios de la frontera (10) ---------- */
+QF.forEach((g,t)=>{for(let k=0;k<[3,3,2,2][t];k++){const ctx=FCI[(t+k)%4];add(5,4,["Costo de oportunidad entre puntos contiguos","Costo de oportunidad entre puntos separados","Costo de oportunidad del otro bien","Sacrificio total"][t],()=>g(fpp(ctx)))}});
+
+/* ---------- POSICIÓN 6: puntos y desplazamientos (10) ---------- */
+FCI.forEach(ctx=>add(6,4,"Puntos eficientes, ineficientes e inalcanzables",()=>{const F=fpp(ctx),ty=pick(["E","I","N"]),P=ptOf(F,ty);
+ const desc={E:"está sobre la frontera",I:"está dentro de la frontera",N:"está fuera de la frontera"}[ty];
+ const msg=`Con ${P.x} ${F.x}, la frontera permite ${P.yf} ${F.y}; el punto P tiene ${P.y}, así que ${desc}.`;
+ return CON(`${F.who} El gráfico muestra su frontera de posibilidades de producción mensual (${F.corta}). El área de inteligencia de negocios marca el punto P: ${P.x} ${F.x} y ${P.y} ${F.y}.\n¿Cómo se clasifica el punto P?`,
+ PT[ty],Object.keys(PT).filter(k=>k!==ty).map(k=>[PT[k],k==="O"?"La frontera no dice cuál punto es el mejor; eso depende de lo que quieran la empresa y sus clientes.":msg]),
+ `${msg} Eficiente: sobre la frontera. Ineficiente: dentro. Inalcanzable: fuera.`,"Sobre la frontera: eficiente. Dentro: ineficiente. Fuera: inalcanzable.",fppSVG(F,[{n:"P",x:P.x,y:P.y}]))}));
+add(6,4,"Producción perdida en un punto ineficiente",()=>{const F=fpp(FCI[3]),i=1+Math.floor(rnd()*3),g=Math.max(2,Math.round(F.ys[i]*R(0.2,0.5,0.05))),y=F.ys[i]-g;
+ return NUM({q:`${F.who} El gráfico muestra su frontera de posibilidades de producción mensual (${F.corta}). El mes pasado hizo ${F.xs[i]} ${F.x} y ${y} ${F.y}.\nCon esos mismos ${F.xs[i]} ${F.x}, ¿cuántos ${F.sy} más pudo hacer si aprovechaba todos sus recursos?`,ans:g,
+ errs:[{v:F.ys[i],msg:"Esa es la producción máxima con esa cantidad del otro bien; falta restar lo que sí produjo."},{v:y,msg:"Eso es lo que produjo, no lo que pudo producir de más."},{v:F.ys[i-1]-y,msg:"Usaste la frontera de otro punto: fíjate en el mismo valor del eje horizontal."},{v:F.ys[0]-y,msg:"Usaste el máximo del bien, que exige no producir nada del otro."}],
+ unit:F.y,exp:`Con ${F.xs[i]} ${F.x}, la frontera permite ${F.ys[i]}. Hizo ${y}: pudo hacer ${F.ys[i]} − ${y} = ${g} más.`,
+ f:"Producción perdida = producción en la frontera − producción real, con la misma cantidad del otro bien",svg:fppSVG(F,[{n:"R",x:F.xs[i],y}])})});
+const SH={both:F=>`Contrata más personal que puede producir ${F.sx} y ${F.sy}.`,inn:F=>"Un incendio destruye parte de sus equipos.",x:F=>`Adopta una tecnología que solo acelera la producción de ${F.sx}.`,y:F=>`Adopta una tecnología que solo acelera la producción de ${F.sy}.`};
+const SHM={both:"Esa noticia desplazaría hacia afuera los dos extremos de la frontera.",inn:"Esa noticia desplazaría la frontera hacia adentro.",x:"Esa noticia solo ampliaría el extremo del eje horizontal.",y:"Esa noticia solo ampliaría el extremo del eje vertical."};
+const SHE={both:"Los dos extremos se alejan del origen: aumentaron los recursos que sirven para ambos bienes.",inn:"La frontera se acerca al origen: se perdieron recursos.",x:"Solo crece el máximo del bien del eje horizontal.",y:"Solo crece el máximo del bien del eje vertical."};
+[0,1].forEach(()=>add(6,4,"Desplazamientos de la frontera (gráfico)",()=>{const k=pick(["both","inn","x","y"]);const F=fpp(pick(FCI));const fx=k==="both"||k==="x"?1.25:k==="inn"?0.75:1,fy=k==="both"||k==="y"?1.25:k==="inn"?0.75:1;
+ return CON(`${F.who} El gráfico muestra su frontera de posibilidades de producción antes (línea continua) y después (línea discontinua) de un cambio.\n¿Qué noticia es coherente con el gráfico?`,
+ SH[k](F),Object.keys(SH).filter(j=>j!==k).map(j=>[SH[j](F),SHM[j]]),SHE[k],"La frontera se desplaza si cambian los recursos o la tecnología; si el cambio sirve a un solo bien, solo se mueve ese extremo.",fppSVG(F,[],{xs:F.xs.map(v=>v*fx),ys:F.ys.map(v=>v*fy)}))}));
+add(6,4,"Qué desplaza la frontera",()=>CON(`Una imprenta analiza varios cambios.\n¿Cuáles desplazan hacia afuera su frontera de posibilidades de producción?\n1. Compra una segunda prensa.\n2. Sube el precio de los libros.\n3. Contrata otro operario.\n4. Decide imprimir más revistas y menos libros.\n5. Un nuevo programa reduce el tiempo de diseño de cada página.`,
+ "1, 3 y 5",[["1, 2 y 3","Un precio más alto (2) no cambia los recursos ni la tecnología."],["3, 4 y 5","Cambiar la combinación (4) es moverse sobre la misma frontera."],["1, 2 y 4","El precio (2) y la combinación elegida (4) no desplazan la frontera."]],
+ "Más capital (1), más trabajo (3) y mejor tecnología (5) amplían lo que se puede producir.","Más recursos o mejor tecnología: la frontera se desplaza hacia afuera."));
+add(6,4,"Eficiencia frente a tecnología",()=>CON(`Una fábrica de muebles tenía tiempos muertos entre turnos. Un tablero de control reorganiza los turnos y elimina esos tiempos, sin comprar máquinas ni contratar personal.\n¿Qué ocurre?`,
+ "La producción se acerca a la frontera, pero la frontera no se mueve.",
+ [["La frontera se desplaza hacia afuera, porque el tablero es tecnología.","El tablero aprovecha horas que ya existían; una máquina más rápida sí movería la frontera."],["La frontera se desplaza solo en el eje de las mesas.","El cambio no favorece a un solo producto."],["La fábrica pasa a un punto inalcanzable.","Producir más con los recursos que ya tenía no supera la frontera."]],
+ "La frontera ya supone que se usan todos los recursos. Eliminar tiempos muertos corrige una ineficiencia: la producción se acerca a la frontera.","Recursos ociosos: producción dentro de la frontera. Más recursos o mejor tecnología: la frontera se desplaza."));
+add(6,4,"Costo de oportunidad creciente",()=>{const F=pick(FCI);return CON(`${F.who} Cada unidad adicional de ${F.sx} le cuesta cada vez más unidades de ${F.sy}.\n¿Qué forma tiene su frontera y por qué?`,
+ "Curva hacia afuera, porque los recursos no son igual de aptos para los dos bienes.",
+ [["Una línea recta, porque usa los mismos recursos para ambos bienes.","La recta corresponde a un costo de oportunidad constante."],["Curva hacia el origen, porque producir se vuelve más barato.","Eso implicaría un costo de oportunidad decreciente."],["Curva hacia afuera, porque los precios suben al producir más.","La forma es correcta, pero la causa no son los precios."]],
+ "Un costo de oportunidad creciente da una frontera curva hacia afuera: se pasan primero los recursos más aptos y luego los menos aptos.","Costo de oportunidad creciente: frontera cóncava. Constante: recta.")});
+
+/* ---------- POSICIÓN 7: ejercicios de utilidad (8) ---------- */
+const UCI=[["cafés en una jornada de trabajo","café"],["porciones de pizza en una reunión","porción"],["episodios de una serie en una noche","episodio"]];
+UCI.forEach(([b])=>add(7,5,"Utilidad marginal a partir de la utilidad total",()=>{const um=umList(5),ut=cum(um),k=2+Math.floor(rnd()*3);
+ return NUM({q:`Un cliente registra su utilidad total con ${b} (unidades de satisfacción, datos hipotéticos):\n${ut.map((v,i)=>`${i+1}: ${v}`).join("\n")}\n¿Cuál es la utilidad marginal de la unidad número ${k}?`,ans:um[k-1],
+ errs:[{v:ut[k-1],msg:"Esa es la utilidad total de esas unidades, no la que añade la última."},{v:ut[k-1]/k,msg:"Esa es la utilidad promedio por unidad."},{v:um[k-2],msg:"Esa es la utilidad marginal de la unidad anterior."},{v:ut[k-1]+ut[k-2],msg:"Sumaste las utilidades totales: hay que restarlas."}],
+ unit:"unidades de satisfacción",exp:`Utilidad marginal = ${ut[k-1]} − ${ut[k-2]} = ${um[k-1]}.`,f:"Utilidad marginal = utilidad total con una unidad más − utilidad total anterior"})}));
+[["botellas de agua después de un partido"],["horas de videojuego en un sábado"]].forEach(([b])=>add(7,5,"Utilidad total a partir de la marginal",()=>{const um=umList(5),n=3+Math.floor(rnd()*2),ut=cum(um);
+ return NUM({q:`Un estudiante asigna estas utilidades marginales a ${b} (datos hipotéticos): ${um.join(", ")}.\n¿Cuál es su utilidad total si consume ${n}?`,ans:ut[n-1],
+ errs:[{v:um[n-1],msg:"Esa es solo la utilidad marginal de la última unidad."},{v:ut[4],msg:"Sumaste todas las unidades de la lista, no solo las que consume."},{v:n*um[0],msg:"Supusiste que todas dan lo mismo que la primera: la utilidad marginal decrece."},{v:ut[n-2],msg:"Te faltó sumar la última unidad."}],
+ unit:"unidades de satisfacción",exp:`Utilidad total = ${um.slice(0,n).join(" + ")} = ${ut[n-1]}.`,f:"Utilidad total = suma de las utilidades marginales de las unidades consumidas"})}));
+const MEM=["Carla","Andrés","Daniela","Jorge"];
+[["la utilidad marginal de la 3.ª unidad",2,"m","barras de granola"],["la utilidad total de las 3 unidades",-1,"t","jugos naturales"],["la utilidad marginal de la 2.ª unidad",1,"m","galletas integrales"]].forEach(([lab,k,ty,prod])=>add(7,5,"Cliente típico con las calificaciones del equipo",()=>{
+ const sc=MEM.map(()=>{const a=R(7,10,1),b=a-R(1,3,1),c=Math.max(1,b-R(1,4,1));return [a,b,c]});const av=[0,1,2].map(j=>sc.reduce((s,r)=>s+r[j],0)/4);const sum=[0,1,2].map(j=>sc.reduce((s,r)=>s+r[j],0));const tot=av[0]+av[1]+av[2];
+ const ans=ty==="t"?tot:av[k];const o=ty==="t"?av[2]:av[k===2?1:2];
+ return NUM({q:`Un equipo analiza a los clientes de una empresa de ${prod}. Cada integrante calificó del 1 al 10 la satisfacción que le da la 1.ª, la 2.ª y la 3.ª unidad:\n${MEM.map((m,i)=>`${m}: ${sc[i].join(", ")}`).join("\n")}\nEl equipo toma el promedio como el cliente típico. ¿Cuál es ${lab} para el cliente típico?`,ans,dec:2,
+ errs:[{v:ty==="t"?sum[0]+sum[1]+sum[2]:sum[k],msg:"Sumaste las calificaciones sin dividir para los 4 integrantes."},{v:o,msg:ty==="t"?"Esa es la utilidad marginal de la 3.ª unidad, no la total.":"Esa es la utilidad marginal de otra unidad."},{v:ty==="t"?av[0]+av[1]:av[0]+av[1]+av[2],msg:ty==="t"?"Te faltó sumar la 3.ª unidad.":"Esa es la utilidad total de las 3 unidades, no la marginal."},{v:ty==="t"?sc[0][0]+sc[0][1]+sc[0][2]:sc[0][k],msg:"Usaste solo las calificaciones de Carla, no el promedio del equipo."}],
+ unit:"unidades de satisfacción",exp:`Promedios: 1.ª = ${fmt(av[0],2)}, 2.ª = ${fmt(av[1],2)}, 3.ª = ${fmt(av[2],2)}. Cada calificación mide la utilidad marginal; la utilidad total es su suma: ${fmt(tot,2)}.`,
+ f:"Cliente típico = promedio de las calificaciones. Utilidad total = suma de las utilidades marginales."})}));
+
+/* ---------- POSICIÓN 8: tipos de mercado, demanda y oferta (12) ---------- */
+const TM={cp:"Competencia perfecta",cm:"Competencia monopolística",ol:"Oligopolio",mo:"Monopolio"};
+const TMM={cp:"Competencia perfecta: muchos vendedores de un producto casi idéntico, ninguno fija el precio.",cm:"Competencia monopolística: muchos vendedores con productos diferenciados (marca, estilo).",ol:"Oligopolio: pocos vendedores grandes, cada uno pendiente de lo que hacen los demás.",mo:"Monopolio: un solo vendedor de un producto sin sustitutos cercanos."};
+add(8,6,"Tipos de mercado",()=>CON(`Relacione cada mercado con su tipo.\nMERCADOS\n1. Cientos de productores venden quintales de papa casi idénticos en el mercado mayorista de Riobamba.\n2. Una sola empresa distribuye la energía eléctrica en una provincia.\n3. Dos cerveceras grandes concentran casi todas las ventas del país.\n4. Decenas de peluquerías de Quito, cada una con su estilo, compiten por clientes.\nTIPOS\na) Competencia perfecta\nb) Competencia monopolística\nc) Oligopolio\nd) Monopolio`,
+ "1a, 2d, 3c, 4b",[["1a, 2c, 3d, 4b","Intercambiaste monopolio (un vendedor) y oligopolio (pocos vendedores)."],["1b, 2d, 3c, 4a","Intercambiaste los dos tipos de competencia: la papa es homogénea; las peluquerías son diferenciadas."],["1a, 2d, 3b, 4c","Pocos vendedores grandes forman un oligopolio; muchos con productos distintos, competencia monopolística."]],
+ "Muchos y homogéneos: competencia perfecta. Muchos y diferenciados: competencia monopolística. Pocos: oligopolio. Uno: monopolio.","Tipos de mercado según el número de vendedores y el tipo de producto."));
+add(8,6,"Tipos de mercado",()=>CON(`Relacione cada mercado con su tipo.\nMERCADOS\n1. Una sola empresa tiene la concesión del agua potable de una ciudad.\n2. Muchas marcas de ropa deportiva, cada una con su diseño, compiten en un centro comercial.\n3. Miles de productores venden cajas de banano casi iguales a un precio que ninguno controla.\n4. Tres empresas grandes venden casi todo el cemento del país.\nTIPOS\na) Competencia perfecta\nb) Competencia monopolística\nc) Oligopolio\nd) Monopolio`,
+ "1d, 2b, 3a, 4c",[["1c, 2b, 3a, 4d","Intercambiaste monopolio y oligopolio."],["1d, 2a, 3b, 4c","Intercambiaste los dos tipos de competencia: el banano es homogéneo; la ropa de marca, diferenciada."],["1d, 2c, 3a, 4b","Muchas marcas diferenciadas forman competencia monopolística; tres grandes, un oligopolio."]],
+ "Uno: monopolio. Pocos: oligopolio. Muchos con productos distintos: competencia monopolística. Muchos con productos iguales: competencia perfecta.","Tipos de mercado según el número de vendedores y el tipo de producto."));
+[["cp","En un mercado hay cientos de vendedores de un producto prácticamente igual; si uno sube su precio, sus clientes se van con otro."],["cm","En un mercado hay muchos vendedores; cada uno ofrece un producto con su propia marca y estilo, y puede cobrar algo más que los demás sin perder a todos sus clientes."],["ol","En un mercado hay pocos vendedores grandes; antes de bajar sus precios, cada uno analiza cómo reaccionarán los otros."],["mo","En un mercado hay un solo vendedor, el producto no tiene sustitutos cercanos y es muy difícil que entren otras empresas."]].forEach(([k,d])=>add(8,6,"Características de los tipos de mercado",()=>CON(`${d}\n¿Qué tipo de mercado es?`,TM[k],Object.keys(TM).filter(j=>j!==k).map(j=>[TM[j],TMM[j]]),TMM[k],"Tipos de mercado: competencia perfecta, competencia monopolística, oligopolio y monopolio.")));
+add(8,6,"Movimiento y desplazamiento de la demanda",()=>CON(`El tablero de una empresa de internet muestra que, al bajar su tarifa de $30 a $25, sus contratos nuevos pasaron de 800 a 1 000 al mes, sin otros cambios.\n¿Cómo se interpreta?`,
+ "Como un movimiento a lo largo de la curva de demanda, porque cambió el propio precio.",
+ [["Como un desplazamiento de la demanda hacia la derecha.","Un desplazamiento requiere que cambie un factor distinto del precio."],["Como un aumento de la oferta, porque la empresa vendió más.","El cambio está en la respuesta de los compradores a un precio menor."],["Como una excepción a la ley de la demanda.","Es justo lo que dice la ley: a menor precio, mayor cantidad demandada."]],
+ "Si solo cambia el precio del bien, la cantidad demandada se mueve a lo largo de la misma curva (ley de la demanda).","Cambio del precio del bien: movimiento a lo largo de la curva. Cambio de otro factor: desplazamiento."));
+add(8,6,"Movimiento y desplazamiento de la demanda",()=>CON(`El tablero de una cadena de cines muestra que en diciembre vendió 30 % más entradas que en noviembre, con el mismo precio, porque los hogares recibieron el décimo tercer sueldo.\n¿Cómo se interpreta?`,
+ "Como un desplazamiento de la demanda hacia la derecha, porque subió el ingreso de los hogares.",
+ [["Como un movimiento a lo largo de la curva de demanda.","El precio no cambió: lo que cambió fue el ingreso."],["Como un aumento de la oferta de entradas.","La causa está en los compradores, no en los vendedores."],["Como una baja de la demanda, porque el precio no subió.","Al mismo precio se compró más: la demanda aumentó."]],
+ "Si al mismo precio se compra más, cambió un determinante de la demanda (aquí, el ingreso) y la curva se desplazó a la derecha.","Determinantes de la demanda: ingreso, gustos, precios de bienes relacionados, expectativas y número de compradores."));
+add(8,6,"Determinantes de la demanda",()=>CON(`Una empresa de streaming quiere anticipar la demanda de sus suscripciones, que para los hogares son un bien normal.\n¿Cuáles de estos cambios desplazan hacia la derecha la demanda de sus suscripciones?\n1. Sube el ingreso de los hogares.\n2. La empresa baja el precio de su plan.\n3. Una plataforma competidora sube su tarifa.\n4. Baja el costo de los servidores que usa la empresa.\n5. Una serie exclusiva se vuelve tendencia en redes.`,
+ "1, 3 y 5",[["1, 2 y 3","Bajar el propio precio (2) es un movimiento a lo largo de la curva."],["2, 4 y 5","El costo de los servidores (4) afecta a la oferta, y el propio precio (2) no desplaza la curva."],["1, 4 y 5","El costo de los servidores (4) es un determinante de la oferta, no de la demanda."]],
+ "Desplazan la demanda: el ingreso, si el bien es normal (1), el precio de un sustituto (3) y los gustos (5).","Determinantes de la demanda: ingreso, gustos, precios de bienes relacionados, expectativas y número de compradores."));
+add(8,6,"Bienes sustitutos y complementarios",()=>CON(`Sube con fuerza el precio de las impresoras de inyección de tinta.\n¿Qué ocurre con la demanda de cartuchos de tinta?`,
+ "Disminuye, porque impresoras y cartuchos son bienes complementarios.",
+ [["Aumenta, porque son bienes sustitutos.","No se usan uno en lugar del otro: se usan juntos."],["No cambia, porque el precio de los cartuchos sigue igual.","La demanda depende también de los precios de los bienes relacionados."],["Aumenta, porque la gente cuidará más sus impresoras.","Con impresoras más caras se compran menos impresoras y, por tanto, menos cartuchos."]],
+ "Los complementarios se usan juntos: si sube el precio de uno, baja la demanda del otro. Con sustitutos ocurre lo contrario.","Complementarios: precio de uno sube, demanda del otro baja. Sustitutos: precio de uno sube, demanda del otro sube."));
+add(8,6,"Determinantes de la oferta",()=>CON(`Baja el precio de la leche cruda que una empresa de quesos compra a los ganaderos.\n¿Qué ocurre con la oferta de queso?`,
+ "Se desplaza hacia la derecha: con menores costos, la empresa ofrece más a cada precio.",
+ [["Se desplaza hacia la izquierda, porque bajan los ingresos de la empresa.","Un insumo más barato reduce costos y aumenta la oferta."],["Se mueve a lo largo de la curva, porque cambió un precio.","El precio que cambió es el del insumo, no el del queso: la curva se desplaza."],["Aumenta la demanda de queso, porque la leche es más barata.","La leche cruda es un insumo del productor: afecta a la oferta."]],
+ "Los costos de producción son un determinante de la oferta: si bajan, la oferta se desplaza a la derecha.","Determinantes de la oferta: costos e insumos, tecnología, expectativas y número de vendedores."));
+add(8,6,"Ley de la oferta",()=>CON(`En el mercado mayorista, cuando el precio del quintal de papa sube de $15 a $20, los productores llevan 1 200 quintales en lugar de 900.\n¿Qué explica este comportamiento?`,
+ "La ley de la oferta: a mayor precio, conviene producir y vender más, aunque cueste más.",
+ [["La oferta se desplazó hacia la derecha.","Cambió el propio precio: es un movimiento a lo largo de la curva de oferta."],["La demanda aumentó porque los compradores aceptan precios altos.","Es la respuesta de los productores, no de los compradores."],["Los productores siempre venden toda su cosecha, sin importar el precio.","Los datos muestran que la cantidad ofrecida depende del precio."]],
+ "Con todo lo demás constante, un precio mayor cubre el costo de producir más unidades y la cantidad ofrecida aumenta.","Ley de la oferta: a mayor precio, mayor cantidad ofrecida."));
+
+/* ---------- POSICIÓN 9: ejercicios de equilibrio (12) ---------- */
+const MK=[["quintales de papa","del mercado mayorista de Riobamba"],["cajas de banano","de un centro de acopio de Machala"],["jabas de tomate riñón","del mercado mayorista de Quito"],["litros de leche","de un centro de acopio de Machachi"]];
+function mkt(){const [u,lug]=pick(MK),st=R(1,2,1),b=R(20,50,10),d=R(20,50,10),Qe=R(600,1000,50),Pe=R(8,15,1),k=1+Math.floor(rnd()*3);
+ const P=[0,1,2,3,4].map(i=>Pe+(i-k)*st),Qd=P.map(p=>Qe-b*(p-Pe)),Qs=P.map(p=>Qe+d*(p-Pe));
+ return {u,lug,st,b,d,Qe,Pe,k,P,Qd,Qs,tab:"Precio ($) | Cantidad demandada | Cantidad ofrecida\n"+P.map((p,i)=>`$${p} | ${fmt(Qd[i])} | ${fmt(Qs[i])}`).join("\n")}}
+const FEQ="Equilibrio: precio al que la cantidad demandada es igual a la cantidad ofrecida.";
+const intro=M=>`El área de inteligencia de negocios ${M.lug} organizó los datos diarios de ${M.u} (datos hipotéticos):\n${M.tab}\n`;
+[0,1,2].forEach(()=>add(9,7,"Precio de equilibrio",()=>{const M=mkt();
+ return NUM({q:intro(M)+"¿Cuál es el precio de equilibrio, en dólares?",ans:M.Pe,
+ errs:[{v:M.Pe-M.st,msg:"A ese precio la cantidad demandada supera a la ofrecida: hay escasez."},{v:M.Pe+M.st,msg:"A ese precio la cantidad ofrecida supera a la demandada: hay excedente."},{v:M.P[0]===M.Pe?M.P[4]:M.P[0],msg:"Ese precio está en un extremo de la tabla; busca la fila donde ambas cantidades coinciden."},{v:M.Pe+2*M.st,msg:"A ese precio sobra producto: no es el equilibrio."}],
+ show:x=>$(x),unit:"dólares",exp:`A $${M.Pe}, la cantidad demandada y la ofrecida son iguales (${fmt(M.Qe)} ${M.u}).`,f:FEQ})}));
+[0,1,2].forEach(()=>add(9,7,"Cantidad de equilibrio",()=>{const M=mkt(),j=M.k===0?1:M.k-1;
+ return NUM({q:intro(M)+`¿Cuál es la cantidad de equilibrio, en ${M.u}?`,ans:M.Qe,
+ errs:[{v:2*M.Qe,msg:"Sumaste la cantidad demandada y la ofrecida: en el equilibrio se intercambia una sola vez esa cantidad."},{v:M.Qd[j],msg:"Esa es la cantidad demandada a otro precio, donde el mercado no está en equilibrio."},{v:M.Qs[M.k+1],msg:"Esa es la cantidad ofrecida a otro precio, donde sobra producto."},{v:M.Qs[j],msg:"Esa es la cantidad ofrecida a un precio menor, donde falta producto."}],
+ unit:M.u,exp:`El equilibrio está a $${M.Pe}, donde se demandan y se ofrecen ${fmt(M.Qe)} ${M.u}.`,f:FEQ})}));
+[0,1,2,3].forEach(()=>add(9,7,"Escasez y excedente",()=>{const M=mkt();let i;do{i=Math.floor(rnd()*5)}while(i===M.k);const gap=Math.abs(M.Qd[i]-M.Qs[i]),esc=M.Qd[i]>M.Qs[i];
+ return NUM({q:intro(M)+`Un día el precio queda en $${M.P[i]}. ¿Qué cantidad falta o sobra a ese precio?`,ans:gap,
+ errs:[{v:M.Qd[i],msg:"Esa es solo la cantidad demandada: hay que restarle la ofrecida."},{v:M.Qs[i],msg:"Esa es solo la cantidad ofrecida: hay que compararla con la demandada."},{v:M.Qe,msg:"Esa es la cantidad de equilibrio, no la diferencia a este precio."},{v:M.Qd[i]+M.Qs[i],msg:"Sumaste las cantidades: hay que restarlas."}],
+ unit:M.u,exp:`A $${M.P[i]} se demandan ${fmt(M.Qd[i])} y se ofrecen ${fmt(M.Qs[i])}: hay ${esc?"escasez (exceso de demanda)":"excedente (exceso de oferta)"} de ${fmt(gap)} ${M.u}. El precio tiende a ${esc?"subir":"bajar"} hacia $${M.Pe}.`,
+ f:"Escasez = cantidad demandada − cantidad ofrecida (precio bajo). Excedente = cantidad ofrecida − cantidad demandada (precio alto)."})}));
+[0,1].forEach(()=>add(9,7,"Nuevo equilibrio tras un aumento de la demanda",()=>{const M=mkt();if(M.k>2)return null;const s=(M.b+M.d)*M.st,Pn=M.Pe+M.st;
+ return NUM({q:intro(M)+`En temporada alta, los compradores piden ${fmt(s)} ${M.u} más a cada precio, y la oferta no cambia. ¿Cuál es el nuevo precio de equilibrio, en dólares?`,ans:Pn,
+ errs:[{v:M.Pe,msg:"Ese es el equilibrio anterior: con más demanda, a ese precio ahora hay escasez."},{v:M.Pe-M.st,msg:"Con más demanda el precio sube, no baja."},{v:M.Pe+2*M.st,msg:"A ese precio, aun con la nueva demanda, sobra producto."}],
+ show:x=>$(x),unit:"dólares",exp:`Se suman ${fmt(s)} a cada cantidad demandada. A $${Pn} la nueva cantidad demandada es ${fmt(M.Qd[M.k+1]+s)} y la ofrecida ${fmt(M.Qs[M.k+1])}: coinciden.`,f:FEQ+" Si la demanda aumenta, suben el precio y la cantidad."})}));
+
+/* ---------- POSICIÓN 10: cambios en el equilibrio (12) ---------- */
+function mktSVG(kind){const W=300,H=220,P="#5B2A86",O="#E87722";const L=(x1,y1,x2,y2,col,da)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="2.4" ${da?'stroke-dasharray="6 4"':""}/>`;
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Oferta y demanda"><line x1="30" y1="${H-25}" x2="${W-10}" y2="${H-25}" stroke="currentColor"/><line x1="30" y1="${H-25}" x2="30" y2="10" stroke="currentColor"/><text x="${W-12}" y="${H-8}" font-size="11" text-anchor="end" fill="currentColor">Cantidad</text><text x="34" y="12" font-size="11" fill="currentColor">Precio</text>`;
+ s+=L(60,30,250,180,P)+L(60,170,260,60,O);
+ const sh={dr:[L(100,20,280,160,P,1),"Demanda final",296,178,P,"end"],dl:[L(40,60,200,190,P,1),"Demanda final",44,52,P,"start"],or:[L(90,190,280,95,O,1),"Oferta final",296,118,O,"end"],ol:[L(40,140,230,30,O,1),"Oferta final",232,24,O,"end"]}[kind];
+ return s+sh[0]+`<text x="64" y="24" font-size="11" fill="${P}">Demanda inicial</text><text x="296" y="${kind==="ol"?74:52}" font-size="11" text-anchor="end" fill="${O}">Oferta inicial</text><text x="${sh[2]}" y="${sh[3]}" font-size="11" text-anchor="${sh[5]}" fill="${sh[4]}">${sh[1]}</text></svg>`}
+const NEWS={dr:["Las ferias navideñas aumentan las compras de quesos para regalos.","Sube el ingreso de los hogares, y el queso es un bien normal.","Una campaña en redes pone de moda los quesos artesanales."],dl:["Un estudio difundido en redes reduce el interés por el queso.","Baja el precio de un producto sustituto, como el yogur griego.","Cae el ingreso de los hogares, y el queso es un bien normal."],or:["Baja el precio de la leche cruda que compran las queserías.","Una nueva máquina reduce los costos de producir queso.","Abren varias queserías nuevas en la zona."],ol:["Una sequía encarece la leche cruda.","Sube el costo del gas que usan las queserías.","Se cierran varias queserías por nuevas exigencias sanitarias."]};
+const EFF={dr:"Suben el precio y la cantidad.",dl:"Bajan el precio y la cantidad.",or:"Baja el precio y sube la cantidad.",ol:"Sube el precio y baja la cantidad."};
+const EFFM={dr:"Eso ocurriría si aumentara la demanda.",dl:"Eso ocurriría si disminuyera la demanda.",or:"Eso ocurriría si aumentara la oferta.",ol:"Eso ocurriría si disminuyera la oferta."};
+const SHN={dr:"La demanda se desplaza a la derecha",dl:"La demanda se desplaza a la izquierda",or:"La oferta se desplaza a la derecha",ol:"La oferta se desplaza a la izquierda"};
+const FCH="Demanda a la derecha: suben precio y cantidad. Demanda a la izquierda: bajan ambos. Oferta a la derecha: baja el precio y sube la cantidad. Oferta a la izquierda: sube el precio y baja la cantidad.";
+["dr","dl","or","ol"].forEach(k=>add(10,7,"Cambios en el equilibrio (gráfico)",()=>CON(`El gráfico muestra el mercado de queso fresco de una provincia antes (líneas continuas) y después (línea discontinua) de un cambio.\n¿Qué noticia es coherente con el gráfico?`,
+ pick(NEWS[k]),Object.keys(NEWS).filter(j=>j!==k).map(j=>[pick(NEWS[j]),`Esa noticia hace que ${SHN[j].toLowerCase()}.`]),`${SHN[k]}: ${EFF[k].toLowerCase()}`,FCH,mktSVG(k))));
+["dr","dl","or","ol"].forEach(k=>add(10,7,"Efecto de una noticia sobre el equilibrio",()=>CON(`En el mercado de queso fresco de una provincia ocurre lo siguiente: ${pick(NEWS[k]).replace(/^./,c=>c.toLowerCase())}\n¿Qué pasa con el precio y la cantidad de equilibrio?`,
+ EFF[k],Object.keys(EFF).filter(j=>j!==k).map(j=>[EFF[j],`${EFFM[j]} ${SHN[k]}.`]),`${SHN[k]}: ${EFF[k].toLowerCase()}`,FCH)));
+[0,1].forEach(()=>add(10,7,"Leer un tablero de precios",()=>{const k=pick(["dr","dl","or","ol"]);const p0=R(4,6,0.5),q0=R(800,1200,100);const up=k==="dr"||k==="ol",qup=k==="dr"||k==="or";const p1=+(p0+(up?1:-1)*R(0.5,1.5,0.5)).toFixed(2),q1=q0+(qup?1:-1)*R(100,300,50);
+ return CON(`El tablero del mercado de queso fresco muestra que, en un mes, el precio del kilo pasó de $${fmt(p0,2)} a $${fmt(p1,2)} y la cantidad vendida, de ${fmt(q0)} a ${fmt(q1)} kilos diarios.\n¿Qué noticia explica mejor este cambio?`,
+ pick(NEWS[k]),Object.keys(NEWS).filter(j=>j!==k).map(j=>[pick(NEWS[j]),`${EFFM[j]} Revisa en qué dirección se movieron el precio y la cantidad.`]),
+ `El precio ${up?"subió":"bajó"} y la cantidad ${qup?"subió":"bajó"}: ${SHN[k].toLowerCase()}.`,FCH)}));
+const SIM={"dr+or":["Sube la cantidad; el precio puede subir o bajar.","Los dos cambios aumentan la cantidad; sobre el precio se oponen."],"dr+ol":["Sube el precio; la cantidad puede subir o bajar.","Los dos cambios suben el precio; sobre la cantidad se oponen."],"dl+or":["Baja el precio; la cantidad puede subir o bajar.","Los dos cambios bajan el precio; sobre la cantidad se oponen."],"dl+ol":["Baja la cantidad; el precio puede subir o bajar.","Los dos cambios reducen la cantidad; sobre el precio se oponen."]};
+[0,1].forEach(()=>add(10,7,"Cambios simultáneos",()=>{const key=pick(Object.keys(SIM));const [a,b]=key.split("+");
+ return CON(`En la misma temporada, en el mercado de queso fresco: ${pick(NEWS[a]).replace(/^./,c=>c.toLowerCase())} Además, ${pick(NEWS[b]).replace(/^./,c=>c.toLowerCase())}\nSin conocer el tamaño de cada cambio, ¿qué se puede asegurar?`,
+ SIM[key][0],Object.keys(SIM).filter(j=>j!==key).map(j=>[SIM[j][0],"Revisa qué hace cada cambio por separado: es seguro solo lo que ambos mueven en la misma dirección."]),
+ `${SHN[a]} y ${SHN[b].toLowerCase()}. ${SIM[key][1]}`,"Con dos cambios a la vez, es seguro lo que ambos mueven en la misma dirección; lo demás depende de cuál es mayor.")}));
+
+if(typeof module!=="undefined")module.exports={C,SLOTS,TEMAS,REPASO,CALC,fmt,near};
+
+</script>
+<script>
+{
+const KEY="principiosINEG_P1_entrenamiento_v1";
+let S={nombre:"",curso:"",hist:[],cur:null};
+try{const t=localStorage.getItem(KEY);if(t)S=Object.assign(S,JSON.parse(t))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const L="ABCD";
+function gen(c){let q=null,t=0;while(!q&&t<200){q=c.gen();t++}q.tema=c.tema;q.sub=c.sub;q.slot=c.slot;return q}
+C.forEach(c=>{c.calc=!!gen(c).num});
+function newAttempt(){const qs=SLOTS.map(s=>{const pool=C.filter(c=>c.slot===s.n&&(!CALC.includes(s.n)||c.calc));return gen(pick(pool))});S.cur={qs,i:0,ans:qs.map(()=>({num:null,choice:null,numDone:false})),start:new Date().toISOString()};save();render()}
+function parseNum(v){let s=String(v).trim().replace(/[\s$% ]/g,"").replace(/−/g,"-");if(s.includes(","))s=s.replace(/\./g,"").replace(",",".");const x=parseFloat(s);return isFinite(x)?x:null}
+const fdate=iso=>{const d=new Date(iso);return d.toLocaleDateString("es-EC")+" "+d.toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit"})};
+
+function home(){
+ const h=S.hist;
+ app.innerHTML=`<div class="card"><h2>Tus datos</h2><p class="mut">Solo se usan para tu PDF. Se guardan en este navegador.</p>
+ <label for="nom">Nombre y apellido</label><input id="nom" value="${esc(S.nombre)}" autocomplete="name">
+ <label for="cur">Curso y paralelo</label><input id="cur" value="${esc(S.curso)}" placeholder="Ej.: Principios de Economía, 3.º Inteligencia de Negocios">
+ </div>
+ <div class="card"><h2>¿Qué quieres hacer?</h2>
+ <p><b>Intento de 10 preguntas.</b> Una de cada bloque del parcial; siempre hay ejercicios de costo de oportunidad, de la frontera de posibilidades de producción, de utilidad y de equilibrio de mercado. Ves la retroalimentación y tu nota al final.</p>
+ <div class="row"><button class="b1" id="go">${S.cur?"Continuar mi intento":"Empezar un intento"}</button></div>
+ <p style="margin-top:18px"><b>Practicar un tema.</b> Preguntas sin límite del tema que elijas, con retroalimentación inmediata.</p>
+ <label for="tem">Tema</label><select id="tem">${Object.entries(TEMAS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+ <div class="row"><button class="b2" id="pr">Practicar este tema</button></div></div>
+ <div class="card"><h2>Mi registro</h2>${h.length?`<table><tr><th>Intento</th><th>Fecha</th><th class="n">Nota</th></tr>${h.map((a,i)=>`<tr><td>${i+1}</td><td>${fdate(a.fecha)}</td><td class="n">${fmt(a.nota,1)} / 10</td></tr>`).join("")}</table>${refuerzo()}`:`<p class="mut">Todavía no tienes intentos terminados.</p>`}
+ <div class="row"><button class="b3" id="pdf" ${h.length?"":"disabled"}>Descargar mi PDF</button></div><p class="mut" id="pmsg"></p></div>`;
+ const keep=()=>{S.nombre=document.getElementById("nom").value.trim();S.curso=document.getElementById("cur").value.trim();save()};
+ document.getElementById("nom").oninput=keep;document.getElementById("cur").oninput=keep;
+ document.getElementById("go").onclick=()=>{keep();if(!S.nombre){alertBox("Escribe tu nombre para empezar.");return}S.cur?render():newAttempt()};
+ document.getElementById("pr").onclick=()=>{keep();P={tema:+document.getElementById("tem").value,q:null,n:0,ok:0};nextPractice()};
+ document.getElementById("pdf").onclick=()=>{keep();makePDF()};
+}
+function alertBox(t){const m=document.getElementById("pmsg")||document.createElement("p");m.textContent=t;m.className="mut";m.style.color="var(--bad)";if(!m.isConnected)app.querySelector(".card").appendChild(m)}
+function temaStats(){const st={};for(const a of S.hist)for(const [t,[o,n]] of Object.entries(a.porTema)){st[t]=st[t]||[0,0];st[t][0]+=o;st[t][1]+=n}return st}
+function refuerzo(){const st=temaStats();const w=Object.entries(st).filter(([t,[o,n]])=>n&&o/n<0.7).sort((a,b)=>a[1][0]/a[1][1]-b[1][0]/b[1][1]);
+ return w.length?`<h3>Temas para reforzar</h3><ul>${w.map(([t,[o,n]])=>`<li>${TEMAS[t]}: ${o} de ${n} correctas. Repasa: ${REPASO[t]}.</li>`).join("")}</ul>`:`<p class="mut">Vas bien en todos los temas que has practicado.</p>`}
+
+/* ---------- pregunta ---------- */
+function qHTML(q,a,mode){
+ const showOpts=!q.num||a.numDone;
+ let h=`<p class="q">${esc(q.q)}</p>${q.svg?`<div class="fig">${q.svg}</div>`:""}
+ <button class="info" data-f>(i) Fórmula</button><div class="formula hide" id="fx">${esc(q.f)}</div>`;
+ if(q.num){h+=`<div class="numbox"><label for="nv">1. Calcula y escribe tu resultado${q.num.unit?" ("+q.num.unit+")":""}</label><p class="mut" style="margin:0">Usa coma para los decimales, sin separador de miles.</p>
+ <div class="row"><input id="nv" inputmode="decimal" value="${a.num??""}" ${a.numDone?"disabled":""}><button class="b1" id="nb" ${a.numDone?"disabled":""}>Registrar</button><button class="b3" id="nx" ${a.numDone?"disabled":""}>No lo sé</button></div><div id="nfb">${a.numDone&&mode==="p"?numFB(q,a):""}</div></div>`}
+ if(showOpts)h+=`<p><b>${q.num?"2. Ahora elige la opción correcta":"Elige la opción correcta"}</b></p>`+q.opts.map((o,j)=>`<button class="opt ${a.choice===j?"sel":""}" data-o="${j}"><b>${L[j]})</b>${esc(o.t)}</button>`).join("");
+ return h}
+function numFB(q,a){if(a.num===null)return `<p class="mut">Sin resultado registrado.</p>`;const ok=near(a.num,q.num.ans,q.num.dec);return `<p style="color:var(${ok?"--ok":"--bad"})"><b>${ok?"Tu resultado coincide.":"Tu resultado no coincide."}</b> ${ok?"":"Revisa el procedimiento al ver la retroalimentación."}</p>`}
+function fbHTML(q,a){const o=q.opts[a.choice],c=q.opts.findIndex(x=>x.ok);
+ return `<div class="fb ${o&&o.ok?"":"no"}">${o?(o.ok?`<p><b>Correcto.</b></p>`:`<p><b>Incorrecto.</b> ${esc(o.msg)}</p>`):`<p><b>Sin responder.</b></p>`}
+ ${o&&o.ok?"":`<p><b>Respuesta correcta:</b> ${L[c]}) ${esc(q.opts[c].t)}</p>`}<p>${esc(q.exp)}</p><p class="mut">Repasa: ${REPASO[q.tema]}.</p></div>`}
+function wire(q,a,onNum,onOpt){
+ app.querySelector("[data-f]").onclick=()=>document.getElementById("fx").classList.toggle("hide");
+ if(q.num&&!a.numDone){const reg=v=>{a.num=v;a.numDone=true;onNum()};
+  document.getElementById("nb").onclick=()=>{const v=parseNum(document.getElementById("nv").value);if(v===null){document.getElementById("nfb").innerHTML=`<p class="mut">Escribe un número, o pulsa «No lo sé».</p>`;return}reg(v)};
+  document.getElementById("nx").onclick=()=>reg(null)}
+ app.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>onOpt(+b.dataset.o))}
+
+function render(){const A=S.cur;if(!A)return home();if(A.i>=A.qs.length)return finish();
+ const q=A.qs[A.i],a=A.ans[A.i];
+ app.innerHTML=`<div class="card"><span class="chip">${TEMAS[q.tema]}</span> <span class="mut">Pregunta ${A.i+1} de ${A.qs.length}</span><div class="prog"><i style="width:${A.i/A.qs.length*100}%"></i></div>${qHTML(q,a,"i")}
+ <div class="row"><button class="b3" id="bk" ${A.i?"":"disabled"}>Anterior</button><button class="b1" id="nxq" ${a.choice===null?"disabled":""}>${A.i===A.qs.length-1?"Terminar y ver mi nota":"Siguiente"}</button></div>
+ <div class="row"><button class="b3" id="out">Guardar y salir</button></div></div>`;
+ wire(q,a,()=>{save();render()},j=>{a.choice=j;save();render()});
+ document.getElementById("bk").onclick=()=>{A.i--;save();render()};
+ document.getElementById("nxq").onclick=()=>{A.i++;save();render();scrollTo(0,0)};
+ document.getElementById("out").onclick=()=>{save();home()}}
+
+function finish(){const A=S.cur;const porTema={};let ok=0;const err=[];
+ A.qs.forEach((q,i)=>{const a=A.ans[i],o=q.opts[a.choice],good=!!(o&&o.ok);ok+=good;porTema[q.tema]=porTema[q.tema]||[0,0];porTema[q.tema][0]+=good;porTema[q.tema][1]++;if(!good)err.push({n:i+1,tema:q.tema,sub:q.sub,msg:o?o.msg:"Sin responder."})});
+ const rec={fecha:new Date().toISOString(),nota:ok,aciertos:ok,total:A.qs.length,porTema,err,qs:A.qs,ans:A.ans};
+ S.hist.push(rec);S.cur=null;save();results(S.hist.length-1)}
+
+function results(k){const r=S.hist[k];
+ app.innerHTML=`<div class="card"><h2>Tu nota de práctica</h2><div class="big">${fmt(r.nota,1)}<span style="font-size:.4em;color:var(--mut)"> / 10</span></div>
+ <p>Respondiste bien ${r.aciertos} de ${r.total} preguntas. ${r.nota>=7?"Buen resultado: sigue practicando para afianzarlo.":"Revisa los errores de abajo y vuelve a intentarlo: cada intento trae preguntas distintas."}</p>
+ <h3>Por tema</h3>${Object.entries(r.porTema).map(([t,[o,n]])=>`<div class="bar"><span>${TEMAS[t]}</span><span>${o} de ${n}</span><div class="t"><i style="width:${o/n*100}%"></i></div></div>`).join("")}
+ ${r.err.length?`<h3>Por qué perdiste puntos</h3><ul>${r.err.map(e=>`<li><b>Pregunta ${e.n} (${esc(e.sub)}):</b> ${esc(e.msg)}</li>`).join("")}</ul>`:"<p><b>¡Todas correctas!</b></p>"}
+ <div class="row"><button class="b1" id="again">Nuevo intento</button><button class="b3" id="hm">Inicio y PDF</button></div></div>
+ <div class="card"><h2>Revisión de cada pregunta</h2>${r.qs.map((q,i)=>{const a=r.ans[i],o=q.opts[a.choice];return `<details ${o&&o.ok?"":"open"}><summary>${i+1}. ${esc(q.sub)} · ${o&&o.ok?"✔ correcta":"✘ incorrecta"}</summary><p class="q">${esc(q.q)}</p>${q.svg?`<div class="fig">${q.svg}</div>`:""}${q.num?numFB(q,a):""}${q.opts.map((x,j)=>`<div class="opt ${x.ok?"good":(a.choice===j?"wrong":"")}"><b>${L[j]})</b>${esc(x.t)}</div>`).join("")}${fbHTML(q,a)}<p class="mut">Fórmula: ${esc(q.f)}</p></details>`}).join("")}</div>`;
+ document.getElementById("again").onclick=()=>{newAttempt();scrollTo(0,0)};document.getElementById("hm").onclick=()=>{home();scrollTo(0,0)}}
+
+/* ---------- práctica por tema ---------- */
+let P=null;
+function nextPractice(){const pool=C.filter(c=>c.tema===P.tema);P.q=gen(pick(pool));P.a={num:null,choice:null,numDone:false};P.done=false;showPractice();scrollTo(0,0)}
+function showPractice(){const q=P.q,a=P.a;
+ app.innerHTML=`<div class="card"><span class="chip">Práctica · ${TEMAS[P.tema]}</span> <span class="mut">Llevas ${P.ok} de ${P.n} correctas</span>${qHTML(q,a,"p").replace(/<button class="opt/g,P.done?'<button disabled class="opt':'<button class="opt')}
+ <div id="pf">${P.done?fbHTML(q,a):""}</div>
+ <div class="row">${P.done?`<button class="b1" id="pn">Otra pregunta</button>`:""}<button class="b3" id="ph">Volver al inicio</button></div></div>`;
+ if(P.done){app.querySelectorAll("[data-o]").forEach((b,j)=>{const o=q.opts[j];if(o.ok)b.classList.add("good");else if(a.choice===j)b.classList.add("wrong")})}
+ wire(q,a,()=>showPractice(),j=>{if(P.done)return;a.choice=j;P.done=true;P.n++;if(q.opts[j].ok)P.ok++;showPractice()});
+ if(P.done)document.getElementById("pn").onclick=nextPractice;
+ document.getElementById("ph").onclick=()=>{P=null;home()}}
+
+/* ---------- PDF ---------- */
+const clean=s=>String(s).replace(/ /g," ").replace(/−/g,"-").replace(/÷/g,"/").replace(/Δ/g,"var. ").replace(/≈/g,"aprox.").replace(/[₀₁₂ₜ]/g,m=>({"₀":"0","₁":"1","₂":"2","ₜ":"t"}[m])).replace(/[↑]/g," sube").replace(/[↓]/g," baja").replace(/→/g,"->").replace(/[✔✘]/g,"").replace(/Σ/g,"suma de ").replace(/π/g,"inflación ");
+function makePDF(){const msg=document.getElementById("pmsg");
+ if(!window.jspdf){msg.textContent="No se pudo cargar el generador de PDF. Revisa tu conexión y vuelve a intentarlo.";return}
+ const {jsPDF}=window.jspdf,d=new jsPDF({unit:"mm",format:"a4"});let y=18;const W=180;
+ const line=(t,o={})=>{d.setFont("helvetica",o.b?"bold":"normal");d.setFontSize(o.s||10.5);const ls=d.splitTextToSize(clean(t),W);for(const l of ls){if(y>282){d.addPage();y=18}d.text(l,15,y);y+=(o.s||10.5)*0.45}y+=o.gap??1.5};
+ d.setFillColor(91,42,134);d.rect(0,0,210,10,"F");
+ line("Entrenamiento para el Parcial 1 · Principios de Economía (Inteligencia de Negocios)",{b:1,s:15,gap:3});
+ line(`Estudiante: ${S.nombre||"(sin nombre)"}`);line(`Curso: ${S.curso||"(sin curso)"}`);line(`Fecha de descarga: ${fdate(new Date().toISOString())}`,{gap:2});
+ line("Nota de práctica: no cuenta para la calificación. Sirve para identificar qué temas reforzar antes de la prueba.",{s:9.5,gap:4});
+ line("Intentos",{b:1,s:12});S.hist.forEach((a,i)=>line(`Intento ${i+1} · ${fdate(a.fecha)} · Nota: ${fmt(a.nota,1)} / 10 (${a.aciertos} de ${a.total})`));
+ y+=2;line("Aciertos acumulados por tema",{b:1,s:12});const st=temaStats();for(const [t,[o,n]] of Object.entries(st))line(`${TEMAS[t]}: ${o} de ${n} (${fmt(o/n*100,0)} %)`);
+ y+=2;line("Temas para reforzar",{b:1,s:12});const w=Object.entries(st).filter(([t,[o,n]])=>o/n<0.7);if(w.length)w.forEach(([t])=>line(`${TEMAS[t]}. Repasar: ${REPASO[t]}.`));else line("Ninguno: más de 70 % de aciertos en todos los temas practicados.");
+ const r=S.hist[S.hist.length-1];y+=2;line(`Detalle del último intento (nota ${fmt(r.nota,1)} / 10)`,{b:1,s:12});
+ r.qs.forEach((q,i)=>{const a=r.ans[i],o=q.opts[a.choice];line(`${i+1}. ${TEMAS[q.tema]} - ${q.sub}: ${o&&o.ok?"correcta":"incorrecta"}`,{b:1,s:10});if(!(o&&o.ok)){line(`Error: ${o?o.msg:"sin responder"}`,{s:9.5,gap:0.5});line(`Explicación: ${q.exp}`,{s:9.5})}});
+ const n=(S.nombre||"estudiante").replace(/[^\wáéíóúñÁÉÍÓÚÑ ]/g,"").trim().replace(/\s+/g,"_");
+ try{d.save(`Entrenamiento_Principios_INEG_P1_${n}.pdf`);msg.textContent="PDF descargado."}catch(e){msg.textContent="Este visor no permite descargas. Abre el enlace en tu navegador."}}
+
+render();
+}
+</script>
+</body>
+</html>
